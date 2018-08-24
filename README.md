@@ -1,37 +1,29 @@
-# tpt-home
+# vue-home
 
-#### 项目介绍
-公众号项目
+> A Vue.js project
 
-#### 软件架构
-软件架构说明
+## Build Setup
 
+``` bash
+# install dependencies
+npm install
 
-#### 安装教程
+# serve with hot reload at localhost:8080
+npm run dev
 
-1. xxxx
-2. xxxx
-3. xxxx
+# build for production with minification
+npm run build
+```
+##更新日志
+``` bash
+2018-06-30
+1.PC端图片预览和PC端视频放大
+2.发布页面事件戳修改
+3.支付时余额不足 充值完成后 返回支付页面
 
-#### 使用说明
+2018-07-04
+1.优化封店屏蔽
+2.解决无法选择收货地址的问题
+3.消保金提现必须全额提现
+```
 
-1. xxxx
-2. xxxx
-3. xxxx
-
-#### 参与贡献
-
-1. Fork 本项目
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
-
-
-#### 码云特技
-
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)

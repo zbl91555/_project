@@ -7,7 +7,7 @@
 				<img src="../../assets/images/loading.png" alt="">
 			</div>
 			<div class = "uploadingInfo"><span>正在上传{{loadingShowNum + '/' + loadingShowTotal}}</span></div>
-		</div>	
+		</div>
     <!-- 上传 -->
     <div class = "uploaded clearfix">
 						<div class = "el-col">
@@ -39,7 +39,7 @@
 								<div class = "el-upload--picture-card">
 									<div class = "addIcon">
 										<i class = "iconfont" :class="isPath === 'evaluate'? 'icon-camera2' : 'icon-untitled44'"></i>
-									</div> 
+									</div>
 									<div class = "addImg" v-if="isPath === 'Kojiin'? false : true">添加图片</div>
                   <div class = "addImg" v-else><p>上传凭证</p><p>(最多三张)</p></div>
 									<input @change.stop="uploadImgO" style="display:none" type="file" :id="isPath === 'personalCertificate'? 'fileImg' + indexs : 'fileImg'" name="file" multiple="multiple" accept="image/png,image/jpg,image/bmp,image/tiff,image/pcx,image/JPEG,image/APNG,image/WebP" class="el-upload__input">
@@ -79,23 +79,23 @@
 </template>
 
 <script>
-import { getSign, getUpSign, getVodSign } from "../../api/api";
-import moment from "moment"; //格式化时间
-import wx from "weixin-js-sdk";
-import { Toast, ImagePreview } from "vant"; //提示组件 预览组件
-//七牛上传token getVodSign
-import * as qiniu from "qiniu-js";
+import { getSign, getUpSign, getVodSign } from '../../api/api'
+import moment from 'moment' // 格式化时间
+import wx from 'weixin-js-sdk'
+import { Toast, ImagePreview } from 'vant' // 提示组件 预览组件
+// 七牛上传token getVodSign
+import * as qiniu from 'qiniu-js'
 // import assign from "../../assets/js/assign"; //混入式方法
 
 export default {
-  name: "uploadImg",
+  name: 'uploadImg',
   // mixins: [assign],
   components: {
     Toast,
     ImagePreview
     // "van-circle": Circle
   },
-  data() {
+  data () {
     return {
       imgList: [],
       fileList: [],
@@ -104,328 +104,328 @@ export default {
       loadingShowNum: 0,
       flag: false,
       imgFlag: true,
-      videoUri: "",
+      videoUri: '',
       etag: [],
       imgLists: [],
       percentage: 1,
       counts: 0,
       imgSetNum: 0,
-      videoImg: "", //播放封面图片
-      path: "http://cdn1.taopaitang.com/", //播放地址
-      isPlay: true, //播放图片
+      videoImg: '', // 播放封面图片
+      path: 'http://cdn1.taopaitang.com/', // 播放地址
+      isPlay: true, // 播放图片
       videoFlag: true,
-      isVideo: true, //视频是否加载
-      imgIndex :0, //PC预览图片的页码
-      pcPreview : false,
-    };
-  },
-  computed: {
-    isBrowser() {
-      //判断是微信浏览器还是其他
-      let ua = window.navigator.userAgent.toLowerCase();
-      if (ua.match(/MicroMessenger/i) == "micromessenger") {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    getCount() {
-      return this.count;
+      isVideo: true, // 视频是否加载
+      imgIndex: 0, // PC预览图片的页码
+      pcPreview: false
     }
   },
-  props: ["imgSet", "count", "upload", "videoSet", "isPath", "indexs"],
+  computed: {
+    isBrowser () {
+      // 判断是微信浏览器还是其他
+      let ua = window.navigator.userAgent.toLowerCase()
+      if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+        return true
+      } else {
+        return false
+      }
+    },
+    getCount () {
+      return this.count
+    }
+  },
+  props: ['imgSet', 'count', 'upload', 'videoSet', 'isPath', 'indexs'],
   watch: {
     imgList: {
-      //图片添加按钮消失
-      handler: function(val) {
+      // 图片添加按钮消失
+      handler: function (val) {
         if (this.imgList.length === +this.getCount) {
-          this.imgFlag = false;
-          this.videoFlag = false;
+          this.imgFlag = false
+          this.videoFlag = false
         } else {
-          this.imgFlag = true;
-          this.videoFlag = true;
+          this.imgFlag = true
+          this.videoFlag = true
         }
-        if (this.videoUri != "" && this.imgList.length >= 8) {
-          this.imgFlag = false;
+        if (this.videoUri != '' && this.imgList.length >= 8) {
+          this.imgFlag = false
         }
       },
       deep: true
     },
     imgSet: {
-      //重新上架用的
-      handler: function(val) {
+      // 重新上架用的
+      handler: function (val) {
         if (this.imgSetNum === 0) {
-          this.imgSetNum++;
+          this.imgSetNum++
           if (val && val.length > 0) {
-            this.imgList = val;
-            let reg = /\d{8}.*-W(\d+?)H(\d+)/;
-            this.getImgInfo(val, reg);
+            this.imgList = val
+            let reg = /\d{8}.*-W(\d+?)H(\d+)/
+            this.getImgInfo(val, reg)
           }
         }
       },
       deep: true
     },
     videoSet: {
-      handler: function(val) {
-        if (localStorage.getItem("uploadInfo")) {
-          return;
+      handler: function (val) {
+        if (localStorage.getItem('uploadInfo')) {
+          return
         }
-        if (val !== "") {
-          let num = val.indexOf("http");
-          this.videoUri = num > -1 ? val : this.path + val;
-          this.videoImg = this.videoUri + "?vframe/jpg/offset/1";
-          this.$emit("upload", { name: "video", videoUri: this.videoUri });
+        if (val !== '') {
+          let num = val.indexOf('http')
+          this.videoUri = num > -1 ? val : this.path + val
+          this.videoImg = this.videoUri + '?vframe/jpg/offset/1'
+          this.$emit('upload', { name: 'video', videoUri: this.videoUri })
         }
       },
       deep: true
     }
   },
   methods: {
-    //关闭PC端图片预览
-    closePcPreview() {
-      this.pcPreview = false;
+    // 关闭PC端图片预览
+    closePcPreview () {
+      this.pcPreview = false
     },
-    //切换预览图片
-    imgPage(info) {
-      if (info == "prev") {
+    // 切换预览图片
+    imgPage (info) {
+      if (info == 'prev') {
         if (this.imgIndex == 1) {
-          this.imgIndex = this.imgList.length;
+          this.imgIndex = this.imgList.length
         } else {
-          this.imgIndex--;
+          this.imgIndex--
         }
       } else {
         if (this.imgIndex == this.imgList.length) {
-          this.imgIndex = 1;
+          this.imgIndex = 1
         } else {
-          this.imgIndex++;
+          this.imgIndex++
         }
       }
     },
-    //全屏
-    FullScreen(video) {
-      var ele = document.documentElement;
+    // 全屏
+    FullScreen (video) {
+      var ele = document.documentElement
       if (ele.requestFullscreen) {
-        video.requestFullscreen();
+        video.requestFullscreen()
       } else if (ele.mozRequestFullScreen) {
-        video.mozRequestFullScreen();
+        video.mozRequestFullScreen()
       } else if (ele.webkitRequestFullScreen) {
-        video.webkitRequestFullScreen();
+        video.webkitRequestFullScreen()
       }
     },
-    //取消全屏
-    cancelFullScreen() {
-      var de = document;
+    // 取消全屏
+    cancelFullScreen () {
+      var de = document
       if (de.exitFullscreen) {
-        document.exitFullscreen();
+        document.exitFullscreen()
       } else if (de.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
+        document.mozCancelFullScreen()
       } else if (de.webkitCancelFullScreen) {
-        document.webkitCancelFullScreen();
+        document.webkitCancelFullScreen()
       }
     },
-    pause(e) {
-      this.isPlay = true;
+    pause (e) {
+      this.isPlay = true
     },
-    ended() {
-      this.isPlay = true;
-      this.isVideo = true;
-      this.cancelFullScreen();
+    ended () {
+      this.isPlay = true
+      this.isVideo = true
+      this.cancelFullScreen()
     },
-    //视频播放
-    play() {
-      this.isVideo = false;
-        let video = document.querySelector("video");
-        video.src = this.videoUri;
-        video.play();
-        this.isPlay = false;
-        if (this.isPC()) {
-          this.FullScreen(video);
-        }
+    // 视频播放
+    play () {
+      this.isVideo = false
+      let video = document.querySelector('video')
+      video.src = this.videoUri
+      video.play()
+      this.isPlay = false
+      if (this.isPC()) {
+        this.FullScreen(video)
+      }
     },
-    //获取保存的数据
-    getDataInfo() {
-      let uploadImg = localStorage.getItem("uploadInfo");
+    // 获取保存的数据
+    getDataInfo () {
+      let uploadImg = localStorage.getItem('uploadInfo')
       if (!uploadImg) {
-        return;
+        return
       }
-      let uploadInfo = JSON.parse(uploadImg);
-      this.imgList = uploadInfo.list;
-      this.imgLists = uploadInfo.data;
-      this.$emit("upload", uploadInfo);
+      let uploadInfo = JSON.parse(uploadImg)
+      this.imgList = uploadInfo.list
+      this.imgLists = uploadInfo.data
+      this.$emit('upload', uploadInfo)
       if (uploadInfo.videoUri) {
-        this.videoUri = this.path + uploadInfo.videoUri;
-        this.videoImg = this.videoUri + "?vframe/jpg/offset/1";
+        this.videoUri = this.path + uploadInfo.videoUri
+        this.videoImg = this.videoUri + '?vframe/jpg/offset/1'
       }
-      this.$emit("upload", { name: "video", videoUri: this.videoUri });
+      this.$emit('upload', { name: 'video', videoUri: this.videoUri })
     },
-    //获取tabBar的数据
-    getTabBarData() {
-      let sessionData = localStorage.getItem("uploadImg");
+    // 获取tabBar的数据
+    getTabBarData () {
+      let sessionData = localStorage.getItem('uploadImg')
       if (!sessionData) {
-        return;
+        return
       }
-      let dataInfo = JSON.parse(sessionData);
+      let dataInfo = JSON.parse(sessionData)
       if (!dataInfo.list) {
-        return;
+        return
       }
-      this.imgList = dataInfo.list;
-      this.imgLists = dataInfo.data;
-      this.$emit("upload", { name: "img", list: dataInfo.data });
+      this.imgList = dataInfo.list
+      this.imgLists = dataInfo.data
+      this.$emit('upload', { name: 'img', list: dataInfo.data })
     },
-    //数据返回
-    getImgInfo(val, reg) {
-      let imgList = [];
+    // 数据返回
+    getImgInfo (val, reg) {
+      let imgList = []
       for (let i = 0; i < val.length; i++) {
-        var info = val[i].imgUrl;
-        imgList.push(info);
-        this.imgLists.push(reg.exec(info)[0]);
+        var info = val[i].imgUrl
+        imgList.push(info)
+        this.imgLists.push(reg.exec(info)[0])
       }
-      this.$emit("upload", {
-        name: "img",
+      this.$emit('upload', {
+        name: 'img',
         list: this.imgList,
         data: this.imgLists
-      });
+      })
     },
-    //随机数
-    uuid() {
-      var S4 = function() {
-        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-      };
+    // 随机数
+    uuid () {
+      var S4 = function () {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
+      }
       return (
         S4() +
         S4() +
-        "-" +
+        '-' +
         S4() +
-        "-" +
+        '-' +
         S4() +
-        "-" +
+        '-' +
         S4() +
-        "-" +
+        '-' +
         S4() +
         S4() +
         S4()
-      );
+      )
     },
     // 移除图片
-    deleteImg(index) {
-      this.imgList.splice(index, 1);
-      this.imgLists.splice(index, 1);
-      this.$emit("upload", {
-        name: "img",
+    deleteImg (index) {
+      this.imgList.splice(index, 1)
+      this.imgLists.splice(index, 1)
+      this.$emit('upload', {
+        name: 'img',
         list: this.imgLists,
         data: this.imgLists
-      });
-      this.$store.commit("deleteUploadImg", { index });
+      })
+      this.$store.commit('deleteUploadImg', { index })
       if (this.imgList.length < +this.getCount) {
-        this.imgFlag = true;
+        this.imgFlag = true
       }
     },
-    preview(url,index) {
+    preview (url, index) {
       if (this.isPC()) {
-        this.pcPreview = true;
-        this.imgIndex = index+1;
-      }else if(this.isBrowser) {
-        this.previewW(url);
-      }else {
-        this.previewO(index);
+        this.pcPreview = true
+        this.imgIndex = index + 1
+      } else if (this.isBrowser) {
+        this.previewW(url)
+      } else {
+        this.previewO(index)
       }
     },
-    //图片预览 微信
-    previewW(url) {
+    // 图片预览 微信
+    previewW (url) {
       wx.previewImage({
         current: url, // 当前显示图片的http链接
         urls: this.imgList.map(item => {
-          return item.imgUrl;
+          return item.imgUrl
         }) // 需要预览的图片http链接列表
-      });
+      })
     },
-    //图片预览 vant
-    previewO(index) {
-      ImagePreview(this.imgList.map(item => item.imgUrl), index);
+    // 图片预览 vant
+    previewO (index) {
+      ImagePreview(this.imgList.map(item => item.imgUrl), index)
     },
-    //移除视频
-    deleteVideo(e) {
-      this.videoUri = "";
+    // 移除视频
+    deleteVideo (e) {
+      this.videoUri = ''
       // this.$store.commit("uploadVideo", "");
-      this.$emit("upload", { name: "video", list: this.videoUri });
+      this.$emit('upload', { name: 'video', list: this.videoUri })
     },
-    getImgList(localIds) {
-      let num = localIds.length;
-      this.loadingShow = true;
-      this.loadingShowTotal = num;
-      let i = 0;
+    getImgList (localIds) {
+      let num = localIds.length
+      this.loadingShow = true
+      this.loadingShowTotal = num
+      let i = 0
       if (this.imgList.length + num > +this.getCount) {
-        Toast("图片的数量不能超过" + this.getCount + "张哟");
-        return false;
+        Toast('图片的数量不能超过' + this.getCount + '张哟')
+        return false
       }
       let circle = () => {
         wx.uploadImage({
           localId: localIds[i], // 需要上传的图片的本地ID，由chooseImage接口获得
           isShowProgressTips: 0, // 默认为1，显示进度提示
           success: res => {
-            i++;
-            this.loadingShowNum = i;
-            var serverId = res.serverId; // 返回图片的服务器端ID
-            let img = new Image();
+            i++
+            this.loadingShowNum = i
+            var serverId = res.serverId // 返回图片的服务器端ID
+            let img = new Image()
             // let path = localIds[i];
             // let path = "http://tptapi.taopaitang.com/wximg/" + serverId;
             // "http://tptapi.taopaitang.com/wximg/"
             // http://w.taopaitang.com/api/wximg/
-            let path = location.origin + "/api/wximg/" + serverId;
+            let path = location.origin + '/api/wximg/' + serverId
             img.onload = () => {
-              let filePic = {};
-              //随机ID
+              let filePic = {}
+              // 随机ID
               let id =
-                moment().format("YYYYMMDD") +
-                "" +
+                moment().format('YYYYMMDD') +
+                '' +
                 serverId +
-                "-W" +
+                '-W' +
                 img.width +
-                "H" +
-                img.height;
-              filePic.id = id;
-              filePic.imgUrl = path;
-              this.imgLists.push(id);
+                'H' +
+                img.height
+              filePic.id = id
+              filePic.imgUrl = path
+              this.imgLists.push(id)
               if (
-                this.isPath !== "setData" &&
-                this.isPath !== "personalCertificate"
+                this.isPath !== 'setData' &&
+                this.isPath !== 'personalCertificate'
               ) {
-                this.imgList.push(filePic);
+                this.imgList.push(filePic)
               }
               if (i < num) {
-                circle();
+                circle()
               } else {
                 if (
-                  this.isPath === "setData" ||
-                  this.isPath === "personalCertificate"
+                  this.isPath === 'setData' ||
+                  this.isPath === 'personalCertificate'
                 ) {
-                  this.$emit("upload", {
+                  this.$emit('upload', {
                     // name: "img",
                     list: path,
                     name: id,
                     index: this.indexs
-                  });
-                } else if (this.isPath === "tabBar") {
-                  this.$emit("upload", {
-                    name: "img",
+                  })
+                } else if (this.isPath === 'tabBar') {
+                  this.$emit('upload', {
+                    name: 'img',
                     list: this.imgList,
                     data: this.imgLists
-                  });
-                  this.imgLists = [];
-                  this.imgList = [];
-                  this.$router.push("/upload");
+                  })
+                  this.imgLists = []
+                  this.imgList = []
+                  this.$router.push('/upload')
                 } else {
-                  this.$emit("upload", {
-                    name: "img",
+                  this.$emit('upload', {
+                    name: 'img',
                     list: this.imgList,
                     data: this.imgLists
-                  });
+                  })
                 }
-                this.loadingShow = false;
-                this.loadingShowNum = 0;
+                this.loadingShow = false
+                this.loadingShowNum = 0
               }
-            };
-            img.src = path;
+            }
+            img.src = path
           }
           // fail: err => {
           //   alert(JSON.stringify(err) + "err");
@@ -436,22 +436,22 @@ export default {
           // cancel: res => {
           //   alert(JSON.stringify(res) + "cancel");
           // }
-        });
-      };
-      circle();
+        })
+      }
+      circle()
     },
-    getWxImg() {
+    getWxImg () {
       this.counts =
         this.counts - this.imgList.length > 0
           ? this.counts - this.imgList.length
-          : 0;
+          : 0
       wx.chooseImage({
         count: this.counts,
-        sizeType: ["original", "compressed"], // 可以指定是原图还是压缩图，默认二者都有
-        sourceType: ["album", "camera"], // 可以指定来源是相册还是相机，默认二者都有
+        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
         success: res => {
-          let localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片 数组
-          this.getImgList(localIds);
+          let localIds = res.localIds // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片 数组
+          this.getImgList(localIds)
         }
         // fail: err => {
         //   alert(JSON.stringify(err) + "err");
@@ -462,10 +462,10 @@ export default {
         // cancel: res => {
         //   alert(JSON.stringify(res) + "cancel");
         // }
-      });
+      })
     },
-    //微信浏览器图片
-    uploadImgW(e) {
+    // 微信浏览器图片
+    uploadImgW (e) {
       // wx.checkJsApi({
       //   jsApiList: ["chooseImage"], // 需要检测的JS接口列表，所有JS接口列表见附录2,
       //   success: function(res) {
@@ -474,127 +474,126 @@ export default {
       //     alert(JSON.stringify(res));
       //   }
       // });
-      this.getWxImg();
+      this.getWxImg()
     },
-    //其他浏览器上传
-    uploadImgO(e) {
+    // 其他浏览器上传
+    uploadImgO (e) {
       if (e.target.files.length === 0) {
-        return false;
+        return false
       }
-      let num = this.imgList.length;
-      let count = e.target.files.length;
+      let num = this.imgList.length
+      let count = e.target.files.length
       if (count + num > +this.getCount) {
-        Toast("图片的数量最多不能超过" + +this.getCount + "张哦");
-        return false;
+        Toast('图片的数量最多不能超过' + +this.getCount + '张哦')
+        return false
       }
-      if (this.videoUri !== "" && e.target.files.length + num > 8) {
-        Toast("图片和视频的数量一共只有9张呦");
-        return false;
+      if (this.videoUri !== '' && e.target.files.length + num > 8) {
+        Toast('图片和视频的数量一共只有9张呦')
+        return false
       }
-      this.loadingShow = true;
-      this.loadingShowTotal = e.target.files.length;
+      this.loadingShow = true
+      this.loadingShowTotal = e.target.files.length
       for (let i = 0; i <= e.target.files.length - 1; i++) {
-        const filePost = e.target.files[i];
+        const filePost = e.target.files[i]
 
-        let FilePostName = this.uuid();
+        let FilePostName = this.uuid()
 
-        const request = new XMLHttpRequest();
+        const request = new XMLHttpRequest()
 
         getUpSign({ name: FilePostName })
           .then(response => {
-            const Authorization = response.data.Authorization;
+            const Authorization = response.data.Authorization
             const Host =
-              "http://" +
+              'http://' +
               response.data.bucket +
-              "-" +
+              '-' +
               response.data.appId +
-              ".cos." +
+              '.cos.' +
               response.data.region +
-              ".myqcloud.com/" +
-              FilePostName;
-            request.open("PUT", Host, false);
-            request.setRequestHeader("Authorization", Authorization);
-            request.send(filePost);
+              '.myqcloud.com/' +
+              FilePostName
+            request.open('PUT', Host, false)
+            request.setRequestHeader('Authorization', Authorization)
+            request.send(filePost)
             if (request.readyState > 3) {
-              this.loadingShowNum++;
-              this.etag.push(request.getResponseHeader("Etag"));
-              let img = new Image();
+              this.loadingShowNum++
+              this.etag.push(request.getResponseHeader('Etag'))
+              let img = new Image()
               img.onload = () => {
                 if (
                   e.target.files.length + num >= +this.getCount &&
-                  (this.isPath !== "setData" &&
-                    this.isPath !== "personalCertificate")
+                  (this.isPath !== 'setData' &&
+                    this.isPath !== 'personalCertificate')
                 ) {
-                  this.imgFlag = false;
+                  this.imgFlag = false
                 }
-                let filePic = {};
+                let filePic = {}
                 let id =
-                  moment().format("YYYYMMDD") +
-                  "" +
+                  moment().format('YYYYMMDD') +
+                  '' +
                   FilePostName +
-                  "-W" +
+                  '-W' +
                   img.width +
-                  "H" +
-                  img.height;
-                filePic.id = id;
-                filePic.imgUrl = request.responseURL;
-                this.imgLists.push(id);
-                //服务器返回的图片地址 集合
+                  'H' +
+                  img.height
+                filePic.id = id
+                filePic.imgUrl = request.responseURL
+                this.imgLists.push(id)
+                // 服务器返回的图片地址 集合
                 if (
-                  this.isPath === "setData" ||
-                  this.isPath === "personalCertificate"
+                  this.isPath === 'setData' ||
+                  this.isPath === 'personalCertificate'
                 ) {
-                  this.$emit("upload", {
-                    name: "img",
+                  this.$emit('upload', {
+                    name: 'img',
                     list: request.responseURL,
-                    name: id,
                     index: this.indexs
-                  });
-                } else if (this.isPath === "tabBar") {
-                  //本地数据存储
-                  this.imgList.push(filePic);
-                  this.$emit("upload", {
-                    name: "img",
+                  })
+                } else if (this.isPath === 'tabBar') {
+                  // 本地数据存储
+                  this.imgList.push(filePic)
+                  this.$emit('upload', {
+                    name: 'img',
                     list: this.imgList,
                     data: this.imgLists
-                  });
+                  })
                   if (this.imgList.length === +count) {
-                    this.imgList = [];
-                    this.imgLists = [];
-                    this.$router.push("/upload");
+                    this.imgList = []
+                    this.imgLists = []
+                    this.$router.push('/upload')
                   }
                 } else {
-                  this.imgList.push(filePic);
-                  this.$emit("upload", {
-                    name: "img",
+                  this.imgList.push(filePic)
+                  this.$emit('upload', {
+                    name: 'img',
                     list: this.imgList,
                     data: this.imgLists
-                  });
+                  })
                 }
                 if (this.loadingShowTotal === this.loadingShowNum) {
-                  this.loadingShow = false;
-                  this.loadingShowNum = 0;
+                  this.loadingShow = false
+                  this.loadingShowNum = 0
                 }
-              };
-              img.src = request.responseURL;
+              }
+              img.src = request.responseURL
             }
           })
           .catch(error => {
-            console.log(error);
-          });
+            console.log(error)
+          })
       }
     },
-    uploadVideoQn(e) {
-      this.isPlay = true;
-      let _this = this;
+    uploadVideoQn (e) {
+      this.isPlay = true
+      let _this = this
       // this.isVideo = true;
-      let file = e.target.files[0];
+      let file = e.target.files[0]
       if (!file) {
-        return;
+        return
       }
-      this.loadingShow = true;
-      this.loadingShowTotal = 1;
-      this.loadingShowNum = 0;
+      this.loadingShow = true
+      this.loadingShowTotal = 1
+      this.loadingShowNum = 0
       // const toast = Toast.loading({
       //   duration: 0, // 持续展示 toast
       //   forbidClick: true, // 禁用背景点击
@@ -602,58 +601,58 @@ export default {
       //   message: "正在上传"
       // });
       let putExtra = {
-        fname: "",
+        fname: '',
         params: {}
         // mimeType: ['video/flv','video/mpg','video/mpeg','video/avi','video/wmv','video/mov','video/mkv','video/m4v','video/mp4'],
-      };
+      }
       let config = {
         useCdnDomain: true
-      };
+      }
       var observer = {
-        next(res) {
-          //上传进度
+        next (res) {
+          // 上传进度
         },
-        error(err) {
-          //上传错误
+        error (err) {
+          // 上传错误
           if (err.code == 400) {
-            Toast("上传视频格式错误");
+            Toast('上传视频格式错误')
           } else {
-            Toast("视频上传失败");
+            Toast('视频上传失败')
           }
         },
-        complete(res) {
-          //上传结果
+        complete (res) {
+          // 上传结果
           // Toast.clear();
-          let path = _this.path + res.key;
-          _this.videoUri = path;
-          _this.videoImg = path + "?vframe/jpg/offset/1";
-          _this.$emit("upload", { name: "video", videoUri: res.key });
-          _this.counts--;
-          _this.loadingShowNum = 1;
-          _this.loadingShow = false;
-          _this.loadingShowNum = 0;
+          let path = _this.path + res.key
+          _this.videoUri = path
+          _this.videoImg = path + '?vframe/jpg/offset/1'
+          _this.$emit('upload', { name: 'video', videoUri: res.key })
+          _this.counts--
+          _this.loadingShowNum = 1
+          _this.loadingShow = false
+          _this.loadingShowNum = 0
           if (_this.imgList.length == 8) {
-            _this.imgFlag = false;
+            _this.imgFlag = false
           }
         }
-      };
-      //地址：http://cdn1.taopaitang.com/tpt-60e1c16e21bdfe69a031346970019b17?vframe/jpg/offset/1
+      }
+      // 地址：http://cdn1.taopaitang.com/tpt-60e1c16e21bdfe69a031346970019b17?vframe/jpg/offset/1
       getVodSign().then(res => {
-        let key = res.data.key;
-        let token = res.data.token;
-        let observable = qiniu.upload(file, key, token, putExtra, config);
-        let subscription = observable.subscribe(observer);
-      });
+        let key = res.data.key
+        let token = res.data.token
+        let observable = qiniu.upload(file, key, token, putExtra, config)
+        let subscription = observable.subscribe(observer)
+      })
     }
   },
-  created() {
-    this.counts = this.getCount;
-    //获取在tabBarsession中存储的数据
+  created () {
+    this.counts = this.getCount
+    // 获取在tabBarsession中存储的数据
     // this.getTabBarData();
-    //获取upload保存的数据
-    this.getDataInfo();
+    // 获取upload保存的数据
+    this.getDataInfo()
   }
-};
+}
 </script>
 
 <style>
@@ -988,5 +987,3 @@ video {
   border: none;
 }
 </style>
-
-

@@ -12,68 +12,67 @@
 </template>
 
 <script>
-	import {sendWeChat} from '../../../api/api'
-	export default {
-		data(){
-			return {
-				oldwechat:'',
-				wechats: '',
-				shibaiShow:true
-			}
-		},
-		props:['wxacc'],
-		methods: {
-			clear(){
-				this.wechats = '';
-				this.shibaiShow = false
-			},
-			sendWeChat: function(){
-				if(this.wechats == ''){
-					alert('微信号不能为空')
-				}
-				if(this.wechats == this.oldwechat){
-					this.$emit('getwechatMsg',this.wechats)
-				}else{
-					let params = {
-					wechat: this.wechats,
-					};
-					sendWeChat(params).then(res =>{
-						if(res.code == '200'){
-							this.$emit('getwechatMsg',this.wechats)
-						}
-					}).catch(err =>{
-						console.log(err);
-					})
-				}
-				
-			}
-		},
-		mounted() {
-			this.wechats = this.wxacc
-			this.oldwechat = this.wxacc
-			if(this.wechats == ''){
-				this.shibaiShow = false
-			}else{
-				this.shibaiShow = true
-			}
-		},
-		watch:{
-			wechats(now,old){
-				if(now == ''){
-					this.shibaiShow = false
-				}else{
-					this.shibaiShow = true
-				}
-			}
-		}
-	}
+import {sendWeChat} from '../../../api/api'
+export default {
+  data () {
+    return {
+      oldwechat: '',
+      wechats: '',
+      shibaiShow: true
+    }
+  },
+  props: ['wxacc'],
+  methods: {
+    clear () {
+      this.wechats = ''
+      this.shibaiShow = false
+    },
+    sendWeChat: function () {
+      if (this.wechats == '') {
+        alert('微信号不能为空')
+      }
+      if (this.wechats == this.oldwechat) {
+        this.$emit('getwechatMsg', this.wechats)
+      } else {
+        let params = {
+          wechat: this.wechats
+        }
+        sendWeChat(params).then(res => {
+          if (res.code == '200') {
+            this.$emit('getwechatMsg', this.wechats)
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      }
+    }
+  },
+  mounted () {
+    this.wechats = this.wxacc
+    this.oldwechat = this.wxacc
+    if (this.wechats == '') {
+      this.shibaiShow = false
+    } else {
+      this.shibaiShow = true
+    }
+  },
+  watch: {
+    wechats (now, old) {
+      if (now == '') {
+        this.shibaiShow = false
+      } else {
+        this.shibaiShow = true
+      }
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
 	/*
-	 * @border-color: 统一边框颜色
-	 * */
-	
+	* @border-color: 统一边框颜色
+	* */
+
 	@border-color: #e5e5e5;
 	.app-container {
 		min-height: 1234px;
@@ -115,7 +114,7 @@
 			float: left;
 		}
 	}
-	
+
 	.sub {
 		height: 88px;
 		margin-top: 200px;

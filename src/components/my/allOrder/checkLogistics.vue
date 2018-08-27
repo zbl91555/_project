@@ -4,10 +4,10 @@
 			<div class="buy-info">
 				<div class="goods-info" v-bind:style="{backgroundImage: 'url(' + info.img + ')'}"></div>
 				<p class="goods-intr">{{info.express}}</p>
-				<ul class="buyer-detail"> 
+				<ul class="buyer-detail">
 					<li>{{info.express_code}}</li>
 				</ul>
-			</div>	 
+			</div>
 		</div>
     <div class="gray"></div>
     <div class="getAddress">
@@ -29,7 +29,7 @@
                   <div :class="index == '0'? 'des':'desnext'">{{list.AcceptStation}}</div>
                   <div v-if="index == '0'" class="icon-xiangshang iconfont first"></div>
                   <div v-if="index != '0'&& index != (info.wuliu.length-1)" class="spoint iconfont"></div>
-                  <div v-if="index == (info.wuliu.length-1)" class="icon-xiangshang iconfont last"></div> 
+                  <div v-if="index == (info.wuliu.length-1)" class="icon-xiangshang iconfont last"></div>
               </div>
           </div>
           <load-more v-if="loading" tip="正在加载"></load-more>
@@ -69,68 +69,67 @@
         </div>
       </div>
     </div> -->
-	 </div>
+  </div>
 </template>
 <script>
-  import { LoadMore } from 'vux'
-  import {orderExpress} from '../../../api/api';
-	export default {
-    name : 'checkLogistics',
-    components: {
-      LoadMore
-    },
-		data() {
-			return {
-          info:{},
-          order_id:'', 
-          Type:'',
-          count:100 ,
-          seeMore:true,
-          hide:true,
-          loading:false,
-          address : {},
-			}
-		},
-		
-		methods: {
-      //页面
-      orderExpress() {
-        let _this = this;
-        this.order_id = this.$route.params.order_id;
-        let type = this.$route.params.type;
-        if(type=='true'){
-            this.Type = 'tuihuo'
-        }else{
-            this.Type = 'normal'
+import { LoadMore } from 'vux'
+import {orderExpress} from '../../../api/api'
+export default {
+  name: 'checkLogistics',
+  components: {
+    LoadMore
+  },
+  data () {
+    return {
+      info: {},
+      order_id: '',
+      Type: '',
+      count: 100,
+      seeMore: true,
+      hide: true,
+      loading: false,
+      address: {}
+    }
+  },
+
+  methods: {
+    // 页面
+    orderExpress () {
+      let _this = this
+      this.order_id = this.$route.params.order_id
+      let type = this.$route.params.type
+      if (type == 'true') {
+        this.Type = 'tuihuo'
+      } else {
+        this.Type = 'normal'
+      }
+      let params = {
+        type: this.Type
+      }
+      orderExpress(this.order_id, params).then((res) => {
+        _this.info = res.data
+        _this.address = res.data.address
+        _this.loading = false
+        if (typeof (_this.info.wuliu) != 'object') {
+          _this.hide = false
         }
-        let params = {
-            type:this.Type
-        }
-        orderExpress(this.order_id,params).then((res) => {
-            _this.info = res.data;
-            _this.address = res.data.address;
-            _this.loading = false;
-            if(typeof(_this.info.wuliu) != 'object'){
-              _this.hide = false
-            }
-            // if(_this.seeMore == true){
-            //   if(_this.info.wuliu != '暂无轨迹信息'){
-            //     _this.info.wuliu = _this.info.wuliu.slice(0,3)
-            //   }else{
-            //     _this.hide = false
-            //   }
-            // }
-            
-        }).catch(function(err) {
-            this.$router.push({name:'errorPage'})
-        })
-      },    
-		},
-		mounted() {
-			this.orderExpress();
-		}
-	}
-</script> 
+        // if(_this.seeMore == true){
+        //   if(_this.info.wuliu != '暂无轨迹信息'){
+        //     _this.info.wuliu = _this.info.wuliu.slice(0,3)
+        //   }else{
+        //     _this.hide = false
+        //   }
+        // }
+      }).catch(function (err) {
+        this.$router.push({name: 'errorPage'})
+      })
+    }
+  },
+  mounted () {
+    this.orderExpress()
+  }
+}
+</script>
 
 <style scoped lang="less">
 .noGui{
@@ -166,8 +165,8 @@
 .des{
   width:510px;
   padding-bottom: 50px;
-  word-wrap: break-word; 
-  word-break: normal; 
+  word-wrap: break-word;
+  word-break: normal;
   font-size: 24px;
   color: #9e2026;
   margin-top: 10px;
@@ -175,8 +174,8 @@
 .desnext{
   width:510px;
   padding-bottom: 50px;
-  word-wrap: break-word; 
-  word-break: normal; 
+  word-wrap: break-word;
+  word-break: normal;
   font-size: 24px;
   color: #999999;
   margin-top: 10px;
@@ -207,7 +206,7 @@
   font-size:12px;
   border-radius: 15px;
   text-align: center ;
-  line-height: 30px;  
+  line-height: 30px;
 }
 .spoint{
   width: 14px;
@@ -314,7 +313,7 @@
       overflow: hidden;
       position: relative;
       margin-top: 20px;
-    }  
+    }
     .icon-icon-test{
      position: absolute;
      left:122px;
@@ -323,8 +322,8 @@
     }
     .getAddress div:nth-child(3){
       width: 530px;
-      word-wrap: break-word; 
-      word-break: normal; 
+      word-wrap: break-word;
+      word-break: normal;
       line-height: 50px;
       color: #999999;
       float: left;
@@ -345,7 +344,7 @@
     .fontsize{
       font-size: 26px;
       color: #888;
-    }    
+    }
     .guesslike{
         height: 130px;
         line-height: 130px;
@@ -385,6 +384,6 @@
     position: absolute;
     bottom: 0;
     width: 100%;
-    z-index: 1 
+    z-index: 1
   }
 </style>

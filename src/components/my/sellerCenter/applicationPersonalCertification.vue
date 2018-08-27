@@ -40,7 +40,6 @@
     </div>
 </template>
 
-
 <style scoped>
 .PersonalCertification {
   background-color: #f4f4f4;
@@ -135,4 +134,4 @@
 .stepContent{
   font-size: 24px;
 }
-</style>  
+</style>

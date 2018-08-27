@@ -4,7 +4,7 @@
 			<div class="buyer-tool" :style="{backgroundImage: 'url(' + info.avatar + ')'}">
 				<router-link  to="/">{{info.seller_name}}<i class="iconfont icon-right"></i></router-link>
 			</div>
-			<div class="border"></div>  
+			<div class="border"></div>
 			<div class="buy-info">
 				<div class="goods-info" :style="{backgroundImage: 'url(' + info.auction_img + ')'}"></div>
 				<p class="goods-intr">{{info.auction_desc}}</p>
@@ -13,7 +13,7 @@
 					<li>截拍时间：<i>{{timestampToTime(parseFloat(info.end_time) + 86400 * 2)}}</i></li>
           <!-- <li><div style="float:left">截拍时间：</div><countDown style="width:80px;float:left" :endtime='parseFloat(info.end_time) + 86400 * 2' :dayShow='true' :secShow='false'></countDown></li> -->
 				</ul>
-			</div>	
+			</div>
 		</div>
 		<!-- <div class="somereason">
 			<div class="inreason">介入原因<i>*</i></div>
@@ -40,16 +40,16 @@
                       </div>
                   </li>
               </ul>
-          </div> 
+          </div>
       </form>
 		<div class="somereason">
 			<div class="inreason">介入原因<i>*</i><span>(最多200字)</span></div>
 		</div>
 		<div class="border"></div>
 		<div class="descBox">
-        	<textarea maxlength="200" v-model="desc" placeholder="请您写明申请小二介入理由,方便小二进行判断"></textarea>
-    	    <uploadImg count=3 @upload="upload" isPath="Kojiin"></uploadImg>
-      </div>
+      <textarea maxlength="200" v-model="desc" placeholder="请您写明申请小二介入理由,方便小二进行判断"></textarea>
+      <uploadImg count=3 @upload="upload" isPath="Kojiin"></uploadImg>
+    </div>
     <!-- 是否提交  -->
     <div id="fixednumMain" v-if="subSmall">
       <div @click="closedeliverGoods()" class="fixednumMask" style="opacity: 0.38;">
@@ -57,172 +57,172 @@
       <div class="sharesomething">
           <!-- <div class="deliverGoods" >是否要申请小二介入 ？</div> -->
           <div class="deliverGoods">是否以（{{showReason}}）申请小二介入？</div>
-          <div @click="platformApplySmall()">确定</div> 
-          <div @click="closedeliverGoods()">取消</div>        
+          <div @click="platformApplySmall()">确定</div>
+          <div @click="closedeliverGoods()">取消</div>
       </div>
     </div>
 		<div class="login-btn">
-        	<button @click="platformApply" class="icon-btn">提交</button>
-    	</div>
-      <toast width="200px"  v-model="showPositionValue" type="text" :time="800" is-show-mask :text="textInner" :position="position"></toast>
+        <button @click="platformApply" class="icon-btn">提交</button>
+    </div>
+    <toast width="200px"  v-model="showPositionValue" type="text" :time="800" is-show-mask :text="textInner" :position="position"></toast>
 	</div>
 </template>
 <script>
-import countDown from "../../common/countDown";
-import { getUpSign, platformView, platformApply } from "../../../api/api";
-import { Toast } from "vux";
-import uploadImg from "../../../components/home/uploadImg";
+import countDown from '../../common/countDown'
+import { getUpSign, platformView, platformApply } from '../../../api/api'
+import { Toast } from 'vux'
+import uploadImg from '../../../components/home/uploadImg'
 export default {
   components: {
     Toast,
     uploadImg,
     countDown
   },
-  data() {
+  data () {
     return {
       complaintContent: [
         {
-          text: "未收到货",
+          text: '未收到货',
           pitchShow: true
         },
         {
-          text: "收到商品破损",
+          text: '收到商品破损',
           pitchShow: false
         },
         {
-          text: "收到商品与描述不符",
+          text: '收到商品与描述不符',
           pitchShow: false
         },
         {
-          text: "商品质量问题",
+          text: '商品质量问题',
           pitchShow: false
         },
         {
-          text: "其他",
+          text: '其他',
           pitchShow: false
         }
       ],
-      showReason: "请选择介入原因",
-      pitchShow: "",
+      showReason: '请选择介入原因',
+      pitchShow: '',
       show: true,
       hide: false,
       reason: false,
       info: {},
-      order_id: "",
-      title: "",
-      desc: "",
-      position: "",
+      order_id: '',
+      title: '',
+      desc: '',
+      position: '',
       showPositionValue: false,
-      textInner: "",
+      textInner: '',
       subSmall: false,
       paltformImgAll: []
-    };
+    }
   },
   methods: {
-    upload(list) {
+    upload (list) {
       console.log(list)
-      this.paltformImgAll = list.data;
+      this.paltformImgAll = list.data
     },
-    closedeliverGoods() {
-      this.subSmall = false;
+    closedeliverGoods () {
+      this.subSmall = false
     },
-    //弹框
-    showPosition(position, textInner) {
-      this.position = position;
-      this.showPositionValue = true;
-      this.textInner = textInner;
+    // 弹框
+    showPosition (position, textInner) {
+      this.position = position
+      this.showPositionValue = true
+      this.textInner = textInner
     },
-    //勾选投诉原因
-    pitch(list, index) {
+    // 勾选投诉原因
+    pitch (list, index) {
       for (let i = 0; i < this.complaintContent.length; i++) {
-        this.complaintContent[i].pitchShow = false;
+        this.complaintContent[i].pitchShow = false
       }
-      list.pitchShow = true;
-      this.title = list.text;
-      this.reason = false;
-      this.showReason = this.complaintContent[index].text;
+      list.pitchShow = true
+      this.title = list.text
+      this.reason = false
+      this.showReason = this.complaintContent[index].text
     },
-    xiaShow() {
-      this.show = false;
-      this.hide = true;
-      this.reason = true;
+    xiaShow () {
+      this.show = false
+      this.hide = true
+      this.reason = true
     },
-    shangShow() {
-      this.show = true;
-      this.hide = false;
-      this.reason = false;
+    shangShow () {
+      this.show = true
+      this.hide = false
+      this.reason = false
     },
-    platformView() {
-      let _this = this;
-      this.order_id = this.$route.query.order_id;
+    platformView () {
+      let _this = this
+      this.order_id = this.$route.query.order_id
       platformView(this.order_id)
         .then(res => {
-          _this.info = res.data;
+          _this.info = res.data
         })
         .catch(err => {
-          console.log(err.response.data.message);
-        });
+          console.log(err.response.data.message)
+        })
     },
 
-    platformApply() {
+    platformApply () {
       console.log(this.paltformImgAll)
-      if (this.title == "") {
-        this.showPosition("middle", "请选择介入原因");
-        return;
+      if (this.title == '') {
+        this.showPosition('middle', '请选择介入原因')
+        return
       }
-      if (this.desc == "") {
-        this.showPosition("middle", "请填写介入原因");
-        return;
+      if (this.desc == '') {
+        this.showPosition('middle', '请填写介入原因')
+        return
       }
       if (this.desc.length > 200) {
-        this.showPosition("middle", "描述字数不能多于200个字");
-        return;
+        this.showPosition('middle', '描述字数不能多于200个字')
+        return
       }
       if (this.paltformImgAll.length == 0) {
-        this.showPosition("middle", "请上传图片");
-        return;
+        this.showPosition('middle', '请上传图片')
+        return
       }
-      this.subSmall = true;
+      this.subSmall = true
     },
-    platformApplySmall() {
+    platformApplySmall () {
       let params = {
         result: this.title,
         description: this.desc,
         platform_img_all: this.paltformImgAll
-      };
-      if (this.title == "") {
-        this.showPosition("middle", "请选择介入原因");
-        return;
       }
-      if (this.desc == "") {
-        this.showPosition("middle", "请填写介入原因");
-        return;
+      if (this.title == '') {
+        this.showPosition('middle', '请选择介入原因')
+        return
+      }
+      if (this.desc == '') {
+        this.showPosition('middle', '请填写介入原因')
+        return
       }
       if (this.desc.length > 200) {
-        this.showPosition("middle", "描述字数不能多于200个字");
-        return;
+        this.showPosition('middle', '描述字数不能多于200个字')
+        return
       }
       if (this.paltformImgAll.length == 0) {
-        this.showPosition("middle", "请上传图片");
-        return;
+        this.showPosition('middle', '请上传图片')
+        return
       }
       platformApply(this.order_id, params)
         .then(res => {
-          this.subSmall = false;
+          this.subSmall = false
           this.$router.push({
-            name: "买家中心-订单详情",
+            name: '买家中心-订单详情',
             params: { order_id: this.order_id }
-          });
+          })
         })
         .catch(err => {
-          console.log(err.response.data.message);
-        });
+          console.log(err.response.data.message)
+        })
     }
   },
-  mounted() {
-    this.platformView();
+  mounted () {
+    this.platformView()
   }
-};
+}
 </script>
 
 <style>

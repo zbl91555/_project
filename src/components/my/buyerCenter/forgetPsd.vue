@@ -22,97 +22,97 @@
 </template>
 
 <script>
-	import {filterNum,subMethod} from '../../../api/api';
-	import { Toast } from 'vant';
-	export default {
-		data() {
-			return {
-				filterTime: '60',
-				msg: '获取验证码',
-				flag: true,  // 获取验证码开关
-				phone: '', // 发送短信手机号码
-				type: '2',  // 获取验证码类型
-				_key: '',  // 获取到的验证码 
-				num: '',  //输入的验证码
-				money: '',  //提现金额
-				tel: '', //提现金额
-				getMobile:''
-			}
-		},
-		methods: {
-			filterNum: function() {
-				let _this = this;
-				let myreg=/^[1][3,4,5,7,8][0-9]{9}$/;  
-				if(!myreg.test(_this.phone)){
-					alert('请输入正确的手机号')
-					return false
-				}
-				if(_this.flag == true){
-					_this.flag = false;
-					let t = setInterval(function(){
-						_this.filterTime--;
-						if (_this.filterTime <= 0) {							
-							clearInterval(t);   // 当倒计时时间小于0时，清除时间函数并且将时间开关打开
-							_this.flag = true;
-							_this.msg = '获取验证码';
-						} else {
-							_this.msg = '重新发送(' + _this.filterTime + ')'; // 返回最初状态；
-						}
-					}, 1000);
-					_this.filterTime = '60';
-					if(_this.phone != _this.getMobile){
-						_this.type = 3
-					}
-					let params = {
-							phone: _this.phone,
-							type: _this.type,
-						};
-					filterNum(params).then(function(res){
-						_this._key = res.data.key;
-					}).catch(function(err){
-						 Toast(err.data.message);
-					})
-				}
-			},
-			subMethod: function(){
-				if (this.Trim(this.phone, 'g') == '') {
-					Toast('手机号不能为空');
-					return;
-				}
-				if (this.Trim(this.num, 'g') == '') {
-					Toast('请正确输入你收到的验证码');
-					return;
-				}
-				if (!this._key) {
-					Toast('请先获取验证码');
-					return;
-				}	
-				if(this.phone != this.getMobile){
-					this.type = 3
-				}
-				let params = {
-					verification_key: this._key,
-					verification_code: this.num,
-					type: this.type,
-				};
-				subMethod(params).then(res =>{
-					console.log(this.type);
-					if(this.type==3){
-						this.$router.push('/buyerCenter/buyerSet')
-					}
-					if(this.type==1){
-						this.$router.push('/buyerCenter/buyerSet')
-					}
-				}).catch(function(err){
-					Toast(err.data.message);
-				})
-			}
-		},
-		mounted() {
-			 this.getMobile = localStorage.getItem('mobile');
-			 this.type = this.$route.params.type; //验证类型
-		},
-	}
+import {filterNum, subMethod} from '../../../api/api'
+import { Toast } from 'vant'
+export default {
+  data () {
+    return {
+      filterTime: '60',
+      msg: '获取验证码',
+      flag: true, // 获取验证码开关
+      phone: '', // 发送短信手机号码
+      type: '2', // 获取验证码类型
+      _key: '', // 获取到的验证码
+      num: '', // 输入的验证码
+      money: '', // 提现金额
+      tel: '', // 提现金额
+      getMobile: ''
+    }
+  },
+  methods: {
+    filterNum: function () {
+      let _this = this
+      let myreg = /^[1][3,4,5,7,8][0-9]{9}$/
+      if (!myreg.test(_this.phone)) {
+        alert('请输入正确的手机号')
+        return false
+      }
+      if (_this.flag == true) {
+        _this.flag = false
+        let t = setInterval(function () {
+          _this.filterTime--
+          if (_this.filterTime <= 0) {
+            clearInterval(t) // 当倒计时时间小于0时，清除时间函数并且将时间开关打开
+            _this.flag = true
+            _this.msg = '获取验证码'
+          } else {
+            _this.msg = '重新发送(' + _this.filterTime + ')' // 返回最初状态；
+          }
+        }, 1000)
+        _this.filterTime = '60'
+        if (_this.phone != _this.getMobile) {
+          _this.type = 3
+        }
+        let params = {
+          phone: _this.phone,
+          type: _this.type
+        }
+        filterNum(params).then(function (res) {
+          _this._key = res.data.key
+        }).catch(function (err) {
+          Toast(err.data.message)
+        })
+      }
+    },
+    subMethod: function () {
+      if (this.Trim(this.phone, 'g') == '') {
+        Toast('手机号不能为空')
+        return
+      }
+      if (this.Trim(this.num, 'g') == '') {
+        Toast('请正确输入你收到的验证码')
+        return
+      }
+      if (!this._key) {
+        Toast('请先获取验证码')
+        return
+      }
+      if (this.phone != this.getMobile) {
+        this.type = 3
+      }
+      let params = {
+        verification_key: this._key,
+        verification_code: this.num,
+        type: this.type
+      }
+      subMethod(params).then(res => {
+        console.log(this.type)
+        if (this.type == 3) {
+          this.$router.push('/buyerCenter/buyerSet')
+        }
+        if (this.type == 1) {
+          this.$router.push('/buyerCenter/buyerSet')
+        }
+      }).catch(function (err) {
+        Toast(err.data.message)
+      })
+    }
+  },
+  mounted () {
+    this.getMobile = localStorage.getItem('mobile')
+    this.type = this.$route.params.type // 验证类型
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -121,18 +121,18 @@
 	.app-container {
 		padding-top: 15px;
 	}
-	
+
 	.iconfont {
 		font-size: 24px;
 	}
-	
+
 	.main {
 		overflow: hidden;
 		.list {
 			background-color: #fff;
 			padding-left: @pad;
 			height: 100px;
-			.list-detail{				
+			.list-detail{
 				border-bottom: 1px solid @border-color;
 				box-sizing: border-box;
 				height: 101px;
@@ -181,7 +181,7 @@
 			border-bottom: none;
 		}
 	}
-	
+
 	.sub {
 		height: 88px;
 		margin-top: 200px;

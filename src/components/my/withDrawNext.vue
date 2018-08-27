@@ -27,7 +27,7 @@
 		<withDrawNextDown :price='val' :title="title" :link="link" v-if="downPage"></withDrawNextDown>
 		<!-- 是否弹出验证 -->
 		<div id="fixednumMain" v-if="showveri">
-			<div @click="closeshowveri()" class="fixednumMask" style="opacity: 0.38;">	
+			<div @click="closeshowveri()" class="fixednumMask" style="opacity: 0.38;">
 			</div>
 			<div class="telsharesomething">
 				<form class="main">
@@ -44,178 +44,178 @@
 							<input type="text" v-model="num" placeholder="输入验证码" pattern="[0-9]*"/>
 						</div>
 					</div>
-					<div class="sub"> 
+					<div class="sub">
 						<span :class="num==''?'spanBac':'spanBack'" @click="subMethod()">下一步</span>
 					</div>
-				</form>		
+				</form>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-	import withDrawNextDown from './withDrawNextDown'
-    import { Toast } from 'vant';
-    import {walletWithdrawal,walletWithdrawalSubmit,filterNum,subMethod} from '../../api/api'
-    import keyboard from '../home/keyboard' //数字键盘
-	 export default {
-	 	components: {
-			keyboard,
-			withDrawNextDown
-		},
-	 	// mixins:[assign],
-		data() {
-		    return {
-		    	yue:'',
-		    	limit:'',
-		    	telIs:'',
-			  // 键盘相关data
-				keyboard: false,
-				cursor1 : false,
-				val:'',
-				nowPage:true,
-				downPage:false,
-				title:'余额提现',
-				link:'/balanceIndex',
-				des:true,
-				showveri:false, //手机号验证
-				filterTime: '60',
-				msg: '获取验证码',
-				flag: true,  // 获取验证码开关
-				phone: '', // 发送短信手机号码
-				type: '2',  // 获取验证码类型
-				_key: '',  // 获取到的验证码 
-				num: '',  //输入的验证码
-		    };
-		  },
-		mounted(){
-			this.walletWithdrawal()
-		},
-		methods:{
-			openKeyboard(){
-				this.keyboard = true;
-				this.cursor1 = true;
-				this.des = false
-			},
-			closeshowveri(){
-				this.showveri = false
-			},
-			closeKeyboard(){
-				this.keyboard = false;
-				this.cursor1 = false
-			},
-			/*输入*/
-			typing (value) {
-				/*如果是点击删除*/
-				if (value === '') {
-					this.del();
-				}
-				/*获取新的值*/
-				this.val = this.val + value;
-			},
-			del () {
-				this.val = this.val.slice(0, -1);
-			},
-			walletWithdrawal(){
-				walletWithdrawal().then(res => {
-					let _data = res.data
-					this.yue =  _data.balance ;
-					this.limit = _data.cashLimit;
-					this.telIs = _data.telIs;
-				})
-				.catch(function(err){
-					console.log(err);
-				})
-			},
-			walletWithdrawalSubmit(){
-				if (isNaN(this.val) == true || this.Trim(this.val, 'g') == '' || this.val.charAt(0) == '0') {
-					Toast('请输入正确的金额');
-					return
-				} 
-				 if(this.val <= 0){
-				 	Toast('提现金额必须大于￥1元');	
-				 	return				
-				} 
-				if(this.telIs){
-				    this.$router.push('/withDrawNextCash/'+this.val)
-				}else{
-					this.showveri = true
-				}
-			},
-			filterNum() {
-				let _this = this;
-				let myreg=/^[1][3,4,5,7,8][0-9]{9}$/;  
-				if(!myreg.test(_this.phone)){
-					alert('请输入正确的手机号')
-					return false
-				}
-				if(_this.flag == true){
-					_this.flag = false;
-					let t = setInterval(function(){
-						_this.filterTime--;
-						if (_this.filterTime <= 0) {							
-							clearInterval(t);   // 当倒计时时间小于0时，清除时间函数并且将时间开关打开
-							_this.flag = true;
-							_this.msg = '获取验证码';
-						} else {
-							_this.msg = '重新发送(' + _this.filterTime + ')'; // 返回最初状态；
-						}
-					}, 1000);
-					_this.filterTime = '60';
-					let params = {
-							phone: _this.phone,
-							type: 1,
-						};
-					filterNum(params).then(function(res){
-						_this._key = res.data.key;
-					}).catch(function(err){
-						 Toast(err.data.message);
-					})
-				}
-			},
-			//手机号提交
-			subMethod(){
-				if (this.Trim(this.phone, 'g') == '') {
-					Toast('手机号不能为空');
-					return;
-				}
-				if (this.Trim(this.num, 'g') == '') {
-					Toast('请正确输入你收到的验证码');
-					return;
-				}
-				if (!this._key) {
-					Toast('请先获取验证码');
-					return;
-				}		
-				let params = {
-					verification_key: this._key,
-					verification_code: this.num,
-					type: 1,
-				};
-				subMethod(params).then(res =>{
-					this.showveri = false;
-					this.$router.push('/withDrawNextCash/'+this.val);
-				}).catch(function(err){
-					Toast(err.data.message);
-				})
-			}
-		}	
-	}
+import withDrawNextDown from './withDrawNextDown'
+import { Toast } from 'vant'
+import {walletWithdrawal, walletWithdrawalSubmit, filterNum, subMethod} from '../../api/api'
+import keyboard from '../home/keyboard' // 数字键盘
+export default {
+  components: {
+    keyboard,
+    withDrawNextDown
+  },
+  // mixins:[assign],
+  data () {
+    return {
+      yue: '',
+      limit: '',
+      telIs: '',
+      // 键盘相关data
+      keyboard: false,
+      cursor1: false,
+      val: '',
+      nowPage: true,
+      downPage: false,
+      title: '余额提现',
+      link: '/balanceIndex',
+      des: true,
+      showveri: false, // 手机号验证
+      filterTime: '60',
+      msg: '获取验证码',
+      flag: true, // 获取验证码开关
+      phone: '', // 发送短信手机号码
+      type: '2', // 获取验证码类型
+      _key: '', // 获取到的验证码
+      num: '' // 输入的验证码
+    }
+  },
+  mounted () {
+    this.walletWithdrawal()
+  },
+  methods: {
+    openKeyboard () {
+      this.keyboard = true
+      this.cursor1 = true
+      this.des = false
+    },
+    closeshowveri () {
+      this.showveri = false
+    },
+    closeKeyboard () {
+      this.keyboard = false
+      this.cursor1 = false
+    },
+    /* 输入 */
+    typing (value) {
+      /* 如果是点击删除 */
+      if (value === '') {
+        this.del()
+      }
+      /* 获取新的值 */
+      this.val = this.val + value
+    },
+    del () {
+      this.val = this.val.slice(0, -1)
+    },
+    walletWithdrawal () {
+      walletWithdrawal().then(res => {
+        let _data = res.data
+        this.yue = _data.balance
+        this.limit = _data.cashLimit
+        this.telIs = _data.telIs
+      })
+        .catch(function (err) {
+          console.log(err)
+        })
+    },
+    walletWithdrawalSubmit () {
+      if (isNaN(this.val) == true || this.Trim(this.val, 'g') == '' || this.val.charAt(0) == '0') {
+        Toast('请输入正确的金额')
+        return
+      }
+      if (this.val <= 0) {
+        Toast('提现金额必须大于￥1元')
+        return
+      }
+      if (this.telIs) {
+        this.$router.push('/withDrawNextCash/' + this.val)
+      } else {
+        this.showveri = true
+      }
+    },
+    filterNum () {
+      let _this = this
+      let myreg = /^[1][3,4,5,7,8][0-9]{9}$/
+      if (!myreg.test(_this.phone)) {
+        alert('请输入正确的手机号')
+        return false
+      }
+      if (_this.flag == true) {
+        _this.flag = false
+        let t = setInterval(function () {
+          _this.filterTime--
+          if (_this.filterTime <= 0) {
+            clearInterval(t) // 当倒计时时间小于0时，清除时间函数并且将时间开关打开
+            _this.flag = true
+            _this.msg = '获取验证码'
+          } else {
+            _this.msg = '重新发送(' + _this.filterTime + ')' // 返回最初状态；
+          }
+        }, 1000)
+        _this.filterTime = '60'
+        let params = {
+          phone: _this.phone,
+          type: 1
+        }
+        filterNum(params).then(function (res) {
+          _this._key = res.data.key
+        }).catch(function (err) {
+          Toast(err.data.message)
+        })
+      }
+    },
+    // 手机号提交
+    subMethod () {
+      if (this.Trim(this.phone, 'g') == '') {
+        Toast('手机号不能为空')
+        return
+      }
+      if (this.Trim(this.num, 'g') == '') {
+        Toast('请正确输入你收到的验证码')
+        return
+      }
+      if (!this._key) {
+        Toast('请先获取验证码')
+        return
+      }
+      let params = {
+        verification_key: this._key,
+        verification_code: this.num,
+        type: 1
+      }
+      subMethod(params).then(res => {
+        this.showveri = false
+        this.$router.push('/withDrawNextCash/' + this.val)
+      }).catch(function (err) {
+        Toast(err.data.message)
+      })
+    }
+  }
+}
 </script>
-  
+
 <style scoped>
 	.telsharesomething{
-	    position: fixed;
-	    left:5%;
-	    top:35%;
-	    z-index: 1100;
-	    width:90%;
-	    height:400px;
-	    background: white;
-	    text-align: center;
-	    border-radius: 10px;
-	    padding-top: 20px; 
-	  }
+		position: fixed;
+		left:5%;
+		top:35%;
+		z-index: 1100;
+		width:90%;
+		height:400px;
+		background: white;
+		text-align: center;
+		border-radius: 10px;
+		padding-top: 20px;
+	}
 	.telsharesomething .main{
 		overflow: hidden;
 	}
@@ -291,7 +291,6 @@
 		margin: auto;
 	}
 
-
 	.newRecharge{
 		padding-top: 30px;
 	}
@@ -299,7 +298,7 @@
 		width: 95%;
 		height:643px;
 		background:#fff;
-		margin:0px auto;   
+		margin:0px auto;
 	}
 	.newRecharge .topUp .head{
 		height: 35px;
@@ -319,7 +318,7 @@
 		width: 600px;
 		height: 90px;
 		background:#d2d2d2;
-		border-radius:8px; 
+		border-radius:8px;
 		color: white;
 		font-size:28px;
 		text-align: center;
@@ -336,14 +335,14 @@
 	}
 	.border{
 		border: 1px solid #d2d2d2;
-		width: 600px; 
-		margin-left:56px;  
+		width: 600px;
+		margin-left:56px;
 	}
 	.newRecharge .topUp .nextStepC{
 		width: 600px;
 		height: 90px;
 		background:#9e2026;
-		border-radius:8px; 
+		border-radius:8px;
 		color: white;
 		font-size:28px;
 		text-align: center;
@@ -359,5 +358,5 @@
 	}
 	#cursor1 {
 		animation: play 0.8s linear infinite;
-    } 
+    }
 </style>

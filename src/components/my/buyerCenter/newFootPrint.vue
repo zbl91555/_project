@@ -1,6 +1,6 @@
 <template>
 	<div class="app-containerfoot">
-		<ul class="nav">              
+		<ul class="nav">
 			<li @click="join(0)" :class="{'actives':navFlag == 0}">
 				<span>参拍拍品</span>
 			</li>
@@ -21,7 +21,7 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       // 导航开关
       navFlag: 0,
@@ -51,71 +51,71 @@ export default {
           page: 1,
           num: 10
         }
-			],
-			imgFlag : false,//无数据时 图片是否展示
-			img : require('../../../assets/images/beat.png')
-    };
+      ],
+      imgFlag: false, // 无数据时 图片是否展示
+      img: require('../../../assets/images/beat.png')
+    }
   },
   methods: {
-    join(i) {
-			this.navFlag = i;
-			this.imgFlag = false;
-      this.$router.push("/newFootPrint/join");
+    join (i) {
+      this.navFlag = i
+      this.imgFlag = false
+      this.$router.push('/newFootPrint/join')
     },
-    watch(i) {
-			this.navFlag = i;
-			this.imgFlag = false;
-      this.$router.push("/newFootPrint/watch");
+    watch (i) {
+      this.navFlag = i
+      this.imgFlag = false
+      this.$router.push('/newFootPrint/watch')
     },
-    footerFocus(i) {
-			this.navFlag = i;
-			this.imgFlag = false;
-      this.$router.push("/newFootPrint/footerFocus");
+    footerFocus (i) {
+      this.navFlag = i
+      this.imgFlag = false
+      this.$router.push('/newFootPrint/footerFocus')
     },
-    footer(i) {
-			this.navFlag = i;
-			this.imgFlag = false;
-      this.$router.push("/newFootPrint/footer");
+    footer (i) {
+      this.navFlag = i
+      this.imgFlag = false
+      this.$router.push('/newFootPrint/footer')
     }
   },
-  beforeRouteEnter(to, from, next) {
-    if (to.name == "join") {
+  beforeRouteEnter (to, from, next) {
+    if (to.name == 'join') {
       next(vm => {
-        vm.join(0);
-      });
+        vm.join(0)
+      })
     }
-    if (to.name == "watch") {
+    if (to.name == 'watch') {
       next(vm => {
-        vm.watch(1);
-      });
+        vm.watch(1)
+      })
     }
-    if (to.name == "footerFocus") {
+    if (to.name == 'footerFocus') {
       next(vm => {
-        vm.footerFocus(2);
-      });
+        vm.footerFocus(2)
+      })
     }
-    if (to.name == "footer") {
+    if (to.name == 'footer') {
       next(vm => {
-        vm.footer(3);
-      });
+        vm.footer(3)
+      })
     }
   },
-  mounted() {
-    window.scrollTo(0, 0);
+  mounted () {
+    window.scrollTo(0, 0)
   }
-};
+}
 </script>
 <style lang="less" scoped>
-/*
-	 * @border-color: 统一边框颜色coupon
-	 * */
+  /*
+  * @border-color: 统一边框颜色coupon
+  * */
 
 @border-color: #d2d2d2;
 .app-containerfoot {
   min-height: 1234px;
   background-color: #ededed;
 	overflow: hidden;
-	
+
 	.img {
 		width : 507px;
 		display : block;

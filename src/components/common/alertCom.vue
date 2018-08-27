@@ -12,49 +12,49 @@
         </div>
       </div>
 </template>
-  <script>
-    export default { 
-      props:{
-        agree:booblean
-      } 
-      data(){
-        return{
-          agree:false,
-        }
-      },
-      methods: {
-          openAgree(){
-              this.agree=true
-          },
-          closeAgree(){
-              this.agree=false
-          },
-          faHuo(){
-               // let params
-               //  if(this.toDoor){
-               //      params = {
-               //           is_express:2,  //1普通发货 2 送货上门
-               //        };
-               //  }else{
-               //    params = {
-               //         is_express:1,  //1普通发货 2 送货上门
-               //         code:this.orderNb,
-               //         express:this.CompId,
-               //      };
-               //  }
-               //  orderFahuo(order_id,params).then(res=> {
-               //    console.log(res.data);
-               //    this.agree=false;
-               //  }).catch(err=> {
-               //    console.log(err.response.data.message);
-               //  })
-            },
-      }
+<script>
+export default {
+  props: {
+    agree: booblean
+  },
+  data () {
+    return {
+      // agree: false
     }
-  </script>
+  },
+  methods: {
+    openAgree () {
+      this.agree = true
+    },
+    closeAgree () {
+      this.agree = false
+    },
+    faHuo () {
+      // let params
+      //  if(this.toDoor){
+      //      params = {
+      //           is_express:2,  //1普通发货 2 送货上门
+      //        };
+      //  }else{
+      //    params = {
+      //         is_express:1,  //1普通发货 2 送货上门
+      //         code:this.orderNb,
+      //         express:this.CompId,
+      //      };
+      //  }
+      //  orderFahuo(order_id,params).then(res=> {
+      //    console.log(res.data);
+      //    this.agree=false;
+      //  }).catch(err=> {
+      //    console.log(err.response.data.message);
+      //  })
+    }
+  }
+}
+</script>
 
 <style lang="less" scoped>
-  
+
   .iconfont{
     font-size:40px;
     margin:8px;
@@ -135,10 +135,10 @@
   float: right;
 }
 .fixednumMain .tipBanner .close .icon-guanbi{
-  
+
   font-size: 70px;
   color: #999;
- 
+
 }
 .fixednumMain .tipBanner .finish {
   float: right;
@@ -269,7 +269,7 @@
   max-height: 92px;
   float: left;
   border-right:1px solid #bababa;
-  border-bottom:1px solid #bababa;  
+  border-bottom:1px solid #bababa;
   font-size: 56px;
   font-family: "Helvetica neue", Verdana, Geneva, sans-serif;
   text-align: center;

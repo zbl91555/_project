@@ -12,7 +12,7 @@
         <img src="http://thirdwx.qlogo.cn/mmopen/ibKHP1TZZeXI8J7cwNOKv55ulgScbiaLMr8EpTVdgWI9z84Giasibicp7v1MhtzPD18G1tCeeqh1xibGhLCghXiaOBCbKYzGibGdBgicR/132" width="400" height="400">
         <p>今夕何夕的福袋</p>
         <h4>ceshi</h4>
-        <b> 
+        <b>
         <span>****</span>
           <!-- 已领<span>8.88</span>
           <i>元</i> -->
@@ -60,25 +60,24 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
-      
-    };
+
+    }
   },
-  created(){ 
+  created () {
   },
-  methods: { 
-    
-    getstore(){
-      let _this = this;     
-      
-    },
-    
-  }, 
-  mounted() {
+  methods: {
+
+    getstore () {
+      let _this = this
+    }
+
+  },
+  mounted () {
     // this.getstore();
-  }, 
-};
+  }
+}
 </script>
 <style scoped>
   .luckybagDetails{
@@ -163,7 +162,7 @@ export default {
     font-size:28px;
     margin-top:23px;
     margin-bottom:12px;
-    color:#333; 
+    color:#333;
   }
   .packListMid p {
     color:#999;

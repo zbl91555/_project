@@ -20,7 +20,7 @@
 						<span>日</span>
 					</p>
 					<p class="detail-time">
-						<span v-for="(i, $index) in timeList" :class="{'active': timeFlag == $index}" @click="swTimeFlag($index)">
+						<span v-for="(i, $index) in timeList" :key="i" :class="{'active': timeFlag == $index}" @click="swTimeFlag($index)">
 							{{i}}
 						</span>
 					</p>
@@ -29,7 +29,7 @@
 			<ul>
 				<li class="titleSearch">根据订单状态搜索</li>
 				<li class="titleSearchBtn">
-					<p @click="changeIndex(index)" :class="{active:nowindex==index}" v-for="(item,index) in orderstatus">{{item.text}}</p>
+					<p @click="changeIndex(index)" :class="{active:nowindex==index}" v-for="(item,index) in orderstatus" :key="item">{{item.text}}</p>
 				</li>
 				<!-- <li class="titleSearch"></li> -->
 			</ul>
@@ -41,127 +41,128 @@
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				timeFlag: 0,
-				timeList: ['今天', '近七天', '近30天', '全部'],
-				time: {
-					year: '0',
-					month: '0',
-					day: '0',
-				},
-				orderstatus:[
-						{
-				          "text":"全部",
-				          'type':'',            
-				        },
-				        {
-				          "text":"待付款",
-				          'type':'daifukuan',                 
-				        },
-				        {
-				          "text":"待发货",
-				          'type':'daifahuo',
-				        },
-				        {
-				          "text":"待收货",
-				          'type':'yifahuo',                  
-				        }
-			        ],
-				nowindex:0,
-				keyword:'',
-				state:''
-			}
-		},                        
-		methods: {
-			searchTo(){
-				let params = {
-					keyword:this.keyword,
-					year:this.time.year,
-					month:this.time.month,
-					day:this.time.day,
-					state:this.state,
-					type:this.orderstatus[this.nowindex].type
-				}
-			 localStorage.setItem('params',JSON.stringify(params));
-			 	if(this.state == 'buyer'){
-				 	this.$router.push('/newBuyOrders/serchOrder')
-			 	}else{
-			 		this.$router.push('/newSellerOrder/serchOrder')
-			 	}
-			},
-			changeIndex(index){
-				this.nowindex=index
-			},
-			getNowTime: function(){
-				let _this = this;
-				let now = +new Date();
-				let timeArr = _this.timestampToTimeYMD(now/1000).split('.');
-				_this.time.year = timeArr[0];
-				_this.time.month = timeArr[1];
-				_this.time.day = timeArr[2];
-				
-			},
-			swTimeFlag: function(i){
-				let _this = this;
-				_this.timeFlag = i; // active依据下标切换
-				_this.getNowTime(); // 时间切换时重新获取当前的时间
-				if (i == "1") {
-					_this.time.day = parseFloat(_this.time.day) + 7;
-					if (_this.time.day < 10) {
-						_this.time.day = '0' + _this.time.day;	
-					}
-				} else if (i == '2') {
-					_this.time.month = parseFloat(_this.time.month) + 1;
-					if (_this.time.month < 10) {
-						_this.time.month = '0' + _this.time.month;
-					}
-				} else if(i == '3'){
-					_this.time.year = '0000';
-					_this.time.month = '00';
-					_this.time.day = '00';
-				}
-			}
-		},
-		mounted() {
-			this.state = this.$route.params.type
-			this.getNowTime();
-		},
-	}
+export default {
+  data () {
+    return {
+      timeFlag: 0,
+      timeList: ['今天', '近七天', '近30天', '全部'],
+      time: {
+        year: '0',
+        month: '0',
+        day: '0'
+      },
+      orderstatus: [
+        {
+          'text': '全部',
+          'type': ''
+        },
+        {
+          'text': '待付款',
+          'type': 'daifukuan'
+        },
+        {
+          'text': '待发货',
+          'type': 'daifahuo'
+        },
+        {
+          'text': '待收货',
+          'type': 'yifahuo'
+        }
+      ],
+      nowindex: 0,
+      keyword: '',
+      state: ''
+    }
+  },
+  methods: {
+    searchTo () {
+      let params = {
+        keyword: this.keyword,
+        year: this.time.year,
+        month: this.time.month,
+        day: this.time.day,
+        state: this.state,
+        type: this.orderstatus[this.nowindex].type
+      }
+      localStorage.setItem('params', JSON.stringify(params))
+      if (this.state == 'buyer') {
+        // this.$router.push('/newBuyOrders/search-order-buyer')
+        this.$router.push({name: 'search-order-buyer'})
+      } else {
+        // this.$router.push('/newSellerOrder/search-order-buyer')
+        this.$router.push({name: 'search-order-seller'})
+      }
+    },
+    changeIndex (index) {
+      this.nowindex = index
+    },
+    getNowTime: function () {
+      let _this = this
+      let now = +new Date()
+      let timeArr = _this.timestampToTimeYMD(now / 1000).split('.')
+      _this.time.year = timeArr[0]
+      _this.time.month = timeArr[1]
+      _this.time.day = timeArr[2]
+    },
+    swTimeFlag: function (i) {
+      let _this = this
+      _this.timeFlag = i // active依据下标切换
+      _this.getNowTime() // 时间切换时重新获取当前的时间
+      if (i == '1') {
+        _this.time.day = parseFloat(_this.time.day) + 7
+        if (_this.time.day < 10) {
+          _this.time.day = '0' + _this.time.day
+        }
+      } else if (i == '2') {
+        _this.time.month = parseFloat(_this.time.month) + 1
+        if (_this.time.month < 10) {
+          _this.time.month = '0' + _this.time.month
+        }
+      } else if (i == '3') {
+        _this.time.year = '0000'
+        _this.time.month = '00'
+        _this.time.day = '00'
+      }
+    }
+  },
+  mounted () {
+    this.state = this.$route.params.type
+    this.getNowTime()
+  }
+}
 </script>
 
 <style lang="less" scoped>
 	/*
-	 * @border-color: 统一边框颜色
-	 * */
-	
+	* @border-color: 统一边框颜色
+	* */
+
 	@border-color: #e5e5e5;
 	.app-containerSearch {
 		min-height: 1234px;
 		background-color: #f4f4f4;
 	}
-	
+
 	.iconfont{
 		font-size: 24px;
 		line-height:30px;
 		margin: 0
 	}
-	
+
 	.app-containerSearch form {
 		margin-bottom: 100px;
 	}
-	
+
 	.app-containerSearch form ul {
 		margin-bottom: 20px;
 		background-color: #fff;
 	}
-	
+
 	form ul li {
 		border-top: 1px solid @border-color;
 		padding: 0 30px;
 	}
-	
+
 	li:nth-last-of-type(1) {
 		border-bottom: 1px solid @border-color;
 	}
@@ -202,8 +203,8 @@
 	}
 
 	form ul:nth-last-of-type(odd) .titleSearch p:nth-child(odd){
-		border-right: 1px solid @border-color;	
-		
+		border-right: 1px solid @border-color;
+
 	}
 	.box{
 		height: 148px;
@@ -238,7 +239,7 @@
 		.time{
 			height: 80px;
 			line-height: 80px;
-			span{				
+			span{
 				display: inline-block;
 				float: left;
 				font-size: 28px;

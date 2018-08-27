@@ -20,9 +20,9 @@
       </div>
       <div class="recordList">
         <ul id="depositdata">
-          <li v-for = "item in consumer">
+          <li v-for = "(item,index) in consumer" :key="index">
             <div class="recordList_left">
-              <i>{{item.deposit_name}}</i> 
+              <i>{{item.deposit_name}}</i>
               <p>订单编号：{{item.deposit_sn}}</p>
               <p>处理时间：{{timestampToTime(item.deposit_add_time)}}</p>
             </div>
@@ -33,72 +33,72 @@
     </div>
     <!-- 是否弹出提现 -->
     <div id="fixednumMain" v-if="showtel">
-      <div @click="closeshowdel()" class="fixednumMask" style="opacity: 0.38;"> 
+      <div @click="closeshowdel()" class="fixednumMask" style="opacity: 0.38;">
       </div>
       <div class="telsharesomething">
           <div style="font-size:22px">您还没有可提现的金额</div>
           <div style="height:70px">规则：消保金在充值30天内不可进行提现</div>
         <div>
           <div style="border-top:1px solid #e5e5e5;color:#5cbf24;font-size:20px" @click="closeshowdel">确认</div>
-        </div>      
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-  import { Dialog } from 'vant';
-  import {consumerSecurity} from '../../../api/api'
+import { Dialog } from 'vant'
+import {consumerSecurity} from '../../../api/api'
 export default {
-  data() {
+  data () {
     return {
-      consumer:[],
-      deposit:'',
-      shengyu_price:'',
-      userPrice:'',
-      showtel:false,
-      wallet:''
-    };
+      consumer: [],
+      deposit: '',
+      shengyu_price: '',
+      userPrice: '',
+      showtel: false,
+      wallet: ''
+    }
   },
-  methods: { 
-    closeshowdel(){
+  methods: {
+    closeshowdel () {
       this.showtel = false
     },
-    payMoney(){
+    payMoney () {
       let params = {
-       deposit : this.deposit,
-       userPrice : this.userPrice
+        deposit: this.deposit,
+        userPrice: this.userPrice
       }
-      localStorage.setItem('payMoney',this.userPrice);
-      localStorage.setItem('wallet',this.wallet);
+      localStorage.setItem('payMoney', this.userPrice)
+      localStorage.setItem('wallet', this.wallet)
       // this.$store.commit('consumerPrice',params)
     },
-    consumerSecurity(){
-      let _this = this;     
-      consumerSecurity().then(function (response) { 
-         if(response.code==200){
-          _this.consumer = response.data.datalist;
-          _this.deposit = response.data.balance; 
-          _this.userPrice = response.data.user_price;        
-          _this.shengyu_price = response.data.shengyu_price;
-          _this.wallet = response.data.wallet;        
+    consumerSecurity () {
+      let _this = this
+      consumerSecurity().then(function (response) {
+        if (response.code == 200) {
+          _this.consumer = response.data.datalist
+          _this.deposit = response.data.balance
+          _this.userPrice = response.data.user_price
+          _this.shengyu_price = response.data.shengyu_price
+          _this.wallet = response.data.wallet
         }
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+        .catch(function (error) {
+          console.log(error)
+        })
     },
-    withdrawal(){
-      if(this.shengyu_price > 0){
-        this.$router.push('/sellerCenter/withdrawDeposit/'+this.shengyu_price);
-      }else{
-        this.showtel = true;
+    withdrawal () {
+      if (this.shengyu_price > 0) {
+        this.$router.push('/sellerCenter/withdrawDeposit/' + this.shengyu_price)
+      } else {
+        this.showtel = true
       }
-    },
-  }, 
-  mounted() {
-    this.consumerSecurity();
-  }, 
-};
+    }
+  },
+  mounted () {
+    this.consumerSecurity()
+  }
+}
 </script>
 
 <style scoped>
@@ -234,4 +234,4 @@ export default {
     border-radius: 20px;
     transform : translate(-50%,-50%);
   }
-</style>	
+</style>

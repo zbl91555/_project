@@ -13,22 +13,19 @@
                <div class="square">
                   <div class="dot"></div>
                   <div></div>
-               <!--    <div>{{timestampToTime(SuccessMsg.order.addTime)}}</div> -->
                </div>
                <div class="square">
                   <div class="greyDot"></div>
                   <div style="color:#d2d2d2;"></div>
-                 <!--  <div>{{timestampToTime(SuccessMsg.order.paymentTime)}}</div> -->
                </div>
                <div class="square">
                   <div class="greyDots"></div>
                   <div style="color:#d2d2d2;"></div>
-                 <!--  <div>{{timestampToTime(SuccessMsg.order.paymentTime)}}</div> -->
                </div>
           </div>
           </div>
         </div>
-        
+
         <div class="title">
           实名认证<span class="small">(请上传真实的个人信息，认证通过后将无法修改)</span>
         </div>
@@ -37,7 +34,7 @@
             企业名称
           </div>
           <div class="liContent">
-            <input type="text" class="input" name="name" placeholder="请输入企业名称" value="" v-model="company_name"> 
+            <input type="text" class="input" name="name" placeholder="请输入企业名称" value="" v-model="company_name">
           </div>
           <div class="liFoot ">
           </div>
@@ -146,92 +143,92 @@
   </div>
 </template>
 <script type="text/javascript">
-import uploadImg from "../../home/uploadImg";
+import uploadImg from '../../home/uploadImg'
 export default {
-  name: "enterpriseCertification",
-  data() {
+  name: 'enterpriseCertification',
+  data () {
     return {
-      importFileUrl: "",
+      importFileUrl: '',
       fileList: [],
       dialogVisible: false,
-      dialogImageUrl: "",
-      info: "",
-      company_name: "",
-      company_person_name: "",
-      company_person_cardid: "",
-      company_pic: "",
-      company_person_pic1: "",
-      company_person_pic2: "",
-      company_permit: "",
-      reminder: "",
-      imgUrl1: require("../../../assets/images/businessLicence.png"),
-      imgUrl2: require("../../../assets/images/front.png"),
-      imgUrl3: require("../../../assets/images/theBack.png"),
-      imgUrl4: require("../../../assets/images/licence.png")
-    };
+      dialogImageUrl: '',
+      info: '',
+      company_name: '',
+      company_person_name: '',
+      company_person_cardid: '',
+      company_pic: '',
+      company_person_pic1: '',
+      company_person_pic2: '',
+      company_permit: '',
+      reminder: '',
+      imgUrl1: require('../../../assets/images/businessLicence.png'),
+      imgUrl2: require('../../../assets/images/front.png'),
+      imgUrl3: require('../../../assets/images/theBack.png'),
+      imgUrl4: require('../../../assets/images/licence.png')
+    }
   },
   components: {
     uploadImg
   },
   methods: {
-    //wximg图片切换
-    wximgChange(list) {
+    // wximg图片切换
+    wximgChange (list) {
       if (list.indexOf('wximg') > -1) {
-        list = list.replace('verify');
+        list = list.replace('verify')
       }
-      return list;
+      return list
     },
-    //数据填充
-    DataFilling(data) {
-      this.company_name = data.company_name;
-      this.company_person_name = data.company_person_name,
-      this.company_person_cardid = data.company_person_cardid,
-      this.company_pic = data.company_pic,
-      this.company_person_pic1 = data.company_person_pic1,
-      this.company_person_pic2 = data.company_person_pic2,
-      this.company_permit = data.company_permit,
-      this.imgUrl1 = data.imgUrl1;
-      this.imgUrl2 = data.imgUrl2;
-      this.imgUrl3 = data.imgUrl3;
-      this.imgUrl4 = data.imgUrl4;
+    // 数据填充
+    DataFilling (data) {
+      this.company_name = data.company_name
+      this.company_person_name = data.company_person_name
+      this.company_person_cardid = data.company_person_cardid
+      this.company_pic = data.company_pic
+      this.company_person_pic1 = data.company_person_pic1
+      this.company_person_pic2 = data.company_person_pic2
+      this.company_permit = data.company_permit
+      this.imgUrl1 = data.imgUrl1
+      this.imgUrl2 = data.imgUrl2
+      this.imgUrl3 = data.imgUrl3
+      this.imgUrl4 = data.imgUrl4
     },
-    upload1(list) {
-      let data = this.wximgChange(list.list);
-      this.imgUrl1 = data;
-      this.company_pic = list.name;
+    upload1 (list) {
+      let data = this.wximgChange(list.list)
+      this.imgUrl1 = data
+      this.company_pic = list.name
     },
-    upload2(list) {
-      this.company_person_pic1 = list.name;
-      let data = this.wximgChange(list.list);
-      this.imgUrl2 = data;
+    upload2 (list) {
+      this.company_person_pic1 = list.name
+      let data = this.wximgChange(list.list)
+      this.imgUrl2 = data
     },
-    upload3(list) {
-      this.company_person_pic2 = list.name;
-      let data = this.wximgChange(list.list);
-      this.imgUrl3 = data;
+    upload3 (list) {
+      this.company_person_pic2 = list.name
+      let data = this.wximgChange(list.list)
+      this.imgUrl3 = data
     },
-    upload4(list) {
-      this.company_permit = list.name;
-      let data = this.wximgChange(list.list);
-      this.imgUrl4 = data;
+    upload4 (list) {
+      this.company_permit = list.name
+      let data = this.wximgChange(list.list)
+      this.imgUrl4 = data
     },
-    getPersonCompanyMsg() {
-      let card = /^((11|12|13|14|15|21|22|23|31|32|33|34|35|36|37|41|42|43|44|45|46|50|51|52|53|54|61|62|63|64|65|71|81|82|91)\d{4})((((19|20)(([02468][048])|([13579][26]))0229))|((20[0-9][0-9])|(19[0-9][0-9]))((((0[1-9])|(1[0-2]))((0[1-9])|(1\d)|(2[0-8])))|((((0[1,3-9])|(1[0-2]))(29|30))|(((0[13578])|(1[02]))31))))((\d{3}(x|X))|(\d{4}))$/;
-      if (this.company_name == "") {
-        this.reminder = "*企业名称不能为空";
-        return;
+    getPersonCompanyMsg () {
+      let card = /^((11|12|13|14|15|21|22|23|31|32|33|34|35|36|37|41|42|43|44|45|46|50|51|52|53|54|61|62|63|64|65|71|81|82|91)\d{4})((((19|20)(([02468][048])|([13579][26]))0229))|((20[0-9][0-9])|(19[0-9][0-9]))((((0[1-9])|(1[0-2]))((0[1-9])|(1\d)|(2[0-8])))|((((0[1,3-9])|(1[0-2]))(29|30))|(((0[13578])|(1[02]))31))))((\d{3}(x|X))|(\d{4}))$/
+      if (this.company_name == '') {
+        this.reminder = '*企业名称不能为空'
+        return
       }
-      if (this.company_person_name == "") {
-        this.reminder = "*法人姓名不能为空";
-        return;
+      if (this.company_person_name == '') {
+        this.reminder = '*法人姓名不能为空'
+        return
       }
       if (!card.test(this.company_person_cardid)) {
-        this.reminder = "*身份证号格式错误";
-        return;
+        this.reminder = '*身份证号格式错误'
+        return
       }
-      this.$router.push("/enterprisePersonCertification");
+      this.$router.push('/enterprisePersonCertification')
       let params = {
-        type: "business",
+        type: 'business',
         company_name: this.company_name,
         company_person_name: this.company_person_name,
         company_person_cardid: this.company_person_cardid,
@@ -239,27 +236,27 @@ export default {
         company_person_pic1: this.company_person_pic1,
         company_person_pic2: this.company_person_pic2,
         company_permit: this.company_permit
-      };
+      }
       let sessionParams = {
         ...params,
-        imgUrl1 : this.imgUrl1,
-        imgUrl2 : this.imgUrl2,
-        imgUrl3 : this.imgUrl3,
-        imgUrl4 : this.imgUrl4,
-      };
-      localStorage.setItem('enterpriseRealName',JSON.stringify(sessionParams));
-      this.$store.commit("getPersonCompanyMsg", params);
+        imgUrl1: this.imgUrl1,
+        imgUrl2: this.imgUrl2,
+        imgUrl3: this.imgUrl3,
+        imgUrl4: this.imgUrl4
+      }
+      localStorage.setItem('enterpriseRealName', JSON.stringify(sessionParams))
+      this.$store.commit('getPersonCompanyMsg', params)
     }
   },
-  created() {
-    //获取保存至session的数据
-    let enterpriseRealName = localStorage.getItem('enterpriseRealName');
+  created () {
+    // 获取保存至session的数据
+    let enterpriseRealName = localStorage.getItem('enterpriseRealName')
     if (enterpriseRealName) {
-      let data = JSON.parse(enterpriseRealName);
-      this.DataFilling(data);
+      let data = JSON.parse(enterpriseRealName)
+      this.DataFilling(data)
     }
   }
-};
+}
 </script>
 
 <style>

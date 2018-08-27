@@ -2,13 +2,13 @@
 	<div class="returnRequest">
     <div class="moneys">
         <div>余额充值</div>
-    </div>  
+    </div>
     <div style="border-top: 1px solid #e5e5e5;margin-left: 15px"></div>
     <div class="moneys">
         <div>需要支付:<i style="color:#f15511"> ￥{{price}}</i></div>
-    </div>  
+    </div>
     <div style="border-top: 1px solid #e5e5e5;margin-left: 15px"></div>
-	  <ul>
+    <ul>
       <li class="op">
         <div class="con">
           <span><i class="iconfont icon-duihao2" :class="active"></i></span>
@@ -25,102 +25,98 @@
     <div class="btn">
       <button @click="wxPay()">安全支付</button>
     </div>
-	 </div>
+  </div>
 </template>
 
 <script>
-	 //var wx =require('weixin-js-sdk')
-	 import wx from 'weixin-js-sdk'
-	 import {getSign,wxPay} from '../../../api/api';
-	 import assign from '../../../assets/js/assign.js'//混入式方法
-	 export default {
-	 	mixins:[assign],
-		data() {
-		    return {
-			      config:{},
-			      payConfig:{},
-		      active: false,
-          price:''
-		    };
-		  },
-		mounted(){
-      this.price = this.$route.params.price
-		},
-		methods:{
-			$blur: function(){
-			this.active = true;
-				if(this.num == ''){
-					this.active = false;
-					return;
-				}
-			},
-		    wxPay(){
-		      let params = {
-		           channel:'wx_pub',
-		           type:'ch',
-		           price:this.price,
-		      };
-		      wxPay(params).then(response=>{
-		      	 console.log(response.data);
-		        this.weixinPay(response.data)
-		      }).catch(error=>{
+// var wx =require('weixin-js-sdk')
+import wx from 'weixin-js-sdk'
+import {getSign, wxPay} from '../../../api/api'
+import assign from '../../../assets/js/assign.js'// 混入式方法
+export default {
+  mixins: [assign],
+  data () {
+    return {
+      config: {},
+      payConfig: {},
+      active: false,
+      price: ''
+    }
+  },
+  mounted () {
+    this.price = this.$route.params.price
+  },
+  methods: {
+    $blur: function () {
+      this.active = true
+      if (this.num == '') {
+        this.active = false
+      }
+    },
+    wxPay () {
+      let params = {
+        channel: 'wx_pub',
+        type: 'ch',
+        price: this.price
+      }
+      wxPay(params).then(response => {
+        console.log(response.data)
+        this.weixinPay(response.data)
+      }).catch(error => {
 
-		      })
-		    },
-		    getSign(){
-		        let params = {
-		          uri:window.location.href
-		        };
-		        getSign(params).then(response=>{
-		          this.config = response.data
-		          this.config.jsApiList = ['onMenuShareTimeline','onMenuShareAppMessage','chooseImage','chooseWXPay']
-		        }).catch(error=>{
-		          console.log(error.data)
-		        })
-		    },
-		    reload(){
-		        this.getSign()
-		        wx.config(this.config);
-		        wx.checkJsApi({
-		          jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage','chooseImage','chooseWXPay'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
-		          success: function(res) {
-		          // 以键值对的形式返回，可用的api值true，不可用为false
-		          console.log(res)
-		          }
-		        });
-		    },
-		    weixinPay(data){
-		      var vm= this;
-		        if (typeof WeixinJSBridge == "undefined"){//微信浏览器内置对象。参考微信官方文档
-		          if( document.addEventListener ){
-		            document.addEventListener('WeixinJSBridgeReady', vm.onBridgeReady(data), false);
-		          }else if (document.attachEvent){
-		            document.attachEvent('WeixinJSBridgeReady', vm.onBridgeReady(data));
-		            document.attachEvent('onWeixinJSBridgeReady',vm.onBridgeReady(data));
-		          }
-		        }else{
-		          vm.onBridgeReady(data);
-		        }
-		    },
-		    onBridgeReady(data){
-		      var  vm = this;
-		        WeixinJSBridge.invoke(
-		          'getBrandWCPayRequest',data,
-		          function(res){
-                if(res.err_msg == 'get_brand_wcpay_request:cancel'){
-                  console.log('11')
-                }else{
-                  window.location.reload="/balanceIndex" 
-                }
-		          }
-		        )
-		    }
-		}	
-	}
+      })
+    },
+    getSign () {
+      let params = {
+        uri: window.location.href
+      }
+      getSign(params).then(response => {
+        this.config = response.data
+        this.config.jsApiList = ['onMenuShareTimeline', 'onMenuShareAppMessage', 'chooseImage', 'chooseWXPay']
+      }).catch(error => {
+        console.log(error.data)
+      })
+    },
+    reload () {
+      this.getSign()
+      wx.config(this.config)
+      wx.checkJsApi({
+        jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'chooseImage', 'chooseWXPay'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+        success: function (res) {
+          // 以键值对的形式返回，可用的api值true，不可用为false
+          console.log(res)
+        }
+      })
+    },
+    weixinPay (data) {
+      var vm = this
+      if (typeof WeixinJSBridge == 'undefined') { // 微信浏览器内置对象。参考微信官方文档
+        if (document.addEventListener) {
+          document.addEventListener('WeixinJSBridgeReady', vm.onBridgeReady(data), false)
+        } else if (document.attachEvent) {
+          document.attachEvent('WeixinJSBridgeReady', vm.onBridgeReady(data))
+          document.attachEvent('onWeixinJSBridgeReady', vm.onBridgeReady(data))
+        }
+      } else {
+        vm.onBridgeReady(data)
+      }
+    },
+    onBridgeReady (data) {
+      var vm = this
+      WeixinJSBridge.invoke(
+        'getBrandWCPayRequest', data,
+        function (res) {
+          if (res.err_msg == 'get_brand_wcpay_request:cancel') {
+            console.log('11')
+          } else {
+            window.location.reload = '/balanceIndex'
+          }
+        }
+      )
+    }
+  }
+}
 </script>
-
-
-
 
 <style scoped lang="less">
 @border-color: #e5e5e5;
@@ -192,21 +188,21 @@
         font-size: 24px;
         color: #999;
         overflow: hidden;
-    	}
-    	.complaintTitle i:nth-child(1){
-				font-size: 30px;
-				color:black;
-				float: left;
-    	}
+      }
+      .complaintTitle i:nth-child(1){
+        font-size: 30px;
+        color:black;
+        float: left;
+      }
       .complaintTitle i:nth-child(2){
         color:#f15511;
       }
-    	.icon-jiantouxiangxia{
-    		margin: 0
-    	}
-    	.icon-jiantouxiangshang{
-    		margin: 0
-    	}
+      .icon-jiantouxiangxia{
+        margin: 0
+      }
+      .icon-jiantouxiangshang{
+        margin: 0
+      }
     #J_login_form{
         border-bottom:2px solid #e5e5e5;
     }
@@ -227,7 +223,7 @@
         color: #666;
         width: 70%;
     }
-   
+
     .arrow{
         position: absolute;
         left: 4%;
@@ -256,7 +252,7 @@
         width: 100%;
         margin-top: 135px;
         outline: none;
-        -webkit-appearance: none; 
+        -webkit-appearance: none;
     }
     .address{
       overflow: hidden;
@@ -443,10 +439,10 @@
        margin: 0;
     }
     .pay{
-    	width: 10%;
-    	float: right;
-    	padding: 45px 0;
-    	color: #f15511
+      width: 10%;
+      float: right;
+      padding: 45px 0;
+      color: #f15511
     }
     .msg2 {
         height: 100%;
@@ -544,7 +540,7 @@
         color: #9e2026;
         float: left;
         width: 49%;
-        line-height:96px; 
+        line-height:96px;
         height:96px;
         text-align: center;
         font-size: 32px;

@@ -1,7 +1,7 @@
 <template>
     <div class="storeManagement" ref="ctn">
       <div class="listContainer">
-        
+
         <div>
           <div class="listItem" :class="type == 'liupai' ? 'active' : '' " v-for="(s,index) in jiepaiStore" :key="s.id">
             <!-- <router-link :to="'/auction/'+s.id"> -->
@@ -44,7 +44,7 @@
          <div v-if="confirm" @click="swichStatus(isshowIndex)">确认</div>
          <div style="color:rgb(181, 84, 89)" v-if="reconfirm" @click.stop="grounding(isshowIndex)">重新上架</div>
         <span class="grayTop"></span>
-        <div class="cancelTop" @click="closeshowlists()">取消 </div> 
+        <div class="cancelTop" @click="closeshowlists()">取消 </div>
       </div>
     </div>
       <!--弹出选择时间-->
@@ -55,24 +55,24 @@
                 <div class="title">
                   {{nowday}}(今天)
                 </div>
-                <div> 
+                <div>
                   <span class="hourItem" v-for="(item,index) in times" @click="chosenSelection(index)" :class="{selected:index===nowindex}" :key="index">{{item}}</span>
-                </div>  
-              </div>    
-              <div class="dayItem">  
-                <div class="title">  
-                  {{tomorrow}}(明天)  
-                </div>   
-                <div>                                     
-                  <span class="hourItem" v-for="(item,index) in tmortimes" @click="chosenSelection2(index)" :class="{selected:index===nnowindex}" :key="index">{{item}}</span>         
                 </div>
               </div>
-              <div class="dayItem" v-if="ttomorrowshow">  
-                <div class="title">  
-                  {{ttomorrow}}(后天)  
-                </div>   
-                <div>                                     
-                  <span class="hourItem" v-for="(item,index) in ttmortimes" @click="chosenSelection3(index)" :class="{selected:index===nnnowindex}" :key="index">{{item}}</span>         
+              <div class="dayItem">
+                <div class="title">
+                  {{tomorrow}}(明天)
+                </div>
+                <div>
+                  <span class="hourItem" v-for="(item,index) in tmortimes" @click="chosenSelection2(index)" :class="{selected:index===nnowindex}" :key="index">{{item}}</span>
+                </div>
+              </div>
+              <div class="dayItem" v-if="ttomorrowshow">
+                <div class="title">
+                  {{ttomorrow}}(后天)
+                </div>
+                <div>
+                  <span class="hourItem" v-for="(item,index) in ttmortimes" @click="chosenSelection3(index)" :class="{selected:index===nnnowindex}" :key="index">{{item}}</span>
                 </div>
               </div>
               <div class="cbtnItem">
@@ -88,8 +88,8 @@
           </div>
 </template>
 <script>
-import { Toast } from "vant";
-import { LoadMore } from "vux";
+import { Toast } from 'vant'
+import { LoadMore } from 'vux'
 import {
   getstore,
   somedown,
@@ -98,73 +98,73 @@ import {
   swichhide,
   singledown,
   singledelete
-} from "../../../api/api";
+} from '../../../api/api'
 export default {
-  data() {
+  data () {
     return {
       timeLists: [
         {
-          text: "竞拍中",
-          type: "auctioning"
+          text: '竞拍中',
+          type: 'auctioning'
         },
         {
-          text: "已截拍",
-          type: "jiepai"
+          text: '已截拍',
+          type: 'jiepai'
         },
         {
-          text: "已流拍",
-          type: "liupai"
+          text: '已流拍',
+          type: 'liupai'
         },
         {
-          text: "已失败",
-          type: "shibai"
+          text: '已失败',
+          type: 'shibai'
         },
         {
-          text: "草稿箱",
-          type: "caogao"
+          text: '草稿箱',
+          type: 'caogao'
         }
       ],
       times: [
-        "10:00",
-        "12:00",
-        "16:00",
-        "17:00",
-        "19:00",
-        "20:00",
-        "21:00",
-        "22:00",
-        "23:00"
+        '10:00',
+        '12:00',
+        '16:00',
+        '17:00',
+        '19:00',
+        '20:00',
+        '21:00',
+        '22:00',
+        '23:00'
       ],
       tmortimes: [
-        "10:00",
-        "12:00",
-        "16:00",
-        "17:00",
-        "19:00",
-        "20:00",
-        "21:00",
-        "22:00",
-        "23:00"
+        '10:00',
+        '12:00',
+        '16:00',
+        '17:00',
+        '19:00',
+        '20:00',
+        '21:00',
+        '22:00',
+        '23:00'
       ],
       ttmortimes: [
-        "10:00",
-        "12:00",
-        "16:00",
-        "17:00",
-        "19:00",
-        "20:00",
-        "21:00",
-        "22:00",
-        "23:00"
+        '10:00',
+        '12:00',
+        '16:00',
+        '17:00',
+        '19:00',
+        '20:00',
+        '21:00',
+        '22:00',
+        '23:00'
       ],
       changeRed: 0,
       store: [],
-      auctionStore: [], //竞拍中
-      jiepaiStore: [], //已截拍
-      liupaiStore: [], //已流拍
-      shibaiStore: [], //已失败
-      caogaoStore: [], //草稿箱
-      type: "auctioning",
+      auctionStore: [], // 竞拍中
+      jiepaiStore: [], // 已截拍
+      liupaiStore: [], // 已流拍
+      shibaiStore: [], // 已失败
+      caogaoStore: [], // 草稿箱
+      type: 'auctioning',
       pagenum: 5,
       page: 0,
       auctioning: true,
@@ -188,18 +188,18 @@ export default {
       nowindex: -1,
       nnowindex: -1,
       nnnowindex: -1,
-      year: "",
-      month: "",
-      day: "",
-      totaltime: "",
-      oneid: "",
+      year: '',
+      month: '',
+      day: '',
+      totaltime: '',
+      oneid: '',
       confirmupshow: false,
       someconfirmupshow: false,
       tohide: false,
       toshow: false,
       isBusy: false,
       showshowlists: false,
-      isshowIndex: "",
+      isshowIndex: '',
       updown: false,
       hide: false,
       del: false,
@@ -210,551 +210,551 @@ export default {
       count: 0,
       loading: false,
       elseloading: false,
-      textGrounding: "上架",
-      textDelete: "删除",
+      textGrounding: '上架',
+      textDelete: '删除',
       indexs: [],
       flag: false,
       xiajia: true,
-      numBer: "",
-      img: require("../../../assets/images/beat.png"), //无数据时 显示的图片
-      dataNotAvailable: false //无数据时 是否展示
-    };
+      numBer: '',
+      img: require('../../../assets/images/beat.png'), // 无数据时 显示的图片
+      dataNotAvailable: false // 无数据时 是否展示
+    }
   },
   components: {
     LoadMore
   },
   computed: {
-    isLiupai() {
-      return this.type == "liupai";
+    isLiupai () {
+      return this.type == 'liupai'
     }
   },
-  created() {
-    this.count = this.pagenum;
-    window.addEventListener("scroll", this.scrollHandler);
+  created () {
+    this.count = this.pagenum
+    window.addEventListener('scroll', this.scrollHandler)
   },
 
-  destroyed() {
-    window.removeEventListener("scroll", this.scrollHandler);
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollHandler)
   },
   methods: {
-    grounding(index) {
-      //上架
-      if (this.type == "liupai") {
-        this.$router.push({ name: "发布", params: { id: this.allids[0] } });
+    grounding (index) {
+      // 上架
+      if (this.type == 'liupai') {
+        this.$router.push({ name: '发布', params: { id: this.allids[0] } })
       } else {
-        let id = this.caogaoStore[index].id;
-        this.$router.push({ name: "发布", params: { id } });
+        let id = this.caogaoStore[index].id
+        this.$router.push({ name: '发布', params: { id } })
       }
     },
-    isSwichHide(indexs, type) {
-      this.xiajia = true;
-      if (type == "updown") {
-        this.showshowlists = true;
-        this.isshowIndex = indexs;
-        this.updown = true;
-        this.reconfirm = true;
-        this.hide = false;
-        this.confirm = false;
-        this.del = false;
-        this.confirmdelete = false;
-        this.confirmSomedelete = false;
-      } else if (type == "delete") {
-        this.showshowlists = true;
-        this.isshowIndex = indexs;
-        this.del = true;
-        this.confirm = false;
-        this.hide = false;
-        this.reconfirm = false;
-        this.updown = false;
-        this.confirmdelete = true;
-        this.confirmSomedelete = false;
-      } else if (type == "somedelete") {
+    isSwichHide (indexs, type) {
+      this.xiajia = true
+      if (type == 'updown') {
+        this.showshowlists = true
+        this.isshowIndex = indexs
+        this.updown = true
+        this.reconfirm = true
+        this.hide = false
+        this.confirm = false
+        this.del = false
+        this.confirmdelete = false
+        this.confirmSomedelete = false
+      } else if (type == 'delete') {
+        this.showshowlists = true
+        this.isshowIndex = indexs
+        this.del = true
+        this.confirm = false
+        this.hide = false
+        this.reconfirm = false
+        this.updown = false
+        this.confirmdelete = true
+        this.confirmSomedelete = false
+      } else if (type == 'somedelete') {
         if (this.allids.length == 0) {
-          Toast("请选择拍品");
-          return;
+          Toast('请选择拍品')
+          return
         }
-        this.showshowlists = true;
-        this.isshowIndex = indexs;
-        this.del = true;
-        this.confirm = false;
-        this.hide = false;
-        this.reconfirm = false;
-        this.updown = false;
-        this.confirmdelete = false;
-        this.confirmSomedelete = true;
-      } else if (type == "grounding") {
-        this.showshowlists = true;
-        this.isshowIndex = indexs;
-        this.updown = false;
-        this.reconfirm = true;
-        this.hide = false;
-        this.confirm = false;
-        this.del = false;
-        this.confirmdelete = false;
-        this.confirmSomedelete = false;
+        this.showshowlists = true
+        this.isshowIndex = indexs
+        this.del = true
+        this.confirm = false
+        this.hide = false
+        this.reconfirm = false
+        this.updown = false
+        this.confirmdelete = false
+        this.confirmSomedelete = true
+      } else if (type == 'grounding') {
+        this.showshowlists = true
+        this.isshowIndex = indexs
+        this.updown = false
+        this.reconfirm = true
+        this.hide = false
+        this.confirm = false
+        this.del = false
+        this.confirmdelete = false
+        this.confirmSomedelete = false
       } else {
-        this.xiajia = false;
-        this.showshowlists = true;
-        this.isshowIndex = indexs;
-        this.hide = true;
-        this.confirm = true;
-        this.reconfirm = false;
-        this.del = false;
-        this.updown = false;
-        this.confirmdelete = false;
-        this.confirmSomedelete = false;
+        this.xiajia = false
+        this.showshowlists = true
+        this.isshowIndex = indexs
+        this.hide = true
+        this.confirm = true
+        this.reconfirm = false
+        this.del = false
+        this.updown = false
+        this.confirmdelete = false
+        this.confirmSomedelete = false
       }
     },
-    //关闭
-    closeshowlists() {
-      this.showshowlists = false;
+    // 关闭
+    closeshowlists () {
+      this.showshowlists = false
     },
-    toWhere(id) {
-      if (this.type == "caogao") {
-        return;
+    toWhere (id) {
+      if (this.type == 'caogao') {
+        return
       }
-      if (this.type == "shibai") {
-        this.$router.push({ path: "/orderDetail/" + id });
-      } else this.$router.push({ path: "/auction/" + id });
+      if (this.type == 'shibai') {
+        this.$router.push({ path: '/orderDetail/' + id })
+      } else this.$router.push({ path: '/auction/' + id })
     },
-    //隐藏
+    // 隐藏
 
-    swichStatus: function(index) {
+    swichStatus: function (index) {
       if (this.flag) {
-        return false;
+        return false
       }
-      let _this = this;
-      _this.numBer = _this.jiepaiStore[index].is_show;
-      let type = "";
-      if (_this.numBer == "0") {
-        type = "hide";
+      let _this = this
+      _this.numBer = _this.jiepaiStore[index].is_show
+      let type = ''
+      if (_this.numBer == '0') {
+        type = 'hide'
       } else {
-        type = "show";
+        type = 'show'
       }
-      let hideid = _this.jiepaiStore[index].id;
+      let hideid = _this.jiepaiStore[index].id
       let params = {
         type: type
-      };
-      swichhide(params, hideid)
-        .then(function(response) {
-          _this.showshowlists = false;
-          _this.jiepaiStore[index].is_show = response.message;
-          this.flag = false;
-        })
-        .catch(function(error) {
-          console.log(error);
-          this.flag = false;
-        });
-    },
-    //取消
-    cancel: function() {
-      this.pupup = false;
-    },
-    //下架
-    singledown: function(index) {
-      if (this.flag) {
-        return false;
       }
-      this.flag = true;
-      let _this = this;
-      let downid = this.store[index].id;
+      swichhide(params, hideid)
+        .then(function (response) {
+          _this.showshowlists = false
+          _this.jiepaiStore[index].is_show = response.message
+          this.flag = false
+        })
+        .catch(function (error) {
+          console.log(error)
+          this.flag = false
+        })
+    },
+    // 取消
+    cancel: function () {
+      this.pupup = false
+    },
+    // 下架
+    singledown: function (index) {
+      if (this.flag) {
+        return false
+      }
+      this.flag = true
+      let _this = this
+      let downid = this.store[index].id
       singledown(downid)
         .then(response => {
           if (response.code == 200) {
-            _this.showshowlists = false;
-            this.flag = false;
-            _this.getstore();
+            _this.showshowlists = false
+            this.flag = false
+            _this.getstore()
           }
         })
-        .catch(function(error) {
-          console.log(error);
-          _this.flag = true;
-        });
+        .catch(function (error) {
+          console.log(error)
+          _this.flag = true
+        })
     },
-    //注册scroll事件并监听
-    scrollHandler() {
-      const st = document.documentElement.scrollTop || document.body.scrollTop;
-      const ch = this.$refs.ctn.clientHeight;
+    // 注册scroll事件并监听
+    scrollHandler () {
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      const ch = this.$refs.ctn.clientHeight
       if (st + window.innerHeight >= ch) {
-        console.log("加载");
-        this.getstore();
+        console.log('加载')
+        this.getstore()
       }
     },
-    sendParames(e) {
+    sendParames (e) {
       this.$router.push({
-        path: "goodsDetails",
+        path: 'goodsDetails',
         query: {
           id: e
         }
-      });
+      })
     },
-    checktime: function() {
-      let dd = new Date();
-      let hour = dd.getHours();
+    checktime: function () {
+      let dd = new Date()
+      let hour = dd.getHours()
       if (hour < 10) {
-        this.times = this.times.slice(0);
+        this.times = this.times.slice(0)
       } else if (hour >= 10 && hour < 12) {
-        this.times = this.times.slice(1);
-        this.ttmortimes = this.ttmortimes.slice(0, 1);
-        this.ttomorrowshow = true;
+        this.times = this.times.slice(1)
+        this.ttmortimes = this.ttmortimes.slice(0, 1)
+        this.ttomorrowshow = true
       } else if (hour >= 12 && hour < 16) {
-        this.times = this.times.slice(2);
-        this.ttmortimes = this.ttmortimes.slice(0, 2);
-        this.ttomorrowshow = true;
+        this.times = this.times.slice(2)
+        this.ttmortimes = this.ttmortimes.slice(0, 2)
+        this.ttomorrowshow = true
       } else if (hour >= 16 && hour < 17) {
-        this.times = this.times.slice(3);
-        this.ttmortimes = this.ttmortimes.slice(0, 3);
-        this.ttomorrowshow = true;
+        this.times = this.times.slice(3)
+        this.ttmortimes = this.ttmortimes.slice(0, 3)
+        this.ttomorrowshow = true
       } else if (hour >= 17 && hour < 19) {
-        this.times = this.times.slice(4);
-        this.ttmortimes = this.ttmortimes.slice(0, 4);
-        this.ttomorrowshow = true;
+        this.times = this.times.slice(4)
+        this.ttmortimes = this.ttmortimes.slice(0, 4)
+        this.ttomorrowshow = true
       } else if (hour >= 19 && hour < 20) {
-        this.times = this.times.slice(5);
-        this.ttmortimes = this.ttmortimes.slice(0, 5);
-        this.ttomorrowshow = true;
+        this.times = this.times.slice(5)
+        this.ttmortimes = this.ttmortimes.slice(0, 5)
+        this.ttomorrowshow = true
       } else if (hour >= 20 && hour < 21) {
-        this.times = this.times.slice(6);
-        this.ttmortimes = this.ttmortimes.slice(0, 6);
-        this.ttomorrowshow = true;
+        this.times = this.times.slice(6)
+        this.ttmortimes = this.ttmortimes.slice(0, 6)
+        this.ttomorrowshow = true
       } else if (hour >= 21 && hour < 22) {
-        this.times = this.times.slice(7);
-        this.ttmortimes = this.ttmortimes.slice(0, 7);
-        this.ttomorrowshow = true;
+        this.times = this.times.slice(7)
+        this.ttmortimes = this.ttmortimes.slice(0, 7)
+        this.ttomorrowshow = true
       } else if (hour >= 22 && hour < 23) {
-        this.times = this.times.slice(8);
-        this.ttmortimes = this.ttmortimes.slice(0, 8);
-        this.ttomorrowshow = true;
+        this.times = this.times.slice(8)
+        this.ttmortimes = this.ttmortimes.slice(0, 8)
+        this.ttomorrowshow = true
       } else if (hour >= 23) {
-        this.todayshow = false;
-        this.ttomorrowshow = true;
+        this.todayshow = false
+        this.ttomorrowshow = true
       }
     },
-    chosenSelection: function(index) {
-      this.nnowindex = -1;
-      this.nowindex = index;
-      this.nnnowindex = -1;
-      let hms = this.times[index];
-      this.seltime(index, 0, hms);
+    chosenSelection: function (index) {
+      this.nnowindex = -1
+      this.nowindex = index
+      this.nnnowindex = -1
+      let hms = this.times[index]
+      this.seltime(index, 0, hms)
     },
-    chosenSelection2: function(index) {
-      this.nowindex = -1;
-      this.nnowindex = index;
-      this.nnnowindex = -1;
-      let hms = this.tmortimes[index];
-      this.seltime(index, 1, hms);
+    chosenSelection2: function (index) {
+      this.nowindex = -1
+      this.nnowindex = index
+      this.nnnowindex = -1
+      let hms = this.tmortimes[index]
+      this.seltime(index, 1, hms)
     },
-    chosenSelection3: function(index) {
-      this.nowindex = -1;
-      this.nnnowindex = index;
-      this.nnowindex = -1;
-      let hms = this.ttmortimes[index];
-      this.seltime(index, 2, hms);
+    chosenSelection3: function (index) {
+      this.nowindex = -1
+      this.nnnowindex = index
+      this.nnowindex = -1
+      let hms = this.ttmortimes[index]
+      this.seltime(index, 2, hms)
     },
-    seltime: function(index, whatday, hms) {
-      let dd = new Date();
-      this.year = dd.getFullYear().toString();
-      this.month = (dd.getMonth() + 1).toString();
-      this.day = (dd.getDate() + whatday).toString();
-      let change = this.year + "/" + this.month + "/" + this.day + " " + hms;
-      this.totaltime = Date.parse(new Date(change)) / 1000;
-      console.log(this.totaltime);
+    seltime: function (index, whatday, hms) {
+      let dd = new Date()
+      this.year = dd.getFullYear().toString()
+      this.month = (dd.getMonth() + 1).toString()
+      this.day = (dd.getDate() + whatday).toString()
+      let change = this.year + '/' + this.month + '/' + this.day + ' ' + hms
+      this.totaltime = Date.parse(new Date(change)) / 1000
+      console.log(this.totaltime)
     },
-    getday: function() {
-      this.nowday = this.GetDateStr(0);
-      this.tomorrow = this.GetDateStr(1);
-      this.ttomorrow = this.GetDateStr(2);
+    getday: function () {
+      this.nowday = this.GetDateStr(0)
+      this.tomorrow = this.GetDateStr(1)
+      this.ttomorrow = this.GetDateStr(2)
     },
-    GetDateStr: function(AddDayCount) {
-      let dd = new Date();
-      dd.setDate(dd.getDate() + AddDayCount); //获取AddDayCount天后的日期
-      let y = dd.getFullYear();
-      let m = dd.getMonth() + 1; //获取当前月份的日期
-      let d = dd.getDate();
+    GetDateStr: function (AddDayCount) {
+      let dd = new Date()
+      dd.setDate(dd.getDate() + AddDayCount) // 获取AddDayCount天后的日期
+      let y = dd.getFullYear()
+      let m = dd.getMonth() + 1 // 获取当前月份的日期
+      let d = dd.getDate()
       if (m < 10) {
-        m = "0" + m;
+        m = '0' + m
       }
       if (d < 10) {
-        d = "0" + d;
+        d = '0' + d
       }
-      return m + "月" + d + "日";
+      return m + '月' + d + '日'
     },
-    exit() {
-      this.pupup = false;
+    exit () {
+      this.pupup = false
     },
-    //获取列表
-    getstore() {
+    // 获取列表
+    getstore () {
       if (this.count == 0 || this.loading) {
-        return;
+        return
       }
-      this.loading = true;
-      let _this = this;
-      this.page += 1;
+      this.loading = true
+      let _this = this
+      this.page += 1
       let params = {
         page: this.page,
         pagenum: this.pagenum,
-        type: "jiepai"
-      };
+        type: 'jiepai'
+      }
       getstore(params)
         .then(response => {
           if (response.code == 200) {
-            _this.jiepaiStore = _this.jiepaiStore.concat(response.data);
-            _this.checkselectshow = false;
-            _this.count = response.data.length;
-            _this.loading = false;
+            _this.jiepaiStore = _this.jiepaiStore.concat(response.data)
+            _this.checkselectshow = false
+            _this.count = response.data.length
+            _this.loading = false
           }
         })
         .catch(error => {
-          this.dataNotAvailable = this.jiepaiStore.length == 0;
-          this.loading = false;
-          this.elseloading = true;
-          this.count = 0;
-          console.log(error);
-        });
+          this.dataNotAvailable = this.jiepaiStore.length == 0
+          this.loading = false
+          this.elseloading = true
+          this.count = 0
+          console.log(error)
+        })
     },
-    //删除
-    somedown: function() {
+    // 删除
+    somedown: function () {
       if (this.flag) {
-        return false;
+        return false
       }
-      this.flag = true;
-      let _this = this;
-      let delids = this.allids.join(",");
+      this.flag = true
+      let _this = this
+      let delids = this.allids.join(',')
       let params = {
         auc_id: delids
-      };
+      }
       somedown(params)
         .then(response => {
-          this.allids = [];
-          this.textGrounding = "上架";
-          this.textDelete = "删除";
+          this.allids = []
+          this.textGrounding = '上架'
+          this.textDelete = '删除'
           if (response.code == 200) {
-            this.showshowlists = false;
-            this.flag = false;
-            this.getstore();
+            this.showshowlists = false
+            this.flag = false
+            this.getstore()
           }
         })
-        .catch(function(error) {
-          this.flag = false;
-          console.log(error);
-        });
+        .catch(function (error) {
+          this.flag = false
+          console.log(error)
+        })
     },
-    //单个删除
-    singledelete: function(index) {
+    // 单个删除
+    singledelete: function (index) {
       if (this.flag) {
-        return false;
+        return false
       }
-      this.flag = true;
-      this.oneid = "";
+      this.flag = true
+      this.oneid = ''
       if (this.$refs.whichsingselect[index].value == index) {
-        this.oneid = this.store[index].id;
+        this.oneid = this.store[index].id
       }
-      let _this = this;
-      let auc_id = this.oneid;
+      let _this = this
+      let auc_id = this.oneid
       singledelete(auc_id)
-        .then(function(response) {
+        .then(function (response) {
           if (response.code == 200) {
-            _this.showshowlists = false;
-            this.flag = false;
-            _this.getstore();
+            _this.showshowlists = false
+            this.flag = false
+            _this.getstore()
           }
         })
-        .catch(function(error) {
-          console.log(error);
-          this.flag = false;
-        });
+        .catch(function (error) {
+          console.log(error)
+          this.flag = false
+        })
     },
-    //点击切换数据显示
-    Red: function(index) {
-      this.showshowlists = false;
-      this.elseloading = false;
-      this.allids = [];
-      this.count = this.pagenum;
-      this.changeRed = index;
-      localStorage.setItem("changeRed", index);
-      this.type = this.timeLists[index].type;
-      this.page = 0;
-      this.auctionStore = [];
-      this.jiepaiStore = [];
-      this.liupaiStore = [];
-      this.shibaiStore = [];
-      this.caogaoStore = [];
-      this.getstore(this.type);
-      console.log(this.type);
-      if (this.type == "jiepai") {
-        this.auctioning = false;
-        this.jiepai = true;
-        this.liupai = false;
-        this.shibai = false;
-        this.caogao = false;
-        this.soldout = false;
-        this.notsoldout = false;
-        this.toup = false;
-        this.tohide = true;
-        this.deleted = false;
-        this.toshow = false;
-        this.checkselectshow = false;
-      } else if (this.type == "auctioning") {
-        this.auctioning = true;
-        this.jiepai = false;
-        this.liupai = false;
-        this.shibai = false;
-        this.caogao = false;
-        this.soldout = true;
-        this.notsoldout = false;
-        this.toup = true;
-        this.deleted = false;
-        this.tohide = false;
-        this.toshow = false;
-        this.checkselectshow = false;
-      } else if (this.type == "liupai") {
-        this.auctioning = false;
-        this.jiepai = false;
-        this.liupai = true;
-        this.shibai = false;
-        this.caogao = false;
-        this.soldout = false;
-        this.notsoldout = false;
-        this.toup = false;
-        this.tohide = true;
-        this.deleted = false;
-        this.toshow = false;
-      } else if (this.type == "shibai") {
-        this.auctioning = false;
-        this.jiepai = false;
-        this.liupai = false;
-        this.shibai = true;
-        this.caogao = false;
-        this.soldout = false;
-        this.notsoldout = false;
-        this.toup = false;
-        this.tohide = false;
-        this.deleted = false;
-        this.toshow = false;
-        this.checkselectshow = false;
-      } else if (this.type == "caogao") {
-        this.auctioning = false;
-        this.jiepai = false;
-        this.liupai = false;
-        this.shibai = false;
-        this.caogao = true;
-        this.soldout = false;
-        this.notsoldout = true;
-        this.toup = false;
-        this.tohide = false;
-        this.deleted = true;
-        this.toshow = false;
-        this.checkselectshow = false;
-        console.log(this.checkselectshow);
+    // 点击切换数据显示
+    Red: function (index) {
+      this.showshowlists = false
+      this.elseloading = false
+      this.allids = []
+      this.count = this.pagenum
+      this.changeRed = index
+      localStorage.setItem('changeRed', index)
+      this.type = this.timeLists[index].type
+      this.page = 0
+      this.auctionStore = []
+      this.jiepaiStore = []
+      this.liupaiStore = []
+      this.shibaiStore = []
+      this.caogaoStore = []
+      this.getstore(this.type)
+      console.log(this.type)
+      if (this.type == 'jiepai') {
+        this.auctioning = false
+        this.jiepai = true
+        this.liupai = false
+        this.shibai = false
+        this.caogao = false
+        this.soldout = false
+        this.notsoldout = false
+        this.toup = false
+        this.tohide = true
+        this.deleted = false
+        this.toshow = false
+        this.checkselectshow = false
+      } else if (this.type == 'auctioning') {
+        this.auctioning = true
+        this.jiepai = false
+        this.liupai = false
+        this.shibai = false
+        this.caogao = false
+        this.soldout = true
+        this.notsoldout = false
+        this.toup = true
+        this.deleted = false
+        this.tohide = false
+        this.toshow = false
+        this.checkselectshow = false
+      } else if (this.type == 'liupai') {
+        this.auctioning = false
+        this.jiepai = false
+        this.liupai = true
+        this.shibai = false
+        this.caogao = false
+        this.soldout = false
+        this.notsoldout = false
+        this.toup = false
+        this.tohide = true
+        this.deleted = false
+        this.toshow = false
+      } else if (this.type == 'shibai') {
+        this.auctioning = false
+        this.jiepai = false
+        this.liupai = false
+        this.shibai = true
+        this.caogao = false
+        this.soldout = false
+        this.notsoldout = false
+        this.toup = false
+        this.tohide = false
+        this.deleted = false
+        this.toshow = false
+        this.checkselectshow = false
+      } else if (this.type == 'caogao') {
+        this.auctioning = false
+        this.jiepai = false
+        this.liupai = false
+        this.shibai = false
+        this.caogao = true
+        this.soldout = false
+        this.notsoldout = true
+        this.toup = false
+        this.tohide = false
+        this.deleted = true
+        this.toshow = false
+        this.checkselectshow = false
+        console.log(this.checkselectshow)
       }
     },
-    //置顶
-    ToTop(e, index) {
+    // 置顶
+    ToTop (e, index) {
       if (this.flag) {
-        return;
+        return
       }
-      this.flag = true;
-      let _this = this;
+      this.flag = true
+      let _this = this
       ToTop(e)
-        .then(function(response) {
+        .then(function (response) {
           if (response.code == 200) {
-            let arr = _this.store.splice(index, 1);
-            _this.store.unshift(arr[0]);
-            _this.flag = false;
+            let arr = _this.store.splice(index, 1)
+            _this.store.unshift(arr[0])
+            _this.flag = false
           }
         })
-        .catch(function(error) {
-          console.log(error);
-          _this.flag = false;
-        });
+        .catch(function (error) {
+          console.log(error)
+          _this.flag = false
+        })
     },
-    allselect() {
-      this.allids = [];
+    allselect () {
+      this.allids = []
       if (this.$refs.allselects.checked) {
-        for (var i = 0; i < this.$refs.singlechecks.length; i++) {
-          this.$refs.singlechecks[i].checked = true;
-          this.allids.push(this.$refs.singlechecks[i].value);
+        for (let i = 0; i < this.$refs.singlechecks.length; i++) {
+          this.$refs.singlechecks[i].checked = true
+          this.allids.push(this.$refs.singlechecks[i].value)
         }
       } else {
-        for (var i = 0; i < this.$refs.singlechecks.length; i++) {
-          this.$refs.singlechecks[i].checked = false;
-          this.allids = [];
+        for (let i = 0; i < this.$refs.singlechecks.length; i++) {
+          this.$refs.singlechecks[i].checked = false
+          this.allids = []
         }
       }
-      console.log(this.allids);
+      console.log(this.allids)
     },
-    singleselect: function(id, index) {
-      let num = this.allids.indexOf(id);
-      let quantity = this.indexs.indexOf(index);
+    singleselect: function (id, index) {
+      let num = this.allids.indexOf(id)
+      let quantity = this.indexs.indexOf(index)
       if (quantity > -1) {
-        this.indexs.splice(index, 1);
+        this.indexs.splice(index, 1)
       } else {
-        this.indexs.push(index);
+        this.indexs.push(index)
       }
-      console.log(this.indexs);
+      console.log(this.indexs)
       if (num > -1) {
-        this.allids.splice(num, 1);
+        this.allids.splice(num, 1)
       } else {
-        this.allids.push(id);
+        this.allids.push(id)
       }
       if (this.allids.length > 1) {
-        this.textGrounding = "批量上架";
-        this.textDelete = "批量删除";
+        this.textGrounding = '批量上架'
+        this.textDelete = '批量删除'
       } else {
-        this.textGrounding = "上架";
-        this.textDelete = "删除";
+        this.textGrounding = '上架'
+        this.textDelete = '删除'
       }
       if (this.$refs.singlechecks.length > this.allids.length) {
-        this.$refs.allselects.checked = false;
+        this.$refs.allselects.checked = false
       } else {
-        this.$refs.allselects.checked = true;
+        this.$refs.allselects.checked = true
       }
-      console.log(this.allids);
+      console.log(this.allids)
     },
-    cancelbts() {
-      this.btnsshow = false;
+    cancelbts () {
+      this.btnsshow = false
     },
-    //批量上传
-    selectsomeup() {
-      console.log(this.allids);
+    // 批量上传
+    selectsomeup () {
+      console.log(this.allids)
       if (this.allids.length > 1) {
-        this.pupup = true;
-        this.allids = this.allids.join(",");
+        this.pupup = true
+        this.allids = this.allids.join(',')
       } else if (this.allids.length == 1) {
-        this.isSwichHide(this.indexs[0], "grounding");
+        this.isSwichHide(this.indexs[0], 'grounding')
       } else {
-        Toast("请选择拍品");
+        Toast('请选择拍品')
       }
     },
-    //多个确认上架
-    someconfirmup: function() {
-      this.pupup = false;
-      let _this = this;
+    // 多个确认上架
+    someconfirmup: function () {
+      this.pupup = false
+      let _this = this
       if (this.allids.length == 1) {
-        var params = {
+        let params = {
           time: this.totaltime,
           auc_id: this.oneid
-        };
+        }
       } else if (this.allids.length > 1) {
-        var params = {
+        let params = {
           auc_id: this.allids,
           time: this.totaltime
-        };
+        }
       }
       confirmup(params)
-        .then(function(response) {
-          _this.allids = [];
-          _this.textGrounding = "上架";
-          _this.textDelete = "删除";
+        .then(function (response) {
+          _this.allids = []
+          _this.textGrounding = '上架'
+          _this.textDelete = '删除'
           if (response.code == 200) {
-            window.location.reload();
+            window.location.reload()
           }
         })
-        .catch(function(error) {
-          console.log(error);
-        });
+        .catch(function (error) {
+          console.log(error)
+        })
     }
-    //选择单个上架跳出选择时间
+    // 选择单个上架跳出选择时间
     // selsingleup:function(index){
     //   this.confirmupshow=true;
     //   this.someconfirmupshow=false;
@@ -764,16 +764,16 @@ export default {
     //   }
     // },
   },
-  beforeRouteLeave(to, from, next) {
-    localStorage.removeItem("changeRed");
-    next();
+  beforeRouteLeave (to, from, next) {
+    localStorage.removeItem('changeRed')
+    next()
   },
-  mounted() {
-    this.checktime();
-    this.getday();
-    this.getstore();
+  mounted () {
+    this.checktime()
+    this.getday()
+    this.getstore()
   }
-};
+}
 </script>
 <style scoped>
 .storeManagement {
@@ -1258,4 +1258,4 @@ input[type="checkbox"]:checked:after {
      color: #a2a2a2;
   }
 */
-</style>  
+</style>

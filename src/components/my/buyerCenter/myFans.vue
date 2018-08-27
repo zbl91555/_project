@@ -10,11 +10,11 @@
 			</div>
 		</div>
 		<ul class="mainFans">
-			<li v-for="(e,index) in infoList">
+			<li v-for="(e,index) in infoList" :key="e">
 				<div class="fans-img">
 					<img :src="e.headimgurl" />
 				</div>
-				<div class="fans-info" :class="{active: e.guanzhu == true}">   
+				<div class="fans-info" :class="{active: e.guanzhu == true}">
 					<span>{{e.nickname}}</span>
 					<span v-if="e.guanzhu == false" @click="toAttention(e.userId,index)">+关注</span>
 					<span v-if="e.guanzhu == true" @click="cancelAttention(e.userId,index)">取消关注</span>
@@ -25,91 +25,91 @@
 </template>
 
 <script>
-	import {rewardMember,rewardMemberList,shopFocus,shopCancel} from '../../../api/api'
-	export default {
-		data() {
-			return {
-				info: {},
-				infoList:[],
-				page:0,
-				pagenum:7,
-				flag:false,
-			}
-		},
-		created() {
-	    	window.addEventListener('scroll',this.scrollHandler)
-	  	},
+import {rewardMember, rewardMemberList, shopFocus, shopCancel} from '../../../api/api'
+export default {
+  data () {
+    return {
+      info: {},
+      infoList: [],
+      page: 0,
+      pagenum: 7,
+      flag: false
+    }
+  },
+  created () {
+    window.addEventListener('scroll', this.scrollHandler)
+  },
 
-	  	destroyed() {
-	    	window.removeEventListener('scroll',this.scrollHandler)
-	  	},
-		methods: {
-			//注册scroll事件并监听 
-		    scrollHandler(){
-		    	console.log(this.flag);
-		    	if(this.flag){
-					const st = document.documentElement.scrollTop || document.body.scrollTop;
-		      		const ch = this.$refs.myFans.clientHeight;
-			        if (st + window.innerHeight >= ch) {
-			        	this.rewardMemberList();
-			        }
-		    	}
-		    }, 
-			rewardMember: function() {
-				let _this = this;
-				rewardMember().then(function(res) {
-					_this.info = res.data;
-				}).catch(function(err) {
-					console.log(err);
-				})
-			},
-			rewardMemberList: function() {
-				this.page += 1;
-				let _this = this;
-				let params = {
-						page: _this.page,
-						pagenum: _this.pagenum,
-					};
-				rewardMemberList(params).then(function(res) {
-					if(res.data.length>=_this.pagenum){
-						_this.flag = true;
-					}else{
-						_this.flag = false;
-					}
-					_this.infoList =  _this.infoList.concat(res.data);
-				}).catch(function(err) {
-					_this.flag = false;
-					console.log(err);
-				})
-			},
-			toAttention(id,index) {
-                shopFocus(id).then(res =>{
-                	this.infoList[index].guanzhu = true
-					console.log(res.data);	
-				}).catch(err =>{
-					console.log(err);
-				})
-			},
-			cancelAttention(id,index){
-			    shopCancel(id).then(res =>{
-                	this.infoList[index].guanzhu = false
-					console.log(res.data);	
-				}).catch(err =>{
-					console.log(err);
-				})
-			}
-		},
-		mounted() {
-			this.rewardMember();
-			this.rewardMemberList();
-		},
-	}
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollHandler)
+  },
+  methods: {
+    // 注册scroll事件并监听
+    scrollHandler () {
+      console.log(this.flag)
+      if (this.flag) {
+        const st = document.documentElement.scrollTop || document.body.scrollTop
+        const ch = this.$refs.myFans.clientHeight
+        if (st + window.innerHeight >= ch) {
+          this.rewardMemberList()
+        }
+      }
+    },
+    rewardMember: function () {
+      let _this = this
+      rewardMember().then(function (res) {
+        _this.info = res.data
+      }).catch(function (err) {
+        console.log(err)
+      })
+    },
+    rewardMemberList: function () {
+      this.page += 1
+      let _this = this
+      let params = {
+        page: _this.page,
+        pagenum: _this.pagenum
+      }
+      rewardMemberList(params).then(function (res) {
+        if (res.data.length >= _this.pagenum) {
+          _this.flag = true
+        } else {
+          _this.flag = false
+        }
+        _this.infoList = _this.infoList.concat(res.data)
+      }).catch(function (err) {
+        _this.flag = false
+        console.log(err)
+      })
+    },
+    toAttention (id, index) {
+      shopFocus(id).then(res => {
+        this.infoList[index].guanzhu = true
+        // console.log(res.data)
+      }).catch(err => {
+        // console.log(err)
+      })
+    },
+    cancelAttention (id, index) {
+      shopCancel(id).then(res => {
+        this.infoList[index].guanzhu = false
+        // console.log(res.data)
+      }).catch(err => {
+        // console.log(err)
+      })
+    }
+  },
+  mounted () {
+    this.rewardMember()
+    this.rewardMemberList()
+  }
+}
 </script>
 
 <style lang="less" scoped>
 	/*
-	 * @border-color: 统一边框颜色
-	 * */
+	* @border-color: 统一边框颜色
+	* */
 	@border-color: #e5e5e5;
 	.app-containerFans {
 		min-height: 1234px;
@@ -166,7 +166,7 @@
 			}
 		}
 	}
-	
+
 	.app-containerFans .mainFans {
 		background-color: #fff;
 		border-top: 1px solid @border-color;

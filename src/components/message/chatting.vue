@@ -1,23 +1,23 @@
 <template>
 	<div class="chatting">
-	    <div class="fixednumMaskchat">
-	       <div class="chatsomething">
-				<div class="chattingHeader">
-				    扬名红木
-					<div class="icon-wendang iconfont"></div>
-					<div class="icon-gengduo iconfont"></div>
-				</div>
-				<div class="chattingBody">
-					
-				</div>
-				<div class="chattingFooter">
-					<textarea name="" id="" cols="40" rows="1" v-model="textMsg"></textarea>
-					<div class=" iconfont" @click="sendMsg">发送</div>
-					<!-- <div class="icon-tianjia iconfont"></div> -->
-				</div>
-		   </div>
+	<div class="fixednumMaskchat">
+		<div class="chatsomething">
+			<div class="chattingHeader">
+				扬名红木
+				<div class="icon-wendang iconfont"></div>
+				<div class="icon-gengduo iconfont"></div>
+			</div>
+			<div class="chattingBody">
+
+			</div>
+			<div class="chattingFooter">
+				<textarea name="" id="" cols="40" rows="1" v-model="textMsg"></textarea>
+				<div class=" iconfont" @click="sendMsg">发送</div>
+				<!-- <div class="icon-tianjia iconfont"></div> -->
+			</div>
+		</div>
         </div>
-	</div>		
+	</div>
 </template>
 <script>
 export default {
@@ -25,24 +25,24 @@ export default {
 }
 </script>
 <style scoped>
-    .chatting{
-    	height:100%;
-    }
-    .fixednumMaskchat {
-	  position: fixed;
-	  width: 750px;
-	  top: 0;
-	  bottom: 0;
-	  z-index: 999;
+	.chatting{
+		height:100%;
+	}
+	.fixednumMaskchat {
+		position: fixed;
+		width: 750px;
+		top: 0;
+		bottom: 0;
+		z-index: 999;
 	}
 	.chatsomething{
 		position: relative;
-	    left:0;
-	    bottom: 0;
-	    z-index: 1100;
-	    width: 100%;
-	    height:100%;
-	    background: white;
+		left:0;
+		bottom: 0;
+		z-index: 1100;
+		width: 100%;
+		height:100%;
+		background: white;
 	}
 	.chatting .chatsomething .chattingHeader{
 		height: 80px;

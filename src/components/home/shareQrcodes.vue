@@ -1,6 +1,6 @@
 <template>
   <div class="shareQrcodes">
-    <div class="auctionPic" style="background-image: url(&quot;https://cdn.weipaitang.com/mmopen/20171128d01aa1a1-d5d1-4e7e-a84d-5ca1482f1960/w/0&quot;);">   
+    <div class="auctionPic" style="background-image: url(&quot;https://cdn.weipaitang.com/mmopen/20171128d01aa1a1-d5d1-4e7e-a84d-5ca1482f1960/w/0&quot;);">
     </div>
     <div class="auctionDesc">
         【卓玉馆】龙焰 新疆和田白玉籽料秋梨皮挂件手
@@ -14,29 +14,22 @@
   </div>
 </template>
 <script>
-    import {/*sharesaveComplaint*/} from '../../api/api'
 export default {
-    data() {
-        return {           
-        };
-    },
-    methods: { 
-        saveComplaint(){
-            let _this = this;
-            _this.id = this.$route.query.id
-            let params = {
-                type:'update',
-                name:_this.name,
-            };
-                // sharesaveComplaint(params,_this.id).then(function(res) {
-                //     console.log('sucess')
-                // })
-                // .catch(function(error) {
-                //     console.log(error);
-                // });
-            },
-         }  
-    };
+  data () {
+    return {
+    }
+  },
+  methods: {
+    saveComplaint () {
+      let _this = this
+      _this.id = this.$route.query.id
+      let params = {
+        type: 'update',
+        name: _this.name
+      }
+    }
+  }
+}
 </script>
 <style scoped>
     .shareQrcodes{
@@ -48,7 +41,7 @@ export default {
         padding:31px;
         background-size: cover;
         background-repeat: no-repeat;
-        background-image: url(../../assets/images/sharebg.png);        
+        background-image: url(../../assets/images/sharebg.png);
     }
     .shareQrcodes .auctionPic {
         width: 100%;
@@ -75,8 +68,8 @@ export default {
         margin:0 auto 33px auto;
         background-size: cover;
         background-repeat: no-repeat;
-        background-image: url(../../assets/images/code.jpg);  
-        
+        background-image: url(../../assets/images/code.jpg);
+
     }
     .shareQrcodes p{
         text-align: center;

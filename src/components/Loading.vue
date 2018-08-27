@@ -11,20 +11,18 @@
 
   </div>
 </template>
-
 <script>
 export default {
-
-  props:{
-  	replace:true,
-  	title:{
-  		type:String,
-  		default:"正在加载中"
-  	},
-  	show:{
-  		type:Boolean,
-  		default:true,
-  	}
+  props: {
+    replace: true,
+    title: {
+      type: String,
+      default: '正在加载中'
+    },
+    show: {
+      type: Boolean,
+      default: true
+    }
   }
 }
 </script>

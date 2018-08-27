@@ -2,11 +2,11 @@
   <div class="returnRequest">
     <div class="moneys">
         <div>余额充值</div>
-    </div>  
+    </div>
     <div style="border-top: 1px solid #e5e5e5;margin-left: 15px"></div>
     <div class="moneys">
         <div>需要支付:<i style="color:#f15511"> ￥{{num}}</i></div>
-    </div>  
+    </div>
     <div style="border-top: 1px solid #e5e5e5;margin-left: 15px"></div>
     <ul>
       <li class="op">
@@ -29,81 +29,81 @@
 </template>
 
 <script>
-import wx from "weixin-js-sdk";
-import { getSign, wxPay } from "../../../api/api";
-import assign from "../../../assets/js/assign.js"; //混入式方法
+import wx from 'weixin-js-sdk'
+import { getSign, wxPay } from '../../../api/api'
+import assign from '../../../assets/js/assign.js' // 混入式方法
 export default {
   mixins: [assign],
-  data() {
+  data () {
     return {
       config: {},
       payConfig: {},
       active: false,
-      num: "",
+      num: '',
       wxPayFlag: false,
-      product: "", //拍品id
-      bond: "", //保证金id
-      type: "", //保证金type
-      premium: "", //消保金
-      personalAuthentication : '',//个人认证
-      enterpriseCertification : '',//企业认证
-    };
-  },
-  mounted() {
-    let path = this.$route.query;
-    if (path.product) {
-      this.product = path.product;
-    } else if (path.bond) {
-      this.bond = path.bond;
-      this.type = path.type;
-    }else if (path.premium) {
-			this.premium = path.premium;
-		}else if (path.personalAuthentication) {
-      this.personalAuthentication = path.personalAuthentication;
-    }else if (path.enterpriseCertification) {
-      this.enterpriseCertification = path.enterpriseCertification;
+      product: '', // 拍品id
+      bond: '', // 保证金id
+      type: '', // 保证金type
+      premium: '', // 消保金
+      personalAuthentication: '', // 个人认证
+      enterpriseCertification: '' // 企业认证
     }
-    this.num = this.$route.query.rechargeYu;
-    this.reload();
+  },
+  mounted () {
+    let path = this.$route.query
+    if (path.product) {
+      this.product = path.product
+    } else if (path.bond) {
+      this.bond = path.bond
+      this.type = path.type
+    } else if (path.premium) {
+      this.premium = path.premium
+    } else if (path.personalAuthentication) {
+      this.personalAuthentication = path.personalAuthentication
+    } else if (path.enterpriseCertification) {
+      this.enterpriseCertification = path.enterpriseCertification
+    }
+    this.num = this.$route.query.rechargeYu
+    this.reload()
   },
   methods: {
-    wxPay() {
+    wxPay () {
       let params = {
-        channel: "wx_pub",
-        type: "ch",
+        channel: 'wx_pub',
+        type: 'ch',
         price: this.num
-      };
+      }
       if (!this.wxPayFlag) {
-        this.wxPayFlag = true;
+        this.wxPayFlag = true
         wxPay(params)
           .then(response => {
-            this.wxPayFlag = false;
-            this.weixinPay(response.data);
+            this.wxPayFlag = false
+            this.weixinPay(response.data)
           })
-          .catch(error => {});
+          .catch(error => {})
       }
     },
-    getSign() {
+    getSign () {
       let params = {
         uri: window.location.href
-      };
+      }
       getSign(params)
         .then(response => {
-          this.config = response.data;
+          this.config = response.data
           this.config.jsApiList = [
-            "onMenuShareTimeline",
-            "onMenuShareAppMessage",
-            "chooseImage",
-            "chooseWXPay"
-          ];
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'chooseImage',
+            'chooseWXPay'
+          ]
         })
         .catch(error => {
-          console.log(error.data);
-        });
+          console.log(error.data)
+        })
     },
-    reload() {
-      this.getSign();
-      wx.config(this.config);
+    reload () {
+      this.getSign()
+      wx.config(this.config)
       // wx.checkJsApi({
       //   jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage','chooseImage','chooseWXPay'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
       //   success: function(res) {
@@ -112,52 +112,52 @@ export default {
       //   }
       // });
     },
-    weixinPay(data) {
-      var vm = this;
-      if (typeof WeixinJSBridge == "undefined") {
-        //微信浏览器内置对象。参考微信官方文档
+    weixinPay (data) {
+      var vm = this
+      if (typeof WeixinJSBridge == 'undefined') {
+        // 微信浏览器内置对象。参考微信官方文档
         if (document.addEventListener) {
           document.addEventListener(
-            "WeixinJSBridgeReady",
+            'WeixinJSBridgeReady',
             vm.onBridgeReady(data),
             false
-          );
+          )
         } else if (document.attachEvent) {
-          document.attachEvent("WeixinJSBridgeReady", vm.onBridgeReady(data));
-          document.attachEvent("onWeixinJSBridgeReady", vm.onBridgeReady(data));
+          document.attachEvent('WeixinJSBridgeReady', vm.onBridgeReady(data))
+          document.attachEvent('onWeixinJSBridgeReady', vm.onBridgeReady(data))
         }
       } else {
-        vm.onBridgeReady(data);
+        vm.onBridgeReady(data)
       }
     },
-    onBridgeReady(data) {
-      var vm = this;
-      WeixinJSBridge.invoke("getBrandWCPayRequest", data, function(res) {
-        if (res.err_msg == "get_brand_wcpay_request:cancel") {
-          console.log("11");
+    onBridgeReady (data) {
+      var vm = this
+      WeixinJSBridge.invoke('getBrandWCPayRequest', data, function (res) {
+        if (res.err_msg == 'get_brand_wcpay_request:cancel') {
+          console.log('11')
         } else {
           setTimeout(_ => {
             if (vm.product) {
-              vm.$router.push("/payment?order_id=" + vm.product);
-              return;
+              vm.$router.push('/payment?order_id=' + vm.product)
+              return
             } else if (vm.bond) {
               vm.$router.push({
-                path: "/payment/cashDepositPay",
+                path: '/payment/cashDepositPay',
                 query: { auction_id: vm.bond, type: vm.type }
-              });
-              return;
-            }else if(vm.premium) {
-              vm.$router.push("/payment/consumerPay");     
-              return ;         
-            }else if(vm.personalAuthentication) {
-              vm.$router.push("/payment/personalCertificatePay");
-              return ;
-            }else if(vm.enterpriseCertification) {
-              vm.$router.push("/payment/enterpriseCertiPay");
-              return ;
+              })
+              return
+            } else if (vm.premium) {
+              vm.$router.push('/payment/consumerPay')
+              return
+            } else if (vm.personalAuthentication) {
+              vm.$router.push('/payment/personalCertificatePay')
+              return
+            } else if (vm.enterpriseCertification) {
+              vm.$router.push('/payment/enterpriseCertiPay')
+              return
             }
-            window.location.href = "/balanceIndex";
-          }, 100);
+            window.location.href = '/balanceIndex'
+          }, 100)
         }
 
         // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
@@ -170,14 +170,11 @@ export default {
         //    alert('zouna')
         //    //console.log("支付失败,请跳转页面"+res.err_msg);
         //  }
-      });
+      })
     }
   }
-};
+}
 </script>
-
-
-
 
 <style scoped lang="less">
 @border-color: #e5e5e5;

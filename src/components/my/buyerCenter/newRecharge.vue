@@ -21,103 +21,103 @@
 </template>
 
 <script>
-import keyboard from "../../home/keyboard"; //数字键盘
+import keyboard from '../../home/keyboard' // 数字键盘
 export default {
   components: {
     keyboard
   },
   // mixins:[assign],
-  data() {
+  data () {
     return {
       // 键盘相关data
       keyboard: false,
       cursor1: false,
-      val: "",
+      val: '',
       des: true,
-			product: "",//拍品id
-			bond : '',//保证金id
-			type : '',//保证金type
-			premium : '',//消保金
-			personalAuthentication : '',//个人认证
-			enterpriseCertification : '',//企业认证
-    };
+      product: '', // 拍品id
+      bond: '', // 保证金id
+      type: '', // 保证金type
+      premium: '', // 消保金
+      personalAuthentication: '', // 个人认证
+      enterpriseCertification: '' // 企业认证
+    }
   },
-  mounted() {
-		let path = this.$route.query;
+  mounted () {
+    let path = this.$route.query
     if (path.order_id) {
-      this.product = path.order_id;
-    }else if(path.auction_id) {
-			this.bond = path.auction_id;
-			this.type = path.type;
-		}else if (path.premium) {
-			this.premium = path.premium;
-		}else if(path.personal_authentication) {
-			this.personalAuthentication = path.personal_authentication;
-		}else if (path.enterprise_certification) {
-			this.enterpriseCertification = path.enterprise_certification;
-		}
+      this.product = path.order_id
+    } else if (path.auction_id) {
+      this.bond = path.auction_id
+      this.type = path.type
+    } else if (path.premium) {
+      this.premium = path.premium
+    } else if (path.personal_authentication) {
+      this.personalAuthentication = path.personal_authentication
+    } else if (path.enterprise_certification) {
+      this.enterpriseCertification = path.enterprise_certification
+    }
   },
   methods: {
-    openKeyboard() {
-      this.keyboard = true;
-      this.cursor1 = true;
-      this.des = false;
+    openKeyboard () {
+      this.keyboard = true
+      this.cursor1 = true
+      this.des = false
     },
-    closeKeyboard() {
-      this.keyboard = false;
-      this.cursor1 = false;
+    closeKeyboard () {
+      this.keyboard = false
+      this.cursor1 = false
     },
-    /*输入*/
-    typing(value) {
-      /*如果是点击删除*/
-      if (value === "") {
-        this.del();
+    /* 输入 */
+    typing (value) {
+      /* 如果是点击删除 */
+      if (value === '') {
+        this.del()
       }
-      /*获取新的值*/
-      this.val = this.val + value;
+      /* 获取新的值 */
+      this.val = this.val + value
     },
-    del() {
-      this.val = this.val.slice(0, -1);
+    del () {
+      this.val = this.val.slice(0, -1)
     },
-    nextStep() {
+    nextStep () {
       if (!this.val) {
-        return;
+        return
       }
       if (this.product) {
         this.$router.push({
-          path: "/payment/newRechargeNext",
-          query: { rechargeYu: this.val,product : this.product }
-				});
-				return ;
-			}else if (this.bond) {
+          path: '/payment/newRechargeNext',
+          query: { rechargeYu: this.val, product: this.product }
+        })
+        return
+      } else if (this.bond) {
         this.$router.push({
-          path: "/payment/newRechargeNext",
-          query: { rechargeYu: this.val,bond : this.bond,type : this.type }
-				});				
-				return ;
-			}else if (this.premium) {
-				this.$router.push({
-          path: "/payment/newRechargeNext",
-          query: { rechargeYu: this.val,premium : this.premium }
-				});
-				return ;
-			}else if (this.personalAuthentication) {
-				this.$router.push({
-          path: "/payment/newRechargeNext",
-          query: { rechargeYu: this.val,personalAuthentication : this.personalAuthentication }
-				});			
-				return ;	
-			}else if (this.enterpriseCertification) {
-				this.$router.push({
-          path: "/payment/newRechargeNext",
-          query: { rechargeYu: this.val,enterpriseCertification : this.enterpriseCertification }
-				});			
-				return ;					
-			}
-			this.$router.push({path:'/payment/newRechargeNext',query:{rechargeYu:this.val}});
+          path: '/payment/newRechargeNext',
+          query: { rechargeYu: this.val, bond: this.bond, type: this.type }
+        })
+        return
+      } else if (this.premium) {
+        this.$router.push({
+          path: '/payment/newRechargeNext',
+          query: { rechargeYu: this.val, premium: this.premium }
+        })
+        return
+      } else if (this.personalAuthentication) {
+        this.$router.push({
+          path: '/payment/newRechargeNext',
+          query: { rechargeYu: this.val, personalAuthentication: this.personalAuthentication }
+        })
+        return
+      } else if (this.enterpriseCertification) {
+        this.$router.push({
+          path: '/payment/newRechargeNext',
+          query: { rechargeYu: this.val, enterpriseCertification: this.enterpriseCertification }
+        })
+        return
+      }
+      this.$router.push({path: '/payment/newRechargeNext', query: {rechargeYu: this.val}})
     }
   }
-};
+}
 </script>
 
 <style scoped>

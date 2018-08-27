@@ -28,7 +28,7 @@
 				<th>朋友微信</th>
 				<th>交易类型</th>
 			</tr>
-		    <tr v-for="i in infoList">
+			<tr v-for="i in infoList" :key="i">
 				<td>{{timestampToTime(i.addTime)}}</td>
 				<td>￥{{i.money}}</td>
 				<td>{{i.userName}}</td>
@@ -39,7 +39,7 @@
 			</tr>
 		</table>
 		<ul class="out-listBonus" v-if="active == '1'">
-			<li v-for="item in infoLists">
+			<li v-for="item in infoLists" :key="item">
 				<div class="left">
 					<p class="title">{{item.name}}</p>
 					<p class="time">
@@ -56,78 +56,78 @@
 </template>
 
 <script>
-	import {rewardBonus,rewardBonusList} from '../../../api/api'
-	export default {
-		data() {
-			return {
-				active: '0',  // tab切换样式
-				info: {},
-				infoList: [],
-				infoLists:[],
-				page:0
-			}
-		},
-		created() {
-		    window.addEventListener("scroll", this.scrollHandler);
-		},
+import {rewardBonus, rewardBonusList} from '../../../api/api'
+export default {
+  data () {
+    return {
+      active: '0', // tab切换样式
+      info: {},
+      infoList: [],
+      infoLists: [],
+      page: 0
+    }
+  },
+  created () {
+    window.addEventListener('scroll', this.scrollHandler)
+  },
 
-		destroyed() {
-		    window.removeEventListener("scroll", this.scrollHandler);
-		},
-		methods: {
-			scrollHandler(){
-				const st = document.documentElement.scrollTop || document.body.scrollTop;
-			      const ch = this.$refs.ctn.clientHeight;
-			      if (st + window.innerHeight >= ch+50) {
-			        this.rewardBonusList(this.active);
-			      }
-			},
-			rewardBonus() {
-				let _this = this;
-				rewardBonus().then(function(res){
-					_this.info = res.data;
-					console.log(_this.info);
-				}).catch(function(err){
-					console.log(err);
-				})
-			},
-			rewardBonusList(type) {
-				let _this = this;
-				_this.active = type;
-				_this.page+=1
-				let params={
-					pagenum: '10',
-					page: _this.page,
-				}
-				rewardBonusList(type,params).then(function(res){
-					if(type=='0'){
-						_this.infoList = _this.infoList.concat(res.data);
-					}else{
-						_this.infoLists = _this.infoLists.concat(res.data);
-					}
-				}).catch(function(err){
-					console.log(err);
-				})
-			},
-		},
-		mounted() {
-			this.rewardBonus();
-			this.rewardBonusList('0');
-		},
-	}
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollHandler)
+  },
+  methods: {
+    scrollHandler () {
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      const ch = this.$refs.ctn.clientHeight
+      if (st + window.innerHeight >= ch + 50) {
+        this.rewardBonusList(this.active)
+      }
+    },
+    rewardBonus () {
+      let _this = this
+      rewardBonus().then(function (res) {
+        _this.info = res.data
+        console.log(_this.info)
+      }).catch(function (err) {
+        console.log(err)
+      })
+    },
+    rewardBonusList (type) {
+      let _this = this
+      _this.active = type
+      _this.page += 1
+      let params = {
+        pagenum: '10',
+        page: _this.page
+      }
+      rewardBonusList(type, params).then(function (res) {
+        if (type == '0') {
+          _this.infoList = _this.infoList.concat(res.data)
+        } else {
+          _this.infoLists = _this.infoLists.concat(res.data)
+        }
+      }).catch(function (err) {
+        console.log(err)
+      })
+    }
+  },
+  mounted () {
+    this.rewardBonus()
+    this.rewardBonusList('0')
+  }
+}
 </script>
 
 <style lang="less" scoped>
 	/*
-	 * @border-color: 统一边框颜色
-	 * */
-	
+	* @border-color: 统一边框颜色
+	* */
+
 	@border-color: #e5e5e5;
 	.app-containerBonus {
 		min-height: 1234px;
 		background-color: #f4f4f4;
 	}
-	
+
 	.headBonus,
 	.tabBonus,
 	.in-listBonus,
@@ -137,8 +137,8 @@
 	}
 	.in-listBonus,
 	.out-listBonus{
-		margin-bottom: 100px;	
-		width: 100%;	
+		margin-bottom: 100px;
+		width: 100%;
 	}
 	.headBonus {
 		height: 300px;
@@ -163,7 +163,7 @@
 			font-size: 24px;
 		}
 	}
-	
+
 	.tabBonus {
 		height: 114px;
 		border-bottom: 1px solid @border-color;
@@ -205,7 +205,7 @@
 			border-right: none;
 		}
 	}
-	
+
 	.in-listBonus {
 		tr {
 			display: block;
@@ -250,7 +250,7 @@
 			}
 		}
 	}
-	
+
 	.out-listBonus {
 		border-bottom: 1px solid @border-color;
 		padding-left: 30px;

@@ -1,7 +1,7 @@
 <template>
 	<div class="articleDetails">
 		<div class="header">
-    	 	<router-link :to="{path: '/storeHome/'+  userMsg.sellerId }">
+      <router-link :to="{path: '/storeHome/'+  userMsg.sellerId }">
 			<div class="avatar">
 				<div @click.stop="setTitle(userMsg.sellerName)" class="headimg"  v-bind:style="{backgroundImage: 'url(' + userMsg.headimgurl + ')'}">
 				</div>
@@ -51,41 +51,41 @@
 						</div>
 					</div>
 					<div class="operation">
-						<div v-if="userMsg.selfIs==true ? false : true" class="attention" v-show="userMsg.isAttention==true ? false : true">
-					        <span @click="attention()">关注</span>
-					        <span v-show="sale.isAttention==true ? true : false" @click="cancelattention()">取消关注</span>
-					    </div>
-						<router-link :to="{name:'letter',params:{user_id:userMsg.sellerId}}">
+            <div v-if="userMsg.selfIs==true ? false : true" class="attention" v-show="userMsg.isAttention==true ? false : true">
+                  <span @click="attention()">关注</span>
+                  <span v-show="sale.isAttention==true ? true : false" @click="cancelattention()">取消关注</span>
+              </div>
+            <router-link :to="{name:'letter',params:{user_id:userMsg.sellerId}}">
 							<div class="private" v-if="userMsg.selfIs==true ? false : true">
 								<span>私信</span>
 							</div>
 						</router-link>
 					</div>
 			</div>
-	    </div>
-	    <div class="signature">
-	    	<i>{{userMsg.sellerdesc}}</i>
-	    </div>
-	    <div class="signaturegrayFa">
-	    	<div class="signaturegray"></div>
-	    </div>
-	    <div class="saleInfo">
-	    	<div class="desc fullDesc" v-html="sellerdesc">
-	    	</div>
-	    	<div class="imgList">
-	    		<div class="image--219j3" v-for ="(list,index) in sale.imgList" v-bind:style="{backgroundImage: 'url(' + list + ')'}" :key='index' @click="pupPic(index)"></div>
-						<div :style="{backgroundImage : 'url(' + videoImg + ')'}" v-if="videoUrl" v-show="isVideo" class="videoBox"><video v-show='!isPlay' webkit-playsinline x5-video-player-type @pause.stop="pause" @ended.stop="ended" :poster="videoImg" :src="videoUrl"></video><img v-if="isPlay" @click.stop="play" src="../../assets/images/start.png" alt=""></div>
-	    	</div>
-	    	<div class="createTime border horizonBottom">
-				<div class="freePost" v-show="sale.freeship == true">
+      </div>
+      <div class="signature">
+        <i>{{userMsg.sellerdesc}}</i>
+      </div>
+      <div class="signaturegrayFa">
+        <div class="signaturegray"></div>
+      </div>
+      <div class="saleInfo">
+        <div class="desc fullDesc" v-html="sellerdesc">
+        </div>
+        <div class="imgList">
+          <div class="image--219j3" v-for ="(list,index) in sale.imgList" v-bind:style="{backgroundImage: 'url(' + list + ')'}" :key='index' @click="pupPic(index)"></div>
+            <div :style="{backgroundImage : 'url(' + videoImg + ')'}" v-if="videoUrl" v-show="isVideo" class="videoBox"><video v-show='!isPlay' webkit-playsinline x5-video-player-type @pause.stop="pause" @ended.stop="ended" :poster="videoImg" :src="videoUrl"></video><img v-if="isPlay" @click.stop="play" src="../../assets/images/start.png" alt=""></div>
+        </div>
+        <div class="createTime border horizonBottom">
+        <div class="freePost" v-show="sale.freeship == true">
 					包邮
 				</div>
 				<div class="freePost" v-show="sale.isReturn == true">
-					包退                                      
+					包退
 				</div>
-				<div class="freePost" @click="soldOutBtn" v-if="userMsg.selfIs ? (sale.logList.length == 0 ? true :false) : false"> 
+				<div class="freePost" @click="soldOutBtn" v-if="userMsg.selfIs ? (sale.logList.length == 0 ? true :false) : false">
 				下架
-	    		</div>
+        </div>
 				<div class="time">
 					{{timestampToTime(sale.startTime)}}
 				</div>
@@ -116,11 +116,10 @@
 					</div>
 				</div>
 				<div class="likeBox" v-if="likeList.length > 0">
-					<a href="javascript:void(0)" class="likeAvatar" v-for="(item,index) in likeList" v-bind:style="{backgroundImage: 'url(' + item.headimgurl + ')'}"
-		    		 :key="item.article_id" @click="localSet(item.isCompany,item.userId)">
-		    		</a>
-						<div v-show="isShowMore" @click.stop="showMore" class = "showMore likeAvatar"><i class = "iconfont icon-gengduo1"></i></div>
-						<div v-show="isclickClose" @click.stop="clickClose" class = "clickClose likeAvatar"><i class = "iconfont icon-xiangshang"></i></div>
+          <a href="javascript:void(0)" class="likeAvatar" v-for="(item) in likeList" v-bind:style="{backgroundImage: 'url(' + item.headimgurl + ')'}"
+              :key="item.article_id" @click="localSet(item.isCompany,item.userId)"></a>
+          <div v-show="isShowMore" @click.stop="showMore" class = "showMore likeAvatar"><i class = "iconfont icon-gengduo1"></i></div>
+          <div v-show="isclickClose" @click.stop="clickClose" class = "clickClose likeAvatar"><i class = "iconfont icon-xiangshang"></i></div>
 				</div>
 				<div class="AsapSupA" v-if="sale.isBeforehand">
 					<!-- <div class="Asapsell">即将拍卖<i></i></div> -->
@@ -131,11 +130,11 @@
 					<div class="stateInfo" v-if="haveend">
 						<div class="state">
 							正在拍卖<i></i>
-						</div>     
+						</div>
 						<div class="endTime" v-if="haveend">
 							距离结束：<span><span><i>{{toendhour}}</i>时<i>{{toendminite}}</i>分<i>{{toendsecond}}</i><i style="display: none;">9</i></span></span>
 						</div>
-						<div class="countdownTip" v-show='show'> 
+						<div class="countdownTip" v-show='show'>
 							<i class="iconfont icon-tixing"></i>
 							最后5分钟，进入延时竞价周期
 						</div>
@@ -154,7 +153,7 @@
 					</div>
 				</div>
 			</div>
-			<!-- 卖家进入所看见的页面 start-->	
+			<!-- 卖家进入所看见的页面 start-->
 			<div v-if="userMsg.selfIs">
 				<div class="toolBox">
 					<!-- <div class="time">
@@ -179,17 +178,17 @@
 					</div>
 				</div>
 				<div class="likeBox" v-if="likeList.length > 0">
-					<a href="javascript:void(0)" class="likeAvatar" v-for ="(item,index) in likeList" v-bind:style="{backgroundImage: 'url(' + item.headimgurl + ')'}" @click="localSet(item.isCompany,item.userId)" :key="item.article_id">
-		    		</a>
-		    		<div v-show="isShowMore" @click.stop="showMore" class = "showMore likeAvatar"><i class = "iconfont icon-gengduo1"></i></div>
-						<div v-show="isclickClose" @click.stop="clickClose" class = "clickClose likeAvatar"><i class = "iconfont icon-xiangshang"></i></div>
+        <a href="javascript:void(0)" class="likeAvatar" v-for ="(item) in likeList" v-bind:style="{backgroundImage: 'url(' + item.headimgurl + ')'}" @click="localSet(item.isCompany,item.userId)" :key="item.article_id">
+          </a>
+          <div v-show="isShowMore" @click.stop="showMore" class = "showMore likeAvatar"><i class = "iconfont icon-gengduo1"></i></div>
+          <div v-show="isclickClose" @click.stop="clickClose" class = "clickClose likeAvatar"><i class = "iconfont icon-xiangshang"></i></div>
 				</div>
 				<div class="rewrwe">
 					<div class="stateInfo" >
-					    <div v-if="!sale.isBeforehand">
-							<div class="state" v-if="haveend">
-								正在拍卖<i></i>
-							</div>
+              <div v-if="!sale.isBeforehand">
+              <div class="state" v-if="haveend">
+                正在拍卖<i></i>
+              </div>
 							<div class="state" v-if="!haveend">
 								拍卖结束<i></i>
 							</div>
@@ -208,7 +207,7 @@
 						<div class="endTime" v-if="!haveend">
 							<span><span>{{sale.logList[0] && sale.logList[0].addTime}}拍卖截止<i style="display: none;">9</i></span></span>
 						</div>
-						<div class="countdownTip" v-show='show'> 
+						<div class="countdownTip" v-show='show'>
 							<i class="iconfont icon-tixing"></i>
 							最后5分钟，进入延时竞价周期
 						</div>
@@ -216,11 +215,11 @@
 					<div class="sellerbidBtns" v-if="haveend">
 						<div @click.stop="share">分享给朋友们</div>
 						<div @click.stop="NotificationsOfGroupHair">群发通知</div>
-					</div>		
+					</div>
 					<div class="moneyInfo">
 						<div>
 							<i class="iconfont icon-qi"></i>
-							<span>￥{{sale.priceList.firstprice}}元</span> 
+							<span>￥{{sale.priceList.firstprice}}元</span>
 						</div>
 						<div>
 							<i class="iconfont icon-jia"></i>
@@ -240,8 +239,8 @@
 							<i class="iconfont icon-cankaojia1"></i>
 							<span>￥{{sale.priceList.gjPriceStart + '~' + sale.priceList.gjPriceEnd}}元</span>
 						</div>
-				    </div>
-			    </div>
+            </div>
+          </div>
             </div>
 			<!-- 卖家进入所看见的页面 end-->
 			<div class="rewrwe" v-if="!sale.isBeforehand">
@@ -281,7 +280,7 @@
 						</div>
 						<img :src="logLists[logList.userLever-1]" alt="">
 					</div>
-					
+
 					<div class="bidUser">
 						<div :class="0==index ? 'nameClass' : graysomethingClass">
 							{{logList.nickname}}
@@ -295,7 +294,7 @@
 							<!-- :class="0==index ? bidLeaderClass : bidOutClass" -->
 						<div class="bidState">
 							<span :class="bidDownClass" v-if="isFirstPrice==1 ? true : false"></span>
-							<span v-else 
+							<span v-else
 							:class="0==index ? (haveend ? bidLeaderClass : bidDownClass) : bidOutClass"></span>
 						</div>
 						<div :class="0==index ? 'bidTimeClass' : graysomethingClass">{{logList.addTime}}</div>
@@ -319,7 +318,7 @@
 								{{item.desc}}
 							</div>
 							<div class="saleInfo">
-								<div class="bid"> 
+								<div class="bid">
 									<span v-if="item.leadingprice == '0' ">￥{{item.firstprice}}起</span>
 									<span v-else>￥{{item.leadingprice}}</span>
 								</div>
@@ -341,19 +340,19 @@
 					<i class="iconfont icon-gengduo"></i>
 					进店逛逛
 				</div>
-			 	<!-- <router-link @click="toStoreGo(sellerId,this.userMsg.sellerName)" class="traceBox border verticalRight" :to="'/storeHome/'+sellerId"> 
-		    		<i class="iconfont icon-gengduo"></i>
-					进店逛逛
-				</router-link> --> 
+        <!-- <router-link @click="toStoreGo(sellerId,this.userMsg.sellerName)" class="traceBox border verticalRight" :to="'/storeHome/'+sellerId">
+            <i class="iconfont icon-gengduo"></i>
+          进店逛逛
+        </router-link> -->
 			</div>
 		</div>
-	    <!-- <router-link to="/message">
-		    <div class="imSupportBanner-modules">
-				<div class="imSupportBanner">
-					<i class="iconfont icon-tuisongxiaoxi"></i>
-					<i class="service">联系平台客服</i>
-				</div>
-			</div>
+      <!-- <router-link to="/message">
+        <div class="imSupportBanner-modules">
+        <div class="imSupportBanner">
+          <i class="iconfont icon-tuisongxiaoxi"></i>
+          <i class="service">联系平台客服</i>
+        </div>
+      </div>
 		</router-link> -->
 	<!-- 出价键盘 -->
 		<div  id="fixednumMain" v-if=" bid==true ">
@@ -369,21 +368,21 @@
 							<i class="iconfont icon-guanbi"></i>
 						</div>
 					</div>
-					<div class="priceBanner" @click="showcursor"> 
+					<div class="priceBanner" @click="showcursor">
 						<span class="title" style="height:45px;line-height:45px;">出价</span>
 						<!-- <div class="editTxt"> -->
-						<div class="last">
-						   {{lastofferPrice}}
-						</div>	<i v-show="cursor1" id="cursor1" style="font-size:0.5rem;line-height: 1.15rem;">|</i>
-						<div class="lasttwo" v-if="lasttwoShow">
-						   按一口价出价
-						</div>
+            <div class="last">
+                {{lastofferPrice}}
+            </div>	<i v-show="cursor1" id="cursor1" style="font-size:0.5rem;line-height: 1.15rem;">|</i>
+            <div class="lasttwo" v-if="lasttwoShow">
+                按一口价出价
+            </div>
 						<i @click="clearPrice" class="iconfont icon-shibai"></i>
-						
+
 						<!-- <i>*很遗憾，该拍品已经结束。</i> -->
 					</div>
 
-					<div class="btnBanner"> 
+					<div class="btnBanner">
 						<div :class="sale.priceList.yikoujia<1000 ? (sale.priceList.yikoujia == lastofferPrice ? 'yikoujiaGray' : fixedPriceClass) : (sale.priceList.yikoujia == lastofferPrice ? 'yikoujiaGraym' : fixedPricemClass)" v-if="sale.priceList.yikoujia==0 ? false : true" @click="auctionAddPrice">一口价￥{{sale.priceList.yikoujia}}</div>
 						<div :class="sale.priceList.yikoujia<1000 ? confirmBtnClass : confirmBtnmClass" @click="confirmprice(lastofferPrice)">
 							出价
@@ -492,7 +491,7 @@
 				</div>
 			</div>
 		</div>
-	<!--弹出二维码页面-->	
+	<!--弹出二维码页面-->
 		<div id="fixednumMain" v-if="openerweima==true ">
 			<div class="fixednumMask backgroundimg">
 				<div class="erweimahead">
@@ -515,7 +514,7 @@
 		</div>
 	<!-- 弹出提示框 -->
 		<div id="fixednumMain" v-if="showalert==true">
-			<div @click="closeshowalert()" class="fixednumMask" style="opacity: 0.38;">	
+			<div @click="closeshowalert()" class="fixednumMask" style="opacity: 0.38;">
 			</div>
 			<div class="alertWrongPrice">
 				<div class="wrongPrice">
@@ -524,12 +523,12 @@
 				<div class="priceGray"></div>
 				<div class="knowPrice" @click="exitalert()">
 					知道了
-				</div>			
+				</div>
 			</div>
 		</div>
 	<!-- 弹出是否一口价 -->
 		<div id="fixednumMain" v-if="isendPrice">
-			<div @click="closeshowalert()" class="fixednumMask" style="opacity: 0.38;">	
+			<div @click="closeshowalert()" class="fixednumMask" style="opacity: 0.38;">
 			</div>
 			<div class="alertWrongPrice">
 				<div class="verifySold" @click="confirmprice(oneprice)">
@@ -538,12 +537,12 @@
 				<div class="priceGray"></div>
 				<div class="cancelSold" @click="closeshowalert()">
 					取消
-				</div>			
+				</div>
 			</div>
 		</div>
 	<!-- 弹出出价错误提示框 -->
 		<div id="fixednumMain" v-if="wrongPrice">
-			<div @click="closeshowalert()" class="fixednumMask" style="opacity: 0.38;">	
+			<div @click="closeshowalert()" class="fixednumMask" style="opacity: 0.38;">
 			</div>
 			<div class="alertWrongPrice">
 				<div class="wrongPrice">
@@ -552,12 +551,12 @@
 				<div class="priceGray"></div>
 				<div class="knowPrice" @click="closeshowalert()">
 					知道了
-				</div>			
+				</div>
 			</div>
 		</div>
 	<!-- 弹出是否下架 -->
 		<div id="fixednumMain" v-if="issoldOut">
-			<div @click="closeshowalert()" class="fixednumMask" style="opacity: 0.38;">	
+			<div @click="closeshowalert()" class="fixednumMask" style="opacity: 0.38;">
 			</div>
 			<div class="alertWrongPrice">
 				<div class="verifySold" @click="verifySoldOut">
@@ -566,12 +565,12 @@
 				<div class="priceGray"></div>
 				<div class="cancelSold" @click="closeshowalert()">
 					取消
-				</div>			
+				</div>
 			</div>
 		</div>
 	<!-- 是否弹出验证 -->
     <div id="fixednumMain" v-if="showveri">
-      <div @click="closeshowveri()" class="fixednumMask" style="opacity: 0.38;">  
+      <div @click="closeshowveri()" class="fixednumMask" style="opacity: 0.38;">
       </div>
       <div class="telsharesomething">
         <form class="main">
@@ -589,10 +588,10 @@
             </div>
           </div>
           <div class="mobileAlert">{{mobileAlert}}</div>
-          <div class="sub"> 
+          <div class="sub">
             <span :class="numveri==''?'spanBac':'spanBack'" @click="subMethod()">下一步</span>
           </div>
-        </form>   
+        </form>
       </div>
     </div>
     <!-- 二维码图片 -->
@@ -618,9 +617,9 @@
 	</div>
 </template>
 <script>
-import { Toast, ImagePreview } from "vant";
-import wx from "weixin-js-sdk";
-import assign from "../../assets/js/assign.js";
+import { Toast, ImagePreview } from 'vant'
+import wx from 'weixin-js-sdk'
+import assign from '../../assets/js/assign.js'
 import {
   usermsg,
   shopFocus,
@@ -632,7 +631,7 @@ import {
   commodityDetailsQRCode,
   filterNum,
   subMethod
-} from "../../api/api";
+} from '../../api/api'
 import {
   AlertModule,
   Alert,
@@ -640,9 +639,9 @@ import {
   XSwitch,
   Cell,
   TransferDomDirective as TransferDom
-} from "vux";
-import ClipboardJS from "clipboard";
-import { posix } from "path";
+} from 'vux'
+import ClipboardJS from 'clipboard'
+import { posix } from 'path'
 export default {
   mixins: [assign],
   directives: {
@@ -654,936 +653,935 @@ export default {
     XSwitch,
     Cell
   },
-  data() {
+  data () {
     return {
-      filterTime: "60",
-      msg: "获取验证码",
+      filterTime: '60',
+      msg: '获取验证码',
       flag: true, // 获取验证码开关
-      phone: "", // 发送短信手机号码
-      type: "2", // 获取验证码类型
-      _key: "", // 获取到的验证码
-      numveri: "", //输入的验证码
+      phone: '', // 发送短信手机号码
+      type: '2', // 获取验证码类型
+      _key: '', // 获取到的验证码
+      numveri: '', // 输入的验证码
       mobileVeri: false,
-      mobile_edit: "",
-      mobileAlert: "",
+      mobile_edit: '',
+      mobileAlert: '',
       showveri: false,
       isendPrice: false,
       issoldOut: false,
       shop: [],
-      userMsg: [], //用户信息
-      shopList: [], //店铺拍品
-      sale: { priceList: {} }, //拍品信息
-      article_id: "", //产品id
-      sellerId: "", //用户id
-      bid: false, //是否点击出价
-      offerPrice: [], //出价
-      lastofferPrice: "0", //显示在上面的出价
-      toendhour: "00",
-      toendminite: "00",
-      toendsecond: "00",
-      tostahour: "00",
-      tostamin: "00",
-      tostasec: "00",
+      userMsg: [], // 用户信息
+      shopList: [], // 店铺拍品
+      sale: { priceList: {} }, // 拍品信息
+      article_id: '', // 产品id
+      sellerId: '', // 用户id
+      bid: false, // 是否点击出价
+      offerPrice: [], // 出价
+      lastofferPrice: '0', // 显示在上面的出价
+      toendhour: '00',
+      toendminite: '00',
+      toendsecond: '00',
+      tostahour: '00',
+      tostamin: '00',
+      tostasec: '00',
       show: false,
-      month: "",
-      day: "",
-      endhour: "",
-      endminite: "",
-      idSubmit: "",
-      oneprice: "",
+      month: '',
+      day: '',
+      endhour: '',
+      endminite: '',
+      idSubmit: '',
+      oneprice: '',
       sharetosom: false,
       openerweima: false,
       isFirstPrice: 0,
-      bidLeaderClass: "bidLeader",
-      bidOutClass: "bidOut",
-      bidDownClass: "successdown",
+      bidLeaderClass: 'bidLeader',
+      bidOutClass: 'bidOut',
+      bidDownClass: 'successdown',
       logListlength: 0,
-      successdownClass: "successdown",
+      successdownClass: 'successdown',
       haveend: true,
       havepaimaiend: false,
-      fixedPriceClass: "fixedPrice",
-      fixedPricemClass: "fixedPricem",
-      confirmBtnmClass: "confirmBtnm",
-      confirmBtnClass: "confirmBtn",
-      graysomethingClass: "graysomething",  
-      nameClass: "name",
-      bidTimeClass: "bidTime",
-      imggrayClass: "imggray",
+      fixedPriceClass: 'fixedPrice',
+      fixedPricemClass: 'fixedPricem',
+      confirmBtnmClass: 'confirmBtnm',
+      confirmBtnClass: 'confirmBtn',
+      graysomethingClass: 'graysomething',
+      nameClass: 'name',
+      bidTimeClass: 'bidTime',
+      imggrayClass: 'imggray',
       showalert: false,
-      alertmessage: "",
-      sellerdesc: "",
-      Desc: "",
+      alertmessage: '',
+      sellerdesc: '',
+      Desc: '',
       wrongPrice: false,
       isShowMore: false,
       isclickClose: false,
-      uri: "",
+      uri: '',
       likeList: [],
       logLists: [
-        //本地等级图片
-        require("../../assets/images/icon_head_commoner.png"),
-        require("../../assets/images/icon_head_childvoice.png"),
-        require("../../assets/images/icon_head_scholar.png"),
-        require("../../assets/images/icon_head_provincial.png"),
-        require("../../assets/images/icon_head_shinshi.png"),
-        require("../../assets/images/icon_head_master.png"),
-        require("../../assets/images/icon_head_bachelor.png"),
-        require("../../assets/images/icon_head_surname.png"),
-        require("../../assets/images/icon_head_grandpreceptor.png"),
-        require("../../assets/images/icon_head_oracle.png")
+        // 本地等级图片
+        require('../../assets/images/icon_head_commoner.png'),
+        require('../../assets/images/icon_head_childvoice.png'),
+        require('../../assets/images/icon_head_scholar.png'),
+        require('../../assets/images/icon_head_provincial.png'),
+        require('../../assets/images/icon_head_shinshi.png'),
+        require('../../assets/images/icon_head_master.png'),
+        require('../../assets/images/icon_head_bachelor.png'),
+        require('../../assets/images/icon_head_surname.png'),
+        require('../../assets/images/icon_head_grandpreceptor.png'),
+        require('../../assets/images/icon_head_oracle.png')
       ],
-      yikoujiaEnd: "",
+      yikoujiaEnd: '',
       render: 0,
       num: 0,
-      endTime: "",
-      timer: "",
+      endTime: '',
+      timer: '',
       shows: false,
-      text: "",
-      hasmobile: "",
+      text: '',
+      hasmobile: '',
       flagChange: false,
       lasttwoShow: false,
       sendPriceFlag: false,
       previewImg: [],
       isPlay: true,
-      videoImg: "", //视频封面
-      videoUrl: "",
-      current: "",
+      videoImg: '', // 视频封面
+      videoUrl: '',
+      current: '',
       urls: [],
-      isLoadMore: false, //加载更多是否展示
-      loadMoreArr: [], //出价展示
-      pageNum: 1, //当前加载的出价次数
-      urls: [],
-      sellerName: "",
-      starttimer: "",
-      startTime: "",
-      isImagePreview: false, //图片预览
+      isLoadMore: false, // 加载更多是否展示
+      loadMoreArr: [], // 出价展示
+      pageNum: 1, // 当前加载的出价次数
+      sellerName: '',
+      starttimer: '',
+      startTime: '',
+      isImagePreview: false, // 图片预览
       isVideo: true,
       cursor1: false,
       auctionFocusFlag: true,
-      imgIndex :0, //PC预览图片的页码
-      pcPreview : false,
-      status : true,//是否执行后退刷新事件
-    };
-  },
-  beforeRouteEnter(to, from, next) {
-    if (to.name == 'tangkaArtExhibition') {
-      this.status = false;
+      imgIndex: 0, // PC预览图片的页码
+      pcPreview: false,
+      status: true // 是否执行后退刷新事件
     }
-    next();
   },
-  beforeRouteLeave(to, from, next) {
-    next();
+  beforeRouteEnter (to, from, next) {
+    if (to.name == 'tangkaArtExhibition') {
+      this.status = false
+    }
+    next()
+  },
+  beforeRouteLeave (to, from, next) {
+    next()
   },
   methods: {
-    //关闭PC端图片预览
-    closePcPreview() {
-      this.pcPreview = false;
+    // 关闭PC端图片预览
+    closePcPreview () {
+      this.pcPreview = false
     },
-    //切换预览图片
-    imgPage(info) {
+    // 切换预览图片
+    imgPage (info) {
       if (info == 'prev') {
         if (this.imgIndex == 1) {
-          this.imgIndex = this.urls.length;
-        }else {
-          this.imgIndex--;
+          this.imgIndex = this.urls.length
+        } else {
+          this.imgIndex--
         }
-      }else {
-        if (this.imgIndex == this.urls.length) {
-          this.imgIndex = 1;
-        }else {
-          this.imgIndex++;
-        }
-      }
-    },
-    //全屏
-    FullScreen(video) {
-      var ele = document.documentElement;
-      if (ele.requestFullscreen) {
-        video.requestFullscreen();
-      } else if (ele.mozRequestFullScreen) {
-        video.mozRequestFullScreen();
-      } else if (ele.webkitRequestFullScreen) {
-        video.webkitRequestFullScreen();
-      }
-    },
-    //取消全屏
-    cancelFullScreen() {
-      var de = document;
-      if (de.exitFullscreen) {
-        document.exitFullscreen();
-      } else if (de.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-      } else if (de.webkitCancelFullScreen) {
-        document.webkitCancelFullScreen();
-      }
-    },
-    localSet(bool, id) {
-      if (bool) {
-        this.$router.push("/storeIntroduced/" + id);
       } else {
-        this.$router.push("/member/fansDetails/" + id);
+        if (this.imgIndex == this.urls.length) {
+          this.imgIndex = 1
+        } else {
+          this.imgIndex++
+        }
       }
     },
-    //显示光标
-    showcursor() {
-      this.cursor1 = true;
+    // 全屏
+    FullScreen (video) {
+      var ele = document.documentElement
+      if (ele.requestFullscreen) {
+        video.requestFullscreen()
+      } else if (ele.mozRequestFullScreen) {
+        video.mozRequestFullScreen()
+      } else if (ele.webkitRequestFullScreen) {
+        video.webkitRequestFullScreen()
+      }
     },
-    //关闭预览遮罩
-    closeMask() {
-      this.isImagePreview = false;
-      this.isVideo = true;
+    // 取消全屏
+    cancelFullScreen () {
+      var de = document
+      if (de.exitFullscreen) {
+        document.exitFullscreen()
+      } else if (de.mozCancelFullScreen) {
+        document.mozCancelFullScreen()
+      } else if (de.webkitCancelFullScreen) {
+        document.webkitCancelFullScreen()
+      }
     },
-    //加载更多
-    loadMore() {
-      let num = this.sale.logList.length;
+    localSet (bool, id) {
+      if (bool) {
+        this.$router.push('/storeIntroduced/' + id)
+      } else {
+        this.$router.push('/member/fansDetails/' + id)
+      }
+    },
+    // 显示光标
+    showcursor () {
+      this.cursor1 = true
+    },
+    // 关闭预览遮罩
+    closeMask () {
+      this.isImagePreview = false
+      this.isVideo = true
+    },
+    // 加载更多
+    loadMore () {
+      let num = this.sale.logList.length
       let arr = this.sale.logList.slice(
         this.pageNum * 5,
         (this.pageNum + 1) * 5
-      );
+      )
       if (arr.length >= 5 && (this.pageNum + 1) * 5 < num) {
-        this.loadMoreArr.push(...arr);
-        this.pageNum++;
+        this.loadMoreArr.push(...arr)
+        this.pageNum++
       } else {
-        this.loadMoreArr.push(...arr);
-        this.isLoadMore = false;
+        this.loadMoreArr.push(...arr)
+        this.isLoadMore = false
       }
     },
-    toStoreGo(id, name) {
-      this.$router.push("/storeHome/" + id);
+    toStoreGo (id, name) {
+      this.$router.push('/storeHome/' + id)
       // localStorage.setItem("name", name);
     },
-    //视频点击播放
-    play() {
-      let video = document.querySelector("video");
-      this.isPlay = false;
-      video.play();
+    // 视频点击播放
+    play () {
+      let video = document.querySelector('video')
+      this.isPlay = false
+      video.play()
       if (this.isPC()) {
-        this.FullScreen(video);
+        this.FullScreen(video)
       }
     },
-    //视频终止
-    pause(e) {
-      this.isPlay = true;
+    // 视频终止
+    pause (e) {
+      this.isPlay = true
     },
-    //视频播放完成
-    ended() {
-      this.isPlay = true;
-      this.cancelFullScreen();
+    // 视频播放完成
+    ended () {
+      this.isPlay = true
+      this.cancelFullScreen()
     },
-    //获取验证码
-    filterNum() {
-      let _this = this;
-      let nowTime = new Date();
-      let now = Math.floor(nowTime.getTime() / 1000);
+    // 获取验证码
+    filterNum () {
+      let _this = this
+      let nowTime = new Date()
+      let now = Math.floor(nowTime.getTime() / 1000)
 
-      let myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+      let myreg = /^[1][3,4,5,7,8][0-9]{9}$/
       if (!myreg.test(_this.phone)) {
-        alert("请输入正确的手机号");
-        return false;
+        alert('请输入正确的手机号')
+        return false
       }
       if (
-        this.mobile_edit != "" &&
+        this.mobile_edit != '' &&
         Math.floor(this.mobile_edit) + 86400 * 7 > now
       ) {
-        this.mobileAlert = "号码一周只可修改一次";
+        this.mobileAlert = '号码一周只可修改一次'
       } else {
         if (_this.flag == true) {
-          _this.flag = false;
-          let t = setInterval(function() {
-            _this.filterTime--;
+          _this.flag = false
+          let t = setInterval(function () {
+            _this.filterTime--
             if (_this.filterTime <= 0) {
-              clearInterval(t); // 当倒计时时间小于0时，清除时间函数并且将时间开关打开
-              _this.flag = true;
-              _this.msg = "获取验证码";
+              clearInterval(t) // 当倒计时时间小于0时，清除时间函数并且将时间开关打开
+              _this.flag = true
+              _this.msg = '获取验证码'
             } else {
-              _this.msg = "重新发送(" + _this.filterTime + ")"; // 返回最初状态；
+              _this.msg = '重新发送(' + _this.filterTime + ')' // 返回最初状态；
             }
-          }, 1000);
-          _this.filterTime = "60";
+          }, 1000)
+          _this.filterTime = '60'
 
           let params = {
             phone: _this.phone,
-            type: "1"
-          };
+            type: '1'
+          }
           filterNum(params)
-            .then(function(res) {
-              _this._key = res.data.key;
+            .then(function (res) {
+              _this._key = res.data.key
             })
-            .catch(function(err) {
-              Toast(err.data.message);
-            });
+            .catch(function (err) {
+              Toast(err.data.message)
+            })
         }
       }
     },
-    //手机号绑定
-    subMethod: function() {
-      if (this.Trim(this.phone, "g") == "") {
-        Toast("手机号不能为空");
-        return;
+    // 手机号绑定
+    subMethod: function () {
+      if (this.Trim(this.phone, 'g') == '') {
+        Toast('手机号不能为空')
+        return
       }
-      if (this.Trim(this.numveri, "g") == "") {
-        Toast("请正确输入你收到的验证码");
-        return;
+      if (this.Trim(this.numveri, 'g') == '') {
+        Toast('请正确输入你收到的验证码')
+        return
       }
       if (!this._key) {
-        Toast("请先获取验证码");
-        return;
+        Toast('请先获取验证码')
+        return
       }
       let params = {
         verification_key: this._key,
         verification_code: this.numveri,
-        type: "1"
-      };
+        type: '1'
+      }
       subMethod(params)
         .then(res => {
-          this.showveri = false;
-          Toast("恭喜您绑定成功");
-          this.usermsg();
+          this.showveri = false
+          Toast('恭喜您绑定成功')
+          this.usermsg()
         })
-        .catch(function(err) {
-          Toast(err.data.message);
-        });
+        .catch(function (err) {
+          Toast(err.data.message)
+        })
     },
-    closeshowveri() {
-      this.showveri = false;
-      this.mobileAlert = "";
+    closeshowveri () {
+      this.showveri = false
+      this.mobileAlert = ''
     },
-    //群发通知
-    NotificationsOfGroupHair() {
-      this.$router.push("/sellerCenter/groupsentMessage");
+    // 群发通知
+    NotificationsOfGroupHair () {
+      this.$router.push('/sellerCenter/groupsentMessage')
     },
-    //确认下架
-    verifySoldOut() {
-      let downid = this.$route.params.id;
+    // 确认下架
+    verifySoldOut () {
+      let downid = this.$route.params.id
       if (!this.flagChange) {
-        this.flagChange = true;
+        this.flagChange = true
         singledown(downid)
           .then(res => {
             if (res.code == 200) {
-              this.$router.push("/newStoreManage/drafts");
-              this.flagChange = false;
+              this.$router.push('/newStoreManage/drafts')
+              this.flagChange = false
             }
           })
           .catch(err => {
-            console.log(err);
-          });
+            console.log(err)
+          })
       }
     },
-    //下架弹框
-    soldOutBtn() {
-      this.issoldOut = true;
+    // 下架弹框
+    soldOutBtn () {
+      this.issoldOut = true
     },
-    //展示更多
-    showMore() {
-      this.likeList = this.sale.likeList;
-      this.isShowMore = false;
-      this.isclickClose = true;
+    // 展示更多
+    showMore () {
+      this.likeList = this.sale.likeList
+      this.isShowMore = false
+      this.isclickClose = true
     },
-    //点击收起
-    clickClose() {
-      this.likeList = this.sale.likeList.slice(0, 20);
-      this.isShowMore = true;
-      this.isclickClose = false;
+    // 点击收起
+    clickClose () {
+      this.likeList = this.sale.likeList.slice(0, 20)
+      this.isShowMore = true
+      this.isclickClose = false
     },
-    clearPrice() {
-      this.lastofferPrice = "0";
-      this.lasttwoShow = false;
+    clearPrice () {
+      this.lastofferPrice = '0'
+      this.lasttwoShow = false
     },
-    pupPic(index) {
-      if (this.sale.disk == "1") {
-        this.current = this.sale.imgList[index];
-        this.urls = this.sale.imgList;
+    pupPic (index) {
+      if (this.sale.disk == '1') {
+        this.current = this.sale.imgList[index]
+        this.urls = this.sale.imgList
       } else {
         this.current = this.sale.imgList[index].substring(
           0,
           this.sale.imgList[index].length - 6
-        );
+        )
         this.urls = this.sale.imgList.map(item => {
-          let coverUrl = item.substring(0, item.length - 6);
-          return coverUrl;
-        });
+          let coverUrl = item.substring(0, item.length - 6)
+          return coverUrl
+        })
       };
-      let ua = window.navigator.userAgent.toLowerCase();
+      let ua = window.navigator.userAgent.toLowerCase()
       if (this.isPC()) {
-        this.pcPreview = true;
-        this.imgIndex = index+1;
+        this.pcPreview = true
+        this.imgIndex = index + 1
       } else {
-        if (ua.match(/MicroMessenger/i) == "micromessenger") {
+        if (ua.match(/MicroMessenger/i) == 'micromessenger') {
           wx.previewImage({
             current: this.current, // 当前显示图片的http链接
             urls: this.urls // 需要预览的图片http链接列表
-          });
+          })
         } else {
-          ImagePreview(this.urls, index);
+          ImagePreview(this.urls, index)
         }
       }
     },
-    refreshnow(id) {
-      this.$router.push("/auction/" + id);
-      window.location.reload();
+    refreshnow (id) {
+      this.$router.push('/auction/' + id)
+      window.location.reload()
     },
-    //更新
-    refreshLikeBox() {
+    // 更新
+    refreshLikeBox () {
       // this.usermsg();
-      this.article_id = this.$route.params.id;
+      this.article_id = this.$route.params.id
       usermsg(this.article_id)
         .then(res => {
           // Toast("更新成功");
           Toast.loading({
             duration: 1000, // 持续展示 toast
             forbidClick: true, // 禁用背景点击
-            message: "更新成功"
-          });
-          this.sale.likenum = res.data.sale.likenum;
+            message: '更新成功'
+          })
+          this.sale.likenum = res.data.sale.likenum
           // if (this.sale.likenum != "0") {
           //   this.sale.isLiked = true;
           // }
-          this.sale.logList = res.data.sale.logList;
-          this.timetoend(res.data.sale.endTime);
-          this.Kaitimetoend(res.data.sale.open_time);
+          this.sale.logList = res.data.sale.logList
+          this.timetoend(res.data.sale.endTime)
+          this.Kaitimetoend(res.data.sale.open_time)
           if (res.data.sale.likeList.length > 20) {
-            this.isShowMore = true;
-            this.isclickClose = false;
-            this.likeList = res.data.sale.likeList.slice(0, 20);
+            this.isShowMore = true
+            this.isclickClose = false
+            this.likeList = res.data.sale.likeList.slice(0, 20)
           } else {
-            this.likeList = res.data.sale.likeList;
+            this.likeList = res.data.sale.likeList
           }
-          //判断当前出价个数 决定是否展示更多
+          // 判断当前出价个数 决定是否展示更多
           if (res.data.sale.logList.length > 5) {
-            this.isLoadMore = true;
-            this.loadMoreArr = res.data.sale.logList.slice(0, 5);
+            this.isLoadMore = true
+            this.loadMoreArr = res.data.sale.logList.slice(0, 5)
           } else {
-            this.loadMoreArr = res.data.sale.logList;
+            this.loadMoreArr = res.data.sale.logList
           }
         })
-        .catch(err => {});
+        .catch(err => {})
     },
 
-    //getShopList 当前ID，当前用户ID
-    getShopList(auctionId, sellerId) {
+    // getShopList 当前ID，当前用户ID
+    getShopList (auctionId, sellerId) {
       getShopList(auctionId, sellerId).then(res => {
-        this.shopList = res.data;
-      });
+        this.shopList = res.data
+      })
     },
 
-    //获取用户信息
-    usermsg(type) {
-      this.article_id = this.$route.params.id;
+    // 获取用户信息
+    usermsg (type) {
+      this.article_id = this.$route.params.id
       usermsg(this.article_id)
         .then(res => {
           if (res.code == 200) {
-            let data = res.data;
-            this.endTime = data.sale.endTime;
-            this.startTime = data.sale.open_time;
-            this.hasmobile = data.shop.mobile;
-            this.videoUrl = data.sale.videoUrl;
-            this.Kaitimetoend(this.startTime);
+            let data = res.data
+            this.endTime = data.sale.endTime
+            this.startTime = data.sale.open_time
+            this.hasmobile = data.shop.mobile
+            this.videoUrl = data.sale.videoUrl
+            this.Kaitimetoend(this.startTime)
             if (this.videoUrl) {
-              this.videoImg = this.videoUrl + "?vframe/jpg/offset/1";
+              this.videoImg = this.videoUrl + '?vframe/jpg/offset/1'
             }
             if (this.num === 0) {
-              data.share.id = data.sale.uri;
-              this.goShares(data.share);
-              this.num++;
+              data.share.id = data.sale.uri
+              this.goShares(data.share)
+              this.num++
             }
-            this.yikoujiaEnd = res.data.sale.yikoujiaEnd;
-            if (this.yikoujiaEnd == "1") {
-              this.haveend = false;
-              this.havepaimaiend = true;
-              let oneDownTime = res.data.sale.logList[0].addTime;
-              this.month = oneDownTime.slice(5, 7);
-              this.day = oneDownTime.slice(8, 10);
-              this.endhour = oneDownTime.slice(11, 13);
-              this.endminite = oneDownTime.slice(14, 16);
-              if (type !== "auctionFocus") {
-                this.uri = data.sale.uri;
-                this.userMsg = data.shop;
-                this.sellerName = data.shop.sellerName;
-                this.sale = data.sale;
-                this.sellerId = data.shop.sellerId;
-                this.oneprice = data.sale.priceList.yikoujia;
-                this.logListlength = data.sale.logList.length;
-                this.sellerdesc = data.sale.desc.replace(/\n/g, "<br/>");
-                this.getShopList(this.article_id, this.sellerId);
+            this.yikoujiaEnd = res.data.sale.yikoujiaEnd
+            if (this.yikoujiaEnd == '1') {
+              this.haveend = false
+              this.havepaimaiend = true
+              let oneDownTime = res.data.sale.logList[0].addTime
+              this.month = oneDownTime.slice(5, 7)
+              this.day = oneDownTime.slice(8, 10)
+              this.endhour = oneDownTime.slice(11, 13)
+              this.endminite = oneDownTime.slice(14, 16)
+              if (type !== 'auctionFocus') {
+                this.uri = data.sale.uri
+                this.userMsg = data.shop
+                this.sellerName = data.shop.sellerName
+                this.sale = data.sale
+                this.sellerId = data.shop.sellerId
+                this.oneprice = data.sale.priceList.yikoujia
+                this.logListlength = data.sale.logList.length
+                this.sellerdesc = data.sale.desc.replace(/\n/g, '<br/>')
+                this.getShopList(this.article_id, this.sellerId)
                 // this.$refs.describe.innerHTML = data.sale.desc
-                if (this.sale.logList == "") {
+                if (this.sale.logList == '') {
                   if (parseInt(this.sale.priceList.firstprice) > 0) {
                     this.lastofferPrice = parseInt(
                       this.sale.priceList.firstprice
-                    );
+                    )
                   } else {
                     this.lastofferPrice =
                       parseInt(this.sale.priceList.addprice) +
-                      parseInt(this.sale.priceList.firstprice);
+                      parseInt(this.sale.priceList.firstprice)
                   }
                 } else {
                   this.lastofferPrice =
                     parseInt(this.sale.priceList.leadIngPrice) +
-                    parseInt(this.sale.priceList.addprice);
+                    parseInt(this.sale.priceList.addprice)
                 }
               } else {
-                this.sale.likenum = res.data.sale.likenum;
-                this.sale.isLiked = true;
-                this.sale.logList = res.data.sale.logList;
+                this.sale.likenum = res.data.sale.likenum
+                this.sale.isLiked = true
+                this.sale.logList = res.data.sale.logList
               }
             } else {
-              this.haveend = true;
-              this.havepaimaiend = false;
-              if (type !== "auctionFocus") {
-                this.uri = data.sale.uri;
-                this.userMsg = data.shop;
-                this.sellerName = data.shop.sellerName;
-                this.sale = data.sale;
-                this.sellerId = data.shop.sellerId;
-                this.oneprice = data.sale.priceList.yikoujia;
-                this.logListlength = data.sale.logList.length;
-                this.timetoend(this.endTime);
-                this.sellerdesc = data.sale.desc.replace(/\n/g, "<br/>");
-                this.getShopList(this.article_id, this.sellerId);
-                if (this.sale.logList == "") {
+              this.haveend = true
+              this.havepaimaiend = false
+              if (type !== 'auctionFocus') {
+                this.uri = data.sale.uri
+                this.userMsg = data.shop
+                this.sellerName = data.shop.sellerName
+                this.sale = data.sale
+                this.sellerId = data.shop.sellerId
+                this.oneprice = data.sale.priceList.yikoujia
+                this.logListlength = data.sale.logList.length
+                this.timetoend(this.endTime)
+                this.sellerdesc = data.sale.desc.replace(/\n/g, '<br/>')
+                this.getShopList(this.article_id, this.sellerId)
+                if (this.sale.logList == '') {
                   if (parseInt(this.sale.priceList.firstprice) > 0) {
                     this.lastofferPrice = parseInt(
                       this.sale.priceList.firstprice
-                    );
+                    )
                   } else {
                     this.lastofferPrice =
                       parseInt(this.sale.priceList.addprice) +
-                      parseInt(this.sale.priceList.firstprice);
+                      parseInt(this.sale.priceList.firstprice)
                   }
                 } else {
                   this.lastofferPrice =
                     parseInt(this.sale.priceList.leadIngPrice) +
-                    parseInt(this.sale.priceList.addprice);
+                    parseInt(this.sale.priceList.addprice)
                 }
                 // this.$refs.describe.innerHTML = data.sale.desc
               } else {
-                this.sale.likenum = res.data.sale.likenum;
-                this.sale.isLiked = true;
-                this.sale.logList = res.data.sale.logList;
+                this.sale.likenum = res.data.sale.likenum
+                this.sale.isLiked = true
+                this.sale.logList = res.data.sale.logList
               }
             }
             if (res.data.sale.likeList.length > 20) {
-              this.isShowMore = true;
-              this.likeList = res.data.sale.likeList.slice(0, 20);
-              return;
+              this.isShowMore = true
+              this.likeList = res.data.sale.likeList.slice(0, 20)
+              return
             }
-            this.likeList = res.data.sale.likeList;
-            //判断当前出价个数 决定是否展示更多
+            this.likeList = res.data.sale.likeList
+            // 判断当前出价个数 决定是否展示更多
             if (data.sale.logList.length > 5) {
-              this.isLoadMore = true;
-              this.loadMoreArr = data.sale.logList.slice(0, 5);
+              this.isLoadMore = true
+              this.loadMoreArr = data.sale.logList.slice(0, 5)
             } else {
-              this.loadMoreArr = data.sale.logList;
+              this.loadMoreArr = data.sale.logList
             }
           }
-          //加载二维码
+          // 加载二维码
           commodityDetailsQRCode(this.article_id)
             .then(res => {
-              this.previewImg.push(res.data.url);
+              this.previewImg.push(res.data.url)
             })
             .catch(error => {
-              console.log(error);
-            });
+              console.log(error)
+            })
         })
         .catch(error => {
           if (error.status == 404) {
-            this.$router.push("/auctionErr");
+            this.$router.push('/auctionErr')
           }
-        });
+        })
     },
-    exitalert() {
-      this.showalert = false;
+    exitalert () {
+      this.showalert = false
     },
-    closeshowalert() {
-      this.showalert = false;
-      this.wrongPrice = false;
-      this.issoldOut = false;
-      this.isendPrice = false;
-      this.bid = false;
+    closeshowalert () {
+      this.showalert = false
+      this.wrongPrice = false
+      this.issoldOut = false
+      this.isendPrice = false
+      this.bid = false
     },
-    //打开二维码
-    erweima() {
-      this.sharetosom = false;
-      this.isImagePreview = true;
-      this.isVideo = false;
+    // 打开二维码
+    erweima () {
+      this.sharetosom = false
+      this.isImagePreview = true
+      this.isVideo = false
     },
-    //复制链接
-    copyLink() {
+    // 复制链接
+    copyLink () {
       if (!document.execCommand) {
-        Toast("请手动复制链接");
+        Toast('请手动复制链接')
       } else {
-        let result = document.execCommand("copy");
+        let result = document.execCommand('copy')
         if (result) {
-          Toast("复制成功");
+          Toast('复制成功')
         } else {
-          Toast("复制失败 请手动复制链接");
+          Toast('复制失败 请手动复制链接')
         }
-        this.sharetosom = false;
+        this.sharetosom = false
       }
     },
-    //关闭
-    closeshare() {
-      this.sharetosom = false;
+    // 关闭
+    closeshare () {
+      this.sharetosom = false
     },
-    //分享
-    share() {
-      this.sharetosom = true;
+    // 分享
+    share () {
+      this.sharetosom = true
     },
-    //关注
-    attention() {
-      let _this = this;
+    // 关注
+    attention () {
+      let _this = this
       shopFocus(_this.sellerId)
-        .then(function(res) {
-          _this.userMsg.isAttention = true;
+        .then(function (res) {
+          _this.userMsg.isAttention = true
         })
-        .catch(function(error) {});
+        .catch(function (error) {})
     },
-    //取消关注
-    cancelattention() {
-      let _this = this;
+    // 取消关注
+    cancelattention () {
+      let _this = this
       shopCancel(_this.sellerId)
-        .then(function(res) {
-          _this.usermsg();
+        .then(function (res) {
+          _this.usermsg()
           // _this.sale.isLiked = false;
         })
-        .catch(function(error) {});
+        .catch(function (error) {})
     },
-    //点赞
-    auctionFocus() {
+    // 点赞
+    auctionFocus () {
       if (this.auctionFocusFlag) {
-        this.auctionFocusFlag = false;
+        this.auctionFocusFlag = false
         if (this.sale.isLiked) {
-          return;
+          return
         }
         auctionFocus(this.article_id)
           .then(res => {
-            this.auctionFocusFlag = true;
-            this.sale.likenum = Number(this.sale.likenum) + 1;
-            this.sale.isLiked = true;
+            this.auctionFocusFlag = true
+            this.sale.likenum = Number(this.sale.likenum) + 1
+            this.sale.isLiked = true
             this.sale.likeList = this.sale.likeList.unshift({
               headimgurl: res.data.avatar,
               userId: res.data.user_id
-            });
-            this.attention();
+            })
+            this.attention()
           })
-          .catch(error => {});
+          .catch(error => {})
       }
     },
-    //一口价
-    auctionAddPrice() {
+    // 一口价
+    auctionAddPrice () {
       setTimeout(() => {
-        this.lastofferPrice = this.sale.priceList.yikoujia;
-        this.lasttwoShow = true;
-      }, 360);
+        this.lastofferPrice = this.sale.priceList.yikoujia
+        this.lasttwoShow = true
+      }, 360)
     },
-    //判断是否一口价结束
-    yiKouJiaEnd(e, downTime) {
-      if (e == "1") {
-        this.haveend = false;
-        this.havepaimaiend = true;
-        let oneDownTime = downTime;
-        this.month = oneDownTime.slice(5, 7);
-        this.day = oneDownTime.slice(8, 10);
-        this.endhour = oneDownTime.slice(11, 13);
-        this.endminite = oneDownTime.slice(14, 16);
+    // 判断是否一口价结束
+    yiKouJiaEnd (e, downTime) {
+      if (e == '1') {
+        this.haveend = false
+        this.havepaimaiend = true
+        let oneDownTime = downTime
+        this.month = oneDownTime.slice(5, 7)
+        this.day = oneDownTime.slice(8, 10)
+        this.endhour = oneDownTime.slice(11, 13)
+        this.endminite = oneDownTime.slice(14, 16)
       } else {
-        this.haveend = true;
-        this.havepaimaiend = false;
+        this.haveend = true
+        this.havepaimaiend = false
       }
     },
-    //出价
-    confirmprice(price) {
+    // 出价
+    confirmprice (price) {
       let params = {
         auction_price: price
-      };
+      }
       if (!this.sendPriceFlag) {
-        this.sendPriceFlag = true;
-        let reg = /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/;
+        this.sendPriceFlag = true
+        let reg = /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/
         if (reg.test(price)) {
           auctionAddPrice(params, this.article_id)
             .then(res => {
-              this.sendPriceFlag = false;
+              this.sendPriceFlag = false
               if (res.code == 200) {
-                this.timetoend(res.data.endtime);
-                this.usermsg();
-                this.alertmessage = res.message;
-                this.bid = false;
-                this.isendPrice = false;
-                if (res.data.isFirstPrice == "1") {
-                  this.show = false;
-                  let ymd = this.timestampToTimeYMD(res.data.time);
-                  this.sale.logList = this.sale.logList.push(res.data);
-                  this.yiKouJiaEnd(res.data.isFirstPrice, ymd);
+                this.timetoend(res.data.endtime)
+                this.usermsg()
+                this.alertmessage = res.message
+                this.bid = false
+                this.isendPrice = false
+                if (res.data.isFirstPrice == '1') {
+                  this.show = false
+                  let ymd = this.timestampToTimeYMD(res.data.time)
+                  this.sale.logList = this.sale.logList.push(res.data)
+                  this.yiKouJiaEnd(res.data.isFirstPrice, ymd)
                 }
               } else if (res.code == 201) {
                 this.$router.push({
-                  path: "/payment/cashDepositPay",
-                  query: { auction_id: this.uri, type: "0", price: price }
-                });
+                  path: '/payment/cashDepositPay',
+                  query: { auction_id: this.uri, type: '0', price: price }
+                })
               } else if (res.code == 202) {
                 this.$router.push({
-                  path: "/payment/cashDepositPay",
-                  query: { auction_id: this.uri, type: "1", price: price }
-                });
+                  path: '/payment/cashDepositPay',
+                  query: { auction_id: this.uri, type: '1', price: price }
+                })
               } else {
-                this.bid = false;
-                this.alertmessage = res.message;
-                this.showalert = true;
-                this.usermsg();
+                this.bid = false
+                this.alertmessage = res.message
+                this.showalert = true
+                this.usermsg()
               }
             })
             .catch(err => {
-              this.isendPrice = false;
+              this.isendPrice = false
               if (err.data.code == 422) {
-                this.sendPriceFlag = false;
-                this.bid = false;
-                this.showalert = true;
-                this.alertmessage = err.data.message;
+                this.sendPriceFlag = false
+                this.bid = false
+                this.showalert = true
+                this.alertmessage = err.data.message
               }
               if (err.data.code == 403) {
                 Toast.loading({
                   duration: 5000, // 持续展示 toast
                   forbidClick: true, // 禁用背景点击
                   message: err.data.message
-                });
+                })
                 // Toast(err.data.message)
-                this.sendPriceFlag = false;
-                this.bid = false;
-                this.showveri = true;
+                this.sendPriceFlag = false
+                this.bid = false
+                this.showveri = true
               }
-            });
+            })
         } else {
-          this.bid = false;
-          this.wrongPrice = true;
-          this.sendPriceFlag = false;
+          this.bid = false
+          this.wrongPrice = true
+          this.sendPriceFlag = false
         }
       }
     },
-    //开拍倒计时
-    Kaitimetoend(starttime) {
-      let self = this;
-      clearInterval(this.starttimer);
-      this.starttimer = setInterval(function() {
-        let nowTime = new Date();
-        let t = starttime - Math.floor(nowTime.getTime() / 1000);
+    // 开拍倒计时
+    Kaitimetoend (starttime) {
+      let self = this
+      clearInterval(this.starttimer)
+      this.starttimer = setInterval(function () {
+        let nowTime = new Date()
+        let t = starttime - Math.floor(nowTime.getTime() / 1000)
         if (t > 0) {
-          let stahour = Math.floor(t / 3600);
-          let stamin = Math.floor((t / 60) % 60);
-          let stasec = Math.floor(t % 60);
-          stahour = stahour < 10 ? "0" + stahour : stahour;
-          stamin = stamin < 10 ? "0" + stamin : stamin;
-          stasec = stasec < 10 ? "0" + stasec : stasec;
+          let stahour = Math.floor(t / 3600)
+          let stamin = Math.floor((t / 60) % 60)
+          let stasec = Math.floor(t % 60)
+          stahour = stahour < 10 ? '0' + stahour : stahour
+          stamin = stamin < 10 ? '0' + stamin : stamin
+          stasec = stasec < 10 ? '0' + stasec : stasec
           if (stahour <= 0) {
-            self.tostahour = "00";
+            self.tostahour = '00'
           }
           if (stahour <= 0 && stamin <= 0) {
-            self.tostahour = "00";
+            self.tostahour = '00'
           }
           if (stamin <= 0) {
-            self.tostamin = "00";
+            self.tostamin = '00'
           }
-          self.tostahour = stahour;
-          self.tostamin = stamin;
-          self.tostasec = stasec;
+          self.tostahour = stahour
+          self.tostamin = stamin
+          self.tostasec = stasec
         } else {
-          clearInterval(this.starttimer);
-          self.tostahour = "00";
-          self.tostamin = "00";
-          self.tostasec = "00";
-          self.sale.isBeforehand = false;
+          clearInterval(this.starttimer)
+          self.tostahour = '00'
+          self.tostamin = '00'
+          self.tostasec = '00'
+          self.sale.isBeforehand = false
         }
-      }, 1000);
+      }, 1000)
     },
-    //进行倒计时
-    timetoend(endtime) {
-      let self = this;
-      clearInterval(this.timer);
-      this.timer = setInterval(function() {
-        let nowTime = new Date();
-        let enddTime = new Date(endtime * 1000);
-        let t = endtime - Math.floor(nowTime.getTime() / 1000);
-        let month = enddTime.getMonth() + 1;
-        let day = enddTime.getDate();
-        let endhour = enddTime.getHours();
-        let endminite = enddTime.getMinutes();
-        month = month < 10 ? "0" + month : month;
-        day = day < 10 ? "0" + day : day;
-        endhour = endhour < 10 ? "0" + endhour : endhour;
-        endminite = endminite < 10 ? "0" + endminite : endminite;
-        self.month = month;
-        self.day = day;
-        self.endhour = endhour;
-        self.endminite = endminite;
+    // 进行倒计时
+    timetoend (endtime) {
+      let self = this
+      clearInterval(this.timer)
+      this.timer = setInterval(function () {
+        let nowTime = new Date()
+        let enddTime = new Date(endtime * 1000)
+        let t = endtime - Math.floor(nowTime.getTime() / 1000)
+        let month = enddTime.getMonth() + 1
+        let day = enddTime.getDate()
+        let endhour = enddTime.getHours()
+        let endminite = enddTime.getMinutes()
+        month = month < 10 ? '0' + month : month
+        day = day < 10 ? '0' + day : day
+        endhour = endhour < 10 ? '0' + endhour : endhour
+        endminite = endminite < 10 ? '0' + endminite : endminite
+        self.month = month
+        self.day = day
+        self.endhour = endhour
+        self.endminite = endminite
 
         if (t > 0) {
-          let hour = Math.floor(t / 3600);
-          let min = Math.floor((t / 60) % 60);
-          let sec = Math.floor(t % 60);
-          hour = hour < 10 ? "0" + hour : hour;
-          min = min < 10 ? "0" + min : min;
-          sec = sec < 10 ? "0" + sec : sec;
+          let hour = Math.floor(t / 3600)
+          let min = Math.floor((t / 60) % 60)
+          let sec = Math.floor(t % 60)
+          hour = hour < 10 ? '0' + hour : hour
+          min = min < 10 ? '0' + min : min
+          sec = sec < 10 ? '0' + sec : sec
           if (hour <= 0) {
-            self.toendhour = "00";
+            self.toendhour = '00'
           }
           if (hour <= 0 && min <= 0) {
-            self.toendhour = "00";
+            self.toendhour = '00'
           }
           if (min <= 0) {
-            self.toendminite = "00";
+            self.toendminite = '00'
           }
           if (t <= 300) {
-            self.show = true;
+            self.show = true
           } else {
-            self.show = false;
+            self.show = false
           }
-          self.toendhour = hour;
-          self.toendminite = min;
-          self.toendsecond = sec;
+          self.toendhour = hour
+          self.toendminite = min
+          self.toendsecond = sec
         } else {
-          clearInterval(this.timer);
-          self.toendhour = "00";
-          self.toendminite = "00";
-          self.toendsecond = "00";
-          self.haveend = false;
-          self.havepaimaiend = true;
+          clearInterval(this.timer)
+          self.toendhour = '00'
+          self.toendminite = '00'
+          self.toendsecond = '00'
+          self.haveend = false
+          self.havepaimaiend = true
         }
-      }, 1000);
+      }, 1000)
     },
     // 点击出价打开键盘
-    openkeyBoard() {
-      this.cursor1 = false;
-      this.usermsg();
-      if (this.sale.logList == "") {
+    openkeyBoard () {
+      this.cursor1 = false
+      this.usermsg()
+      if (this.sale.logList == '') {
         if (parseInt(this.sale.priceList.firstprice) > 0) {
-          this.lastofferPrice = parseInt(this.sale.priceList.firstprice);
+          this.lastofferPrice = parseInt(this.sale.priceList.firstprice)
         } else {
           this.lastofferPrice =
             parseInt(this.sale.priceList.addprice) +
-            parseInt(this.sale.priceList.firstprice);
+            parseInt(this.sale.priceList.firstprice)
         }
       } else {
         this.lastofferPrice =
           parseInt(this.sale.priceList.leadIngPrice) +
-          parseInt(this.sale.priceList.addprice);
+          parseInt(this.sale.priceList.addprice)
       }
-      this.offerPrice = [...(this.lastofferPrice + "")];
-      this.bid = true;
+      this.offerPrice = [...(this.lastofferPrice + '')]
+      this.bid = true
     },
     // 关闭键盘
-    closekeyBoard() {
-      this.bid = false;
-      this.lasttwoShow = false;
+    closekeyBoard () {
+      this.bid = false
+      this.lasttwoShow = false
     },
-    //删除
-    del() {
-      this.offerPrice.pop();
-      this.lastofferPrice = this.offerPrice.join("");
-      this.lasttwoShow = false;
+    // 删除
+    del () {
+      this.offerPrice.pop()
+      this.lastofferPrice = this.offerPrice.join('')
+      this.lasttwoShow = false
     },
     // 按数字1
-    oneClick() {
-      this.offerPrice.push(1);
-      this.lastofferPrice = this.offerPrice.join("");
-      this.lasttwoShow = false;
+    oneClick () {
+      this.offerPrice.push(1)
+      this.lastofferPrice = this.offerPrice.join('')
+      this.lasttwoShow = false
     },
     // 按数字2
-    twoClick() {
-      this.offerPrice.push(2);
-      this.lastofferPrice = this.offerPrice.join("");
-      this.lasttwoShow = false;
+    twoClick () {
+      this.offerPrice.push(2)
+      this.lastofferPrice = this.offerPrice.join('')
+      this.lasttwoShow = false
     },
     // 按数字3
-    threeClick() {
-      this.offerPrice.push(3);
-      this.lastofferPrice = this.offerPrice.join("");
-      this.lasttwoShow = false;
+    threeClick () {
+      this.offerPrice.push(3)
+      this.lastofferPrice = this.offerPrice.join('')
+      this.lasttwoShow = false
     },
     // 按数字4
-    fourClick() {
-      this.offerPrice.push(4);
-      this.lastofferPrice = this.offerPrice.join("");
-      this.lasttwoShow = false;
+    fourClick () {
+      this.offerPrice.push(4)
+      this.lastofferPrice = this.offerPrice.join('')
+      this.lasttwoShow = false
     },
     // 按数字5
-    fiveClick() {
-      this.offerPrice.push(5);
-      this.lastofferPrice = this.offerPrice.join("");
-      this.lasttwoShow = false;
+    fiveClick () {
+      this.offerPrice.push(5)
+      this.lastofferPrice = this.offerPrice.join('')
+      this.lasttwoShow = false
     },
     // 按数字6
-    sixClick() {
-      this.offerPrice.push(6);
-      this.lastofferPrice = this.offerPrice.join("");
-      this.lasttwoShow = false;
+    sixClick () {
+      this.offerPrice.push(6)
+      this.lastofferPrice = this.offerPrice.join('')
+      this.lasttwoShow = false
     },
     // 按数字7
-    sevenClick() {
-      this.offerPrice.push(7);
-      this.lastofferPrice = this.offerPrice.join("");
-      this.lasttwoShow = false;
+    sevenClick () {
+      this.offerPrice.push(7)
+      this.lastofferPrice = this.offerPrice.join('')
+      this.lasttwoShow = false
     },
     // 按数字8
-    eightClick() {
-      this.offerPrice.push(8);
-      this.lastofferPrice = this.offerPrice.join("");
-      this.lasttwoShow = false;
+    eightClick () {
+      this.offerPrice.push(8)
+      this.lastofferPrice = this.offerPrice.join('')
+      this.lasttwoShow = false
     },
     // 按数字9
-    nineClick() {
-      this.offerPrice.push(9);
-      this.lastofferPrice = this.offerPrice.join("");
-      this.lasttwoShow = false;
+    nineClick () {
+      this.offerPrice.push(9)
+      this.lastofferPrice = this.offerPrice.join('')
+      this.lasttwoShow = false
     },
     // 按数字00
-    dblzeroClick() {
-      if (this.lastofferPrice != "") {
-        this.offerPrice.push("00");
-        this.lastofferPrice = this.offerPrice.join("");
+    dblzeroClick () {
+      if (this.lastofferPrice != '') {
+        this.offerPrice.push('00')
+        this.lastofferPrice = this.offerPrice.join('')
       }
-      this.lasttwoShow = false;
+      this.lasttwoShow = false
     },
     // 按数字0
-    zeroClick() {
-      if (this.lastofferPrice != "") {
-        this.offerPrice.push(0);
-        this.lastofferPrice = this.offerPrice.join("");
+    zeroClick () {
+      if (this.lastofferPrice != '') {
+        this.offerPrice.push(0)
+        this.lastofferPrice = this.offerPrice.join('')
       }
-      this.lasttwoShow = false;
-    },
-    //传名字
+      this.lasttwoShow = false
+    }
+    // 传名字
     // setTitle(name) {
     //   localStorage.setItem("name", name);
     // }
   },
-  mounted() {
-    window.scrollTo(0, 0);
-    window.addEventListener("popstate", _ => {
+  mounted () {
+    window.scrollTo(0, 0)
+    window.addEventListener('popstate', _ => {
       if (this.isIos() && this.status) {
-        this.$router.go(0);
+        this.$router.go(0)
       }
-    });
-    //复制功能
-    this.text = location.href;
-    let clipboard = new ClipboardJS("#floleft");
-    clipboard.on("success", e => {
-      this.sharetosom = false;
-      Toast("复制成功");
-    });
-    clipboard.on("error", e => {
-      Toast("复制失败 请手动复制");
-      this.sharetosom = false;
-    });
-    //获取数据
-    this.usermsg();
-    let err = JSON.parse(sessionStorage.getItem("err"));
+    })
+    // 复制功能
+    this.text = location.href
+    let clipboard = new ClipboardJS('#floleft')
+    clipboard.on('success', e => {
+      this.sharetosom = false
+      Toast('复制成功')
+    })
+    clipboard.on('error', e => {
+      Toast('复制失败 请手动复制')
+      this.sharetosom = false
+    })
+    // 获取数据
+    this.usermsg()
+    let err = JSON.parse(sessionStorage.getItem('err'))
     if (err != null) {
-      if (err.err == "err") {
-        this.alertmessage = err.errmsg;
-        this.showalert = true;
-        sessionStorage.setItem("err", "");
+      if (err.err == 'err') {
+        this.alertmessage = err.errmsg
+        this.showalert = true
+        sessionStorage.setItem('err', '')
       }
     }
   }
-};
+}
 </script>
 
 <style>
@@ -2638,11 +2636,11 @@ video {
 .imggray {
   position: relative;
   /* -webkit-filter: grayscale(100%);
-	    -moz-filter: grayscale(100%);
-	    -ms-filter: grayscale(100%);
-	    -o-filter: grayscale(100%);
-	    filter: grayscale(100%);
-	    filter: gray; */
+      -moz-filter: grayscale(100%);
+      -ms-filter: grayscale(100%);
+      -o-filter: grayscale(100%);
+      filter: grayscale(100%);
+      filter: gray; */
 }
 .imggray::after {
   position: absolute;
@@ -3337,4 +3335,3 @@ video {
   }
 }
 </style>
-

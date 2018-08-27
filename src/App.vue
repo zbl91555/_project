@@ -17,17 +17,17 @@
 </template>
 
 <script>
-import Navbar from "./components/common/Navbar.vue"; //用于navbar导航
-import { Loading } from "vux"; //loading
-import { mapActions, mapState } from "vuex"; //loading
+import Navbar from './components/common/Navbar.vue' // 用于navbar导航
+import { Loading } from 'vux' // loading
+import { mapActions, mapState } from 'vuex' // loading
 
-import keyboard from "./components/find/find.vue";
+import keyboard from './components/find/find.vue'
 
-import token from "./common/token";
-import { getSign, category } from "./api/api";
+import token from './common/token'
+import { getSign, category } from './api/api'
 
-import wx from "weixin-js-sdk";
-import assign from "./assets/js/assign";
+import wx from 'weixin-js-sdk'
+import assign from './assets/js/assign'
 export default {
   components: {
     Navbar,
@@ -35,17 +35,17 @@ export default {
     keyboard
   },
   // mixins:[assign],
-  data() {
+  data () {
     return {
-      isIndex: true, //用于navbar导航
-      transitionName: "slide-left",
+      isIndex: true, // 用于navbar导航
+      transitionName: 'slide-left',
       showIndex: 0,
-      home: ["recommend", "focus", "精选"], //首页高亮的页面
-      classifi: ["分类", "分类详情"], //分类
-      find: ["发现"], //发现
-      mine: ["买家中心", "买家中心-订单详情", "设置", "卖家中心", "店铺设置"], //买家中心
-      text: "正在登录中..."
-    };
+      home: ['recommend', 'focus', '精选'], // 首页高亮的页面
+      classifi: ['分类', '分类详情'], // 分类
+      find: ['发现'], // 发现
+      mine: ['买家中心', '买家中心-订单详情', '设置', '卖家中心', '店铺设置'], // 买家中心
+      text: '正在登录中...'
+    }
   },
 
   computed: {
@@ -54,131 +54,130 @@ export default {
       isNavBar: state => state.isNavBar,
       isLoading: state => state.isLoading
     }),
-    msgLists() {
-      return this.msgList;
+    msgLists () {
+      return this.msgList
     }
   },
 
   watch: {
-    $route(to, from) {
-      const toDepth = to.path.split("/").length;
-      const fromDepth = from.path.split("/").length;
-      this.transitionName = toDepth < fromDepth ? "slide-right" : "slide-left";
-      let ua = window.navigator.userAgent.toLowerCase();
-      let uri = "";
-      if (ua.match(/micromessenger/i) == "micromessenger") {
-        if (ua.match(/wechatdevtools/i) == "wechatdevtools") {
-          uri = location.href;
+    $route (to, from) {
+      const toDepth = to.path.split('/').length
+      const fromDepth = from.path.split('/').length
+      this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+      let ua = window.navigator.userAgent.toLowerCase()
+      let uri = ''
+      if (ua.match(/micromessenger/i) == 'micromessenger') {
+        if (ua.match(/wechatdevtools/i) == 'wechatdevtools') {
+          uri = location.href
         } else {
           if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-            uri = this.$store.state.uploadWechatLocation;
+            uri = this.$store.state.uploadWechatLocation
           } else if (/(Android)/i.test(navigator.userAgent)) {
-            uri = location.href;
+            uri = location.href
           } else {
-            uri = location.href;
+            uri = location.href
           }
         }
-        if (to.name != "author") {
-          this.getJsSdk(uri);
+        if (to.name != 'author') {
+          this.getJsSdk(uri)
         }
       }
-      //清除发布信息
-      if (localStorage.getItem("uploadInfo")) {
+      // 清除发布信息
+      if (localStorage.getItem('uploadInfo')) {
         if (
-          to.name != "发布" &&
-          to.name != "upload" &&
-          to.name != "nextUpload" &&
-          to.name != "author" &&
-          to.name != "微信号码"
+          to.name != '发布' &&
+          to.name != 'upload' &&
+          to.name != 'nextUpload' &&
+          to.name != 'author' &&
+          to.name != '微信号码'
         ) {
-          localStorage.removeItem("uploadImg");
-          localStorage.removeItem("goodsId");
-          localStorage.removeItem("uploadInfo");
+          localStorage.removeItem('uploadImg')
+          localStorage.removeItem('goodsId')
+          localStorage.removeItem('uploadInfo')
         }
       }
-      //清除个人实名认证信息
-      if (localStorage.getItem("realNameInformation")) {
+      // 清除个人实名认证信息
+      if (localStorage.getItem('realNameInformation')) {
         if (
-          to.name != "个人认证" &&
-          to.name != "personalCertificatePay" &&
-          to.name != "dredgeBlancePaid"
+          to.name != '个人认证' &&
+          to.name != 'personalCertificatePay' &&
+          to.name != 'dredgeBlancePaid'
         ) {
-          localStorage.removeItem("realNameInformation");
+          localStorage.removeItem('realNameInformation')
         }
       }
-      //清除企业实名认证信息
-      if (localStorage.getItem("enterpriseRealName")) {
+      // 清除企业实名认证信息
+      if (localStorage.getItem('enterpriseRealName')) {
         if (
-          to.name != "企业认证" &&
-          to.name != "enterprisePersonCertification" &&
-          to.name != "enterpriseCertiPay" &&
-          to.name != "dredgeBlancePaid"
+          to.name != '企业认证' &&
+          to.name != 'enterprisePersonCertification' &&
+          to.name != 'enterpriseCertiPay' &&
+          to.name != 'dredgeBlancePaid'
         ) {
-          localStorage.removeItem("enterpriseRealName");
-          localStorage.removeItem("storeInformation");
+          localStorage.removeItem('enterpriseRealName')
+          localStorage.removeItem('storeInformation')
         }
       }
-      //清除Home的数据
-      if (sessionStorage.getItem("home")) {
-        if (to.name != "首页" && to.name != "auction") {
-          sessionStorage.removeItem("home");
+      // 清除Home的数据
+      if (sessionStorage.getItem('home')) {
+        if (to.name != '首页' && to.name != 'auction') {
+          sessionStorage.removeItem('home')
         }
       }
-      //清除recommend的数据
-      if (sessionStorage.getItem("recommend")) {
-        if (to.name != "recommend" && to.name != "auction") {
-          sessionStorage.removeItem("recommend");
+      // 清除recommend的数据
+      if (sessionStorage.getItem('recommend')) {
+        if (to.name != 'recommend' && to.name != 'auction') {
+          sessionStorage.removeItem('recommend')
         }
       }
-      //清除活动页面的数据
-      if (sessionStorage.getItem("thankaList")) {
-        if (to.name != "auction" && to.name != "tangkaArtExhibition") {
-          sessionStorage.removeItem("thankaList");
+      // 清除活动页面的数据
+      if (sessionStorage.getItem('thankaList')) {
+        if (to.name != 'auction' && to.name != 'tangkaArtExhibition') {
+          sessionStorage.removeItem('thankaList')
         }
       }
       // 首页高亮的页面
       let val = this.home.some(item => {
-        return item == to.name;
-      });
+        return item == to.name
+      })
       if (val) {
-        this.showIndex = 0;
-        return;
+        this.showIndex = 0
+        return
       } else {
-        this.showIndex = 5;
+        this.showIndex = 5
       }
       // 分类
       let classifival = this.classifi.some(item => {
-        return item == to.name;
-      });
+        return item == to.name
+      })
       if (classifival) {
-        this.showIndex = 1;
-        return;
+        this.showIndex = 1
+        return
       } else {
-        this.showIndex = 5;
+        this.showIndex = 5
       }
       // 发现
       let findval = this.find.some(item => {
-        return item == to.name;
-      });
+        return item == to.name
+      })
       if (findval) {
-        this.showIndex = 2;
-        return;
+        this.showIndex = 2
+        return
       } else {
-        this.showIndex = 5;
+        this.showIndex = 5
       }
       // 我的
       let mineval = this.mine.some(item => {
-        return item == to.name;
-      });
+        return item == to.name
+      })
       if (mineval) {
-        this.showIndex = 3;
-        return;
+        this.showIndex = 3
       } else {
-        this.showIndex = 5;
+        this.showIndex = 5
       }
     }
   },
-  mounted() {
+  mounted () {
     // let ua = window.navigator.userAgent.toLowerCase();
     // let uri = "";
     // if (ua.match(/micromessenger/i) == "micromessenger") {
@@ -197,54 +196,53 @@ export default {
     // }
     // 首页高亮的页面
     let val = this.home.some(item => {
-      return item == this.$route.name;
-    });
+      return item == this.$route.name
+    })
     if (val) {
-      this.showIndex = 0;
-      return;
+      this.showIndex = 0
+      return
     } else {
-      this.showIndex = 5;
+      this.showIndex = 5
     }
     // 分类
     let classifival = this.classifi.some(item => {
-      return item == this.$route.name;
-    });
+      return item == this.$route.name
+    })
     if (classifival) {
-      this.showIndex = 1;
-      return;
+      this.showIndex = 1
+      return
     } else {
-      this.showIndex = 5;
+      this.showIndex = 5
     }
     // 发现
     let findval = this.find.some(item => {
-      return item == this.$route.name;
-    });
+      return item == this.$route.name
+    })
     if (findval) {
-      this.showIndex = 2;
-      return;
+      this.showIndex = 2
+      return
     } else {
-      this.showIndex = 5;
+      this.showIndex = 5
     }
     // 我的
     let mineval = this.mine.some(item => {
-      return item == this.$route.name;
-    });
+      return item == this.$route.name
+    })
     if (mineval) {
-      this.showIndex = 3;
-      return;
+      this.showIndex = 3
     } else {
-      this.showIndex = 5;
+      this.showIndex = 5
     }
   },
-  created() {
-    this.disabledScale();
+  created () {
+    this.disabledScale()
     // this.up();
-    //状态保留
+    // 状态保留
     if (token.getToken()) {
-      this.$store.dispatch("setAuthUser");
+      this.$store.dispatch('setAuthUser')
     }
-    if (location.hash === "#/author") {
-      this.isIndex = false;
+    if (location.hash === '#/author') {
+      this.isIndex = false
     }
   },
   methods: {
@@ -256,60 +254,60 @@ export default {
     // up() {
     //   this.startLoding({ status: false, text: "Loading" });
     // },
-    //安卓微信端禁止缩放
-    disabledScale() {
-      function handleFontSize() {
-        WeixinJSBridge.invoke("setFontSizeCallback", {
+    // 安卓微信端禁止缩放
+    disabledScale () {
+      function handleFontSize () {
+        WeixinJSBridge.invoke('setFontSizeCallback', {
           fontSize: 0
-        });
-        WeixinJSBridge.on("menu:setfont", function() {
-          WeixinJSBridge.invoke("setFontSizeCallback", {
+        })
+        WeixinJSBridge.on('menu:setfont', function () {
+          WeixinJSBridge.invoke('setFontSizeCallback', {
             fontSize: 0
-          });
-        });
+          })
+        })
       }
       if (
-        typeof WeixinJSBridge == "object" &&
-        typeof WeixinJSBridge.invoke == "function"
+        typeof WeixinJSBridge == 'object' &&
+        typeof WeixinJSBridge.invoke == 'function'
       ) {
-        handleFontSize();
+        handleFontSize()
       } else {
         if (document.addEventListener) {
           document.addEventListener(
-            "WeixinJSBridgeReady",
+            'WeixinJSBridgeReady',
             handleFontSize,
             false
-          );
+          )
         } else if (document.attachEvent) {
-          document.attachEvent("WeixinJSBridgeReady", handleFontSize);
-          document.attachEvent("onWeixinJSBridgeReady", handleFontSize);
+          document.attachEvent('WeixinJSBridgeReady', handleFontSize)
+          document.attachEvent('onWeixinJSBridgeReady', handleFontSize)
         }
       }
     },
-    //判断是否是微信浏览器
-    isWeixin() {
-      const ua = window.navigator.userAgent.toLowerCase();
-      if (ua.match(/MicroMessenger/i) == "micromessenger") {
-        return true;
+    // 判断是否是微信浏览器
+    isWeixin () {
+      const ua = window.navigator.userAgent.toLowerCase()
+      if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+        return true
       } else {
-        return false;
+        return false
       }
     },
-    isMobile() {
+    isMobile () {
       if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
-        return true;
+        return true
       } else {
-        return false;
+        return false
       }
     },
-    beforeunloadHandler(e) {}
+    beforeunloadHandler (e) {}
   },
-  destroyed() {
-    window.removeEventListener("beforeunload", e =>
+  destroyed () {
+    window.removeEventListener('beforeunload', e =>
       this.beforeunloadHandler(e)
-    );
+    )
   }
-};
+}
 </script>
 
 <style>

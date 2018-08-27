@@ -12,7 +12,7 @@
       <div class="item" v-for="(item,index) in list" :key="item.uri">
         <swiper dots-position="center" :show-desc-mask="false" :list="item.swiperList" :auto="true" :loop="true">
         </swiper>
-        <div class="productInfo"> 
+        <div class="productInfo">
           <div class="commodityDescription"><span>{{item.title}}</span></div>
           <!-- <div class="commodityEvaluation"><span>估价:￥{{item.gj1}}—￥{{item.gj2}}</span></div> -->
           <div class="commodityEvaluation">
@@ -44,46 +44,46 @@
         <div>是否确认取消关注</div>
         <div style="color:rgb(181, 84, 89)" @click.stop="grounding">确定</div>
         <span class="grayTop"></span>
-        <div class="cancelTop" @click="closeshowlists">取消 </div> 
+        <div class="cancelTop" @click="closeshowlists">取消 </div>
       </div>
     </div> -->
   </div>
 </template>
 
 <script>
-import { Swiper, SwiperItem, LoadMore } from "vux";
-import { Toast } from "vant";
-import timeDown from "./timeDown.vue";
-import { getThanka, auctionFocus } from "../../api/api.js";
-import assign from "../../assets/js/assign.js"; //混入式方法
+import { Swiper, SwiperItem, LoadMore } from 'vux'
+import { Toast } from 'vant'
+import timeDown from './timeDown.vue'
+import { getThanka, auctionFocus } from '../../api/api.js'
+import assign from '../../assets/js/assign.js' // 混入式方法
 export default {
-  data() {
+  data () {
     return {
-      tabList: ["唐卡艺术", "欧式家具", "明清家具杂项"],
+      tabList: ['唐卡艺术', '欧式家具', '明清家具杂项'],
       // select: 0, //tab栏选中
-      imgHeight: 0, //顶部图片的高度
-      navFixed: false, //tab栏是否浮动
-      alert: false, //弹出层
-      type: 1, //1唐卡 2欧式 3明清
+      imgHeight: 0, // 顶部图片的高度
+      navFixed: false, // tab栏是否浮动
+      alert: false, // 弹出层
+      type: 1, // 1唐卡 2欧式 3明清
       page: 0,
       pagenum: 5,
       flag: false,
-      list: [], //渲染列表
-      thanka: [], //唐卡数据
-      europeanStyle: [], //欧式数据
-      mingqing: [], //明清数据
+      list: [], // 渲染列表
+      thanka: [], // 唐卡数据
+      europeanStyle: [], // 欧式数据
+      mingqing: [], // 明清数据
       loading: false,
       elseloading: false,
-      saveList: {//缓存数据
-        thanka: "",
-        europeanStyle: "",
-        mingqing: ""
+      saveList: {// 缓存数据
+        thanka: '',
+        europeanStyle: '',
+        mingqing: ''
       },
-      isScroll : false,//当前tab栏是否要悬浮
-      num : '',//定时器
-      Initialization : false,  
-      status : false,
-    };
+      isScroll: false, // 当前tab栏是否要悬浮
+      num: '', // 定时器
+      Initialization: false,
+      status: false
+    }
   },
   mixins: [assign],
   components: {
@@ -92,35 +92,35 @@ export default {
     timeDown,
     LoadMore
   },
-  beforeRouteLeave(to,from,next) {
-    this.status = true;
-    //离开当前页面时 清除定时器
-    this.num && clearInterval(this.num);
-    //数据保存到session中
-    this.saveData();//更新离开前要保存的数据
-    this.saveList.type = this.type;
-    sessionStorage.setItem('thankaList',JSON.stringify(this.saveList));
-    next();
+  beforeRouteLeave (to, from, next) {
+    this.status = true
+    // 离开当前页面时 清除定时器
+    this.num && clearInterval(this.num)
+    // 数据保存到session中
+    this.saveData()// 更新离开前要保存的数据
+    this.saveList.type = this.type
+    sessionStorage.setItem('thankaList', JSON.stringify(this.saveList))
+    next()
   },
-  created() {
-    window.addEventListener("scroll", this.scrollHander);
-    //判断当前有没有列表数据
-    let saveList = sessionStorage.getItem('thankaList') && JSON.parse(sessionStorage.getItem('thankaList'));
+  created () {
+    window.addEventListener('scroll', this.scrollHander)
+    // 判断当前有没有列表数据
+    let saveList = sessionStorage.getItem('thankaList') && JSON.parse(sessionStorage.getItem('thankaList'))
     if (saveList) {
-      let type = this.isType(saveList.type);
+      let type = this.isType(saveList.type)
       if ((saveList[type].list || []).length > 0) {
-        this.saveList = saveList;
-        this.type = saveList.type;
-        this.list = this.getSaveData();
-        this.flag = this.saveList[type].flag;
-        this.positionReturn(saveList[type].scroll);
-        sessionStorage.removeItem('thankaList');
-        return ;
+        this.saveList = saveList
+        this.type = saveList.type
+        this.list = this.getSaveData()
+        this.flag = this.saveList[type].flag
+        this.positionReturn(saveList[type].scroll)
+        sessionStorage.removeItem('thankaList')
+        return
       }
     };
-      this.getData(this.type);
+    this.getData(this.type)
   },
-  mounted() {
+  mounted () {
     // this.$nextTick(_ => {
     //   let num = setInterval(_ => {
     //     if (this.$refs.ctn.offsetHeight > 0) {
@@ -131,176 +131,176 @@ export default {
     // });
   },
   methods: {
-    //数据重置
-    dataReset(index) {
-      this.select = index;
-      this.flag = false;
-      this.list = [];
-      this.page = 0;
-      this.type = index + 1;
-      this.loading = false;
-      this.elseloading = false;
+    // 数据重置
+    dataReset (index) {
+      this.select = index
+      this.flag = false
+      this.list = []
+      this.page = 0
+      this.type = index + 1
+      this.loading = false
+      this.elseloading = false
     },
-    //tab栏切换
-    tabChnage(index) {
-      this.isScroll = this.navFixed;
-      this.saveData();
-      this.dataReset(index);
-      let type = this.isType();
+    // tab栏切换
+    tabChnage (index) {
+      this.isScroll = this.navFixed
+      this.saveData()
+      this.dataReset(index)
+      let type = this.isType()
       if (this.saveList[type] && this.saveList[type].list.length > 0) {
-        this.list = this.saveList[type].list;
+        this.list = this.saveList[type].list
         if (this.saveList[type].scroll < this.imgHeight && this.isScroll) {
-          var scroll = this.imgHeight;
-        }else {
-          var scroll = this.saveList[type].scroll;
+          let scroll = this.imgHeight
+        } else {
+          let scroll = this.saveList[type].scroll
         };
-        this.positionReturn(scroll); 
+        this.positionReturn(scroll)
         if (this.saveList[type].flag) {
-          this.flag = true;
+          this.flag = true
         }
-      }else {
+      } else {
         if (this.isScroll && this.page == 0) {
-          this.Initialization = true;
+          this.Initialization = true
         };
-        this.getData();
+        this.getData()
       }
     },
-    //滚动事件
-    scrollHander() {
+    // 滚动事件
+    scrollHander () {
       if (!this.imgHeight) {
         this.imgHeight = this.$refs.ctn.offsetHeight
       };
-      this.tabFixed();
-      const st = document.documentElement.scrollTop || document.body.scrollTop;
-      this.scroll = st;
-      const ch = this.$refs.ctn.clientHeight;
+      this.tabFixed()
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      this.scroll = st
+      const ch = this.$refs.ctn.clientHeight
       if (st + window.innerHeight >= ch * 0.5 && !this.flag) {
-        this.getData(this.type);
+        this.getData(this.type)
       }
     },
-    //导航栏固定定位
-    tabFixed() {
+    // 导航栏固定定位
+    tabFixed () {
       let distance =
-        document.documentElement.scrollTop || document.body.scrollTop;
+        document.documentElement.scrollTop || document.body.scrollTop
       if (distance >= this.imgHeight || this.Initialization) {
-        this.navFixed = true;
-        this.Initialization = false;
+        this.navFixed = true
+        this.Initialization = false
       } else {
-        this.navFixed = false;
+        this.navFixed = false
       }
     },
-    //出价
-    offer(uri) {
-      this.$router.push("/auction/" + uri);
+    // 出价
+    offer (uri) {
+      this.$router.push('/auction/' + uri)
     },
-    //关注
-    focus(id, index, isLiked) {
+    // 关注
+    focus (id, index, isLiked) {
       if (isLiked) {
-        Toast("您已关注该拍品");
-        return;
+        Toast('您已关注该拍品')
+        return
       }
       auctionFocus(id)
         .then(res => {
-          this.list[index].isLiked = true;
-          Toast("关注成功");
+          this.list[index].isLiked = true
+          Toast('关注成功')
         })
         .catch(err => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     },
-    //获取列表数据
-    getData() {
+    // 获取列表数据
+    getData () {
       if (this.flag) {
-        return;
+        return
       };
-      this.flag = true;
-      this.loading = true;
-      var list = this.getSaveData();
-      let type = this.isType();
+      this.flag = true
+      this.loading = true
+      var list = this.getSaveData()
+      let type = this.isType()
       let params = {
         page: ++this.page,
         pagenum: this.pagenum
-      };
+      }
       getThanka(this.type, params)
         .then(res => {
-          //分享
-          res.data.html && this.goShares(res.data.html);
-          this.flag = false;
-          this.loading = false;
-          let data;
+          // 分享
+          res.data.html && this.goShares(res.data.html)
+          this.flag = false
+          this.loading = false
+          let data
           res.data.items.forEach((item, index) => {
-            item.swiperList = [];
-            let uri = "/auction/" + item.uri;
+            item.swiperList = []
+            let uri = '/auction/' + item.uri
             item.imgList.forEach((items, index) => {
-              item.swiperList.push({ img: items, url: uri });
-            });
-          });
-          this[type] = this[type].concat(res.data.items);
-          this.list = this[type];
-          this.saveData();
-          if(this.page == 1 && this[type].length >= 1 && this.isScroll) {
+              item.swiperList.push({ img: items, url: uri })
+            })
+          })
+          this[type] = this[type].concat(res.data.items)
+          this.list = this[type]
+          this.saveData()
+          if (this.page == 1 && this[type].length >= 1 && this.isScroll) {
             this.$nextTick(_ => {
-              this.navFixed = true;
-              window.scrollTo(0,this.imgHeight);
-              this.Initialization = false;
+              this.navFixed = true
+              window.scrollTo(0, this.imgHeight)
+              this.Initialization = false
             })
           }
         })
         .catch(err => {
-          console.log(err);
-          this.loading = false;
-          this.elseloading = true;
-        });
+          console.log(err)
+          this.loading = false
+          this.elseloading = true
+        })
     },
-    //数据保存
-    saveData() {
-      let type = this.isType();
+    // 数据保存
+    saveData () {
+      let type = this.isType()
       let params = {
-        list: this.list, //数据列表
-        page: this.page, //当前页码
+        list: this.list, // 数据列表
+        page: this.page, // 当前页码
         pagenum: this.pagenum,
-        flag : this.flag,//限制阀
-        scroll: document.documentElement.scrollTop || document.body.scrollTop //scroll
-      };
-      this.saveList[type] = params;
+        flag: this.flag, // 限制阀
+        scroll: document.documentElement.scrollTop || document.body.scrollTop // scroll
+      }
+      this.saveList[type] = params
     },
-    //缓存数据获取填充
-    getSaveData() {
-      let type = this.isType();
+    // 缓存数据获取填充
+    getSaveData () {
+      let type = this.isType()
       if (this.saveList[type]) {
-        this.page = this.saveList[type].page;
-        this.pagenum = this.saveList[type].pagenum;
-        return this.saveList[type].list;
+        this.page = this.saveList[type].page
+        this.pagenum = this.saveList[type].pagenum
+        return this.saveList[type].list
       }
     },
-    //type判断
-    isType(type) {
-      var type = type || this.type; 
+    // type判断
+    isType (type) {
+      type = type || this.type
       if (type == 1) {
-        return "thanka";
+        return 'thanka'
       } else if (type == 2) {
-        return "europeanStyle";
+        return 'europeanStyle'
       } else {
-        return "mingqing";
+        return 'mingqing'
       }
     },
-    //位置返回
-    positionReturn(scroll) {
-      clearInterval(this.num);
-      let clientHeight = window.innerHeight || document.documentElement.clientHeight;
-      let totalHeight = scroll + clientHeight;
+    // 位置返回
+    positionReturn (scroll) {
+      clearInterval(this.num)
+      let clientHeight = window.innerHeight || document.documentElement.clientHeight
+      let totalHeight = scroll + clientHeight
       this.num = setInterval(_ => {
         if (this.$refs.artExhibition.offsetHeight >= totalHeight) {
-          window.scrollTo(0, scroll);
-          clearInterval(this.num);
+          window.scrollTo(0, scroll)
+          clearInterval(this.num)
         }
-      }, 100);
+      }, 100)
     }
   },
-  destroyed() {
-    window.removeEventListener("scroll", this.scrollHander);
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollHander)
   }
-};
+}
 </script>
 
 <style>
@@ -454,7 +454,7 @@ export default {
               color: #666;
             }
             span:nth-child(even) {
-              color: #c50405; 
+              color: #c50405;
             }
           }
         }
@@ -556,4 +556,3 @@ export default {
   font-weight : 700;
 }
 </style>
-

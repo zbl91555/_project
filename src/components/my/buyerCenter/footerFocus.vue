@@ -1,8 +1,8 @@
 <template>
 	<div class="footerFocus">
 		<ul class="focus">
-		
-			<li v-for="e in focusList">
+
+			<li v-for="e in focusList" :key="e.sellerId">
 				<router-link :to="'/storeHome/'+e.sellerId">
 					<img :src="e.headimgurl" />
 					<h3>{{e.nickname}}</h3>
@@ -13,59 +13,59 @@
 	</div>
 </template>
 <script>
-import { footerFocus } from "../../../api/api";
+import { footerFocus } from '../../../api/api'
 export default {
-  data() {
+  data () {
     return {
       focusList: [],
       page: 0,
-			num: 10,
-			flag : false,//节流阀
-    };
+      num: 10,
+      flag: false // 节流阀
+    }
   },
-  props: ["value"],
+  props: ['value'],
   methods: {
-    footerFocus() {
-			if (this.flag) {
-				return;
-			};
-			this.flag = true;
-      this.page++;
+    footerFocus () {
+      if (this.flag) {
+        return
+      };
+      this.flag = true
+      this.page++
       let params = {
         page: this.page,
         pagenum: this.num
-      };
+      }
       footerFocus(params)
         .then(res => {
-					this.focusList = res.data.list;
-					this.flag = false;
+          this.focusList = res.data.list
+          this.flag = false
         })
         .catch(err => {
-          console.log(err);
+          console.log(err)
           if (this.focusList.length == 0) {
-            this.$emit("input", true);
+            this.$emit('input', true)
           }
-        });
+        })
     },
-    scrollfooterFocus() {
-      const st = document.documentElement.scrollTop || document.body.scrollTop;
-      const ch = this.$refs.ctn.clientHeight;
+    scrollfooterFocus () {
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      const ch = this.$refs.ctn.clientHeight
       if (st + window.innerHeight >= ch * 0.5) {
-        this.footerFocus();
+        this.footerFocus()
       }
     }
   },
-  created() {
+  created () {
     // 注册scroll事件并监听
-    window.addEventListener("scroll", this.scrollfooterFocus);
+    window.addEventListener('scroll', this.scrollfooterFocus)
   },
-  destroyed() {
-    window.removeEventListener("scroll", this.scrollfooterFocus);
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollfooterFocus)
   },
-  mounted() {
-    this.footerFocus();
+  mounted () {
+    this.footerFocus()
   }
-};
+}
 </script>
 <style lang="less" scoped>
 @border-color: #d2d2d2;

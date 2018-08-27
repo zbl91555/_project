@@ -3,11 +3,11 @@
     <div v-if="nowPage">
       <div class="moneys">
           <div>消保金提现</div>
-      </div>  
+      </div>
       <div style="border-top: 1px solid #e5e5e5;margin-left: 15px"></div>
       <div class="moneys">
           <div>提现金额:<i style="color:#f15511"> ￥{{num}}</i></div>
-      </div>  
+      </div>
       <div style="border-top: 1px solid #e5e5e5;margin-left: 15px"></div>
       <ul>
         <li class="op">
@@ -33,64 +33,60 @@
 </template>
 
 <script>
-   import withDrawNextDown from '../withDrawNextDown'
-   import wx from 'weixin-js-sdk'
-   import { Toast } from 'vant';
-   import {getSign,wxPay,walletWithdrawalSubmit,depositWithdraw} from '../../../api/api';
-   import assign from '../../../assets/js/assign.js'//混入式方法
-   export default {
-    mixins:[assign],
-    components : {
-      withDrawNextDown
+import withDrawNextDown from '../withDrawNextDown'
+import wx from 'weixin-js-sdk'
+import { Toast } from 'vant'
+import {getSign, wxPay, walletWithdrawalSubmit, depositWithdraw} from '../../../api/api'
+import assign from '../../../assets/js/assign.js'// 混入式方法
+export default {
+  mixins: [assign],
+  components: {
+    withDrawNextDown
+  },
+  data () {
+    return {
+      config: {},
+      payConfig: {},
+      active: false,
+      num: '',
+      nowPage: true,
+      downPage: false,
+      title: '消保金提现',
+      link: '/member/consumerSecurity',
+      flag: false
+    }
+  },
+  mounted () {
+    this.num = this.$route.params.price
+  },
+  methods: {
+    towx () {
+      if (this.flag) {
+        return false
+      }
+      this.flag = true
+      let params = {
+        price: this.num
+      }
+      depositWithdraw(params).then(res => {
+        this.nowPage = false
+        this.downPage = true
+        this.flag = false
+      }).catch(err => {
+        Toast(err.data.message)
+        this.flag = false
+      })
     },
-    data() {
-        return {
-            config:{},
-            payConfig:{},
-            active: false,
-            num: '',
-            nowPage:true,
-            downPage:false,
-            title:'消保金提现',
-            link:'/member/consumerSecurity',
-            flag : false
-        };
-      },
-    mounted(){
-       this.num = this.$route.params.price;
-    },
-    methods:{
-      towx(){
-        if (this.flag) {
-          return false;
-        }
-        this.flag = true;
-        let params = {
-            price:this.num,
-        };
-        depositWithdraw(params).then(res=> {
-          this.nowPage = false
-          this.downPage = true;
-          this.flag =false;
-        }).catch(err=> {
-         Toast(err.data.message);
-         this.flag = false;
-        })
-      },
-      $blur: function(){
-        this.active = true;
-        if(this.num == ''){
-          this.active = false;
-          return;
-        }
-      },
-        
-    } 
+    $blur: function () {
+      this.active = true
+      if (this.num == '') {
+        this.active = false
+      }
+    }
+
   }
+}
 </script>
-
-
-
 
 <style scoped lang="less">
 @border-color: #e5e5e5;
@@ -197,7 +193,7 @@
         color: #666;
         width: 70%;
     }
-   
+
     .arrow{
         position: absolute;
         left: 4%;
@@ -226,7 +222,7 @@
         width: 100%;
         margin-top: 135px;
         outline: none;
-        -webkit-appearance: none; 
+        -webkit-appearance: none;
     }
     .address{
       overflow: hidden;
@@ -515,7 +511,7 @@
         color: #9e2026;
         float: left;
         width: 49%;
-        line-height:96px; 
+        line-height:96px;
         height:96px;
         text-align: center;
         font-size: 32px;

@@ -17,60 +17,60 @@
 	</div>
 </template>
 <script>
-import { footer } from "../../../api/api";
+import { footer } from '../../../api/api'
 export default {
-  data() {
+  data () {
     return {
-      footers: [], //渲染数据
+      footers: [], // 渲染数据
       page: 0,
-			num: 10,
-			flag : false,//节流阀
-    };
-  },
-  props: ["value"],
-  methods: {
-    footer() {
-			if (this.flag) {
-				return;
-			};
-			this.flag = true;
-      this.page += 1;
-      let params = {
-        page: this.page,
-        pagenum: "10"
-      };
-      footer(params)
-        .then(res => {
-          this.footers = this.footers.concat(res.data);
-					this.num = res.data.length;
-					this.flag = false;
-        })
-        .catch(err => {
-          console.log(err);
-          if (this.footers.length == 0) {
-            this.$emit("input", true);
-					};
-        });
-    },
-    scrollfooter() {
-      const st = document.documentElement.scrollTop || document.body.scrollTop;
-      const ch = this.$refs.ctn.clientHeight;
-      if (st + window.innerHeight >= ch * 0.5) {
-				this.footer();
-			}
+      num: 10,
+      flag: false // 节流阀
     }
   },
-  mounted() {
-    this.footer();
+  props: ['value'],
+  methods: {
+    footer () {
+      if (this.flag) {
+        return
+      };
+      this.flag = true
+      this.page += 1
+      let params = {
+        page: this.page,
+        pagenum: '10'
+      }
+      footer(params)
+        .then(res => {
+          this.footers = this.footers.concat(res.data)
+          this.num = res.data.length
+          this.flag = false
+        })
+        .catch(err => {
+          console.log(err)
+          if (this.footers.length == 0) {
+            this.$emit('input', true)
+          };
+        })
+    },
+    scrollfooter () {
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      const ch = this.$refs.ctn.clientHeight
+      if (st + window.innerHeight >= ch * 0.5) {
+        this.footer()
+      }
+    }
   },
-  created() {
+  mounted () {
+    this.footer()
+  },
+  created () {
     // 注册scroll事件并监听
-    window.addEventListener("scroll", this.scrollfooter);
+    window.addEventListener('scroll', this.scrollfooter)
   },
-  destroyed() {
-    window.removeEventListener("scroll", this.scrollfooter);
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollfooter)
   }
-};
+}
 </script>
 <style lang="less" scoped>
 @border-color: #d2d2d2;

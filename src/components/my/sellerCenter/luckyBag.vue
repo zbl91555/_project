@@ -33,7 +33,6 @@
           收取 1% 手续费，过期后，剩余金额自动退至余额
         </div>
 
-
         <group>
           <x-switch title="新手福袋" v-model="value" prevent-default @on-click="onClick"></x-switch>
         </group>
@@ -54,7 +53,7 @@
         <div class="listRow message">
           <textarea class="redPackMessage" placeholder="随便说一句"></textarea>
         </div>
-       
+
         <div class="amount">
           <span>0.00</span>
         </div>
@@ -75,29 +74,28 @@ import { XSwitch, Group } from 'vux'
 export default {
   components: {
     XSwitch,
-    Group,
+    Group
   },
-  data() {
+  data () {
     return {
-       value: false,
-    };
-  },
-  created(){ 
-  },
-  methods: { 
-    getstore(){
-      let _this = this;     
-      
-    },
-    onClick(newVal, oldVal) {
-      console.log(newVal, oldVal)
-      this.value = newVal 
+      value: false
     }
-  }, 
-  mounted() {
+  },
+  created () {
+  },
+  methods: {
+    getstore () {
+      let _this = this
+    },
+    onClick (newVal, oldVal) {
+      console.log(newVal, oldVal)
+      this.value = newVal
+    }
+  },
+  mounted () {
     // this.getstore();
-  }, 
-};
+  }
+}
 </script>
 <style >
   .luckyBag {
@@ -108,7 +106,7 @@ export default {
     min-height: 100vh;
     padding-bottom: 60px;
     z-index: 999;
-  }  
+  }
 .luckyBag {
   min-height: calc(100vh + 60px) !important;
 }
@@ -228,7 +226,6 @@ export default {
   display: inline-block;
 }
 
-
 /*开关按钮*/
 .luckyBag .weui-cells .vux-no-group-title{
   margin:0;
@@ -265,6 +262,6 @@ export default {
 }
 .luckyBag .weui-switch:checked:after, .luckyBag .weui-switch-cp__input:checked ~ .weui-switch-cp__box:after{
   -webkit-transform: translateX(0.556667rem);
-  transform: translateX(0.556667rem); 
+  transform: translateX(0.556667rem);
 }
 </style>

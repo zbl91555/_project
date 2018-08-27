@@ -6,7 +6,7 @@
 				<i class="iconfont icon-shezhi1"></i>
 					<p>设置</p>
 				</router-link>
-				 <router-link :to="'/storeIntroduced/'+seller_id" class="tou-xiang">
+				<router-link :to="'/storeIntroduced/'+seller_id" class="tou-xiang">
 					<img @click="tostoreInt(sellerInfo.nickname)" :src="sellerInfo.headimgurl" alt="" />
 				</router-link>
 				<div class="nav-detail">
@@ -42,21 +42,21 @@
 						<i class="iconfont" v-bind:class="e.iconClass"></i>
 						<span class="grid-center" :class="$index == '0'?'selDaiClass':''">{{e.title}}</span>
 						<span class="grid-tip" v-if="e.orderNum > 0 ">{{e.orderNum}}</span>
-					</router-link>	
+					</router-link>
 					</grid-item>
 					<grid-item>
 					<router-link :to="'/afterSale/'+'seller'">
 						<i class="iconfont icon-iconshouhoufuwu"></i>
 						<span class="grid-center">售后</span>
 						<span class="grid-tip" v-if="afterSaleorderNum > 0 ">{{afterSaleorderNum}}</span>
-					</router-link>	
+					</router-link>
 					</grid-item>
 					<grid-item >
 					<router-link to="/sellerReport">
 						<i class="iconfont icon-statistic"></i>
 						<span class="grid-center">店铺报表</span>
 						<span class="grid-tip" v-if="reportorderNum > 0 ">{{reportorderNum}}</span>
-					</router-link>	
+					</router-link>
 					</grid-item>
 				</grid>
 			</group>
@@ -109,136 +109,136 @@
 </template>
 
 <script type="text/javascript">
-	import { XHeader, Group, Icon, Cell, Grid, GridItem } from 'vux';
-	import {getMember} from '../../../api/api'
-	import assign from '../../../assets/js/assign.js'//混入式方法
-	export default {
-		components: {
-			XHeader,
-			Group,
-			Icon,
-			Cell,
-			Grid,
-			GridItem
-		},
- 	mixins:[assign],
-		data() {
-			return {
-					logLists : [//本地图片
-						require('../../../assets/images/icon_v1.png'),
-						require('../../../assets/images/icon_v2.png'),
-						require('../../../assets/images/icon_v3.png'),
-						require('../../../assets/images/icon_v4.png'),
-						require('../../../assets/images/icon_v5.png'),
-						require('../../../assets/images/icon_v6.png'),
-						require('../../../assets/images/icon_v7.png'),
-						require('../../../assets/images/icon_v8.png'),
-						require('../../../assets/images/icon_v9.png'),
-						require('../../../assets/images/icon_v10.png'),
-						require('../../../assets/images/icon_v11.png'),
-						require('../../../assets/images/icon_v12.png'),
-						require('../../../assets/images/icon_v13.png'),
-					],
-				// order list
-				orderList: [{
-					iconClass: 'icon-daifukuan',
-					title: '待付款',
-					linkTo: '/newSellerOrder/waitPay',
-					orderNum: '0',
-					type:'0'
-				}, {
-					iconClass: 'icon-icon2',
-					title: '待发货',
-					linkTo: '/newSellerOrder/waitSend',
-					orderNum: '0',
-					type:'1'
-				}, {
-					iconClass: 'icon-daishouhuo',
-					title: '待收货',
-					linkTo: '/newSellerOrder/waitGet',
-					orderNum: '0',
-					type:'2'
-				}],
-				afterSaleorderNum:'0',
-				reportorderNum:'0',
-				// detail list
-				detailList: [{
-					iconClass: 'icon-daifukuan',
-					title: '我的钱包',
-					linkTo: '/balanceIndex/seller',
-				}, {
-					iconClass: 'icon-guanli',
-					title: '拍品管理',
-					linkTo: '/newStoreManage/autioning',
-				}, {
-					iconClass: 'icon-xiaoxi1',
-					title: '群发消息',
-					linkTo: '/sellerCenter/groupsentMessage',
-				}, {
-					iconClass: 'icon-liwuhuodong',
-					title: '推荐有礼',
-					linkTo: '/buyerCenter/PromotionGift',
-				},
-				//  {
-				// 	iconClass: 'icon-dengguang',
-				// 	title: '营销工具',
-				// 	linkTo: '/sellerCenter/sellerTool',
-				// }, 
-				{
-					iconClass: 'icon-kuozhanshuxing',
-					title: '扩展服务',
-					linkTo: '/sellerCenter/extendedService',
-				}, {
-					iconClass: 'icon-xiaoxi3',
-					title: '消息',
-					linkTo: '/news',
-				}],
-				// , {
-				// 	iconClass: 'icon-6dianpu',
-				// 	title: '我的店铺',
-				// 	linkTo: '/storeHome',
-				// }
-				// , {
-				// 	iconClass: 'icon-kehufenbutu',
-				// 	title: '分销中心',
-				// 	linkTo: '/sellerCenter/marketingCenter',
-				// }
-				// 获取到的数据
-				sellerInfo: {},
-				seller_id:'',
-			}
-		},
-		methods: {
-			tostoreInt(name){
-				localStorage.setItem('name',name)
-			},
-			getMember: function() {
-				let _this = this;
-				getMember('seller').then(function(res) {
-					_this.sellerInfo = res.data.info;
-					_this.seller_id = res.data.info.id
-					for(var i in _this.orderList) {
-						_this.orderList[0].orderNum = res.data.order.waitPay; // 待付款
-						_this.orderList[1].orderNum = res.data.order.waitDeliver; // 待发货
-						_this.orderList[2].orderNum = res.data.order.waitReceive; // 待收货
-						_this.afterSaleorderNum = res.data.order.waitService; // 售后
-						_this.reportorderNum = res.data.order.Report; //店铺报表
-					}
-				}).catch(function(err) {
-					console.log(err);
-				})
-			},
-			saveName(name){
-				localStorage.setItem('name',name)
-			}
-		},
-		mounted() {
-			this.getMember();
-		},
-		created() {
-			
-		}
-	}
+import { XHeader, Group, Icon, Cell, Grid, GridItem } from 'vux'
+import {getMember} from '../../../api/api'
+import assign from '../../../assets/js/assign.js'// 混入式方法
+export default {
+  components: {
+    XHeader,
+    Group,
+    Icon,
+    Cell,
+    Grid,
+    GridItem
+  },
+  mixins: [assign],
+  data () {
+    return {
+      logLists: [// 本地图片
+        require('../../../assets/images/icon_v1.png'),
+        require('../../../assets/images/icon_v2.png'),
+        require('../../../assets/images/icon_v3.png'),
+        require('../../../assets/images/icon_v4.png'),
+        require('../../../assets/images/icon_v5.png'),
+        require('../../../assets/images/icon_v6.png'),
+        require('../../../assets/images/icon_v7.png'),
+        require('../../../assets/images/icon_v8.png'),
+        require('../../../assets/images/icon_v9.png'),
+        require('../../../assets/images/icon_v10.png'),
+        require('../../../assets/images/icon_v11.png'),
+        require('../../../assets/images/icon_v12.png'),
+        require('../../../assets/images/icon_v13.png')
+      ],
+      // order list
+      orderList: [{
+        iconClass: 'icon-daifukuan',
+        title: '待付款',
+        linkTo: '/newSellerOrder/waitPay',
+        orderNum: '0',
+        type: '0'
+      }, {
+        iconClass: 'icon-icon2',
+        title: '待发货',
+        linkTo: '/newSellerOrder/waitSend',
+        orderNum: '0',
+        type: '1'
+      }, {
+        iconClass: 'icon-daishouhuo',
+        title: '待收货',
+        linkTo: '/newSellerOrder/waitGet',
+        orderNum: '0',
+        type: '2'
+      }],
+      afterSaleorderNum: '0',
+      reportorderNum: '0',
+      // detail list
+      detailList: [{
+        iconClass: 'icon-daifukuan',
+        title: '我的钱包',
+        linkTo: '/balanceIndex/seller'
+      }, {
+        iconClass: 'icon-guanli',
+        title: '拍品管理',
+        linkTo: '/newStoreManage/autioning'
+      }, {
+        iconClass: 'icon-xiaoxi1',
+        title: '群发消息',
+        linkTo: '/sellerCenter/groupsentMessage'
+      }, {
+        iconClass: 'icon-liwuhuodong',
+        title: '推荐有礼',
+        linkTo: '/buyerCenter/PromotionGift'
+      },
+      //  {
+      // 	iconClass: 'icon-dengguang',
+      // 	title: '营销工具',
+      // 	linkTo: '/sellerCenter/sellerTool',
+      // },
+      {
+        iconClass: 'icon-kuozhanshuxing',
+        title: '扩展服务',
+        linkTo: '/sellerCenter/extendedService'
+      }, {
+        iconClass: 'icon-xiaoxi3',
+        title: '消息',
+        linkTo: '/news'
+      }],
+      // , {
+      // 	iconClass: 'icon-6dianpu',
+      // 	title: '我的店铺',
+      // 	linkTo: '/storeHome',
+      // }
+      // , {
+      // 	iconClass: 'icon-kehufenbutu',
+      // 	title: '分销中心',
+      // 	linkTo: '/sellerCenter/marketingCenter',
+      // }
+      // 获取到的数据
+      sellerInfo: {},
+      seller_id: ''
+    }
+  },
+  methods: {
+    tostoreInt (name) {
+      localStorage.setItem('name', name)
+    },
+    getMember: function () {
+      let _this = this
+      getMember('seller').then(function (res) {
+        _this.sellerInfo = res.data.info
+        _this.seller_id = res.data.info.id
+        for (var i in _this.orderList) {
+          _this.orderList[0].orderNum = res.data.order.waitPay // 待付款
+          _this.orderList[1].orderNum = res.data.order.waitDeliver // 待发货
+          _this.orderList[2].orderNum = res.data.order.waitReceive // 待收货
+          _this.afterSaleorderNum = res.data.order.waitService // 售后
+          _this.reportorderNum = res.data.order.Report // 店铺报表
+        }
+      }).catch(function (err) {
+        console.log(err)
+      })
+    },
+    saveName (name) {
+      localStorage.setItem('name', name)
+    }
+  },
+  mounted () {
+    this.getMember()
+  },
+  created () {
+
+  }
+}
 </script>
 
 <style>
@@ -276,14 +276,14 @@
 
 <style type="text/css" lang="less" scoped>
 	/*
-	 * @header-height: 头部高度
-	 * @font-size: 字体设置
-	 * @bg-color: 背景统一颜色
-	 * @border-color: 边框统一颜色
-	 * @font-color: 统一字体颜色
-	 * @main-color: 主色调
-	 * @padding-left: 自定义左边距
-	 * */
+	* @header-height: 头部高度
+	* @font-size: 字体设置
+	* @bg-color: 背景统一颜色
+	* @border-color: 边框统一颜色
+	* @font-color: 统一字体颜色
+	* @main-color: 主色调
+	* @padding-left: 自定义左边距
+	* */
 
 	@font-size: 18px;
 	@bg-color: #fff;
@@ -319,7 +319,7 @@
 	.my-order .weui-grids a:last-child a i {
 		font-size : 0.72rem!important;
 	}
-	
+
 	.maijia2 /deep/.info {
 		margin-bottom: 10px;
 		width: 100%;
@@ -451,7 +451,7 @@
 			}
 		}
 	}
-	
+
 	.maijia2 /deep/.my-order {
 		width: 100%;
 		// border-bottom: 2px solid @border-color;
@@ -498,7 +498,7 @@
 				span {
 					display: block;
 					line-height: 1;
-					text-align: center; 
+					text-align: center;
 					font-size: 24px;
 				}
 				.grid-tip {
@@ -530,7 +530,7 @@
 			border: none;
 		}
 	}
-	
+
 	.maijia2 /deep/.my-order.nav {
 		.weui-cells .weui-cell {
 			border: none;
@@ -539,7 +539,7 @@
 		// 	border-top: 1px solid #b1b1b1;
 		// }
 	}
-	
+
 	.maijia2 /deep/.detail-list {
 		margin-bottom: 30px;
 		background-color: @bg-color;

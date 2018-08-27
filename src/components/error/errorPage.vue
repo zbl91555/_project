@@ -8,38 +8,38 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
-      status: "",
-      text: "抱歉！您访问的页面失联了...",
-      time : '',
-    };
+      status: '',
+      text: '抱歉！您访问的页面失联了...',
+      time: ''
+    }
   },
   methods: {
-    backToHome() {
-      this.$router.push("/home");
+    backToHome () {
+      this.$router.push('/home')
     }
   },
-  beforeRouteLeave(to,from,next) {
-    let nav = document.querySelector(".app-nav");
-    nav.style.display = "block";
-    next();
+  beforeRouteLeave (to, from, next) {
+    let nav = document.querySelector('.app-nav')
+    nav.style.display = 'block'
+    next()
   },
-  created() {
-    this.status = this.$route.query.type;
+  created () {
+    this.status = this.$route.query.type
     if (this.status == 40001) {
-      this.text = this.$route.query.msg;
+      this.text = this.$route.query.msg
       this.$nextTick(_ => {
-        let nav = document.querySelector(".app-nav");
-        nav.style.display = "none";
-      });
+        let nav = document.querySelector('.app-nav')
+        nav.style.display = 'none'
+      })
     } else if (this.status == 40002) {
-      let errinfo = sessionStorage.getItem('err') && JSON.parse(sessionStorage.getItem('err'));
-      this.text = errinfo.message;
-      this.time = errinfo.data.tips;
+      let errinfo = sessionStorage.getItem('err') && JSON.parse(sessionStorage.getItem('err'))
+      this.text = errinfo.message
+      this.time = errinfo.data.tips
     }
   }
-};
+}
 </script>
 
 <style scoped>

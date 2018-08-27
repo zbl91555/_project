@@ -31,14 +31,14 @@
           <div>是否确认重新上架</div>
           <div style="color:rgb(181, 84, 89)" @click.stop="grounding()">重新上架</div>
           <span class="grayTop"></span>
-          <div class="cancelTop" @click="closeshowlists()">取消 </div> 
+          <div class="cancelTop" @click="closeshowlists()">取消 </div>
         </div>
         <div v-if="del">
           <div>确认删除？</div>
           <div @click="singledelete(isshowIndex)">确认</div>
           <span class="grayTop"></span>
           <div class="cancelTop" @click="closeshowlists()">取消</div>
-        </div> 
+        </div>
       </div>
     </div>
     <load-more v-if="loading" tip="正在加载"></load-more>
@@ -47,8 +47,8 @@
   </div>
 </template>
 <script>
-import { Toast } from "vant";
-import { LoadMore } from "vux";
+import { Toast } from 'vant'
+import { LoadMore } from 'vux'
 import {
   getstore,
   somedown,
@@ -57,46 +57,46 @@ import {
   swichhide,
   singledown,
   singledelete
-} from "../../../api/api";
+} from '../../../api/api'
 export default {
-  data() {
+  data () {
     return {
       times: [
-        "10:00",
-        "12:00",
-        "16:00",
-        "17:00",
-        "19:00",
-        "20:00",
-        "21:00",
-        "22:00",
-        "23:00"
+        '10:00',
+        '12:00',
+        '16:00',
+        '17:00',
+        '19:00',
+        '20:00',
+        '21:00',
+        '22:00',
+        '23:00'
       ],
       tmortimes: [
-        "10:00",
-        "12:00",
-        "16:00",
-        "17:00",
-        "19:00",
-        "20:00",
-        "21:00",
-        "22:00",
-        "23:00"
+        '10:00',
+        '12:00',
+        '16:00',
+        '17:00',
+        '19:00',
+        '20:00',
+        '21:00',
+        '22:00',
+        '23:00'
       ],
       ttmortimes: [
-        "10:00",
-        "12:00",
-        "16:00",
-        "17:00",
-        "19:00",
-        "20:00",
-        "21:00",
-        "22:00",
-        "23:00"
+        '10:00',
+        '12:00',
+        '16:00',
+        '17:00',
+        '19:00',
+        '20:00',
+        '21:00',
+        '22:00',
+        '23:00'
       ],
       changeRed: 0,
-      caogaoStore: [], //草稿箱
-      type: "auctioning",
+      caogaoStore: [], // 草稿箱
+      type: 'auctioning',
       pagenum: 5,
       page: 0,
       caogao: false,
@@ -116,18 +116,18 @@ export default {
       nowindex: -1,
       nnowindex: -1,
       nnnowindex: -1,
-      year: "",
-      month: "",
-      day: "",
-      totaltime: "",
-      oneid: "",
+      year: '',
+      month: '',
+      day: '',
+      totaltime: '',
+      oneid: '',
       confirmupshow: false,
       someconfirmupshow: false,
       tohide: false,
       toshow: false,
       isBusy: false,
       showshowlists: false,
-      isshowIndex: "",
+      isshowIndex: '',
       updown: false,
       hide: false,
       del: false,
@@ -138,130 +138,130 @@ export default {
       count: 0,
       loading: false,
       elseloading: false,
-      textGrounding: "上架",
-      textDelete: "删除",
+      textGrounding: '上架',
+      textDelete: '删除',
       indexs: [],
       flag: false,
       xiajia: true,
-      img: require("../../../assets/images/beat.png"), //无数据时 显示的图片
-      dataNotAvailable: false //无数据时 是否展示
-    };
+      img: require('../../../assets/images/beat.png'), // 无数据时 显示的图片
+      dataNotAvailable: false // 无数据时 是否展示
+    }
   },
   components: {
     LoadMore
   },
-  created() {
-    this.count = this.pagenum;
-    window.addEventListener("scroll", this.scrollHandler);
+  created () {
+    this.count = this.pagenum
+    window.addEventListener('scroll', this.scrollHandler)
   },
-  destroyed() {
-    window.removeEventListener("scroll", this.scrollHandler);
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollHandler)
   },
   methods: {
-    //上架
-    grounding() {
-      let id = this.caogaoStore[this.index].id;
+    // 上架
+    grounding () {
+      let id = this.caogaoStore[this.index].id
       if (!this.caogaoStore[this.index].is_can) {
-        this.$router.push("/nextUpload/" + id);
+        this.$router.push('/nextUpload/' + id)
       } else {
-        this.$router.push("/upload/" + id);
+        this.$router.push('/upload/' + id)
       }
     },
-    isSwichHide(indexs, type) {
-      this.type = type;
-      this.index = indexs;
-      this.del = false;
-      this.xiajia = false;
-      this.showshowlists = true;
-      if (type == "grounding") {
-        this.xiajia = true;
+    isSwichHide (indexs, type) {
+      this.type = type
+      this.index = indexs
+      this.del = false
+      this.xiajia = false
+      this.showshowlists = true
+      if (type == 'grounding') {
+        this.xiajia = true
       } else {
-        this.del = true;
+        this.del = true
       }
     },
-    //关闭
-    closeshowlists() {
-      this.xiajia = false;
-      this.del = false;
-      this.showshowlists = false;
+    // 关闭
+    closeshowlists () {
+      this.xiajia = false
+      this.del = false
+      this.showshowlists = false
     },
-    //注册scroll事件并监听
-    scrollHandler() {
-      const st = document.documentElement.scrollTop || document.body.scrollTop;
-      const ch = this.$refs.ctn.clientHeight;
+    // 注册scroll事件并监听
+    scrollHandler () {
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      const ch = this.$refs.ctn.clientHeight
       if (st + window.innerHeight >= ch * 0.5) {
-        this.getstore();
+        this.getstore()
       }
     },
-    //获取列表
-    getstore() {
+    // 获取列表
+    getstore () {
       if (this.count == 0 || this.loading) {
-        return;
+        return
       }
-      this.loading = true;
-      let _this = this;
-      this.page += 1;
+      this.loading = true
+      let _this = this
+      this.page += 1
       let params = {
         page: this.page,
         pagenum: this.pagenum,
-        type: "caogao"
-      };
+        type: 'caogao'
+      }
       getstore(params)
         .then(response => {
           if (response.code == 200) {
             if (response.data.length === 0) {
-              _this.elseloading = true;
+              _this.elseloading = true
             } else {
-              _this.elseloading = false;
+              _this.elseloading = false
             }
-            _this.caogaoStore = _this.caogaoStore.concat(response.data);
-            _this.checkselectshow = false;
-            _this.count = response.data.length;
-            _this.loading = false;
+            _this.caogaoStore = _this.caogaoStore.concat(response.data)
+            _this.checkselectshow = false
+            _this.count = response.data.length
+            _this.loading = false
           }
         })
         .catch(error => {
-          this.dataNotAvailable = this.caogaoStore.length == 0;
-          this.loading = false;
-          this.elseloading = true;
-          this.count = 0;
-          console.log(error);
-        });
+          this.dataNotAvailable = this.caogaoStore.length == 0
+          this.loading = false
+          this.elseloading = true
+          this.count = 0
+          console.log(error)
+        })
     },
-    //单个删除
-    singledelete(index) {
+    // 单个删除
+    singledelete (index) {
       if (this.flag) {
-        return false;
+        return false
       }
-      this.flag = true;
-      let _this = this;
-      let auc_id = this.caogaoStore[this.index].id;
+      this.flag = true
+      let _this = this
+      let auc_id = this.caogaoStore[this.index].id
       singledelete(auc_id)
         .then(response => {
           if (response.code == 200) {
-            _this.showshowlists = false;
-            this.flag = false;
-            this.caogaoStore.splice(this.index, 1);
+            _this.showshowlists = false
+            this.flag = false
+            this.caogaoStore.splice(this.index, 1)
           }
         })
-        .catch(function(error) {
-          console.log(error);
-          this.flag = false;
-        });
+        .catch(function (error) {
+          console.log(error)
+          this.flag = false
+        })
     },
-    //跳转上架
-    toWhere(id) {
-      this.$router.push("/upload/" + id);
+    // 跳转上架
+    toWhere (id) {
+      this.$router.push('/upload/' + id)
     }
   },
-  beforeRouteLeave(to, from, next) {
-    localStorage.removeItem("changeRed");
-    next();
+  beforeRouteLeave (to, from, next) {
+    localStorage.removeItem('changeRed')
+    next()
   },
-  mounted() {
-    this.getstore();
+  mounted () {
+    this.getstore()
   }
-};
+}
 </script>
 <style scoped>
 .storeManagement {
@@ -747,4 +747,4 @@ input[type="checkbox"]:checked:after {
      color: #a2a2a2;
   }
 */
-</style>  
+</style>

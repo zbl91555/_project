@@ -1,6 +1,6 @@
 <template>
     <div class="payCertification">
-      <h5 class="itemLabel">实名认证（请上传真实的个人信息，认证通过后将无法修改）</h5>  
+      <h5 class="itemLabel">实名认证（请上传真实的个人信息，认证通过后将无法修改）</h5>
       <div class="userinfoMain">
         <dl><dt>姓名</dt><dd><input type="text" placeholder="请输入真实的姓名"></dd></dl>
         <dl><dt>身份证号</dt><dd><input type="text" placeholder="请输入身份证号"></dd></dl>
@@ -25,15 +25,15 @@
     </div>
 </template>
 <script>
-  export default {
-    data () {
-      return {
-        IDFront: '../../assets/images/IDFront.jpg',  //身份证正面照
-        IDBack: '',  //身份证反面照
-        IDAll: '', //身份证及个人合照
-      }
+export default {
+  data () {
+    return {
+      IDFront: '../../assets/images/IDFront.jpg', // 身份证正面照
+      IDBack: '', // 身份证反面照
+      IDAll: '' // 身份证及个人合照
     }
   }
+}
 </script>
 
 <style scoped lang="less">
@@ -43,7 +43,6 @@
   min-height: 100vh;
   background-color: #f4f4f4;
   max-width: 750px;
-  
 
   .userinfoMain {
     width: 100%; background-color: #FFF;  display: table;
@@ -52,18 +51,17 @@
       dt{ width: 30%; float: left;}
       dd{ width: 70%; float: left;}
     }
-    
+
     .innerTit{ font-size: 0.4rem; color: #333333; padding-bottom: .3rem;}
     .innerTips{ color: #d6d6d6;}
     .photoWrap{
       width: 90%; margin: 0 auto;
-      
+
     }
-    
+
   }
   .itemLabel{text-indent: 4%; font-size: 0.3rem;}
   .itemLabelRight{text-indent: 4%; text-align: right; font-size: 0.28rem;}
 }
 
-
-</style>  
+</style>

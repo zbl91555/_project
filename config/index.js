@@ -10,10 +10,18 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/api': {
+        target: 'http://tptapi.taopaitang.com', //设置你调用的接口域名和端口号
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': '/' 
+        }
+      }
+    },
 
     // Various Dev Server settings
-    host: '192.168.7.100', // can be overwritten by process.env.HOST
+    host: 'localhost', // can be overwritten by process.env.HOST
     port: 8088, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
@@ -37,6 +45,10 @@ module.exports = {
   },
 
   build: {
+    // 线上包配置
+    prodEnv:require('./prod.env'),
+    // 测试包配置
+    localEnv:require('./local.env'),
     // Template for index.html
     index: path.resolve(__dirname, '../dist/index.html'),
 

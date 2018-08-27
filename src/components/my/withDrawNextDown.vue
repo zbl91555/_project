@@ -32,22 +32,22 @@
 
 <script>
 export default {
-  props: ["price", "title", "link"],
-  data() {
+  props: ['price', 'title', 'link'],
+  data () {
     return {
-      getDay: ""
-    };
+      getDay: ''
+    }
   },
-  mounted() {
-    let nowTime = new Date();
-    this.getDay = nowTime.getTime() / 1000 + 3 * 86400;
+  mounted () {
+    let nowTime = new Date()
+    this.getDay = nowTime.getTime() / 1000 + 3 * 86400
   },
   methods: {
-    successD() {
-      this.$router.push(this.link);
+    successD () {
+      this.$router.push(this.link)
     }
   }
-};
+}
 </script>
 
 <style scoped>

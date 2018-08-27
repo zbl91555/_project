@@ -65,11 +65,11 @@
 		</ul>
 	<!-- 是否弹出规则 -->
     <div id="fixednumMain" v-if="showveri">
-      <div @click="closeshowveri" class="fixednumMask" style="opacity: 0.38;">  
+      <div @click="closeshowveri" class="fixednumMask" style="opacity: 0.38;">
       </div>
       <div class="telsharesomething">
             <div style="border-bottom:1px solid #e5e5e5;height:46px;font-size:18px;font-weight:bold;text-align: center;padding-top:10px;">
-            	规则
+			规则
 				<i @click="closeshowveri" style="font-size:20px;position: absolute;right: 0;top:8px;right:8px;color:#999999" class="iconfont icon-guanbi2"></i>
             </div>
             <div style="padding:10px 15px;text-align:left;font-size:14px;line-height:20px;">
@@ -92,120 +92,120 @@
 	</div>
 </template>
 <script type="text/javascript">
-	import {reward,rewardCode} from '../../api/api'
-	import echarts from 'echarts/lib/echarts'
-	import 'echarts/lib/chart/line'
-	import 'echarts/lib/component/tooltip'
-	import { ImagePreview } from 'vant';
-	// import 'echarts/lib/component/title'
-	export default {
-		data() {
-			return {
-				info: {},
-				previewImg : [],
-				showveri:false
-			}
-		},
-		methods: {
-			showRule(){
-				this.showveri = true
-			},
-			closeshowveri(){
-				this.showveri = false
-			},
-			//二维码预览
-			openPreview() {
-				ImagePreview(this.previewImg,0);
-			},
-			//echarts插件
-			echarts({categories,data}) {
-				var datas = data.slice(1,data.length-1);
-				var datas = datas.split(',');
-				var list = [];
-				for (let i = 0; i < datas.length; i++) {
-					list.push(+datas[i]);
-				}
-				this.$nextTick(_ => {
-					let myChart = echarts.init(document.getElementById('main'));
-					myChart.setOption({
-						tooltip: {
-							trigger : 'axis'
-						},
-						xAxis: {	
-							type: 'category',
-							data : categories,
-							axisLabel : {
-								rotate : 45
-							},
-							axisPointer : {
-								snap : true
-							},
-							axisLine : {
-								show : false,
-								lineStyle :{
-									color : '#999'
-								}
-							}
-						},
-						yAxis: {
-							name : '奖励金额(元)',
-							nameLocation : 'start',
-							nameRotate : 90,
-							nameLocation : 'middle',
-							offset : -5,
-							nameTextStyle : {
-								color : '#9e2026',
-								padding : [0,0,15,0]
-							},
-							axisLine : {
-								lineStyle :{
-									color : '#999'
-								}
-							}
-						},
-						series: [{
-								name: '可提现奖励',
-								type: 'line',
-								data : list
-						}]
-					});				
-				})
-			},
-			reward: function() {
-				let _this = this;
-				reward().then(function(res) {
-						_this.info = res.data;
-						_this.info.categories = JSON.parse(_this.info.categories);
-						_this.echarts(_this.info)
-					})
-					.catch(function(err) {
-						console.log(err);
-					})
-			},
-		},
-		beforeRouteEnter(to, from, next){
-			next(vm =>{
-				if(from.path == '/find'){
-					vm.showveri = true
-				}
-			})
-		},
-		mounted() {
-			this.reward();
-				rewardCode().then(res => {
-					this.previewImg.push(res.data.url);
-				})
-				.catch((err) => {
-					console.log(err);
-				})
-		},
-	}
+import {reward, rewardCode} from '../../api/api'
+import echarts from 'echarts/lib/echarts'
+import 'echarts/lib/chart/line'
+import 'echarts/lib/component/tooltip'
+import { ImagePreview } from 'vant'
+// import 'echarts/lib/component/title'
+export default {
+  data () {
+    return {
+      info: {},
+      previewImg: [],
+      showveri: false
+    }
+  },
+  methods: {
+    showRule () {
+      this.showveri = true
+    },
+    closeshowveri () {
+      this.showveri = false
+    },
+    // 二维码预览
+    openPreview () {
+      ImagePreview(this.previewImg, 0)
+    },
+    // echarts插件
+    echarts ({categories, data}) {
+      var datas = data.slice(1, data.length - 1)
+      datas = datas.split(',')
+      var list = []
+      for (let i = 0; i < datas.length; i++) {
+        list.push(+datas[i])
+      }
+      this.$nextTick(_ => {
+        let myChart = echarts.init(document.getElementById('main'))
+        myChart.setOption({
+          tooltip: {
+            trigger: 'axis'
+          },
+          xAxis: {
+            type: 'category',
+            data: categories,
+            axisLabel: {
+              rotate: 45
+            },
+            axisPointer: {
+              snap: true
+            },
+            axisLine: {
+              show: false,
+              lineStyle: {
+                color: '#999'
+              }
+            }
+          },
+          yAxis: {
+            name: '奖励金额(元)',
+            nameLocation: 'start',
+            nameRotate: 90,
+            // nameLocation: 'middle',
+            offset: -5,
+            nameTextStyle: {
+              color: '#9e2026',
+              padding: [0, 0, 15, 0]
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#999'
+              }
+            }
+          },
+          series: [{
+            name: '可提现奖励',
+            type: 'line',
+            data: list
+          }]
+        })
+      })
+    },
+    reward: function () {
+      let _this = this
+      reward().then(function (res) {
+        _this.info = res.data
+        _this.info.categories = JSON.parse(_this.info.categories)
+        _this.echarts(_this.info)
+      })
+        .catch(function (err) {
+          console.log(err)
+        })
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      if (from.path == '/find') {
+        vm.showveri = true
+      }
+    })
+  },
+  mounted () {
+    this.reward()
+    rewardCode().then(res => {
+      this.previewImg.push(res.data.url)
+    })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+}
 </script>
 <style lang="less" scoped>
 	/*
-	 * @border-color: 统一边框颜色coupon
-	 * @pad: 统一边距
-	 * */
+	* @border-color: 统一边框颜色coupon
+	* @pad: 统一边距
+	* */
 	.telsharesomething{
       position: fixed;
       left:5%;
@@ -216,7 +216,7 @@
       background: white;
       text-align: center;
       border-radius: 10px;
-      padding-top: 20px; 
+      padding-top: 20px;
     }
 	@border-color: #d2d2d2;
 	@pad: 20px;
@@ -225,7 +225,7 @@
 		background-color: #ededed;
 		padding-top: 20px;
 	}
-	
+
 	.iconfont {
 		font-size: 12px;
 	}

@@ -2,7 +2,7 @@
     <div class="categoryDetails" ref="ctn">
       <div class="menu border horizonBottom">
         <div class="menuList mode border verticalRight">
-          <div v-for="(list,index) in timeLists" class="menuItem" :class="{ selected:changeRed == index}" @click="Red(index)">{{list.text}}</div>
+          <div v-for="(list,index) in timeLists" :key="index" class="menuItem" :class="{ selected:changeRed == index}" @click="Red(index)">{{list.text}}</div>
         </div>
         <div class="menuList">
           <router-link to="/buyerCenter/footprint?index=3">
@@ -20,7 +20,7 @@
           <p>可以去看看有哪些想买的~<i @click="toTaotao" style="text-decoration: underline;color: red">淘淘</i></p>
         </div>
         <ul >
-          <li class="saleItem" v-for="(item,index) in category">
+          <li class="saleItem" v-for="(item,index) in category" :key="index">
             <router-link :to="{name: 'auction', params: {id: item.uri }}">
             <div v-if="item.img!=''" class="categorySaleList" v-bind:style="{backgroundImage:'url(' + item.img + ')'}"></div>
             <div v-if="item.img==''" class="categorySaleList" style="backgroundImage:url('../../assets/images/zhanweitu.png')"></div>
@@ -37,96 +37,96 @@
             </div>
             </router-link>
           </li>
-          
+
         </ul>
-       
+
       </div>
-      
+
     </div>
 </template>
 <script>
-import {getClassfication} from "../../api/api"
+import {getClassfication} from '../../api/api'
 export default {
-  data() {
+  data () {
     return {
-      timeLists:[
+      timeLists: [
         {
-          "text":"综合",
-          'type':'colligate'                 
+          'text': '综合',
+          'type': 'colligate'
         },
         {
-          "text":"最新上拍",
-          'type':'newTime'                 
+          'text': '最新上拍',
+          'type': 'newTime'
         },
         {
-          "text":"即将截拍",
-          'type':'endTime'                       
+          'text': '即将截拍',
+          'type': 'endTime'
         }
       ],
-      changeRed:0,
-      category:[],
-      type:'colligate',
-      pagenum:20,
-      page:0,
-      id:'',    
-      noPaipin:false
-    };
+      changeRed: 0,
+      category: [],
+      type: 'colligate',
+      pagenum: 20,
+      page: 0,
+      id: '',
+      noPaipin: false
+    }
   },
-  created() {
-    window.addEventListener("scroll", this.scrollHandler);
+  created () {
+    window.addEventListener('scroll', this.scrollHandler)
   },
 
-  destroyed() {
-    window.removeEventListener("scroll", this.scrollHandler);
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollHandler)
   },
-  methods: { 
-    toTaotao(){
+  methods: {
+    toTaotao () {
       this.$router.push('/home')
     },
-    //注册scroll事件并监听 
-    scrollHandler() {
-      const st = document.documentElement.scrollTop || document.body.scrollTop;
-      const ch = this.$refs.ctn.clientHeight;
+    // 注册scroll事件并监听
+    scrollHandler () {
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      const ch = this.$refs.ctn.clientHeight
       if (st + window.innerHeight >= ch) {
-        this.getcategory();
+        this.getcategory()
       }
-    }, 
-    getcategory(){
-      this.page += 1;
+    },
+    getcategory () {
+      this.page += 1
       this.id = this.$route.params.id
-      let _this = this;   // 缓存指针  
+      let _this = this // 缓存指针
       let params = {
-          page: this.page,
-          pagenum:this.pagenum,
-          type:this.type
+        page: this.page,
+        pagenum: this.pagenum,
+        type: this.type
       }
-      getClassfication(this.id,params).then(function (response) { 
-         if(response.code==200){
-          _this.goShares(response.data.share);
+      getClassfication(this.id, params).then(function (response) {
+        if (response.code == 200) {
+          _this.goShares(response.data.share)
           _this.category = _this.category.concat(response.data.list)
-          if(_this.category.length == 0){
+          if (_this.category.length == 0) {
             _this.noPaipin = true
-          }else{
+          } else {
             _this.noPaipin = false
           }
         }
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+        .catch(function (error) {
+          console.log(error)
+        })
     },
-    Red:function(index){
-      this.page=0;
-      this.category=[];
-      this.changeRed = index;
-      this.type=this.timeLists[index].type;
-      this.getcategory(this.type);
-    },
-  }, 
-  mounted() {
-    this.getcategory();
+    Red: function (index) {
+      this.page = 0
+      this.category = []
+      this.changeRed = index
+      this.type = this.timeLists[index].type
+      this.getcategory(this.type)
+    }
   },
-};
+  mounted () {
+    this.getcategory()
+  }
+}
 </script>
 <style scoped lang="less">
   .categoryDetails {
@@ -246,9 +246,9 @@ export default {
     background-color: #fff;
     margin-bottom: 11px;
   }
- .saleItem:nth-of-type(odd){ 
+ .saleItem:nth-of-type(odd){
     margin-right: 0.2rem;
-  }  
+  }
   .categoryDetails .saleList .saleItem .categorySaleList{
     position: relative;
     width: 100%;
@@ -347,5 +347,5 @@ export default {
   .icon img{
      width: 100%;
       height: 300px;
-  }  
-</style>	
+  }
+</style>

@@ -6,7 +6,7 @@
 </template>
 
 <script>
-export default {};
+
 </script>
 
 <style scoped lang='less'>
@@ -37,4 +37,3 @@ export default {};
   }
 }
 </style>
-

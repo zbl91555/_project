@@ -3,11 +3,11 @@
     <div v-if="nowPage">
       <div class="moneys">
           <div>余额提现</div>
-      </div>  
+      </div>
       <div style="border-top: 1px solid #e5e5e5;margin-left: 15px"></div>
       <div class="moneys">
           <div>本次提现:<i style="color:#f15511"> ￥{{num}}</i></div>
-      </div>  
+      </div>
       <div style="border-top: 1px solid #e5e5e5;margin-left: 15px"></div>
       <ul>
         <li class="op">
@@ -33,49 +33,49 @@
 </template>
 
 <script>
-import withDrawNextDown from "./withDrawNextDown";
-import wx from "weixin-js-sdk";
-import { Toast } from "vant";
-import { getSign, wxPay, walletWithdrawalSubmit } from "../../api/api";
-import assign from "../../assets/js/assign.js"; //混入式方法
+import withDrawNextDown from './withDrawNextDown'
+import wx from 'weixin-js-sdk'
+import { Toast } from 'vant'
+import { getSign, wxPay, walletWithdrawalSubmit } from '../../api/api'
+import assign from '../../assets/js/assign.js' // 混入式方法
 export default {
   mixins: [assign],
   components: {
     withDrawNextDown
   },
-  data() {
+  data () {
     return {
       config: {},
       payConfig: {},
       active: false,
-      num: "",
+      num: '',
       nowPage: true,
       downPage: false,
-      title: "余额提现",
-      link: "",
+      title: '余额提现',
+      link: '',
       withDrawFlag: false
-    };
+    }
   },
-  mounted() {
-    this.num = this.$route.params.cash;
-    this.link = sessionStorage.getItem("balPath");
+  mounted () {
+    this.num = this.$route.params.cash
+    this.link = sessionStorage.getItem('balPath')
   },
   methods: {
-    towx() {
+    towx () {
       let params = {
         price: this.num
-      };
+      }
       if (!this.withDrawFlag) {
-        this.withDrawFlag = true;
+        this.withDrawFlag = true
         walletWithdrawalSubmit(params)
           .then(res => {
-            this.nowPage = false;
-            this.downPage = true;
-            this.withDrawFlag = false;
+            this.nowPage = false
+            this.downPage = true
+            this.withDrawFlag = false
           })
           .catch(err => {
-            Toast(err.data.message);
-          });
+            Toast(err.data.message)
+          })
       }
     }
     // $blur: function(){
@@ -86,11 +86,8 @@ export default {
     //   }
     // },
   }
-};
+}
 </script>
-
-
-
 
 <style scoped lang="less">
 @border-color: #e5e5e5;

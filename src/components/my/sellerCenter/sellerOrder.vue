@@ -1,7 +1,7 @@
 <template>
 	<div class="app-container">
 		<div class="buyer-nav">
-			<div v-for="(list,index) in fivebtn" class="menuItem" :class="{ selected:nowindex == index}" @click="Red(index)">{{list.text}}
+			<div v-for="(list,index) in fivebtn" :key="index" class="menuItem" :class="{ selected:nowindex == index}" @click="Red(index)">{{list.text}}
 			</div>
 			<router-link class="search" to="/buyerCenter/buyerOrder/search">
 				<i class="iconfont icon-sousuo"></i>
@@ -9,7 +9,7 @@
 		</div>
 		<div class="buyer-list">
 			<ul>
-				<li v-for="e in allList"> 
+				<li v-for="(e,index) in allList" :key="index">
 					<div class="buyer-tool" :style="{backgroundImage:'url(' + e.avatar + ')'}">
 						<router-link to="/myHome">{{e.nickname}}<i class="iconfont icon-right"></i></router-link>
 						<button class="buyer-status">{{e.showPayment.title}}</button>
@@ -108,15 +108,15 @@
 			<div @click="closeshowlists()" class="fixednumMask" style="opacity: 0.38;">
 			</div>
 			<div class="sharesomething">
-				<router-link to="/buyerCenter/buyerOrder/buyeralllists">	
+				<router-link to="/buyerCenter/buyerOrder/buyeralllists">
 					<div @click="lookshowlists()">查看该店铺的所有订单</div>
 				</router-link>
-					<div @click="closeshowlists()" class="bordertop">取消</div>					
+					<div @click="closeshowlists()" class="bordertop">取消</div>
 			</div>
 		</div>
 		<!-- 是否弹出打电话 -->
 		<div id="fixednumMain" v-if="showtel">
-			<div @click="closeshowdel()" class="fixednumMask" style="opacity: 0.38;">	
+			<div @click="closeshowdel()" class="fixednumMask" style="opacity: 0.38;">
 			</div>
 			<div class="telsharesomething">
 				<div>
@@ -125,103 +125,103 @@
 				</div>
 				<div>
 					<a href="">确认拨打?</a>
-				</div>			
+				</div>
 			</div>
 		</div>
 		<Navbar num='0'></Navbar>
 	</div>
 </template>
 <script>
-	import {order} from '../../../api/api';
-	import Navbar from "../../common/Navbar";
-	export default {
-		components: {
-			Navbar
-		},
-		data() {
-			return {
-				// 所有产品列表
-				allList: [],
-				// 0订单的占位符
-				noOrder: false,
-				showlists:false,
-				showtel:false,
-				fivebtn:[
-					{
-			          "text":"全部",
-			          'type':'',            
-			        },
-			        {
-			          "text":"待付款",
-			          'type':'daifukuan',                 
-			        },
-			        {
-			          "text":"待发货",
-			          'type':'daifahuo',
-			        },
-			        {
-			          "text":"待收货",
-			          'type':'yifahuo',                  
-			        },
-			        {
-			          "text":"待评价",
-			          'type':'yishouhuo',                       
-			        }
-				],
-				nowindex:0,
-				type:''
-			}
-		},
-		methods: {
-			//打电话
-			showdel(){
-				this.showtel=true
-			},
-			//关掉电话
-			closeshowdel(){
-				this.showtel=false
-			},
-			//查看订单
-			lookshowlists(){
-				this.showlists=false
-			},
-			//关闭
-			closeshowlists(){
-				this.showlists=false
-			},
-			alldingDan(){
-				this.showlists=true
-			},
-			getAllInfo: function(type) {
-				let _this = this;
-				let params = {
-						type: 'user',
-						page: '1',
-						pagenum: '10',
-						state: type,
-					}
-                order(params).then(function(res) {
-					if(res.code == '200') {
-						_this.allList = res.data;
-						if(_this.allList.length == '0'){ // 如果没有订单，则显示0订单占位符
-							_this.noOrder = true;
-						}
-					}
-				}).catch(function(err) {
-					console.log(err);
-				})
-			},
-			Red(index){
-				this.allList=[];
-				this.nowindex=index;
-				this.type=this.fivebtn[index].type;
-				this.getAllInfo(this.type);
-			}
-		},
-		mounted() {
-			this.getAllInfo();
-		}
-	}
+import {order} from '../../../api/api'
+import Navbar from '../../common/Navbar'
+export default {
+  components: {
+    Navbar
+  },
+  data () {
+    return {
+      // 所有产品列表
+      allList: [],
+      // 0订单的占位符
+      noOrder: false,
+      showlists: false,
+      showtel: false,
+      fivebtn: [
+        {
+          'text': '全部',
+          'type': ''
+        },
+        {
+          'text': '待付款',
+          'type': 'daifukuan'
+        },
+        {
+          'text': '待发货',
+          'type': 'daifahuo'
+        },
+        {
+          'text': '待收货',
+          'type': 'yifahuo'
+        },
+        {
+          'text': '待评价',
+          'type': 'yishouhuo'
+        }
+      ],
+      nowindex: 0,
+      type: ''
+    }
+  },
+  methods: {
+    // 打电话
+    showdel () {
+      this.showtel = true
+    },
+    // 关掉电话
+    closeshowdel () {
+      this.showtel = false
+    },
+    // 查看订单
+    lookshowlists () {
+      this.showlists = false
+    },
+    // 关闭
+    closeshowlists () {
+      this.showlists = false
+    },
+    alldingDan () {
+      this.showlists = true
+    },
+    getAllInfo: function (type) {
+      let _this = this
+      let params = {
+        type: 'user',
+        page: '1',
+        pagenum: '10',
+        state: type
+      }
+      order(params).then(function (res) {
+        if (res.code == '200') {
+          _this.allList = res.data
+          if (_this.allList.length == '0') { // 如果没有订单，则显示0订单占位符
+            _this.noOrder = true
+          }
+        }
+      }).catch(function (err) {
+        console.log(err)
+      })
+    },
+    Red (index) {
+      this.allList = []
+      this.nowindex = index
+      this.type = this.fivebtn[index].type
+      this.getAllInfo(this.type)
+    }
+  },
+  mounted () {
+    this.getAllInfo()
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -230,7 +230,7 @@
     background-color: #f4f4f4;
     overflow: hidden;
   }
-  
+
   .buyer-nav {
     width: 100%;
     height: 120px;
@@ -262,7 +262,7 @@
       font-weight: bold;
     }
   }
-  
+
   .buyer-list {
     margin-bottom: 100px;
     li {
@@ -370,7 +370,7 @@
       }
     }
   }
-  
+
   .no-info {
     height: 375px;
     width: 277px;
@@ -439,21 +439,18 @@
     border-radius: 20px
   }
   .menuItem {
-	    font-size: 28px;
-	    text-align: center;
-	    padding:0 16px;
-	    float: left;
-	    height: 100px;
-	    line-height: 100px
-  	}
-  	.selected {
-	    color: #9e2026;
-	    border-bottom: 8px solid #9e2026;
+		font-size: 28px;
+		text-align: center;
+		padding:0 16px;
+		float: left;
+		height: 100px;
+		line-height: 100px
+	}
+	.selected {
+		color: #9e2026;
+		border-bottom: 8px solid #9e2026;
 	}
 	.buyer-status{
 		font-size: 24px;
 	}
 </style>
-
-
-

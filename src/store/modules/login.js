@@ -1,11 +1,11 @@
 export default {
-    state :{
+  state: {
 
-    },
-    mounted:{
+  },
+  mounted: {
 
-    },
-    actions:{
+  },
+  actions: {
 
-    }
+  }
 }

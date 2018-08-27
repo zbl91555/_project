@@ -34,7 +34,7 @@
           </div>
           <div class="liContent telephone">
             <div class="telephone" data-telephone="17621587756">
-              <input onfocus="this.blur();" @click="telmobile" type="text" name="" class="input" placeholder="请输入联系电话" v-model="mobile"> 
+              <input onfocus="this.blur();" @click="telmobile" type="text" name="" class="input" placeholder="请输入联系电话" v-model="mobile">
               <i v-if="mobileVeri" style="position: absolute;color:#999;">号码已验证</i>
             </div>
           </div>
@@ -119,7 +119,7 @@
     </div>
     <!-- 是否弹出验证 -->
     <div id="fixednumMain" v-if="showveri">
-      <div @click="closeshowveri()" class="fixednumMask" style="opacity: 0.38;">  
+      <div @click="closeshowveri()" class="fixednumMask" style="opacity: 0.38;">
       </div>
       <div class="telsharesomething">
         <form class="main">
@@ -137,135 +137,135 @@
             </div>
           </div>
           <div class="mobileAlert">{{mobileAlert}}</div>
-          <div class="sub"> 
+          <div class="sub">
             <span :class="num==''?'spanBac':'spanBack'" @click="subMethod">下一步</span>
           </div>
-        </form>   
+        </form>
       </div>
     </div>
-    
+
   </div>
 </template>
 <script type="text/javascript">
-import { Toast } from "vant";
+import { Toast } from 'vant'
 import {
   CompanyViewPage,
   CompanyPerson,
   filterNum,
   subMethod
-} from "../../../api/api";
-import uploadImg from "../../home/uploadImg";
+} from '../../../api/api'
+import uploadImg from '../../home/uploadImg'
 export default {
-  name: "personalCertificate",
-  data() {
+  name: 'personalCertificate',
+  data () {
     return {
-      importFileUrl: "",
+      importFileUrl: '',
       fileList: [],
       dialogVisible: false,
-      dialogImageUrl: "",
-      info: "",
-      name: "",
-      nickname: "",
-      mobile: "",
-      cardid: "",
-      cardid_pic1: "",
-      cardid_pic2: "",
-      cardid_pic3: "",
-      reminder: "",
-      imgUrl1: require("../../../assets/images/front.png"),
-      imgUrl2: require("../../../assets/images/theBack.png"),
-      imgUrl3: require("../../../assets/images/handCard.png"),
-      showveri: false, //手机号验证
-      filterTime: "60",
-      msg: "获取验证码",
+      dialogImageUrl: '',
+      info: '',
+      name: '',
+      nickname: '',
+      mobile: '',
+      cardid: '',
+      cardid_pic1: '',
+      cardid_pic2: '',
+      cardid_pic3: '',
+      reminder: '',
+      imgUrl1: require('../../../assets/images/front.png'),
+      imgUrl2: require('../../../assets/images/theBack.png'),
+      imgUrl3: require('../../../assets/images/handCard.png'),
+      showveri: false, // 手机号验证
+      filterTime: '60',
+      msg: '获取验证码',
       flag: true, // 获取验证码开关
-      phone: "", // 发送短信手机号码
-      type: "2", // 获取验证码类型
-      _key: "", // 获取到的验证码
-      num: "", //输入的验证码
+      phone: '', // 发送短信手机号码
+      type: '2', // 获取验证码类型
+      _key: '', // 获取到的验证码
+      num: '', // 输入的验证码
       mobileVeri: false,
-      mobile_edit: "",
-      mobileAlert: "",
-      wallet: "",
-      nextflag:true
-    };
+      mobile_edit: '',
+      mobileAlert: '',
+      wallet: '',
+      nextflag: true
+    }
   },
   components: {
     uploadImg
   },
   methods: {
-    //wximg图片切换
-    wximgChange(list) {
+    // wximg图片切换
+    wximgChange (list) {
       if (list.indexOf('wximg') > -1) {
-        list = list.replace('wximg','verify');
+        list = list.replace('wximg', 'verify')
       }
-      return list;
+      return list
     },
-    //数据填充
-    DataFilling(data) {
-      this.name = data.name;
-      this.info = data.nickname;
-      this.mobile = data.mobile;
-      this.cardid = data.cardid;
-      this.cardid_pic1 = data.cardid_pic1;
-      this.cardid_pic2 = data.cardid_pic2;
-      this.cardid_pic3 = data.cardid_pic3;
-      this.imgUrl1 = data.imgUrl1;
-      this.imgUrl2 = data.imgUrl2;
-      this.imgUrl3 = data.imgUrl3;
+    // 数据填充
+    DataFilling (data) {
+      this.name = data.name
+      this.info = data.nickname
+      this.mobile = data.mobile
+      this.cardid = data.cardid
+      this.cardid_pic1 = data.cardid_pic1
+      this.cardid_pic2 = data.cardid_pic2
+      this.cardid_pic3 = data.cardid_pic3
+      this.imgUrl1 = data.imgUrl1
+      this.imgUrl2 = data.imgUrl2
+      this.imgUrl3 = data.imgUrl3
     },
-    upload1(list) {
-      let data = this.wximgChange(list.list);
-      this.imgUrl1 = data;
-      this.cardid_pic1 = list.name;
+    upload1 (list) {
+      let data = this.wximgChange(list.list)
+      this.imgUrl1 = data
+      this.cardid_pic1 = list.name
     },
-    upload2(list) {
-      let data = this.wximgChange(list.list);
-      this.imgUrl2 = data;
-      this.cardid_pic2 = list.name;
+    upload2 (list) {
+      let data = this.wximgChange(list.list)
+      this.imgUrl2 = data
+      this.cardid_pic2 = list.name
     },
-    upload3(list) {
-      let data = this.wximgChange(list.list);
-      this.imgUrl3 = data;
-      this.cardid_pic3 = list.name;
+    upload3 (list) {
+      let data = this.wximgChange(list.list)
+      this.imgUrl3 = data
+      this.cardid_pic3 = list.name
     },
-    //页面加载
-    CompanyViewPage() {
+    // 页面加载
+    CompanyViewPage () {
       CompanyViewPage()
         .then(res => {
-          this.mobile = res.data.mobile;
-          this.mobile_edit = res.data.mobile_edit;
-          if (this.mobile != "") {
-            this.mobileVeri = true;
+          this.mobile = res.data.mobile
+          this.mobile_edit = res.data.mobile_edit
+          if (this.mobile != '') {
+            this.mobileVeri = true
           } else {
-            this.mobileVeri = false;
+            this.mobileVeri = false
           }
         })
         .catch(err => {
-          console.log(err.response.data.message);
-        });
+          console.log(err.response.data.message)
+        })
     },
-    CompanyPerson() {
-      this.showshowlists = true;
-      let card = /^((11|12|13|14|15|21|22|23|31|32|33|34|35|36|37|41|42|43|44|45|46|50|51|52|53|54|61|62|63|64|65|71|81|82|91)\d{4})((((19|20)(([02468][048])|([13579][26]))0229))|((20[0-9][0-9])|(19[0-9][0-9]))((((0[1-9])|(1[0-2]))((0[1-9])|(1\d)|(2[0-8])))|((((0[1,3-9])|(1[0-2]))(29|30))|(((0[13578])|(1[02]))31))))((\d{3}(x|X))|(\d{4}))$/;
-      let mobile = /^(13[0-9]|14[5-9]|15[012356789]|166|17[0-8]|18[0-9]|19[8-9])[0-9]{8}$/;
-      if (this.name == "") {
-        return (this.reminder = "*请输入名字");
+    CompanyPerson () {
+      this.showshowlists = true
+      let card = /^((11|12|13|14|15|21|22|23|31|32|33|34|35|36|37|41|42|43|44|45|46|50|51|52|53|54|61|62|63|64|65|71|81|82|91)\d{4})((((19|20)(([02468][048])|([13579][26]))0229))|((20[0-9][0-9])|(19[0-9][0-9]))((((0[1-9])|(1[0-2]))((0[1-9])|(1\d)|(2[0-8])))|((((0[1,3-9])|(1[0-2]))(29|30))|(((0[13578])|(1[02]))31))))((\d{3}(x|X))|(\d{4}))$/
+      let mobile = /^(13[0-9]|14[5-9]|15[012356789]|166|17[0-8]|18[0-9]|19[8-9])[0-9]{8}$/
+      if (this.name == '') {
+        return (this.reminder = '*请输入名字')
       }
-      if (this.cardid == "") {
-        return (this.reminder = "*请输入身份证号");
+      if (this.cardid == '') {
+        return (this.reminder = '*请输入身份证号')
       }
-      if (this.mobile == "") {
-        return (this.reminder = "*请输入手机号");
+      if (this.mobile == '') {
+        return (this.reminder = '*请输入手机号')
       }
       if (!card.test(this.cardid)) {
-        return (this.reminder = "*请输入正确的身份证号");
+        return (this.reminder = '*请输入正确的身份证号')
       }
       if (!mobile.test(this.mobile)) {
-        return (this.reminder = "*请输入正确的手机号");
+        return (this.reminder = '*请输入正确的手机号')
       }
       let params = {
-        type: "person",
+        type: 'person',
         name: this.name,
         nickname: this.info,
         mobile: this.mobile,
@@ -273,139 +273,138 @@ export default {
         cardid_pic1: this.cardid_pic1,
         cardid_pic2: this.cardid_pic2,
         cardid_pic3: this.cardid_pic3
-      };
-      //保存的数据
+      }
+      // 保存的数据
       let sessionParaams = {
         ...params,
         imgUrl1: this.imgUrl1,
         imgUrl2: this.imgUrl2,
         imgUrl3: this.imgUrl3
-      };
+      }
       localStorage.setItem(
-        "realNameInformation",
+        'realNameInformation',
         JSON.stringify(sessionParaams)
-      );
-      if(this.nextflag){
+      )
+      if (this.nextflag) {
         this.nextflag = false
         CompanyPerson(params)
-        .then(res => {
-          this.nextflag = true
-          this.$router.push({ name: "personalCertificatePay" });
-        })
-        .catch(err => {
-          this.nextflag = true
-          if (err.data.code == 422) {
-            this.reminder = "*" + err.data.message;
-          }
-          if (err.data.code == 400) {
-            this.reminder = "*" + err.data.message;
-          }
-        });
+          .then(res => {
+            this.nextflag = true
+            this.$router.push({ name: 'personalCertificatePay' })
+          })
+          .catch(err => {
+            this.nextflag = true
+            if (err.data.code == 422) {
+              this.reminder = '*' + err.data.message
+            }
+            if (err.data.code == 400) {
+              this.reminder = '*' + err.data.message
+            }
+          })
       }
-      
     },
-    telmobile() {
-      this.showveri = true;
+    telmobile () {
+      this.showveri = true
     },
-    closeshowveri() {
-      this.showveri = false;
-      this.mobileAlert = "";
+    closeshowveri () {
+      this.showveri = false
+      this.mobileAlert = ''
     },
-    filterNum: function() {
-      let _this = this;
-      let nowTime = new Date();
-      let now = Math.floor(nowTime.getTime() / 1000);
+    filterNum: function () {
+      let _this = this
+      let nowTime = new Date()
+      let now = Math.floor(nowTime.getTime() / 1000)
 
-      let myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+      let myreg = /^[1][3,4,5,7,8][0-9]{9}$/
       if (!myreg.test(_this.phone)) {
-        alert("请输入正确的手机号");
-        return false;
+        alert('请输入正确的手机号')
+        return false
       }
       if (
-        this.mobile_edit != "" &&
+        this.mobile_edit != '' &&
         Math.floor(this.mobile_edit) + 86400 * 7 > now
       ) {
-        this.mobileAlert = "号码一周只可修改一次";
+        this.mobileAlert = '号码一周只可修改一次'
       } else {
         if (_this.flag == true) {
-          _this.flag = false;
-          let t = setInterval(function() {
-            _this.filterTime--;
+          _this.flag = false
+          let t = setInterval(function () {
+            _this.filterTime--
             if (_this.filterTime <= 0) {
-              clearInterval(t); // 当倒计时时间小于0时，清除时间函数并且将时间开关打开
-              _this.flag = true;
-              _this.msg = "获取验证码";
+              clearInterval(t) // 当倒计时时间小于0时，清除时间函数并且将时间开关打开
+              _this.flag = true
+              _this.msg = '获取验证码'
             } else {
-              _this.msg = "重新发送(" + _this.filterTime + ")"; // 返回最初状态；
+              _this.msg = '重新发送(' + _this.filterTime + ')' // 返回最初状态；
             }
-          }, 1000);
-          _this.filterTime = "60";
-          let type;
-          if (this.mobile == "") {
-            type = 1;
+          }, 1000)
+          _this.filterTime = '60'
+          let type
+          if (this.mobile == '') {
+            type = 1
           } else {
-            type = 3;
+            type = 3
           }
           let params = {
             phone: _this.phone,
             type: type
-          };
+          }
           filterNum(params)
-            .then(function(res) {
-              _this._key = res.data.key;
+            .then(function (res) {
+              _this._key = res.data.key
             })
-            .catch(function(err) {
-              Toast(err.data.message);
-            });
+            .catch(function (err) {
+              Toast(err.data.message)
+            })
         }
       }
     },
-    subMethod: function() {
-      if (this.Trim(this.phone, "g") == "") {
-        Toast("手机号不能为空");
-        return;
+    subMethod: function () {
+      if (this.Trim(this.phone, 'g') == '') {
+        Toast('手机号不能为空')
+        return
       }
-      if (this.Trim(this.num, "g") == "") {
-        Toast("请正确输入你收到的验证码");
-        return;
+      if (this.Trim(this.num, 'g') == '') {
+        Toast('请正确输入你收到的验证码')
+        return
       }
       if (!this._key) {
-        Toast("请先获取验证码");
-        return;
+        Toast('请先获取验证码')
+        return
       }
-      let type;
-      if (this.mobile == "") {
-        type = 1;
+      let type
+      if (this.mobile == '') {
+        type = 1
       } else {
-        type = 3;
+        type = 3
       }
       let params = {
         verification_key: this._key,
         verification_code: this.num,
         type: type
-      };
+      }
       subMethod(params)
         .then(res => {
-          this.showveri = false;
-          this.mobile = this.phone;
-          this.CompanyViewPage();
+          this.showveri = false
+          this.mobile = this.phone
+          this.CompanyViewPage()
         })
-        .catch(function(err) {
-          Toast(err.data.message);
-        });
+        .catch(function (err) {
+          Toast(err.data.message)
+        })
     }
   },
-  created() {
-    let realNameInformation = localStorage.getItem("realNameInformation");
+  created () {
+    let realNameInformation = localStorage.getItem('realNameInformation')
     if (realNameInformation) {
-      let data = JSON.parse(realNameInformation);
-      this.DataFilling(data);
+      let data = JSON.parse(realNameInformation)
+      this.DataFilling(data)
     }
   },
-  mounted() {
-    this.CompanyViewPage();
+  mounted () {
+    this.CompanyViewPage()
   }
-};
+}
 </script>
 
 <style>

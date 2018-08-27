@@ -19,17 +19,17 @@
               <input type="text" v-model="code" placeholder="输入验证码" pattern="[0-9]*"/>
             </div>
           </div>
-          <div class="sub"> 
+          <div class="sub">
             <span :class="code==''?'spanBac':'spanBack'" @click="subMethod()">下一步</span>
           </div>
-        </form>   
+        </form>
       </div>
     </div>
-	  	<div class="upload" v-show="basicSetup">
-		    <div class="topBanner">
-          <div class="btn draft" @click.stop="$router.go(-1)">上一步</div>
-		    	<div class="btn next" @click.stop="release">发布</div>
-		    </div>
+    <div class="upload" v-show="basicSetup">
+      <div class="topBanner">
+        <div class="btn draft" @click.stop="$router.go(-1)">上一步</div>
+        <div class="btn next" @click.stop="release">发布</div>
+      </div>
 			<div class="basic">
 				<div class="cert border horizonTop" @click.stop="chooseEndtime()">
 					<div class="lihead">
@@ -130,7 +130,7 @@
 							<div class="categoryClass">
 								<i class="iconfont icon-shafa" :class="{ choose:changeRed === index }"></i>
 								<i class = "iconfont icon-right" style="float:right"></i>
-			                    {{item.name}}
+                        {{item.name}}
 								<span>{{item.content}}</span>
 							</div>
 						</div>
@@ -200,10 +200,10 @@
 		</div>
 		<!-- 高级设置 -->
 		<div class="moreUpload" v-show="advancedSettings" ref="moreUpload">
-		    <div class="topBanner">
-		    	<div class="btn draft" @click.stop="cancelStep('draft')">取 消</div>
-		    	<div class="btn next"  @click.stop="cancelStep('next')">完成</div>
-		    </div>
+      <div class="topBanner">
+        <div class="btn draft" @click.stop="cancelStep('draft')">取 消</div>
+        <div class="btn next"  @click.stop="cancelStep('next')">完成</div>
+      </div>
 			<div class="optionalTitle">高级设置</div>
 			<div class="cert more" @click.stop="shooting">
 				<div class="lihead">
@@ -240,19 +240,19 @@
 				</div>
 			</div>
 			<div class="tip">提供此拍品的参考价格（无参考价请设0元）</div>
-		  </div>
+    </div>
 		</div>
-		  <biddingAgreement></biddingAgreement>
+    <biddingAgreement></biddingAgreement>
 					<!-- 自定义键盘 -->
 		<keyboard :show="keyboard" @typing="typing" @complete="blur"/>
 		<actionsheet v-model="goauthorized" :menus="menus2"  @on-click-menu-menu2="goauthorizedes" show-cancel></actionsheet>
 		<actionsheet v-model="deposit" :menus="menus1"  @on-click-menu-menu2="security" show-cancel></actionsheet>
-	  </div>
+  </div>
 </template>
 <script>
-import moment from "moment"; //格式化时间
-import keyboard from "./keyboard"; //数字键盘
-import { XSwitch, Group, Actionsheet, XTextarea } from "vux";
+import moment from 'moment' // 格式化时间
+import keyboard from './keyboard' // 数字键盘
+import { XSwitch, Group, Actionsheet, XTextarea } from 'vux'
 import {
   getPublishStep2,
   myUpload,
@@ -263,18 +263,18 @@ import {
   submissionCode,
   rejoinTheShelves,
   activityRelease
-} from "../../api/api";
-import { Toast } from "vant"; //引入vant的弹出框 提示 和表单组件
+} from '../../api/api'
+import { Toast } from 'vant' // 引入vant的弹出框 提示 和表单组件
 // import uploadOther from  './uploadOther';
-import uploadImg from "./uploadImg";
-import wx from "weixin-js-sdk";
-import { mapState } from "vuex";
-import assign from "../../assets/js/assign"; //混入式方法
-import biddingAgreement from "./biddingAgreement"; //协议
+import uploadImg from './uploadImg'
+import wx from 'weixin-js-sdk'
+import { mapState } from 'vuex'
+import assign from '../../assets/js/assign' // 混入式方法
+import biddingAgreement from './biddingAgreement' // 协议
 
 export default {
   mixins: [assign],
-  name: "nextUpload",
+  name: 'nextUpload',
   components: {
     biddingAgreement,
     keyboard,
@@ -285,83 +285,83 @@ export default {
     XTextarea,
     uploadImg
   },
-  data() {
+  data () {
     return {
       isBrowser: {
         Other: false,
         Wechat: false
       },
-      textLength: 0, //字符串长度
+      textLength: 0, // 字符串长度
       basicSetup: true,
-      goodsId: "", //商品id
+      goodsId: '', // 商品id
       isVerify: false, //  是否认证
       showSuccess: false,
-      toastText: "",
-      presentation: [0, 10, 30, 50, 100, 200, 500, 1000, 2000], //保证金
+      toastText: '',
+      presentation: [0, 10, 30, 50, 100, 200, 500, 1000, 2000], // 保证金
       releaseCount: 1,
 
       // 上传相关data
-      dialogImageUrl: "",
+      dialogImageUrl: '',
       dialogVisible: false,
-      appId: "",
-      importFileUrl: "",
+      appId: '',
+      importFileUrl: '',
       headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: ""
+        'Content-Type': 'multipart/form-data',
+        Authorization: ''
       },
       fileList: [],
       // 时间相关data
-      sectionalTime: false, //截拍时间
-      immediateTime: false, //立即开拍时间
+      sectionalTime: false, // 截拍时间
+      immediateTime: false, // 立即开拍时间
       aftertomorrows: false,
       isSelected: true,
-      nextMonth: "",
-      nextYear: "",
+      nextMonth: '',
+      nextYear: '',
       todays: true,
       tomorrows: true,
-      data: "",
-      month: "",
-      tomorrow: "",
-      aftertomorrow: "",
-      year: "",
-      title: "请选择截拍时间",
-      titles: "立即开拍",
-      cutShot: "", //是否立即截拍
+      data: '',
+      month: '',
+      tomorrow: '',
+      aftertomorrow: '',
+      year: '',
+      title: '请选择截拍时间',
+      titles: '立即开拍',
+      cutShot: '', // 是否立即截拍
       todayList: [
-        "10:00",
-        "12:00",
-        "16:00",
-        "17:00",
-        "19:00",
-        "20:00",
-        "21:00",
-        "22:00",
-        "23:00"
+        '10:00',
+        '12:00',
+        '16:00',
+        '17:00',
+        '19:00',
+        '20:00',
+        '21:00',
+        '22:00',
+        '23:00'
       ],
       tomorrowList: [
-        "10:00",
-        "12:00",
-        "16:00",
-        "17:00",
-        "19:00",
-        "20:00",
-        "21:00",
-        "22:00",
-        "23:00"
+        '10:00',
+        '12:00',
+        '16:00',
+        '17:00',
+        '19:00',
+        '20:00',
+        '21:00',
+        '22:00',
+        '23:00'
       ],
       aftertomorrowList: [
-        "10:00",
-        "12:00",
-        "16:00",
-        "17:00",
-        "19:00",
-        "20:00",
-        "21:00",
-        "22:00",
-        "23:00"
+        '10:00',
+        '12:00',
+        '16:00',
+        '17:00',
+        '19:00',
+        '20:00',
+        '21:00',
+        '22:00',
+        '23:00'
       ],
       todayListSelected: {
-        //选中高亮
+        // 选中高亮
         endTimeSelected: -1,
         startTimeSelected: -1
       },
@@ -374,137 +374,137 @@ export default {
         startTimeSelected: -1
       },
       time: {
-        day: "",
-        after: "",
-        tomorrow: ""
+        day: '',
+        after: '',
+        tomorrow: ''
       },
-      //保存开拍及截拍时间时间 取消时 时间还原
-      saveOpenTime: "",
-      saveTitles: "",
-      saveEndTime: "",
-      saveTitle: "",
-      saveSelective: {}, //取消时 保存的高亮效果
+      // 保存开拍及截拍时间时间 取消时 时间还原
+      saveOpenTime: '',
+      saveTitles: '',
+      saveEndTime: '',
+      saveTitle: '',
+      saveSelective: {}, // 取消时 保存的高亮效果
       // 分类相关data
-      categoryListes: [], //分类数据
-      classification: false, //是否展开一级分类
-      secondary: false, //是否展开二级分类
-      changeRed: "", //一级分类点击变色
-      changeRedes: "", //二级分类点击变色
-      name: "",
-      sname: "",
-      choseName: "请选择分类", //分类
+      categoryListes: [], // 分类数据
+      classification: false, // 是否展开一级分类
+      secondary: false, // 是否展开二级分类
+      changeRed: '', // 一级分类点击变色
+      changeRedes: '', // 二级分类点击变色
+      name: '',
+      sname: '',
+      choseName: '请选择分类', // 分类
 
       // 键盘相关data
       cursor: false,
       keyboard: false,
       keyboardTips: true,
-      /*value 在组件中的值*/
-      val: "",
+      /* value 在组件中的值 */
+      val: '',
       aIllegal: [
-        "00",
-        "01",
-        "02",
-        "03",
-        "04",
-        "05",
-        "06",
-        "07",
-        "08",
-        "09",
-        "0..",
-        "."
+        '00',
+        '01',
+        '02',
+        '03',
+        '04',
+        '05',
+        '06',
+        '07',
+        '08',
+        '09',
+        '0..',
+        '.'
       ],
       cursorDuration: 600,
-      bodyHeight: "",
-      bodyOverflow: "",
-      middleType: "",
+      bodyHeight: '',
+      bodyOverflow: '',
+      middleType: '',
       imgSet: [],
 
       // 提交信息相关data
-      desc: "", //描述
-      imgList: [], //图片
-      videoUri: "", //视频
-      cid: "0", //一级分类
-      scid: "0", //二级分类
-      endTime: "", //截止时间 时间戳
-      openTime: "", //立即截拍时间
-      firstPrice: 0, //起拍价
-      increase: 100, //加价
-      bondPrice: 0, //保证金
-      fixedPrice: "", //一口价
-      referencePricesLow: "", //参考价1
-      referencePricesUp: "", //参考价2
-      saveFixedPrice: "", //取消时 保存的一口价和参考价的数据
-      saveGj1: "",
-      saveGj2: "",
+      desc: '', // 描述
+      imgList: [], // 图片
+      videoUri: '', // 视频
+      cid: '0', // 一级分类
+      scid: '0', // 二级分类
+      endTime: '', // 截止时间 时间戳
+      openTime: '', // 立即截拍时间
+      firstPrice: 0, // 起拍价
+      increase: 100, // 加价
+      bondPrice: 0, // 保证金
+      fixedPrice: '', // 一口价
+      referencePricesLow: '', // 参考价1
+      referencePricesUp: '', // 参考价2
+      saveFixedPrice: '', // 取消时 保存的一口价和参考价的数据
+      saveGj1: '',
+      saveGj2: '',
 
       // 高级设置相关data
       advancedSettings: false,
-      isReturn: false, //7天包退  0否 1是
-      freeShip: false, //包邮 1是 2否
+      isReturn: false, // 7天包退  0否 1是
+      freeShip: false, // 包邮 1是 2否
       recommend: false, // 优选
-      isRecommend: false, //优选是否展示
-      hasChosenPublish: false, //是否能发布优选商品
-      securitymoney: false, //选择缴纳保证金
-      deposit: false, //同意缴纳保证金弹窗
+      isRecommend: false, // 优选是否展示
+      hasChosenPublish: false, // 是否能发布优选商品
+      securitymoney: false, // 选择缴纳保证金
+      deposit: false, // 同意缴纳保证金弹窗
       menus1: {
-        menu1: "买卖双方都缴纳保证金,如一方发生违约,将赔付给对方",
-        menu2: "同意"
+        menu1: '买卖双方都缴纳保证金,如一方发生违约,将赔付给对方',
+        menu2: '同意'
       },
-      goauthorized: false, //去认证弹窗
+      goauthorized: false, // 去认证弹窗
       menus2: {
-        menu1: "设置开拍时间,需要开通实名认证",
-        menu2: "去实名认证"
+        menu1: '设置开拍时间,需要开通实名认证',
+        menu2: '去实名认证'
       },
-      open: true, //可以开启同意弹窗
-      openmargin: true, //点击开通
+      open: true, // 可以开启同意弹窗
+      openmargin: true, // 点击开通
 
-      //弹窗相关设置
-      tel: "",
-      color: "#4b0",
-      codeInfo: "发送验证码",
+      // 弹窗相关设置
+      tel: '',
+      color: '#4b0',
+      codeInfo: '发送验证码',
       countDown: true,
-      codeKey: "",
+      codeKey: '',
       show: false,
       ActionsheetFlag: false,
-      fullPath: "",
-      next: "",
+      fullPath: '',
+      next: '',
       departFromFlag: false,
-      oneBitePrice: "",
-      mreferencePrice: "",
+      oneBitePrice: '',
+      mreferencePrice: '',
       isCover: false,
       cursor1: false,
       cursor2: false,
       cursor3: false,
       cursor4: false,
       cursor5: false,
-      obj: {}, //上架页面的数据
+      obj: {}, // 上架页面的数据
       res: [],
-      videoSet: "",
-      //手机号验证数据
-      filterTime: "60",
-      msg: "获取验证码",
+      videoSet: '',
+      // 手机号验证数据
+      filterTime: '60',
+      msg: '获取验证码',
       flag: true, // 获取验证码开关
-      phone: "", // 发送短信手机号码
-      type: "2", // 获取验证码类型
-      _key: "", // 获取到的验证码
-      code: "", //输入的验证码
+      phone: '', // 发送短信手机号码
+      type: '2', // 获取验证码类型
+      _key: '', // 获取到的验证码
+      code: '', // 输入的验证码
       mobileVeri: false
-    };
+    }
   },
-  created() {
-    this.userifon();
+  created () {
+    this.userifon()
   },
   computed: {
     ...mapState({
       uploadImageParams: state => state.uploadImageParams
     }),
-    isProtocolCover() {
-      return this.$store.state.isProtocol;
+    isProtocolCover () {
+      return this.$store.state.isProtocol
     }
   },
   props: {
-    value: "",
+    value: '',
     inter: {
       default: 8
     },
@@ -512,394 +512,393 @@ export default {
       default: 2
     }
   },
-  beforeRouteLeave(to, form, next) {
-    next();
+  beforeRouteLeave (to, form, next) {
+    next()
   },
   methods: {
-    //判断截拍和开拍时间
-    judgeTime(num) {
-      let time = "";
-      let val = "23:00";
+    // 判断截拍和开拍时间
+    judgeTime (num) {
+      let time = ''
+      let val = '23:00'
       if (num == 0) {
-        time = this.timeInitialization(1);
+        time = this.timeInitialization(1)
       } else if (num == 1) {
-        time = this.timeInitialization(2);
+        time = this.timeInitialization(2)
       } else {
-        time = this.timeInitialization(3);
+        time = this.timeInitialization(3)
       };
-      this.todayListSelected.endTimeSelected = -1;
-      this.tomorrowListSelected.endTimeSelected = -1;
-      this.aftertomorrowListSelected.endTimeSelected = -1;
-      //拼接显示时间
-      let times = time.year + "/" + time.month + "/" + time.date + " " + val; //拼接时间
-      this.endTime = Date.parse(new Date(times)) / 1000;
-      this.title = time.month + "月" + time.date + "日" + val;
+      this.todayListSelected.endTimeSelected = -1
+      this.tomorrowListSelected.endTimeSelected = -1
+      this.aftertomorrowListSelected.endTimeSelected = -1
+      // 拼接显示时间
+      let times = time.year + '/' + time.month + '/' + time.date + ' ' + val // 拼接时间
+      this.endTime = Date.parse(new Date(times)) / 1000
+      this.title = time.month + '月' + time.date + '日' + val
     },
-    //时间初始化
-    timeInitialization(num, val) {
-      let time = new Date().getTime() + 86400000 * num;
-      let year = new Date(parseInt(time)).getFullYear();
-      let month = new Date(parseInt(time)).getMonth() + 1;
-      let date = new Date(parseInt(time)).getDate();
+    // 时间初始化
+    timeInitialization (num, val) {
+      let time = new Date().getTime() + 86400000 * num
+      let year = new Date(parseInt(time)).getFullYear()
+      let month = new Date(parseInt(time)).getMonth() + 1
+      let date = new Date(parseInt(time)).getDate()
       return {
         year,
         month,
         date
-      };
-    },
-    //选中之后 之前的选中状态清除
-    clearSelected() {
-      if (this.cutShot) {
-        this.isSelected = false;
-        this.todayListSelected.startTimeSelected = -1;
-        this.tomorrowListSelected.startTimeSelected = -1;
-        this.aftertomorrowListSelected.startTimeSelected = -1;
-      } else {
-        this.todayListSelected.endTimeSelected = -1;
-        this.tomorrowListSelected.endTimeSelected = -1;
-        this.aftertomorrowListSelected.endTimeSelected = -1;
       }
     },
-    //截拍 开拍 高亮状态
-    isCutShot(info) {
+    // 选中之后 之前的选中状态清除
+    clearSelected () {
+      if (this.cutShot) {
+        this.isSelected = false
+        this.todayListSelected.startTimeSelected = -1
+        this.tomorrowListSelected.startTimeSelected = -1
+        this.aftertomorrowListSelected.startTimeSelected = -1
+      } else {
+        this.todayListSelected.endTimeSelected = -1
+        this.tomorrowListSelected.endTimeSelected = -1
+        this.aftertomorrowListSelected.endTimeSelected = -1
+      }
+    },
+    // 截拍 开拍 高亮状态
+    isCutShot (info) {
       switch (info) {
-        case "todays":
+        case 'todays':
           return this.cutShot
             ? this.todayListSelected.startTimeSelected
-            : this.todayListSelected.endTimeSelected;
-          break;
-        case "tomorrowList":
+            : this.todayListSelected.endTimeSelected
+          break
+        case 'tomorrowList':
           return this.cutShot
             ? this.tomorrowListSelected.startTimeSelected
-            : this.tomorrowListSelected.endTimeSelected;
-          break;
-        case "aftertomorrowList":
+            : this.tomorrowListSelected.endTimeSelected
+          break
+        case 'aftertomorrowList':
           return this.cutShot
             ? this.aftertomorrowListSelected.startTimeSelected
-            : this.aftertomorrowListSelected.endTimeSelected;
-          break;
+            : this.aftertomorrowListSelected.endTimeSelected
+          break
       }
     },
-    //session数据清除
-    localClear() {
-      localStorage.removeItem("uploadImg");
-      localStorage.removeItem("goodsId");
-      localStorage.removeItem("uploadInfo");
-      localStorage.removeItem("desc");
+    // session数据清除
+    localClear () {
+      localStorage.removeItem('uploadImg')
+      localStorage.removeItem('goodsId')
+      localStorage.removeItem('uploadInfo')
+      localStorage.removeItem('desc')
     },
-    telmobile() {
-      this.showveri = true;
+    telmobile () {
+      this.showveri = true
     },
-    closeshowveri() {
-      this.showveri = false;
+    closeshowveri () {
+      this.showveri = false
     },
-    //获取手机验证码
-    filterNum() {
-      let _this = this;
-      let myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+    // 获取手机验证码
+    filterNum () {
+      let _this = this
+      let myreg = /^[1][3,4,5,7,8][0-9]{9}$/
       if (!myreg.test(_this.phone)) {
-        Toast("请输入正确的手机号");
-        return false;
+        Toast('请输入正确的手机号')
+        return false
       }
       if (_this.flag == true) {
-        _this.flag = false;
-        _this.filterTime = 60;
+        _this.flag = false
+        _this.filterTime = 60
         let t = setInterval(() => {
-          _this.filterTime--;
+          _this.filterTime--
           if (_this.filterTime <= 0) {
-            clearInterval(t); // 当倒计时时间小于0时，清除时间函数并且将时间开关打开
-            _this.flag = true;
-            _this.msg = "获取验证码";
+            clearInterval(t) // 当倒计时时间小于0时，清除时间函数并且将时间开关打开
+            _this.flag = true
+            _this.msg = '获取验证码'
           } else {
-            _this.msg = "重新发送(" + _this.filterTime + ")"; // 返回最初状态；
+            _this.msg = '重新发送(' + _this.filterTime + ')' // 返回最初状态；
           }
-        }, 1000);
+        }, 1000)
         let params = {
           phone: _this.phone,
           type: 1
-        };
+        }
         getLoginMobileCode(params)
           .then(res => {
-            this.codeKey = res.data.key;
+            this.codeKey = res.data.key
           })
-          .catch(function(err) {
-            Toast("验证码获取失败");
-          });
+          .catch(function (err) {
+            Toast('验证码获取失败')
+          })
       }
     },
-    //提交手机号
-    subMethod() {
-      if (this.Trim(this.phone, "g") == "") {
-        Toast("手机号不能为空");
-        return;
+    // 提交手机号
+    subMethod () {
+      if (this.Trim(this.phone, 'g') == '') {
+        Toast('手机号不能为空')
+        return
       }
-      if (this.Trim(this.code, "g") == "") {
-        Toast("请正确输入你收到的验证码");
-        return;
+      if (this.Trim(this.code, 'g') == '') {
+        Toast('请正确输入你收到的验证码')
+        return
       }
       if (!this.codeKey) {
-        Toast("请先获取验证码");
-        return;
+        Toast('请先获取验证码')
+        return
       }
       let params = {
         verification_key: this.codeKey,
         verification_code: this.code,
         type: 1
-      };
+      }
       submissionCode(params)
         .then(res => {
-          Toast("恭喜您绑定成功");
-          this.mobileVeri = false;
+          Toast('恭喜您绑定成功')
+          this.mobileVeri = false
         })
-        .catch(function(error) {
+        .catch(function (error) {
           if (error.status === 400) {
-            Toast(error.data.message);
-            return;
+            Toast(error.data.message)
+            return
           }
-          Toast(error.message);
-        });
+          Toast(error.message)
+        })
     },
-    //获取重新上架分类
-    getClassify(data, info) {
+    // 获取重新上架分类
+    getClassify (data, info) {
       for (let index = 0; index < data.length; index++) {
         if (data[index].id == info) {
-          return data[index];
+          return data[index]
         }
       }
     },
-    //上传回调
-    upload(list) {
-      if (list.name === "img") {
-        this.imgList = list.list;
+    // 上传回调
+    upload (list) {
+      if (list.name === 'img') {
+        this.imgList = list.list
       } else {
-        this.videoUri = list.list;
+        this.videoUri = list.list
       }
     },
-    //发布错误处理
-    error(error) {
-      //判断返回的状态码
+    // 发布错误处理
+    error (error) {
+      // 判断返回的状态码
       if (error.status == 422 || error.status == 400) {
-        Toast(error.data.message);
+        Toast(error.data.message)
       } else if (error.status == 402) {
-        //连续发送三次请求
+        // 连续发送三次请求
         if (this.releaseCount <= 3) {
-          this.release();
-          this.releaseCount++;
+          this.release()
+          this.releaseCount++
         }
       } else if (error.status == 403) {
         if (error.data.code == 40002) {
-          this.$router.push("/errorPage?type=40002");
-          return;
+          this.$router.push('/errorPage?type=40002')
+          return
         }
-        this.mobileVeri = true;
+        this.mobileVeri = true
       }
     },
-    //数据填充
-    dataFilling(res) {
-      let data = res.data;
-      this.desc = data.sale.content || ""; //描述
-      this.cid = data.sale.cid || "0"; //一级分类
-      this.scid = data.sale.scid || "0"; //二级分类
-      if (this.cid != "0" && this.scid != "0") {
-        //分类显示
-        let choseName1 = this.getClassify(data.categoryList, this.cid);
-        let choseName2 = this.getClassify(choseName1.childCategory, this.scid);
-        this.choseName = choseName1.name + "-" + choseName2.name; //分类显示文字
+    // 数据填充
+    dataFilling (res) {
+      let data = res.data
+      this.desc = data.sale.content || '' // 描述
+      this.cid = data.sale.cid || '0' // 一级分类
+      this.scid = data.sale.scid || '0' // 二级分类
+      if (this.cid != '0' && this.scid != '0') {
+        // 分类显示
+        let choseName1 = this.getClassify(data.categoryList, this.cid)
+        let choseName2 = this.getClassify(choseName1.childCategory, this.scid)
+        this.choseName = choseName1.name + '-' + choseName2.name // 分类显示文字
       }
-      this.referencePricesLow = +data.sale.gj1 == "0" ? "" : +data.sale.gj1; //估价1
-      this.referencePricesUp = +data.sale.gj2 == "0" ? "" : +data.sale.gj2; //估价2
-      if (this.referencePricesLow != "") {
-        //展示参考价
-        this.mreferencePrice = true;
+      this.referencePricesLow = +data.sale.gj1 == '0' ? '' : +data.sale.gj1 // 估价1
+      this.referencePricesUp = +data.sale.gj2 == '0' ? '' : +data.sale.gj2 // 估价2
+      if (this.referencePricesLow != '') {
+        // 展示参考价
+        this.mreferencePrice = true
       }
-      this.firstPrice = +data.sale.firstPrice || 0; //起拍价
-      this.increase = +data.sale.increase || 100; //加价
-      this.fixedPrice = +data.sale.fixedPrice || ""; //一口价
-      if (this.fixedPrice != "") {
-        //展示一口价
-        this.oneBitePrice = this.fixedPrice;
+      this.firstPrice = +data.sale.firstPrice || 0 // 起拍价
+      this.increase = +data.sale.increase || 100 // 加价
+      this.fixedPrice = +data.sale.fixedPrice || '' // 一口价
+      if (this.fixedPrice != '') {
+        // 展示一口价
+        this.oneBitePrice = this.fixedPrice
       }
-      this.bondPrice = data.sale.bondPrice == "0.00" ? "" : data.sale.BondPrice; //保证金
+      this.bondPrice = data.sale.bondPrice == '0.00' ? '' : data.sale.BondPrice // 保证金
       if (this.bondPrice) {
-        this.openmargin = false;
+        this.openmargin = false
       }
-      this.isReturn = data.sale.isReturn; //包退
-      this.freeShip = true; //包邮
+      this.isReturn = data.sale.isReturn // 包退
+      this.freeShip = true // 包邮
       if (data.shop.isRecommend) {
-        //是否能优选发布
-        this.isRecommend = true;
-        this.hasChosenPublish = data.shop.hasChosenPublish; //优选的数量有没有达到上限
+        // 是否能优选发布
+        this.isRecommend = true
+        this.hasChosenPublish = data.shop.hasChosenPublish // 优选的数量有没有达到上限
       }
     },
-    isdepartFromFlag(to, next) {
-      this.ActionsheetFlag = true;
-      this.fullPath = to.fullPath;
-      this.next = next;
+    isdepartFromFlag (to, next) {
+      this.ActionsheetFlag = true
+      this.fullPath = to.fullPath
+      this.next = next
     },
-    //离开当前页面
-    departFrom(to) {
-      this.$router.push(this.fullPath);
-      this.next();
+    // 离开当前页面
+    departFrom (to) {
+      this.$router.push(this.fullPath)
+      this.next()
     },
-    //协议
-    isProtocol() {
-      this.$store.commit("reviseProtocolClose", true);
+    // 协议
+    isProtocol () {
+      this.$store.commit('reviseProtocolClose', true)
     },
-    //点击空白处关闭截拍时间
-    closeSaleDateTimePicker() {
-      this.sectionalTime = false;
+    // 点击空白处关闭截拍时间
+    closeSaleDateTimePicker () {
+      this.sectionalTime = false
     },
-    //关闭遮罩层
-    closeCover() {
-      this.mobileVeri = false;
+    // 关闭遮罩层
+    closeCover () {
+      this.mobileVeri = false
     },
-    //手机号正则校验
-    isPoneAvailable(str) {
-      var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+    // 手机号正则校验
+    isPoneAvailable (str) {
+      var myreg = /^[1][3,4,5,7,8][0-9]{9}$/
       if (!myreg.test(str)) {
-        return false;
+        return false
       } else {
-        return true;
+        return true
       }
     },
     // 获取用户信息
-    userifon() {
-      let id = this.$route.params.id || localStorage.getItem("goodsId");
+    userifon () {
+      let id = this.$route.params.id || localStorage.getItem('goodsId')
       let params = {
         active: this.$route.params.active
-      };
+      }
       getPublishStep2(id, params)
         .then(res => {
-          this.isVerify = res.data.shop.isVerify;
-          this.categoryListes = res.data.categoryList;
-          //获取上架发送的数据
+          this.isVerify = res.data.shop.isVerify
+          this.categoryListes = res.data.categoryList
+          // 获取上架发送的数据
           // if (this.$route.params.id) {
-          this.obj = this.$route.params.id;
-          this.dataFilling(res);
+          this.obj = this.$route.params.id
+          this.dataFilling(res)
           // }
         })
-        .catch(function(error) {
-          console.log(error);
-        });
+        .catch(function (error) {
+          console.log(error)
+        })
     },
     // 更多设置
-    moreSettings() {
-      this.basicSetup = false;
-      this.advancedSettings = true;
-      window.scrollTo(0, 0);
+    moreSettings () {
+      this.basicSetup = false
+      this.advancedSettings = true
+      window.scrollTo(0, 0)
       this.saveSelective = {
         todayListSelected: this.todayListSelected.startTimeSelected,
         tomorrowListSelected: this.tomorrowListSelected.startTimeSelected,
         aftertomorrowListSelected: this.aftertomorrowListSelected.startTimeSelected
-      };
-      this.saveOpenTime = this.openTime;
-      this.saveTitles = this.titles;
-      this.saveEndTime = this.endTime;
-      this.saveTitle = this.title;
-      this.saveFixedPrice = this.fixedPrice;
-      this.saveGj1 = this.referencePricesLow;
-      this.saveGj2 = this.referencePricesUp;
+      }
+      this.saveOpenTime = this.openTime
+      this.saveTitles = this.titles
+      this.saveEndTime = this.endTime
+      this.saveTitle = this.title
+      this.saveFixedPrice = this.fixedPrice
+      this.saveGj1 = this.referencePricesLow
+      this.saveGj2 = this.referencePricesUp
     },
-    //缴纳保证金
-    securityDeposit() {
+    // 缴纳保证金
+    securityDeposit () {
       if (this.open == true) {
-        this.deposit = true; //显示同意弹窗
+        this.deposit = true // 显示同意弹窗
       } else {
-        this.deposit = false; //不在显示同意弹窗
-        this.securitymoney = !this.securitymoney;
+        this.deposit = false // 不在显示同意弹窗
+        this.securitymoney = !this.securitymoney
       }
     },
-    //同意缴纳保证金
-    security() {
-      this.securitymoney = true;
-      this.open = false; //同意之后不在显示弹窗
-      this.openmargin = false;
+    // 同意缴纳保证金
+    security () {
+      this.securitymoney = true
+      this.open = false // 同意之后不在显示弹窗
+      this.openmargin = false
     },
-    //缴纳保证金（元）
-    margin(item) {
-      this.bondPrice = item;
-      this.securitymoney = false;
+    // 缴纳保证金（元）
+    margin (item) {
+      this.bondPrice = item
+      this.securitymoney = false
     },
-    //需实名认证方可设置开拍时间
-    shooting() {
+    // 需实名认证方可设置开拍时间
+    shooting () {
       if (this.isVerify == false) {
-        this.goauthorized = true; //去认证弹窗
+        this.goauthorized = true // 去认证弹窗
       } else {
-        this.cutShot = true;
-        this.sectionalTime = true; //选择立即开拍时间弹窗
+        this.cutShot = true
+        this.sectionalTime = true // 选择立即开拍时间弹窗
       }
     },
     // 去实名认证
-    goauthorizedes() {
-      this.$router.push({ path: "/sellerCenter/realnameApplication" });
+    goauthorizedes () {
+      this.$router.push({ path: '/sellerCenter/realnameApplication' })
     },
     // 7天包退
-    onClick(newVal, oldVal) {
-      this.isReturn = newVal;
+    onClick (newVal, oldVal) {
+      this.isReturn = newVal
     },
     // 包邮
-    onClickes(newVal, oldVal) {
-      this.freeShip = newVal;
+    onClickes (newVal, oldVal) {
+      this.freeShip = newVal
     },
-    //优选
-    onSelective(newVal, oldVal) {
+    // 优选
+    onSelective (newVal, oldVal) {
       if (this.hasChosenPublish) {
-        this.recommend = newVal;
+        this.recommend = newVal
       } else {
-        Toast("优选拍品的数量达到上限");
+        Toast('优选拍品的数量达到上限')
       }
     },
-    //取消更多设置
-    cancelStep(info) {
-      this.basicSetup = true;
-      this.advancedSettings = false;
-      if (info === "next") {
-        this.mreferencePrice = this.referencePrices || "";
-        this.oneBitePrice = this.fixedPrice || "";
+    // 取消更多设置
+    cancelStep (info) {
+      this.basicSetup = true
+      this.advancedSettings = false
+      if (info === 'next') {
+        this.mreferencePrice = this.referencePrices || ''
+        this.oneBitePrice = this.fixedPrice || ''
         if (
-          !(this.referencePricesLow === "" && this.referencePricesUp === "")
+          !(this.referencePricesLow === '' && this.referencePricesUp === '')
         ) {
-          if (this.referencePricesLow === "" || this.referencePricesUp === "") {
-            Toast("参考价不能只填一个");
-            return;
+          if (this.referencePricesLow === '' || this.referencePricesUp === '') {
+            Toast('参考价不能只填一个')
+            return
           }
           if (+this.referencePricesLow >= +this.referencePricesUp) {
-            Toast("价格必须由低到高排列");
-            return;
+            Toast('价格必须由低到高排列')
           }
         }
       } else {
         if (this.openTime) {
-          this.openTime = this.saveOpenTime;
-          this.titles = this.saveTitles;
+          this.openTime = this.saveOpenTime
+          this.titles = this.saveTitles
         }
         if (this.endTime) {
-          this.endTime = this.saveEndTime;
-          this.title = this.saveTitle;
+          this.endTime = this.saveEndTime
+          this.title = this.saveTitle
         }
-        this.fixedPrice = this.saveFixedPrice;
-        this.referencePricesLow = this.saveGj1;
-        this.referencePricesUp = this.saveGj2;
-        this.todayListSelected.startTimeSelected = this.saveSelective.todayListSelected;
-        this.tomorrowListSelected.startTimeSelected = this.saveSelective.tomorrowListSelected;
-        this.aftertomorrowListSelected.startTimeSelected = this.saveSelective.aftertomorrowListSelected;
+        this.fixedPrice = this.saveFixedPrice
+        this.referencePricesLow = this.saveGj1
+        this.referencePricesUp = this.saveGj2
+        this.todayListSelected.startTimeSelected = this.saveSelective.todayListSelected
+        this.tomorrowListSelected.startTimeSelected = this.saveSelective.tomorrowListSelected
+        this.aftertomorrowListSelected.startTimeSelected = this.saveSelective.aftertomorrowListSelected
       }
     },
 
     // 时间相关操作start
-    //初始化时间
-    checkTime() {
-      let myDate = new Date(); //当前时间
-      this.year = myDate.getFullYear().toString(); //年
-      this.month = (myDate.getMonth() + 1).toString(); //月
-      this.data = myDate.getDate().toString(); //今天
-      let timeDay = this.timeInitialization(0);
-      this.time.day = timeDay.month + "月" + timeDay.date + "日";
-      let timeAfter = this.timeInitialization(1);
-      this.time.after = timeAfter.month + "月" + timeAfter.date + "日";
-      let timeTomorrow = this.timeInitialization(2);
-      this.time.tomorrow = timeTomorrow.month + "月" + timeTomorrow.date + "日";
-      //如果日或者月不满十位数，前面补0
+    // 初始化时间
+    checkTime () {
+      let myDate = new Date() // 当前时间
+      this.year = myDate.getFullYear().toString() // 年
+      this.month = (myDate.getMonth() + 1).toString() // 月
+      this.data = myDate.getDate().toString() // 今天
+      let timeDay = this.timeInitialization(0)
+      this.time.day = timeDay.month + '月' + timeDay.date + '日'
+      let timeAfter = this.timeInitialization(1)
+      this.time.after = timeAfter.month + '月' + timeAfter.date + '日'
+      let timeTomorrow = this.timeInitialization(2)
+      this.time.tomorrow = timeTomorrow.month + '月' + timeTomorrow.date + '日'
+      // 如果日或者月不满十位数，前面补0
       // if (this.data.length < 2) {
       //   this.data = "0" + this.data;
       // }
@@ -910,453 +909,453 @@ export default {
       //   this.tomorrow = "0" + this.tomorrow;
       // }
 
-      let hour = myDate.getHours();
+      let hour = myDate.getHours()
       if (hour < 10) {
-        this.todayList = this.todayList.slice(0);
-        this.aftertomorrows = false;
+        this.todayList = this.todayList.slice(0)
+        this.aftertomorrows = false
       } else if (hour >= 10 && hour < 12) {
-        this.todayList = this.todayList.slice(1);
-        this.aftertomorrowList = this.aftertomorrowList.slice(0, 1);
-        this.aftertomorrows = true;
+        this.todayList = this.todayList.slice(1)
+        this.aftertomorrowList = this.aftertomorrowList.slice(0, 1)
+        this.aftertomorrows = true
       } else if (hour >= 12 && hour < 16) {
-        this.todayList = this.todayList.slice(2);
-        this.aftertomorrowList = this.aftertomorrowList.slice(0, 2);
-        this.aftertomorrows = true;
+        this.todayList = this.todayList.slice(2)
+        this.aftertomorrowList = this.aftertomorrowList.slice(0, 2)
+        this.aftertomorrows = true
       } else if (hour >= 16 && hour < 17) {
-        this.todayList = this.todayList.slice(3);
-        this.aftertomorrowList = this.aftertomorrowList.slice(0, 3);
-        this.aftertomorrows = true;
+        this.todayList = this.todayList.slice(3)
+        this.aftertomorrowList = this.aftertomorrowList.slice(0, 3)
+        this.aftertomorrows = true
       } else if (hour >= 17 && hour < 19) {
-        this.todayList = this.todayList.slice(4);
-        this.aftertomorrowList = this.aftertomorrowList.slice(0, 4);
-        this.aftertomorrows = true;
+        this.todayList = this.todayList.slice(4)
+        this.aftertomorrowList = this.aftertomorrowList.slice(0, 4)
+        this.aftertomorrows = true
       } else if (hour >= 19 && hour < 20) {
-        this.todayList = this.todayList.slice(5);
-        this.aftertomorrowList = this.aftertomorrowList.slice(0, 5);
-        this.aftertomorrows = true;
+        this.todayList = this.todayList.slice(5)
+        this.aftertomorrowList = this.aftertomorrowList.slice(0, 5)
+        this.aftertomorrows = true
       } else if (hour >= 20 && hour < 21) {
-        this.todayList = this.todayList.slice(6);
-        this.aftertomorrowList = this.aftertomorrowList.slice(0, 6);
-        this.aftertomorrows = true;
+        this.todayList = this.todayList.slice(6)
+        this.aftertomorrowList = this.aftertomorrowList.slice(0, 6)
+        this.aftertomorrows = true
       } else if (hour >= 21 && hour < 22) {
-        this.todayList = this.todayList.slice(7);
-        this.aftertomorrowList = this.aftertomorrowList.slice(0, 7);
-        this.aftertomorrows = true;
+        this.todayList = this.todayList.slice(7)
+        this.aftertomorrowList = this.aftertomorrowList.slice(0, 7)
+        this.aftertomorrows = true
       } else if (hour >= 22 && hour < 23) {
-        this.todayList = this.todayList.slice(8);
-        this.aftertomorrowList = this.aftertomorrowList.slice(0, 8);
-        this.aftertomorrows = true;
+        this.todayList = this.todayList.slice(8)
+        this.aftertomorrowList = this.aftertomorrowList.slice(0, 8)
+        this.aftertomorrows = true
       } else if (hour >= 23) {
-        this.aftertomorrows = true;
-        this.todays = false;
+        this.aftertomorrows = true
+        this.todays = false
       }
     },
 
     // 选择截拍时间
-    chooseEndtime() {
-      this.cutShot = false;
-      this.sectionalTime = true; //点击展开弹窗
+    chooseEndtime () {
+      this.cutShot = false
+      this.sectionalTime = true // 点击展开弹窗
       // this.aftertomorrows = true;
     },
-    chooseTimetoday(val, index) {
-      this.clearSelected(); //清除所有选中状态
-      let times = this.year + "/" + this.month + "/" + this.data + " " + val; //拼接时间
-      this.sectionalTime = false;
+    chooseTimetoday (val, index) {
+      this.clearSelected() // 清除所有选中状态
+      let times = this.year + '/' + this.month + '/' + this.data + ' ' + val // 拼接时间
+      this.sectionalTime = false
       if (this.cutShot == true) {
-        this.todayListSelected.startTimeSelected = index;
-        this.openTime = Date.parse(new Date(times)) / 1000;
-        this.titles = this.month + "月" + this.data + "日" + val;
-        this.judgeTime(0, val, index);
+        this.todayListSelected.startTimeSelected = index
+        this.openTime = Date.parse(new Date(times)) / 1000
+        this.titles = this.month + '月' + this.data + '日' + val
+        this.judgeTime(0, val, index)
       } else {
-        this.todayListSelected.endTimeSelected = index;
-        this.endTime = Date.parse(new Date(times)) / 1000;
-        this.title = this.month + "月" + this.data + "日" + val;
+        this.todayListSelected.endTimeSelected = index
+        this.endTime = Date.parse(new Date(times)) / 1000
+        this.title = this.month + '月' + this.data + '日' + val
         if (this.openTime) {
-          this.Immediately();
-          this.todayListSelected.startTimeSelected = -1;
-          this.tomorrowListSelected.startTimeSelected = -1;
-          this.aftertomorrowListSelected.startTimeSelected = -1;
+          this.Immediately()
+          this.todayListSelected.startTimeSelected = -1
+          this.tomorrowListSelected.startTimeSelected = -1
+          this.aftertomorrowListSelected.startTimeSelected = -1
         }
       }
     },
 
-    chooseTimetomorrow(val, index) {
-      let object = this.timeInitialization(1, val);
+    chooseTimetomorrow (val, index) {
+      let object = this.timeInitialization(1, val)
       let times =
-        object.year + "/" + object.month + "/" + object.date + " " + val;
-      this.clearSelected(); //清除所有选中状态
-      this.sectionalTime = false;
+        object.year + '/' + object.month + '/' + object.date + ' ' + val
+      this.clearSelected() // 清除所有选中状态
+      this.sectionalTime = false
       if (this.cutShot == true) {
-        this.tomorrowListSelected.startTimeSelected = index;
-        this.openTime = Date.parse(new Date(times)) / 1000;
-        this.titles = object.month + "月" + object.date + "日" + val;
-        this.judgeTime(1, val, index);
+        this.tomorrowListSelected.startTimeSelected = index
+        this.openTime = Date.parse(new Date(times)) / 1000
+        this.titles = object.month + '月' + object.date + '日' + val
+        this.judgeTime(1, val, index)
       } else {
-        this.tomorrowListSelected.endTimeSelected = index;
-        this.endTime = Date.parse(new Date(times)) / 1000;
-        this.title = object.month + "月" + object.date + "日" + val;
+        this.tomorrowListSelected.endTimeSelected = index
+        this.endTime = Date.parse(new Date(times)) / 1000
+        this.title = object.month + '月' + object.date + '日' + val
         if (this.openTime) {
-          this.Immediately();
-          this.todayListSelected.startTimeSelected = -1;
-          this.tomorrowListSelected.startTimeSelected = -1;
-          this.aftertomorrowListSelected.startTimeSelected = -1;
+          this.Immediately()
+          this.todayListSelected.startTimeSelected = -1
+          this.tomorrowListSelected.startTimeSelected = -1
+          this.aftertomorrowListSelected.startTimeSelected = -1
         }
       }
     },
 
-    chooseTimeaftertomorrow(val, index) {
-      let object = this.timeInitialization(2, val);
+    chooseTimeaftertomorrow (val, index) {
+      let object = this.timeInitialization(2, val)
       let times =
-        object.year + "/" + object.month + "/" + object.date + " " + val;
-      this.clearSelected(); //清除所有选中状态
-      this.sectionalTime = false;
+        object.year + '/' + object.month + '/' + object.date + ' ' + val
+      this.clearSelected() // 清除所有选中状态
+      this.sectionalTime = false
       if (this.cutShot == true) {
-        this.aftertomorrowListSelected.startTimeSelected = index;
-        this.openTime = Date.parse(new Date(times)) / 1000;
-        this.titles = object.month + "月" + object.date + "日" + val;
-        this.judgeTime(2, val, index);
+        this.aftertomorrowListSelected.startTimeSelected = index
+        this.openTime = Date.parse(new Date(times)) / 1000
+        this.titles = object.month + '月' + object.date + '日' + val
+        this.judgeTime(2, val, index)
       } else {
-        this.aftertomorrowListSelected.endTimeSelected = index;
-        this.endTime = Date.parse(new Date(times)) / 1000;
-        this.title = object.month + "月" + object.date + "日" + val;
+        this.aftertomorrowListSelected.endTimeSelected = index
+        this.endTime = Date.parse(new Date(times)) / 1000
+        this.title = object.month + '月' + object.date + '日' + val
         if (this.openTime) {
-          this.Immediately();
-          this.todayListSelected.startTimeSelected = -1;
-          this.tomorrowListSelected.startTimeSelected = -1;
-          this.aftertomorrowListSelected.startTimeSelected = -1;
+          this.Immediately()
+          this.todayListSelected.startTimeSelected = -1
+          this.tomorrowListSelected.startTimeSelected = -1
+          this.aftertomorrowListSelected.startTimeSelected = -1
         }
       }
     },
 
-    //立即开拍
-    Immediately() {
-      this.sectionalTime = false;
-      this.openTime = Date.parse(new Date()) / 1000;
-      this.clearSelected();
-      this.isSelected = true;
-      this.titles = "立即开拍";
+    // 立即开拍
+    Immediately () {
+      this.sectionalTime = false
+      this.openTime = Date.parse(new Date()) / 1000
+      this.clearSelected()
+      this.isSelected = true
+      this.titles = '立即开拍'
     },
 
     // 分类相关操作start
 
     // 点击分类
-    chooseclassification(cid) {
-      this.classification = true;
+    chooseclassification (cid) {
+      this.classification = true
     },
     // 点击分类mask部分,选择分类隐藏
-    tptMask() {
-      if (this.cid === "0") {
-        this.classification = false;
-      } else if (this.scid === "0") {
-        Toast("请选择分类");
-      } else if (this.scid != "0" && this.cid != "0") {
-        this.classification = false;
-        this.choseName = this.sname;
+    tptMask () {
+      if (this.cid === '0') {
+        this.classification = false
+      } else if (this.scid === '0') {
+        Toast('请选择分类')
+      } else if (this.scid != '0' && this.cid != '0') {
+        this.classification = false
+        this.choseName = this.sname
       }
     },
     // 点选一级分类
-    chooseOne(item, index) {
-      this.name = item.name; //一级分类名字
-      this.changeRed = index; //点选变色
-      this.secondary = true; //展开二级菜单
-      this.cid = item.id; //存一级id
+    chooseOne (item, index) {
+      this.name = item.name // 一级分类名字
+      this.changeRed = index // 点选变色
+      this.secondary = true // 展开二级菜单
+      this.cid = item.id // 存一级id
     },
     // 点选二级分类
-    chooseSecondary(item, indexes) {
-      this.sname = item.name; //二级分类名字
-      this.changeRedes = indexes; //点选变色
-      this.scid = item.id; //存二级id
-      this.chooseComplete();
+    chooseSecondary (item, indexes) {
+      this.sname = item.name // 二级分类名字
+      this.changeRedes = indexes // 点选变色
+      this.scid = item.id // 存二级id
+      this.chooseComplete()
     },
-    //点选二级分类时重选
-    rechoose() {
-      this.secondary = false;
-      this.changeRedes = "";
+    // 点选二级分类时重选
+    rechoose () {
+      this.secondary = false
+      this.changeRedes = ''
     },
-    //点选二级分类时完成
-    chooseComplete() {
-      //二级分类如果没有选择 不关闭
-      if (this.scid === "0") {
-        Toast("分类不能为空");
-        return;
+    // 点选二级分类时完成
+    chooseComplete () {
+      // 二级分类如果没有选择 不关闭
+      if (this.scid === '0') {
+        Toast('分类不能为空')
+        return
       }
-      this.secondary = false;
-      this.classification = false;
-      this.choseName = this.name + "-" + this.sname;
+      this.secondary = false
+      this.classification = false
+      this.choseName = this.name + '-' + this.sname
     },
     // 分类相关操作end
     // 发布
-    release() {
-      if (this.fixedPrice != "") {
+    release () {
+      if (this.fixedPrice != '') {
         if (+this.fixedPrice < +this.increase) {
-          Toast("一口价不能低于加价幅度");
-          return false;
+          Toast('一口价不能低于加价幅度')
+          return false
         }
       }
       if (!this.endTime) {
-        Toast("截拍时间不能为空");
-        return false;
+        Toast('截拍时间不能为空')
+        return false
       }
       if (this.isVerify) {
         if (!this.cid || !this.scid) {
-          Toast("您已实名认证，请选择分类");
-          return false;
+          Toast('您已实名认证，请选择分类')
+          return false
         }
       }
       if (this.openTime >= this.endTime) {
-        Toast("开拍时间不能晚于或等于截拍时间");
-        return false;
+        Toast('开拍时间不能晚于或等于截拍时间')
+        return false
       }
       if (this.isReturn == true) {
-        var isReturn = 1;
+        let isReturn = 1
       } else {
-        var isReturn = 0;
+        let isReturn = 0
       }
       if (this.freeShip == true) {
-        var freeShip = 1;
+        let freeShip = 1
       } else {
-        var freeShip = 2;
+        let freeShip = 2
       }
-      let _this = this;
+      let _this = this
       let params = {
-        cid: _this.cid, //一级分类
-        scid: _this.scid, //二级分类
-        endTime: _this.endTime, //截拍时间
-        openTime: _this.openTime, //开拍时间
-        firstPrice: _this.firstPrice, //起拍价
-        increase: _this.increase, //加价
-        isReturn: isReturn, //包邮
-        freeShip: freeShip, //包退
-        bondPrice: _this.bondPrice, //保证金
-        fixedPrice: _this.fixedPrice, //一口价
-        gj1: _this.referencePricesLow, //估价1
-        gj2: _this.referencePricesUp, //估价2
+        cid: _this.cid, // 一级分类
+        scid: _this.scid, // 二级分类
+        endTime: _this.endTime, // 截拍时间
+        openTime: _this.openTime, // 开拍时间
+        firstPrice: _this.firstPrice, // 起拍价
+        increase: _this.increase, // 加价
+        isReturn: isReturn, // 包邮
+        freeShip: freeShip, // 包退
+        bondPrice: _this.bondPrice, // 保证金
+        fixedPrice: _this.fixedPrice, // 一口价
+        gj1: _this.referencePricesLow, // 估价1
+        gj2: _this.referencePricesUp, // 估价2
         status: 0
-      };
-      //添加优选
-      if (this.recommend) {
-        params.recommend = this.recommend;
       }
-      let id = this.obj || localStorage.getItem("goodsId");
+      // 添加优选
+      if (this.recommend) {
+        params.recommend = this.recommend
+      }
+      let id = this.obj || localStorage.getItem('goodsId')
       // if (!this.$route.params.id) {
-      //发布
-      let active = this.$route.params.active;
+      // 发布
+      let active = this.$route.params.active
       if (active) {
-        params.active = active;
+        params.active = active
         activityRelease(id, params)
           .then(res => {
-            this.localClear();
-            this.departFromFlag = true;
-            this.$router.push("/sellerCenter/extendedService");
+            this.localClear()
+            this.departFromFlag = true
+            this.$router.push('/sellerCenter/extendedService')
           })
           .catch(err => {
-            this.error(err);
-          });
+            this.error(err)
+          })
       } else {
         rejoinTheShelves(id, params)
           .then(res => {
-            this.localClear();
-            this.departFromFlag = true;
+            this.localClear()
+            this.departFromFlag = true
             if (res.code == 200) {
-              this.goodsId = res.data.goodsId;
-              Toast("发布成功");
-              this.$router.push("/auction/" + this.goodsId);
+              this.goodsId = res.data.goodsId
+              Toast('发布成功')
+              this.$router.push('/auction/' + this.goodsId)
             } else if (res.code > 200) {
-              this.goodsId = res.data.goodsId;
+              this.goodsId = res.data.goodsId
               this.$router.push({
-                path: "/payment/cashDepositPay",
+                path: '/payment/cashDepositPay',
                 query: { auction_id: this.goodsId, type: 0 }
-              });
+              })
             }
           })
           .catch(error => {
-            this.error(error);
-          });
+            this.error(error)
+          })
       }
     },
     // 键盘事件相关操作start
-    focus(event) {
-      /*显示键盘*/
-      this.showKeyboard(event);
-      /*显示光标*/
+    focus (event) {
+      /* 显示键盘 */
+      this.showKeyboard(event)
+      /* 显示光标 */
       // this.showCursor();
-      /*闪烁光标*/
+      /* 闪烁光标 */
       // this.blinkCursor();
-      /*遮罩层显示*/
-      this.isCover = true;
+      /* 遮罩层显示 */
+      this.isCover = true
       /*
       @cursor 显示光标
       判断当前加价幅度有没有被遮住 已取消不用
       */
-      if (event == "firstPrice") {
-        this.cursor1 = true;
-        this.firstPrice = this.firstPrice === 0 ? "" : this.firstPrice;
-        var size = this.$refs.firstPricePrice.getBoundingClientRect().bottom;
-      } else if (event == "increase") {
-        this.cursor2 = true;
-        var size = this.$refs.certRange.getBoundingClientRect().bottom;
-      } else if (event == "fixedPrice") {
-        this.cursor3 = true;
-        var size = this.$refs.fixedPrice.getBoundingClientRect().bottom;
-      } else if (event == "referencePriceLow") {
-        this.cursor4 = true;
-        var size = this.$refs.referencePrice.getBoundingClientRect().bottom;
-      } else if (event == "referencePriceUp") {
-        this.cursor5 = true;
-        var size = this.$refs.referencePrice.getBoundingClientRect().bottom;
+      if (event == 'firstPrice') {
+        this.cursor1 = true
+        this.firstPrice = this.firstPrice === 0 ? '' : this.firstPrice
+        let size = this.$refs.firstPricePrice.getBoundingClientRect().bottom
+      } else if (event == 'increase') {
+        this.cursor2 = true
+        let size = this.$refs.certRange.getBoundingClientRect().bottom
+      } else if (event == 'fixedPrice') {
+        this.cursor3 = true
+        let size = this.$refs.fixedPrice.getBoundingClientRect().bottom
+      } else if (event == 'referencePriceLow') {
+        this.cursor4 = true
+        let size = this.$refs.referencePrice.getBoundingClientRect().bottom
+      } else if (event == 'referencePriceUp') {
+        this.cursor5 = true
+        let size = this.$refs.referencePrice.getBoundingClientRect().bottom
       }
     },
-    blinkCursor() {
-      clearInterval(this.intervalID);
+    blinkCursor () {
+      clearInterval(this.intervalID)
       this.intervalID = setInterval(() => {
-        this.cursor = !this.cursor;
-      }, this.cursorDuration);
+        this.cursor = !this.cursor
+      }, this.cursorDuration)
     },
-    unblinkCursor() {
-      clearInterval(this.intervalID);
+    unblinkCursor () {
+      clearInterval(this.intervalID)
     },
-    /*blur*/
-    blur(e) {
-      /*隐藏光标*/
+    /* blur */
+    blur (e) {
+      /* 隐藏光标 */
       // this.hideCursor();
-      /*停止光标闪烁*/
+      /* 停止光标闪烁 */
       // this.unblinkCursor();
-      /*隐藏键盘*/
-      this.hideKeyboard();
-      /*遮罩层隐藏*/
-      this.coverClose = true;
-      this.checkValue();
-      this.notify();
-      this.cursor1 = false;
-      this.cursor2 = false;
-      this.cursor3 = false;
-      this.cursor4 = false;
-      this.cursor5 = false;
-      this.isCover = false;
+      /* 隐藏键盘 */
+      this.hideKeyboard()
+      /* 遮罩层隐藏 */
+      this.coverClose = true
+      this.checkValue()
+      this.notify()
+      this.cursor1 = false
+      this.cursor2 = false
+      this.cursor3 = false
+      this.cursor4 = false
+      this.cursor5 = false
+      this.isCover = false
     },
-    showKeyboard(event) {
-      this.middleType = event;
-      this.keyboard = true; //弹出键盘
-      this.val = "";
+    showKeyboard (event) {
+      this.middleType = event
+      this.keyboard = true // 弹出键盘
+      this.val = ''
     },
-    hideKeyboard() {
-      this.keyboard = false;
+    hideKeyboard () {
+      this.keyboard = false
     },
-    showCursor() {
-      this.cursor = true;
+    showCursor () {
+      this.cursor = true
     },
-    hideCursor() {
-      this.cursor = false;
+    hideCursor () {
+      this.cursor = false
     },
-    checkValue() {
+    checkValue () {
       if (parseFloat(this.val) === 0) {
-        this.val = "";
+        this.val = ''
       }
     },
-    /*输入*/
-    typing(value) {
-      /*如果是点击删除*/
-      if (value === "") {
-        this.del();
+    /* 输入 */
+    typing (value) {
+      /* 如果是点击删除 */
+      if (value === '') {
+        this.del()
       }
-      /*保存旧的值*/
-      let oldValue = this.val;
-      /*获取新的值*/
-      this.val = this.val + value;
-      /*检验新值, 如果没有通过检测, 恢复值*/
+      /* 保存旧的值 */
+      let oldValue = this.val
+      /* 获取新的值 */
+      this.val = this.val + value
+      /* 检验新值, 如果没有通过检测, 恢复值 */
       if (!this.passCheck(this.val)) {
-        this.val = oldValue;
-        return;
+        this.val = oldValue
+        return
       }
-      /*为了让外界同步输入, 需要发送事件*/
-      this.notify();
-      if (this.middleType == "firstPrice") {
-        this.firstPrice = this.val; //起拍价
-      } else if (this.middleType == "increase") {
-        this.increase = this.val; //加价
-      } else if (this.middleType == "fixedPrice") {
-        this.fixedPrice = this.val; //一口价
+      /* 为了让外界同步输入, 需要发送事件 */
+      this.notify()
+      if (this.middleType == 'firstPrice') {
+        this.firstPrice = this.val // 起拍价
+      } else if (this.middleType == 'increase') {
+        this.increase = this.val // 加价
+      } else if (this.middleType == 'fixedPrice') {
+        this.fixedPrice = this.val // 一口价
       } else {
-        this.referencePrices = this.val; //参考价
+        this.referencePrices = this.val // 参考价
       }
     },
-    completion(len) {
-      if (this.middleType == "firstPrice") {
-        this.firstPrice = this.val; //起拍价
-      } else if (this.middleType == "increase") {
-        this.increase = this.val; //加价
-      } else if (this.middleType == "fixedPrice") {
-        this.fixedPrice = this.val; //一口价
-      } else if (this.middleType === "referencePriceLow") {
-        this.referencePricesLow = this.val; //参考价低
+    completion (len) {
+      if (this.middleType == 'firstPrice') {
+        this.firstPrice = this.val // 起拍价
+      } else if (this.middleType == 'increase') {
+        this.increase = this.val // 加价
+      } else if (this.middleType == 'fixedPrice') {
+        this.fixedPrice = this.val // 一口价
+      } else if (this.middleType === 'referencePriceLow') {
+        this.referencePricesLow = this.val // 参考价低
       } else {
-        this.referencePricesUp = this.val; //参考价高
+        this.referencePricesUp = this.val // 参考价高
       }
     },
-    notify() {
+    notify () {
       // this.$emit('numInput',this.val);
-      if (this.middleType == "firstPrice") {
-        this.firstPrice = this.val; //起拍价
-        if (this.firstPrice == "") {
-          this.firstPrice = 0;
+      if (this.middleType == 'firstPrice') {
+        this.firstPrice = this.val // 起拍价
+        if (this.firstPrice == '') {
+          this.firstPrice = 0
         }
-      } else if (this.middleType == "increase") {
-        this.increase = this.val; //加价
-        if (this.increase == "") {
-          this.increase = 0;
+      } else if (this.middleType == 'increase') {
+        this.increase = this.val // 加价
+        if (this.increase == '') {
+          this.increase = 0
         }
-      } else if (this.middleType == "fixedPrice") {
-        this.fixedPrice = this.val; //一口价
-      } else if (this.middleType === "referencePriceLow") {
-        this.referencePricesLow = this.val; //参考价低
+      } else if (this.middleType == 'fixedPrice') {
+        this.fixedPrice = this.val // 一口价
+      } else if (this.middleType === 'referencePriceLow') {
+        this.referencePricesLow = this.val // 参考价低
       } else {
-        this.referencePricesUp = this.val; //参考价高
+        this.referencePricesUp = this.val // 参考价高
       }
     },
-    del() {
-      /*删除值并不会触发值的校验, 所以需要手动再触发一次*/
-      this.val = this.val.slice(0, -1);
-      this.notify();
+    del () {
+      /* 删除值并不会触发值的校验, 所以需要手动再触发一次 */
+      this.val = this.val.slice(0, -1)
+      this.notify()
     },
 
-    passCheck(val) {
-      /*验证规则*/
-      let aRules = [this.illegalInput, this.illegalValue, this.accuracy];
+    passCheck (val) {
+      /* 验证规则 */
+      let aRules = [this.illegalInput, this.illegalValue, this.accuracy]
       return aRules.every(item => {
-        return item(val);
-      });
+        return item(val)
+      })
     },
-    illegalInput(val) {
+    illegalInput (val) {
       if (this.aIllegal.indexOf(val) > -1) {
-        return false;
+        return false
       }
-      return true;
+      return true
     },
-    /*非法值*/
-    illegalValue(val) {
+    /* 非法值 */
+    illegalValue (val) {
       if (parseFloat(val) != val) {
-        return false;
+        return false
       }
-      return true;
+      return true
     },
-    /*验证精度*/
-    accuracy(val) {
-      let v = val && val.split(".");
+    /* 验证精度 */
+    accuracy (val) {
+      let v = val && val.split('.')
       if (v[0].length > this.inter) {
-        return false;
+        return false
       }
       if (v[1] && v[1].length > this.decimal) {
-        return false;
+        return false
       }
-      return true;
+      return true
     }
     // 键盘事件相关操作start
   },
-  mounted() {
-    this.checkTime();
-    window.scrollTo(0, 0);
+  mounted () {
+    this.checkTime()
+    window.scrollTo(0, 0)
   }
-};
+}
 </script>
 
 <style lang="less">
@@ -1917,8 +1916,8 @@ progress {
   box-sizing: border-box;
 }
 /*.editMain .desc {
-	    margin: 0 10px;
-	    position: relative;
+    margin: 0 10px;
+    position: relative;
 	}*/
 .editMain .desc textarea {
   border: none;

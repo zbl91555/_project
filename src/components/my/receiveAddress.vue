@@ -1,22 +1,22 @@
 <template>
   <div class="addressInformation">
-  
+
     <div class="addressMain">
 
         <div class="addersList" v-for = "(item,index) in Address" :key="item.id">
             <div class="address default" @click='changeTo(item.id)'>
-            	<!-- <div class="selected" v-show="item.is_default ==1">
-            		<i class="iconfont icon-chenggong"></i>
-            	</div>
-                <div class="selected" v-show="item.is_default ==2">
-                    <i class="iconfont icon-yuancircle46"></i>
-                </div> -->
+            <!-- <div class="selected" v-show="item.is_default ==1">
+                <i class="iconfont icon-chenggong"></i>
+            </div>
+            <div class="selected" v-show="item.is_default ==2">
+                <i class="iconfont icon-yuancircle46"></i>
+            </div> -->
                 <div class="userInfo">
                     <span>{{item.name}}</span>
                     <span>{{item.tele}}</span>
                 </div>
                 <div class="addressInfo">
-                    {{item.province}}{{item.city}}{{item.country}}{{item.address}}                
+                    {{item.province}}{{item.city}}{{item.country}}{{item.address}}
                 </div>
             </div>
             <div class="editorAddres">
@@ -34,7 +34,7 @@
                     <i class="iconfont icon-105"></i>
                     删除
                 </span>
-                <router-link 
+                <router-link
                     :to="{
                     name: '编辑地址',
                     params: {
@@ -75,7 +75,7 @@
             <div class="sharesomething">
                 <div style="color:red">确认删除地址吗？</div>
                 <div @click="delAdress(selId)" style="border-top:1px solid #EEE;">确认</div>
-                <div @click="closeshowlists()" style="border-top:1px solid #EEE;" class="bordertop">取消</div>       
+                <div @click="closeshowlists()" style="border-top:1px solid #EEE;" class="bordertop">取消</div>
             </div>
         </div>
     </div>
@@ -84,97 +84,97 @@
   </div>
 </template>
 <script>
-import { Toast } from 'vux';
-import {addressList,updateView,delAddress,defaults} from '../../api/api'
-import assign from '../../assets/js/assign.js'//混入式方法
+import { Toast } from 'vux'
+import {addressList, updateView, delAddress, defaults} from '../../api/api'
+import assign from '../../assets/js/assign.js'// 混入式方法
 export default {
-    components: {
-        Toast,
-    },
-     mixins:[assign],
-  data() {
-    return {
-        Address:[],
-        showAddress: false,
-        showSuccess:false,
-        toastText:'',
-        order_id:'',
-        showlists:false,
-        selId:''
-    };
+  components: {
+    Toast
   },
-  methods: { 
-        showalert(id){
-            this.showlists = true;
-            this.selId = id
-        },
-        closeshowlists(){
-            this.showlists = false
-        },
-	    addressList(){
-            let type = this.$route.params.type;
-	        let _this = this;  
-            let  params = {
-                type:type,
-            };
-	        addressList(params).then( (response) => {
-                _this.Address = response.data;
-	    })
-	    .catch(function (error) {
-	        console.log(error);
-	    });
-	    },
-        delAdress(id){    
-            delAddress(id).then(res =>{ 
-            this.showlists = false
-            this.showSuccess = true;
-            this.toastText='删除成功'
-            this.addressList();
-        })
-        .catch(function (error) {
-            console.log(error);
-            });
-        },
-        defaults(id,index){  
-            let type = this.$route.params.type;
-            defaults(id,type).then(res => {
-                for(var i = 0; i <this.Address.length; i++){
-                    this.Address[i].is_default==false
-                }
-                this.Address[index].is_default==true;
-                this.addressList();       
-            })
-            .catch(err =>{
-                console.log(error);
-                this.showSuccess = true;
-                this.toastText='设置失败'
-                this.addressList();
-                });
-      	},
-        changeTo(wich){
-            let type = this.$route.params.type;
-            let pay = this.$route.params.pay;
-            let id = this.$route.params.order_id;
-            if(type == 'seller'){
-                this.$router.push('/sellerCenter/sellerSetting')
-            }else{
-                this.$router.push({name: '编辑地址',params: {id: wich}
-                })
-            }
-            // if(type == 'user' && pay == 'pay'){
-            //     this.$router.push('/payment/'+id+'/false'+'/true')
-            // }else
-        }
+  mixins: [assign],
+  data () {
+    return {
+      Address: [],
+      showAddress: false,
+      showSuccess: false,
+      toastText: '',
+      order_id: '',
+      showlists: false,
+      selId: ''
+    }
+  },
+  methods: {
+    showalert (id) {
+      this.showlists = true
+      this.selId = id
     },
-    // beforeRouteEnter(to,from,next){
-    //     next(vm => {
-    //         vm.addressList()
-    //     })
-    // },
-  	mounted() {
-        this.addressList();
-  	},
-};
+    closeshowlists () {
+      this.showlists = false
+    },
+    addressList () {
+      let type = this.$route.params.type
+      let _this = this
+      let params = {
+        type: type
+      }
+      addressList(params).then((response) => {
+        _this.Address = response.data
+      })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    delAdress (id) {
+      delAddress(id).then(res => {
+        this.showlists = false
+        this.showSuccess = true
+        this.toastText = '删除成功'
+        this.addressList()
+      })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    defaults (id, index) {
+      let type = this.$route.params.type
+      defaults(id, type).then(res => {
+        for (var i = 0; i < this.Address.length; i++) {
+          this.Address[i].is_default = false
+        }
+        this.Address[index].is_default = true
+        this.addressList()
+      })
+        .catch(err => {
+          console.log(error)
+          this.showSuccess = true
+          this.toastText = '设置失败'
+          this.addressList()
+        })
+    },
+    changeTo (wich) {
+      let type = this.$route.params.type
+      let pay = this.$route.params.pay
+      let id = this.$route.params.order_id
+      if (type == 'seller') {
+        this.$router.push('/sellerCenter/sellerSetting')
+      } else {
+        this.$router.push({name: '编辑地址', params: {id: wich}
+        })
+      }
+      // if(type == 'user' && pay == 'pay'){
+      //     this.$router.push('/payment/'+id+'/false'+'/true')
+      // }else
+    }
+  },
+  // beforeRouteEnter(to,from,next){
+  //     next(vm => {
+  //         vm.addressList()
+  //     })
+  // },
+  mounted () {
+    this.addressList()
+  }
+}
 </script>
 <style scoped>
 .sharesomething{
@@ -192,18 +192,18 @@ export default {
     line-height: 90px;
     font-size: 30px
   }
-	.addressInformation{
-		background-color: #ededef;
-	    max-width: 750px;
-	    position: relative;
-	    box-sizing: border-box;
-	    min-height: 100vh;
-        padding-bottom:150px;
-	}
-	.addressInformation .addressMain {
-        width: 100%;
-        padding-top: 20px;
-    }
+ .addressInformation{
+    background-color: #ededef;
+    max-width: 750px;
+    position: relative;
+    box-sizing: border-box;
+    min-height: 100vh;
+    padding-bottom:150px;
+  }
+.addressInformation .addressMain {
+    width: 100%;
+    padding-top: 20px;
+}
 
     .addressInformation  .addressMain .address,
     .addressInformation  .addressMain .newAddress {
@@ -266,7 +266,7 @@ export default {
         font-size: 24px;
         color: #333;
         margin-top: 20px;
-     
+
     }
     .addressInformation .addressMain .newAddress .addIcon {
         position: absolute;
@@ -324,26 +324,26 @@ export default {
     }
     .addressInformation  .icon-bianji1{
         font-size: 30px;
-        color: #333;    
+        color: #333;
     }
     .addressInformation  .icon-105{
         font-size: 30px;
         color: #333;
     }
    .addressInformation  .icon-tianjia{
-    	color: #f15511;
+        color: #f15511;
         font-size: 40px;
         margin: 0
     }
     .addressInformation  .selected {
-	  width: 0.8rem;
-	  height: 1.653333rem;
-	  line-height: 1.653333rem;
+        width: 0.8rem;
+        height: 1.653333rem;
+        line-height: 1.653333rem;
 	}
 
- 	.addressInformation  .selected .icon-chenggong {
-	  color: #9e2026;
-	}
+    .addressInformation  .selected .icon-chenggong {
+        color: #9e2026;
+    }
     .addressInformation .selecteded .icon-yuancircle46{
         color: #999;
     }

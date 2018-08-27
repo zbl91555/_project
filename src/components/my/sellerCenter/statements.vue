@@ -8,7 +8,7 @@
           </div>
           <div class="item">
             <div @click="alertDateS" class="searchTime">
-              <i>开始：</i> 
+              <i>开始：</i>
               <div class="numInput startyear">
                 <span>{{year}}</span>
               </div>
@@ -23,7 +23,7 @@
               <i>日</i>
             </div>
           <div @click="alertDateE" class="searchTime">
-              <i>结束：</i> 
+              <i>结束：</i>
               <div class="numInput startyear">
                 <span>{{years}}</span>
               </div>
@@ -37,9 +37,9 @@
               </div>
               <i>日</i>
           </div>
-          
+
           <div class="timeShortcut">
-            <div class="shortcutBtn" v-for="(list,index) in timeLists" :class="{ selected:changeRed == index}" @click="Red(index)">{{list.text}}</div>
+            <div class="shortcutBtn" v-for="(list,index) in timeLists" :key="index" :class="{ selected:changeRed == index}" @click="Red(index)">{{list.text}}</div>
           </div>
         </div>
         </div>
@@ -71,285 +71,283 @@
     </div>
 </template>
 <script>
-  import {orderCheck,orderList} from '../../../api/api'
-  import { Datetime, XButton, Actionsheet ,Group} from 'vux'
-  export default {
+import {orderCheck, orderList} from '../../../api/api'
+import { Datetime, XButton, Actionsheet, Group } from 'vux'
+export default {
   components: {
     Datetime,
     XButton,
     Actionsheet,
     Group
   },
-  data() {
+  data () {
     return {
-      timeLists:[
+      timeLists: [
         {
-          "text":"今日",
-          'type':'today'                 
+          'text': '今日',
+          'type': 'today'
         },
         {
-          "text":"昨日",
-          'type':'yesterday'                 
+          'text': '昨日',
+          'type': 'yesterday'
         },
         {
-          "text":"近7天",
-          'type':'7day'                 
+          'text': '近7天',
+          'type': '7day'
         },
         {
-          "text":"近30天",
-          'type':'30day'                 
-        },
+          'text': '近30天',
+          'type': '30day'
+        }
       ],
-      changeRed:0,
-      orderLists:[],
-      type:'',
+      changeRed: 0,
+      orderLists: [],
+      type: '',
       menus1: {
-        menu3: '仅限认证用户使用，赶快去认证吧',       
-        menu1: '知道了',
+        menu3: '仅限认证用户使用，赶快去认证吧',
+        menu1: '知道了'
       },
-      showTipe:false,
-      title:'开始：',
-      titles:'结束：',
-      main:true,
-      list:false,
-      st:'',
-      et:'',
-      stTile:'',
-      etTile:'',
-      certifications:'',
-      year:'',
-      month:'',
-      data:'',
-      years:'',
-      months:'',
-      datas:'',
-      currentime:'', //当前时间时间戳
+      showTipe: false,
+      title: '开始：',
+      titles: '结束：',
+      main: true,
+      list: false,
+      st: '',
+      et: '',
+      stTile: '',
+      etTile: '',
+      certifications: '',
+      year: '',
+      month: '',
+      data: '',
+      years: '',
+      months: '',
+      datas: '',
+      currentime: '' // 当前时间时间戳
 
-    };
+    }
   },
   methods: {
-    //选择开始时间
-    alertDateS(){
+    // 选择开始时间
+    alertDateS () {
       let _this = this
-        this.$vux.datetime.show({
-          cancelText: '取消',
-          confirmText: '确定',
-          format: 'YYYY-MM-DD',
-          value: '', // 其他参数同 props
-          onHide () {
-            
-          },
-          onShow () {
-            
-          },
-          onConfirm (val) {
-            _this.year=val.split("-")[0]
-            _this.month=val.split("-")[1]
-            _this.data=val.split("-")[2]
-            _this.st =  Date.parse(new Date(val))/1000   //开始时间时间戳
-            if(_this.st > _this.currentime){
-              _this.showTipe= true;
-              _this.menus1.menu3 ='时间不能大于当前时间'
-            }
-          },
-        })
+      this.$vux.datetime.show({
+        cancelText: '取消',
+        confirmText: '确定',
+        format: 'YYYY-MM-DD',
+        value: '', // 其他参数同 props
+        onHide () {
+
+        },
+        onShow () {
+
+        },
+        onConfirm (val) {
+          _this.year = val.split('-')[0]
+          _this.month = val.split('-')[1]
+          _this.data = val.split('-')[2]
+          _this.st = Date.parse(new Date(val)) / 1000 // 开始时间时间戳
+          if (_this.st > _this.currentime) {
+            _this.showTipe = true
+            _this.menus1.menu3 = '时间不能大于当前时间'
+          }
+        }
+      })
     },
-    //选择结束时间
-    alertDateE(){
+    // 选择结束时间
+    alertDateE () {
       let _this = this
-        this.$vux.datetime.show({
-          cancelText: '取消',
-          confirmText: '确定',
-          format: 'YYYY-MM-DD',
-          value: '', // 其他参数同 props
-          onHide () {
-          },
-          onShow () {
-            
-          },
-          onConfirm (val) {
-            _this.years=val.split("-")[0]
-            _this.months=val.split("-")[1]
-            _this.datas=val.split("-")[2]
-            _this.et =  Date.parse(new Date(val))/1000 //结束时间时间戳
-              if(_this.et > _this.st + 30*86400){
-                _this.showTipe= true;
-                _this.menus1.menu3 ='查询时间不能超过一个月'
-              }
-              if(_this.et > _this.currentime){
-              _this.showTipe= true;
-              _this.menus1.menu3 ='时间不能大于当前时间'
-            }
-          },
-        })
+      this.$vux.datetime.show({
+        cancelText: '取消',
+        confirmText: '确定',
+        format: 'YYYY-MM-DD',
+        value: '', // 其他参数同 props
+        onHide () {
+        },
+        onShow () {
+
+        },
+        onConfirm (val) {
+          _this.years = val.split('-')[0]
+          _this.months = val.split('-')[1]
+          _this.datas = val.split('-')[2]
+          _this.et = Date.parse(new Date(val)) / 1000 // 结束时间时间戳
+          if (_this.et > _this.st + 30 * 86400) {
+            _this.showTipe = true
+            _this.menus1.menu3 = '查询时间不能超过一个月'
+          }
+          if (_this.et > _this.currentime) {
+            _this.showTipe = true
+            _this.menus1.menu3 = '时间不能大于当前时间'
+          }
+        }
+      })
     },
-    //用戶是否认證，初始化自定义时间 
-    orderCheck(){
-      let _this = this;   // 缓存指针  
-        let myDate = new Date();  //当前时间
-        _this.currentime = Date.parse(new Date(myDate))/1000
-        _this.et = _this.currentime
-        _this.st = _this.currentime
-        _this.year = (myDate.getFullYear()).toString(); //年
-        _this.years = (myDate.getFullYear()).toString(); //年
-        _this.month =(myDate.getMonth()+1).toString(); //月
-        _this.months =(myDate.getMonth()+1).toString(); //月
-        _this.data = (myDate.getDate()).toString(); //日
-        _this.datas = (myDate.getDate()).toString(); //日
-        //如果日或者月不满十位数，前面补0
-        if(_this.data.length<2){
-           _this.data='0'+_this.data;
-        }
-        if(_this.month.length<2){
-            _this.month='0'+_this.month;
-        }  
-        if(_this.datas.length<2){
-           _this.datas='0'+_this.datas;
-        }
-        if(_this.months.length<2){
-            _this.months='0'+_this.months;
-        }  
-        orderCheck().then(function (res) { 
-         if(res.code==200){
+    // 用戶是否认證，初始化自定义时间
+    orderCheck () {
+      let _this = this // 缓存指针
+      let myDate = new Date() // 当前时间
+      _this.currentime = Date.parse(new Date(myDate)) / 1000
+      _this.et = _this.currentime
+      _this.st = _this.currentime
+      _this.year = (myDate.getFullYear()).toString() // 年
+      _this.years = (myDate.getFullYear()).toString() // 年
+      _this.month = (myDate.getMonth() + 1).toString() // 月
+      _this.months = (myDate.getMonth() + 1).toString() // 月
+      _this.data = (myDate.getDate()).toString() // 日
+      _this.datas = (myDate.getDate()).toString() // 日
+      // 如果日或者月不满十位数，前面补0
+      if (_this.data.length < 2) {
+        _this.data = '0' + _this.data
+      }
+      if (_this.month.length < 2) {
+        _this.month = '0' + _this.month
+      }
+      if (_this.datas.length < 2) {
+        _this.datas = '0' + _this.datas
+      }
+      if (_this.months.length < 2) {
+        _this.months = '0' + _this.months
+      }
+      orderCheck().then(function (res) {
+        if (res.code == 200) {
           _this.certifications = res.data
         }
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+        .catch(function (error) {
+          console.log(error)
+        })
     },
     // 搜索請求數據
-    orderList(){
-      let _this = this;   // 缓存指针  
+    orderList () {
+      let _this = this // 缓存指针
       // 自定义时间的限制
-      if(_this.et > _this.currentime || _this.st > _this.currentime ){
-        _this.showTipe= true;
-        _this.menus1.menu3 ='时间不能大于当前时间'
-        return  false;
+      if (_this.et > _this.currentime || _this.st > _this.currentime) {
+        _this.showTipe = true
+        _this.menus1.menu3 = '时间不能大于当前时间'
+        return false
       }
-      if(_this.et-_this.st > 2678400){
-        _this.showTipe= true;
-        _this.menus1.menu3 ='搜索时间范 围超31天，请重新选择'
-        return  false;
+      if (_this.et - _this.st > 2678400) {
+        _this.showTipe = true
+        _this.menus1.menu3 = '搜索时间范 围超31天，请重新选择'
+        return false
       }
-      if(_this.type==''){
+      if (_this.type == '') {
         let params = {
-          type:'custom',
-          start_time:_this.st,
-          end_time:_this.et
+          type: 'custom',
+          start_time: _this.st,
+          end_time: _this.et
         }
-        _this.stTile = _this.year + "-" + _this.month + "-" + _this.data
-        _this.etTile = _this.years + "-" + _this.months + "-" + _this.datas
-        orderList(params).then(function (res) { 
-         if(res.code==200){
-          _this.orderLists = res.data;
-          _this.main = false;//关闭当前页
-          _this.list = true ;//打开列表页
+        _this.stTile = _this.year + '-' + _this.month + '-' + _this.data
+        _this.etTile = _this.years + '-' + _this.months + '-' + _this.datas
+        orderList(params).then(function (res) {
+          if (res.code == 200) {
+            _this.orderLists = res.data
+            _this.main = false// 关闭当前页
+            _this.list = true // 打开列表页
+          }
+        })
+          .catch(function (error) {
+            console.log(error)
+          })
+      } else {
+        let params = {
+          type: _this.type
         }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-      }else{
-         let params = {
-          type:_this.type,
-        }
-        orderList(params).then(function (res) { 
-         if(res.code==200){
-          _this.orderLists = res.data;
-          _this.main = false;//关闭当前页
-          _this.list = true ;//打开列表页
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    }  
+        orderList(params).then(function (res) {
+          if (res.code == 200) {
+            _this.orderLists = res.data
+            _this.main = false// 关闭当前页
+            _this.list = true // 打开列表页
+          }
+        })
+          .catch(function (error) {
+            console.log(error)
+          })
+      }
     },
-    
-    
-    
-    //点击搜索按钮
-    search(){
+
+    // 点击搜索按钮
+    search () {
       // 如果认证了就可以搜索
-      if(this.certifications){ 
-        this.orderList();
-      }else{
+      if (this.certifications) {
+        this.orderList()
+      } else {
         // 没认证跳出弹窗去认证
-        this.showTipe= true;
-      } 
+        this.showTipe = true
+      }
     },
     // 跳转认证
-    certification(){
-      if(this.certifications){
+    certification () {
+      if (this.certifications) {
         return false
-      }else{
-        if(this.menus1.menu3 ='时间不能大于当前时间'){
+      } else {
+        if (this.menus1.menu3 == '时间不能大于当前时间') {
 
-        }else{
-          this.$router.push({path:'/sellerCenter/realnameApplication'})
+        } else {
+          this.$router.push({path: '/sellerCenter/realnameApplication'})
         }
       }
     },
-    Red:function(index){
-      this.changeRed = index;
-      this.type=this.timeLists[index].type;
-      this.orderCheck();
-      if(index==0){
-        this.stTile = this.year + "-" + this.month + "-" + this.data
-        this.etTile = this.years + "-" + this.months + "-" + this.datas
-      }else if(index==1){
-       let clicktime = this.currentime-86400
-       let clicktimes=new Date(parseInt(clicktime) * 1000)
-        this.year = (clicktimes.getFullYear()).toString(); //年
-        this.month =(clicktimes.getMonth()+1).toString(); //月
-        this.data = (clicktimes.getDate()).toString(); //日
-      //如果日或者月不满十位数，前面补0
-        if(this.data.length<2){
-          this.data='0'+this.data;
+    Red: function (index) {
+      this.changeRed = index
+      this.type = this.timeLists[index].type
+      this.orderCheck()
+      if (index == 0) {
+        this.stTile = this.year + '-' + this.month + '-' + this.data
+        this.etTile = this.years + '-' + this.months + '-' + this.datas
+      } else if (index == 1) {
+        let clicktime = this.currentime - 86400
+        let clicktimes = new Date(parseInt(clicktime) * 1000)
+        this.year = (clicktimes.getFullYear()).toString() // 年
+        this.month = (clicktimes.getMonth() + 1).toString() // 月
+        this.data = (clicktimes.getDate()).toString() // 日
+        // 如果日或者月不满十位数，前面补0
+        if (this.data.length < 2) {
+          this.data = '0' + this.data
         }
-        if(this.month.length<2){
-          this.month='0'+this.month;
-        }  
-          this.stTile = this.year + "-" + this.month + "-" + this.data
-          this.etTile = this.years + "-" + this.months + "-" + this.datas
-      }else if(index==2){
-       let clicktime = this.currentime-604800
-       let clicktimes=new Date(parseInt(clicktime) * 1000)
-        this.year = (clicktimes.getFullYear()).toString(); //年
-        this.month =(clicktimes.getMonth()+1).toString(); //月
-        this.data = (clicktimes.getDate()).toString(); //日
-       //如果日或者月不满十位数，前面补0
-        if(this.data.length<2){
-          this.data='0'+this.data;
+        if (this.month.length < 2) {
+          this.month = '0' + this.month
         }
-        if(this.month.length<2){
-          this.month='0'+this.month;
-        } 
-        this.stTile = this.year + "-" + this.month + "-" + this.data
-        this.etTile = this.years + "-" + this.months + "-" + this.datas
-      }else{
-       let clicktime = this.currentime-2592000
-       let clicktimes=new Date(parseInt(clicktime) * 1000)
-        this.year = (clicktimes.getFullYear()).toString(); //年
-        this.month =(clicktimes.getMonth()+1).toString(); //月
-        this.data = (clicktimes.getDate()).toString(); //日
-       //如果日或者月不满十位数，前面补0
-        if(this.data.length<2){
-          this.data='0'+this.data;
+        this.stTile = this.year + '-' + this.month + '-' + this.data
+        this.etTile = this.years + '-' + this.months + '-' + this.datas
+      } else if (index == 2) {
+        let clicktime = this.currentime - 604800
+        let clicktimes = new Date(parseInt(clicktime) * 1000)
+        this.year = (clicktimes.getFullYear()).toString() // 年
+        this.month = (clicktimes.getMonth() + 1).toString() // 月
+        this.data = (clicktimes.getDate()).toString() // 日
+        // 如果日或者月不满十位数，前面补0
+        if (this.data.length < 2) {
+          this.data = '0' + this.data
         }
-        if(this.month.length<2){
-          this.month='0'+this.month;
-        } 
-        this.stTile = this.year + "-" + this.month + "-" + this.data
-        this.etTile = this.years + "-" + this.months + "-" + this.datas
-      } 
-    },
-  }, 
-  mounted() {
-    this.orderCheck();
-  }, 
-};
+        if (this.month.length < 2) {
+          this.month = '0' + this.month
+        }
+        this.stTile = this.year + '-' + this.month + '-' + this.data
+        this.etTile = this.years + '-' + this.months + '-' + this.datas
+      } else {
+        let clicktime = this.currentime - 2592000
+        let clicktimes = new Date(parseInt(clicktime) * 1000)
+        this.year = (clicktimes.getFullYear()).toString() // 年
+        this.month = (clicktimes.getMonth() + 1).toString() // 月
+        this.data = (clicktimes.getDate()).toString() // 日
+        // 如果日或者月不满十位数，前面补0
+        if (this.data.length < 2) {
+          this.data = '0' + this.data
+        }
+        if (this.month.length < 2) {
+          this.month = '0' + this.month
+        }
+        this.stTile = this.year + '-' + this.month + '-' + this.data
+        this.etTile = this.years + '-' + this.months + '-' + this.datas
+      }
+    }
+  },
+  mounted () {
+    this.orderCheck()
+  }
+}
 </script>
 <style>
   .statements {
@@ -556,4 +554,4 @@
     color: #9e2026;
   }
 
-</style>	
+</style>

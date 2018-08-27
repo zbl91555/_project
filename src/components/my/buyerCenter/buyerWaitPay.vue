@@ -12,13 +12,13 @@
 		</div>
 		<div class="buyer-list">
 			<ul>
-				<li v-for="(e, i) in allList">
+				<li v-for="(e, i) in allList" :key="e">
 					<div class="buyer-tool" :style="{backgroundImage:'url(' + e.avatar + ')'}">
 						<router-link :to="{path: '/storeHome/storeIntroduced', query: { user_id: e.order_id }}" style="">{{e.nickname}}<i class="iconfont icon-right"></i></router-link>
 						<button class="buyer-status">{{e.change}}</button>
 						<i><div class="waitepaywords">待付款</div></i>
 						<i @click="showdel()" class="iconfont icon-shouji op"></i>
-						<i @click="alldingDan()" class="iconfont icon-wendang op"></i>	
+						<i @click="alldingDan()" class="iconfont icon-wendang op"></i>
 					</div>
 					<router-link to="/buyerCenter/buyerOrder/orderDetail">
 						<div class="buy-info">
@@ -49,15 +49,15 @@
 			<div @click="closeshowlists()" class="fixednumMask" style="opacity: 0.38;">
 			</div>
 			<div class="sharesomething">
-				<router-link to="/buyerCenter/buyerOrder/buyeralllists">	
+				<router-link to="/buyerCenter/buyerOrder/buyeralllists">
 					<div @click="lookshowlists()">查看该店铺的所有订单</div>
 				</router-link>
-					<div @click="closeshowlists()" class="bordertop">取消</div>					
+					<div @click="closeshowlists()" class="bordertop">取消</div>
 			</div>
 		</div>
 		<!-- 是否弹出打电话 -->
 		<div id="fixednumMain" v-if="showtel==true ">
-			<div @click="closeshowdel()" class="fixednumMask" style="opacity: 0.38;">	
+			<div @click="closeshowdel()" class="fixednumMask" style="opacity: 0.38;">
 			</div>
 			<div class="telsharesomething">
 				<div>
@@ -66,93 +66,93 @@
 				</div>
 				<div>
 					<a href="">确认拨打?</a>
-				</div>			
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 <script>
-	import {order} from '../../../api/api'
-	export default {
-		components: {},
-		data() {
-			return {
-				// 所有产品列表
-				allList: [],
-				// 0订单的占位符
-				noOrder: false,
-				// 如果下单48小时未付款，则显示交易失败，隐藏应付款和立即付款按钮
-				isTimeOut: [true, true, true, true, true, true, true, true, true, true],
-				page:0,
-				showlists:false,
-				showtel:false
-			}
-		},
-		created() {
-    		window.addEventListener("scroll", this.scrollHandler);
-  		},
- 		destroyed() {
-    		window.removeEventListener("scroll", this.scrollHandler);
-  		},
-		methods: {
-			//打电话
-			showdel(){
-				this.showtel=true
-			},
-			//关掉电话
-			closeshowdel(){
-				this.showtel=false
-			},
-			//查看订单
-			lookshowlists(){
-				this.showlists=false
-			},
-			//关闭
-			closeshowlists(){
-				this.showlists=false
-			},
-			alldingDan(){
-				this.showlists=true
-			},
-			scrollHandler() {
-			      const st = document.documentElement.scrollTop || document.body.scrollTop;
-			      const ch = this.$refs.ctn.clientHeight;
-			      if (st + window.innerHeight >= ch) {
-			        this.getPayInfo();
-			      }
-    		}, 
-			getPayInfo: function() {
-				let _this = this;
-				this.page += 1;
-				let params = {
-						type: 'user',
-						state: 'daifukuan',
-						page: this.page,
-						pagenum: '10',
-					};
-				order(params).then(function(res) {
-					if(res.code == '200') {
-						_this.allList = _this.allList.concat(res.data)	
-						if(_this.allList.length == '0') { // 如果没有订单，则显示0订单占位符
-							_this.noOrder = true;
-						}
-						
-						// 如果下单48小时未付款，则显示交易失败，隐藏应付款和立即付款按钮
-						_this.allList.forEach(function(e, i){
-							if(e.add_time * 1000 <= (+new Date()) - (86400000 * 2)){
-								_this.isTimeOut[i] = false;
-							}
-						})
-					}
-				}).catch(function(err) {
-					console.log(err);
-				})
-			}
-		},
-		mounted() {
-			this.getPayInfo();
-		}
-	}
+import {order} from '../../../api/api'
+export default {
+  components: {},
+  data () {
+    return {
+      // 所有产品列表
+      allList: [],
+      // 0订单的占位符
+      noOrder: false,
+      // 如果下单48小时未付款，则显示交易失败，隐藏应付款和立即付款按钮
+      isTimeOut: [true, true, true, true, true, true, true, true, true, true],
+      page: 0,
+      showlists: false,
+      showtel: false
+    }
+  },
+  created () {
+    window.addEventListener('scroll', this.scrollHandler)
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollHandler)
+  },
+  methods: {
+    // 打电话
+    showdel () {
+      this.showtel = true
+    },
+    // 关掉电话
+    closeshowdel () {
+      this.showtel = false
+    },
+    // 查看订单
+    lookshowlists () {
+      this.showlists = false
+    },
+    // 关闭
+    closeshowlists () {
+      this.showlists = false
+    },
+    alldingDan () {
+      this.showlists = true
+    },
+    scrollHandler () {
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      const ch = this.$refs.ctn.clientHeight
+      if (st + window.innerHeight >= ch) {
+        this.getPayInfo()
+      }
+    },
+    getPayInfo: function () {
+      let _this = this
+      this.page += 1
+      let params = {
+        type: 'user',
+        state: 'daifukuan',
+        page: this.page,
+        pagenum: '10'
+      }
+      order(params).then(function (res) {
+        if (res.code == '200') {
+          _this.allList = _this.allList.concat(res.data)
+          if (_this.allList.length == '0') { // 如果没有订单，则显示0订单占位符
+            _this.noOrder = true
+          }
+
+          // 如果下单48小时未付款，则显示交易失败，隐藏应付款和立即付款按钮
+          _this.allList.forEach(function (e, i) {
+            if (e.add_time * 1000 <= (+new Date()) - (86400000 * 2)) {
+              _this.isTimeOut[i] = false
+            }
+          })
+        }
+      }).catch(function (err) {
+        console.log(err)
+      })
+    }
+  },
+  mounted () {
+    this.getPayInfo()
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -162,7 +162,7 @@
 		background-color: #f4f4f4;
 		overflow: hidden;
 	}
-	
+
 	.buyer-nav {
 		width: 100%;
 		height: 78px;
@@ -194,7 +194,7 @@
 			font-weight: bold;
 		}
 	}
-	
+
 	.buyer-list {
 		margin-bottom: 100px;
 		position: relative;
@@ -316,7 +316,7 @@
 			}
 		}
 	}
-	
+
 	.no-info {
 		height: 375px;
 		width: 277px;

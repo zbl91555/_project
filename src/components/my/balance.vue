@@ -20,35 +20,35 @@
 		<div class="list">
 			<a href="javascript:void(0)" @click="recharge">
 				<i class="iconfont icon-chongzhi0101"></i>
-				充值				
+				充值
 				<i class="iconfont icon-right"></i>
 			</a>
 			<a href="javascript:void(0)" @click="DrawNext">
 				<i class="iconfont icon-tixian"></i>
-				提现				
+				提现
 				<i class="iconfont icon-right"></i>
 			</a>
 			<!-- <router-link to="/coupon">
 				<i class="iconfont icon-coupon"></i>
-				优惠券				
+				优惠券
 				<i class="iconfont icon-right"></i>
 			</router-link> -->
 		</div>
 		<div class="list">
 			<router-link to="/paySafe" v-if="info.paypasswdIs">
 				<i class="iconfont icon-anquan"></i>
-				支付安全				
+				支付安全
 				<i class="iconfont icon-right"></i>
 			</router-link>
 			<router-link to="/dredgeBlancePaid" v-else>
 				<i class="iconfont icon-anquan"></i>
-				设置支付密码				
+				设置支付密码
 				<i class="iconfont icon-right"></i>
 			</router-link>
 
 			<!--<router-link to="/">
 				<i class="iconfont icon-qian"></i>
-				专场保证金				
+				专场保证金
 				<i class="iconfont icon-right"></i>
 			</router-link>-->
 		</div>
@@ -57,74 +57,75 @@
 </template>
 
 <script type="text/javascript">
-import { Toast } from "vant";
-import { wallet } from "../../api/api";
+import { Toast } from 'vant'
+import { wallet } from '../../api/api'
 export default {
-  data() {
+  data () {
     return {
       info: {},
       user: true,
       indexMoney: {}
-    };
+    }
   },
   methods: {
-    //提现
-    DrawNext() {
+    // 提现
+    DrawNext () {
       if (this.info.paypasswdIs) {
-        sessionStorage.setItem("balPath", this.$route.path);
-        this.$router.push("/withDrawNext");
+        sessionStorage.setItem('balPath', this.$route.path)
+        this.$router.push('/withDrawNext')
       } else {
-        this.$router.push("/dredgeBlancePaid");
-      }
-		},
-		//充值
-    recharge() {
-      if (this.info.paypasswdIs) {
-        this.$router.push("/newRecharge");
-      } else {
-        this.$router.push("/dredgeBlancePaid");
+        this.$router.push('/dredgeBlancePaid')
       }
     },
-    wallet() {
+    // 充值
+    recharge () {
+      if (this.info.paypasswdIs) {
+        this.$router.push('/newRecharge')
+      } else {
+        this.$router.push('/dredgeBlancePaid')
+      }
+    },
+    wallet () {
       wallet(this.$route.params.type)
         .then(res => {
-          this.info = res.data;
-          this.indexMoney = res.data.indexMoney;
+          this.info = res.data
+          this.indexMoney = res.data.indexMoney
         })
         .catch(err => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     }
   },
-  created() {
-    this.wallet();
+  created () {
+    this.wallet()
   },
-  mounted() {
-    if (this.$route.params.type == "user") {
-      this.user = true;
+  mounted () {
+    if (this.$route.params.type == 'user') {
+      this.user = true
     } else {
-      this.user = false;
+      this.user = false
     }
   },
-  beforeRouteEnter(to, from, next) {
-    next();
-    if (from.path == "/balance/paySafe/resetPayPsd") {
-      Toast("重置密码成功");
+  beforeRouteEnter (to, from, next) {
+    next()
+    if (from.path == '/balance/paySafe/resetPayPsd') {
+      Toast('重置密码成功')
     }
-    if (from.path == "/newforgetPsd") {
-      Toast("成功找回密码");
+    if (from.path == '/newforgetPsd') {
+      Toast('成功找回密码')
     }
-    if (from.path == "/modifyId") {
-      Toast("修改身份信息成功");
+    if (from.path == '/modifyId') {
+      Toast('修改身份信息成功')
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
-/*
-	 * @border-color: 统一边框颜色coupon
-	 * */
+  /*
+  * @border-color: 统一边框颜色coupon
+  *
+  */
 
 @border-color: #d2d2d2;
 .app-containerbal {

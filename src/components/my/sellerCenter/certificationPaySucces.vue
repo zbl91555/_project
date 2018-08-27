@@ -13,20 +13,20 @@
 
 export default {
   props: {
-    msg: Array //这样可以指定传入的类型，如果类型不对，会警告
+    msg: Array // 这样可以指定传入的类型，如果类型不对，会警告
   },
-  data() {
+  data () {
     return {
-      
-    };
+
+    }
   },
 
   methods: {
-      finishTo(){
-        this.$router.push(this.msg[2].link)
-      }
-  },
-};
+    finishTo () {
+      this.$router.push(this.msg[2].link)
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -67,7 +67,7 @@ export default {
       color: #9e2026;
       line-height: 68px;
       border-radius: 5px;
-      margin:420px auto; 
+      margin:420px auto;
       font-size: 28px;
     }
 </style>

@@ -32,71 +32,71 @@
 </template>
 
 <script>
-	import md5 from 'md5';
-	import { Toast } from 'vant';
-	import {updateIdentityCheck} from '../../../api/api'
-	export default {
-		data() {
-			return {
-				modifyIdShow:true,
-				cardid:'',
-				cardname:'',
-				newAgainPwd:''
-			}
-		},
-		methods: {
-    //密码输入校验
-    passwordVerifiers() {
-      let reg = /(^\s+)|(\s+$)|\s+/g;
+import md5 from 'md5'
+import { Toast } from 'vant'
+import {updateIdentityCheck} from '../../../api/api'
+export default {
+  data () {
+    return {
+      modifyIdShow: true,
+      cardid: '',
+      cardname: '',
+      newAgainPwd: ''
+    }
+  },
+  methods: {
+    // 密码输入校验
+    passwordVerifiers () {
+      let reg = /(^\s+)|(\s+$)|\s+/g
       if (reg.test(this.newAgainPwd)) {
-        this.newAgainPwd = this.Trim(this.newAgainPwd, "g");
-				Toast("支付密码必须是6位数字");
-				return true;
+        this.newAgainPwd = this.Trim(this.newAgainPwd, 'g')
+        Toast('支付密码必须是6位数字')
+        return true
       };
       if (isNaN(+this.newAgainPwd)) {
-        let length = this.newAgainPwd.length;
-        this.newAgainPwd = this.newAgainPwd.slice(0, length - 1);
-				Toast("支付密码必须是6位数字");
-				return true;
+        let length = this.newAgainPwd.length
+        this.newAgainPwd = this.newAgainPwd.slice(0, length - 1)
+        Toast('支付密码必须是6位数字')
+        return true
       };
       if (this.newAgainPwd.length > 6) {
-        this.newAgainPwd = this.newAgainPwd.slice(0, 6);
-				Toast("支付密码必须是6位数字");
-				return true
-			};
-			return false;
+        this.newAgainPwd = this.newAgainPwd.slice(0, 6)
+        Toast('支付密码必须是6位数字')
+        return true
+      };
+      return false
     },
-			identityCheck(){
-				let _this = this;
-				if (_this.Trim(_this.cardname, 'g') == '') {
-					Toast('姓名不能为空');
-					return;
-				}
-				if (_this.Trim(_this.cardid, 'g') == '') {
-					Toast('身份证号码不能为空');
-					return;
-				}
-				this.modifyIdShow = false
-			},
-			pwdSubmit() {
-				if (this.Trim(this.newAgainPwd, 'g').length < 6) {
-					this.wrongNowPsd = '密码必须是6位数字'
-					return;
-				}
-				let params = {
-					 newPwd: md5(this.newAgainPwd),
-					 cardid: this.cardid,
-				 	 cardname: this.cardname,
-				};
-				updateIdentityCheck(params).then(res =>{
-					this.$router.push('/balanceIndex/user')
-				}).catch(err =>{
-				 	Toast(err.data.message);
-				})
-			}	
-		},
+    identityCheck () {
+      let _this = this
+      if (_this.Trim(_this.cardname, 'g') == '') {
+        Toast('姓名不能为空')
+        return
+      }
+      if (_this.Trim(_this.cardid, 'g') == '') {
+        Toast('身份证号码不能为空')
+        return
+      }
+      this.modifyIdShow = false
+    },
+    pwdSubmit () {
+      if (this.Trim(this.newAgainPwd, 'g').length < 6) {
+        this.wrongNowPsd = '密码必须是6位数字'
+        return
+      }
+      let params = {
+        newPwd: md5(this.newAgainPwd),
+        cardid: this.cardid,
+        cardname: this.cardname
+      }
+      updateIdentityCheck(params).then(res => {
+        this.$router.push('/balanceIndex/user')
+      }).catch(err => {
+        Toast(err.data.message)
+      })
+    }
+  }
 
-	}
+}
 </script>
 
 <style lang="less" scoped>

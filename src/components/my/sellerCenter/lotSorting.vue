@@ -7,7 +7,7 @@
         </div>
       </div>
       <div class="listContainer">
-          <div class="listItem" v-for="(s,index) in store">
+          <div class="listItem" v-for="(s,index) in store" :key="s">
             <div class="info">
               <div class="image" :style="{ 'background-image': `url(${s.auction_img1})` }">
               </div>
@@ -28,74 +28,73 @@
               <button else>已置顶</button>
             </div>
           </div>
-          
+
       </div>
-          </div>
     </div>
 </template>
 <script>
-  import {getstore,ToTop} from '../../../api/api'
-  export default {
-  data() {
+import {getstore, ToTop} from '../../../api/api'
+export default {
+  data () {
     return {
-      store:[],
-      pagenum:5,
-      page:0,
-      auctioning:true,
-     
-    };
+      store: [],
+      pagenum: 5,
+      page: 0,
+      auctioning: true
+
+    }
   },
-  created() {
-    window.addEventListener("scroll", this.scrollHandler);
+  created () {
+    window.addEventListener('scroll', this.scrollHandler)
   },
 
-  destroyed() {
-    window.removeEventListener("scroll", this.scrollHandler);
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollHandler)
   },
-  methods: { 
-    //注册scroll事件并监听 
-    scrollHandler() {
-      const st = document.documentElement.scrollTop || document.body.scrollTop;
-      const ch = this.$refs.ctn.clientHeight;
+  methods: {
+    // 注册scroll事件并监听
+    scrollHandler () {
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      const ch = this.$refs.ctn.clientHeight
       if (st + window.innerHeight >= ch) {
-        this.getstore();
+        this.getstore()
       }
-    }, 
-    //获取列表
-    getstore(){
-      let _this = this; 
-      this.page += 1;
+    },
+    // 获取列表
+    getstore () {
+      let _this = this
+      this.page += 1
       let params = {
         page: this.page,
-        pagenum:this.pagenum,
-        type:'auctioning'
-      };
-          getstore(params).then(function (response) { 
-             if(response.code==200){
-            _this.store = _this.store.concat(response.data)
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-          }); 
-    },
-    //置顶
-    ToTop:function(e,index){
-      let _this = this;     
-      ToTop(e).then(function (response) { 
-         if(response.code==200){
-          window.location.reload();
+        pagenum: this.pagenum,
+        type: 'auctioning'
+      }
+      getstore(params).then(function (response) {
+        if (response.code == 200) {
+          _this.store = _this.store.concat(response.data)
         }
-      }) 
-      .catch(function (error) {
-        console.log(error);
-      });
+      })
+        .catch(function (error) {
+          console.log(error)
+        })
     },
+    // 置顶
+    ToTop: function (e, index) {
+      let _this = this
+      ToTop(e).then(function (response) {
+        if (response.code == 200) {
+          window.location.reload()
+        }
+      })
+        .catch(function (error) {
+          console.log(error)
+        })
+    }
   },
-  mounted() {
-    this.getstore();
-  }, 
-};
+  mounted () {
+    this.getstore()
+  }
+}
 </script>
 <style scoped>
   .lotSorting {
@@ -299,6 +298,6 @@
 }
 .lotSorting  .icon-shijianzhongbiao{
   margin: 0;
-  color: #333；
+  color: #333;
 }
-</style>  
+</style>

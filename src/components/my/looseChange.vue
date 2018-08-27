@@ -38,30 +38,30 @@
 </template>
 
 <script>
-	import {walletShow} from '../../api/api'
-	export default {
-		data() {
-			return {
-				id:'' ,
-				info:{},
-			}
-		},
-		methods: {
-			walletShow(){ 
-				let _this = this; 
-			    walletShow(_this.id).then(function (response) { 
-			        _this.info = response.data;
-				})
-			    .catch(function (error) {
-			        console.log(error);
-			    });
-		    },
-		},
-		mounted() {
-			this.id = this.$route.params.id;
-			this.walletShow();
-		},
-	}
+import {walletShow} from '../../api/api'
+export default {
+  data () {
+    return {
+      id: '',
+      info: {}
+    }
+  },
+  methods: {
+    walletShow () {
+      let _this = this
+      walletShow(_this.id).then(function (response) {
+        _this.info = response.data
+      })
+        .catch(function (error) {
+          console.log(error)
+        })
+    }
+  },
+  mounted () {
+    this.id = this.$route.params.id
+    this.walletShow()
+  }
+}
 </script>
 
 <style scoped>

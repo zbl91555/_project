@@ -8,7 +8,7 @@
                     <div>收货人:{{addressNew.name}}</div>
                     <div>{{addressNew.tel}}</div>
                 </div>
-                <div class="divwidth">{{addressNew.province}} {{addressNew.city}} {{addressNew.country}} {{addressNew.address}}</div> 
+                <div class="divwidth">{{addressNew.province}} {{addressNew.city}} {{addressNew.country}} {{addressNew.address}}</div>
             </div>
             <div class="noaddesss" v-else>
               无地址（点击添加地址）
@@ -16,26 +16,26 @@
             <div class="iconfont icon-right"></div>
       </div>
       <div class="gray"></div>
-  		<div>
-  			<div class="buyer-tool">
-  				<a href="">拍品信息</a>	
-  			</div>
+      <div>
+        <div class="buyer-tool">
+          <a href="">拍品信息</a>
+        </div>
         <router-link :to="{name: 'auction', params: {id: auctionId }}">
-  			<div class="buy-info">
-  				<div class="goods-info" v-bind:style="{backgroundImage: 'url(' + info.auction.img + ')'}"></div>
-  				<p class="goods-intr">{{info.auction.desc}}</p>
-  				<ul class="buyer-detail"> 
+        <div class="buy-info">
+          <div class="goods-info" v-bind:style="{backgroundImage: 'url(' + info.auction.img + ')'}"></div>
+          <p class="goods-intr">{{info.auction.desc}}</p>
+          <ul class="buyer-detail">
             <li>成交时间：{{timestampToTime(info.addTime)}}<i></i></li>
-  					<!-- <li>截止时间：{{timestampToTime(info.endTime)}}<i></i></li> -->
+            <!-- <li>截止时间：{{timestampToTime(info.endTime)}}<i></i></li> -->
             <li><div style="float:left">截止时间：</div><countDown style="width:80px;float:left" :endtime='parseFloat(info.endTime)' :dayShow='false' :secShow='true'></countDown></li>
-  				</ul>
-  			</div>	
-        </router-link> 
-  		</div>
+          </ul>
+        </div>
+        </router-link>
+      </div>
       <div class="moneys">
           <div>保证金：￥{{info.auction.cashPrice}}元</div>
           <div>成交金额：￥{{info.price}}元</div>
-      </div> 
+      </div>
       <div class="gray"></div>
       <div class="mnyAndcp">
             <div class="salmoney">
@@ -49,11 +49,11 @@
             </div> -->
       </div>
       <div class="gray"></div>
-  		<div class="complaintTitle">
-  		      <i>支付金额:</i>
-            <i>￥{{info.price}}</i>     
-  		</div>
-  	  <ul>
+      <div class="complaintTitle">
+            <i>支付金额:</i>
+            <i>￥{{info.price}}</i>
+      </div>
+      <ul>
         <li class="op" @click="paymentType('balance',0)" :class="{active: sw == 0}">
           <div class="con balance">
             <span><i class="iconfont icon-duihao2"></i></span>
@@ -110,7 +110,7 @@
         <div class="sharesomething">
           <div style="border-bottom:1px solid #e5e5e5;">  您还未开通余额，不能使用“余额支付”与“微信支付”功能，快去开通吧！</div>
           <div @click="closeshowlists" style="border-right: 1px solid #e5e5e5;">取消</div>
-          <div @click="openRecharge" style="color:red;" class="bordertop">确认</div>          
+          <div @click="openRecharge" style="color:red;" class="bordertop">确认</div>
         </div>
       </div>
       <!-- 自定义键盘 -->
@@ -122,10 +122,10 @@
                 <div class="iconfont icon-zuojiantou"  @click="closekeyBoard()"></div>
                 <div class="floatleft">
                   请输入您的支付密码
-                </div>     
+                </div>
               </div>
               <div class="sixpasswords">
-                    <div v-for="i in items">
+                    <div v-for="i in items" :key="i">
                         <span v-if="password[i]">*</span>
                     </div>
               </div>
@@ -210,7 +210,7 @@
             </div>
           </div>
           <!-- 支付密码输入错入,请重试 -->
-              <div class="wrongPass" v-if="wrongPass==true">    
+              <div class="wrongPass" v-if="wrongPass==true">
               </div>
               <div class="enterwrong" v-if="wrongPass==true ">
                   <div class="enterwrong-h">支付密码输入错误,请重试</div>
@@ -225,203 +225,203 @@
     </div>
 </template>
 <script>
-import countDown from "../../common/countDown";
-import { Toast } from "vant";
-import wx from "weixin-js-sdk";
+import countDown from '../../common/countDown'
+import { Toast } from 'vant'
+import wx from 'weixin-js-sdk'
 import {
   orderPayment,
   payment,
   notify,
   getSign,
   wxPay
-} from "../../../api/api";
-import md5 from "md5";
-import assign from "../../../assets/js/assign.js"; //混入式方法
+} from '../../../api/api'
+import md5 from 'md5'
+import assign from '../../../assets/js/assign.js' // 混入式方法
 export default {
   mixins: [assign],
-  name: "payRightnow",
+  name: 'payRightnow',
   components: {
     countDown
   },
-  data() {
+  data () {
     return {
-      info: { auction : {}},
+      info: { auction: {} },
       bid: false,
       items: [0, 1, 2, 3, 4, 5],
       password: [],
-      lastpassword: "", //传给后台的6位数密码
+      lastpassword: '', // 传给后台的6位数密码
       wrongPass: false,
       config: {},
       payConfig: {},
-      paymentTimeVal: "balance",
+      paymentTimeVal: 'balance',
       sw: 0,
-      price: "", //价格
-      type: "",
-      types: "order", //类型
-      coupon_id: "", //优惠券id
-      order_id: "", //订单id
-      order_no: "", //订单编号
-      body: "",
-      auctionId: "", //商品ID
-      order_address: "0", //地址id
-      addressshow: false, //地址页面
-      isshow: true, //付款页面
-      addressNew: "", //地址信息
-      endtime: "",
-      balance: "",
+      price: '', // 价格
+      type: '',
+      types: 'order', // 类型
+      coupon_id: '', // 优惠券id
+      order_id: '', // 订单id
+      order_no: '', // 订单编号
+      body: '',
+      auctionId: '', // 商品ID
+      order_address: '0', // 地址id
+      addressshow: false, // 地址页面
+      isshow: true, // 付款页面
+      addressNew: '', // 地址信息
+      endtime: '',
+      balance: '',
       chargeMoney: false,
-      paypasswdIs: "",
-      payment: "payment",
-      showshowlists: false, //余额开通弹窗
-      flag: false,//支付限制
-    };
+      paypasswdIs: '',
+      payment: 'payment',
+      showshowlists: false, // 余额开通弹窗
+      flag: false // 支付限制
+    }
   },
   methods: {
-    //开启loading效果
-    openLoading() {
+    // 开启loading效果
+    openLoading () {
       const toast = Toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true, // 禁用背景点击
-        loadingType: "spinner",
-        message: "正在支付"
-      });
+        loadingType: 'spinner',
+        message: '正在支付'
+      })
     },
-    //关闭开通支付弹出框
-    closeshowlists() {
-      this.showshowlists = false;
+    // 关闭开通支付弹出框
+    closeshowlists () {
+      this.showshowlists = false
     },
-    //前往开通余额支付
-    openRecharge() {
-      this.$router.push({ path: "/dredgeBlancePaid/payRightnow" });
+    // 前往开通余额支付
+    openRecharge () {
+      this.$router.push({ path: '/dredgeBlancePaid/payRightnow' })
     },
-    get(item) {
-      this.addressUpdate();
-      this.addressNew = item;
-      this.order_address = item.id;
+    get (item) {
+      this.addressUpdate()
+      this.addressNew = item
+      this.order_address = item.id
     },
-    addesssSelet() {
-      this.isshow = false;
-      sessionStorage.setItem('order_id',this.order_id);
-      this.$router.push('/payment/addressInformation');
+    addesssSelet () {
+      this.isshow = false
+      sessionStorage.setItem('order_id', this.order_id)
+      this.$router.push('/payment/addressInformation')
     },
-    addressUpdate() {
-      this.addressshow = false;
-      this.isshow = true;
+    addressUpdate () {
+      this.addressshow = false
+      this.isshow = true
     },
 
-    showkeyBoard() {
-      this.bid = true;
+    showkeyBoard () {
+      this.bid = true
     },
-    closekeyBoard() {
-      this.bid = false;
-      this.password = [];
+    closekeyBoard () {
+      this.bid = false
+      this.password = []
     },
-    //页面
-    orderPayment() {
+    // 页面
+    orderPayment () {
       orderPayment(this.order_id)
         .then(res => {
-          this.info = res.data;
-          this.price = res.data.price;
-          this.paypasswdIs = res.data.paypasswdIs;
-          this.balance = res.data.balance;
+          this.info = res.data
+          this.price = res.data.price
+          this.paypasswdIs = res.data.paypasswdIs
+          this.balance = res.data.balance
           // this.coupon_id =  res.data.coupon_id;
-          this.order_address = res.data.address.addressId;
+          this.order_address = res.data.address.addressId
           if (this.$route.query.address == '1' && sessionStorage.getItem('address')) {
-            this.addressNew = JSON.parse(sessionStorage.getItem('address'));
-          }else {
-            this.addressNew = res.data.address;
-          }
-          this.auctionId = res.data.auction.auctionId;
-          if (res.data.address != "") {
-            this.noAddress = false;
-            this.defaultAddress = true;
+            this.addressNew = JSON.parse(sessionStorage.getItem('address'))
           } else {
-            this.noAddress = true;
+            this.addressNew = res.data.address
+          }
+          this.auctionId = res.data.auction.auctionId
+          if (res.data.address != '') {
+            this.noAddress = false
+            this.defaultAddress = true
+          } else {
+            this.noAddress = true
           }
           if (parseFloat(this.balance) > parseFloat(this.price)) {
-            this.chargeMoney = false;
+            this.chargeMoney = false
           } else {
-            this.chargeMoney = true;
+            this.chargeMoney = true
           }
           if (!this.paypasswdIs) {
-            this.showshowlists = true;
+            this.showshowlists = true
           }
         })
         .catch(err => {
           // this.$router.push({name:'errorPage'})
-        });
+        })
     },
     // 微信支付开始
-    reload() {
-      this.getSign();
-      wx.config(this.config);
+    reload () {
+      this.getSign()
+      wx.config(this.config)
       wx.checkJsApi({
         jsApiList: [
-          "onMenuShareTimeline",
-          "onMenuShareAppMessage",
-          "chooseImage",
-          "chooseWXPay"
+          'onMenuShareTimeline',
+          'onMenuShareAppMessage',
+          'chooseImage',
+          'chooseWXPay'
         ], // 需要检测的JS接口列表，所有JS接口列表见附录2,
-        success: function(res) {
+        success: function (res) {
           // 以键值对的形式返回，可用的api值true，不可用为false
-          console.log(res);
+          console.log(res)
         }
-      });
+      })
     },
-    getSign() {
+    getSign () {
       let params = {
         uri: window.location.href
-      };
+      }
       getSign(params)
         .then(response => {
-          this.config = response.data;
+          this.config = response.data
           this.config.jsApiList = [
-            "onMenuShareTimeline",
-            "onMenuShareAppMessage",
-            "chooseImage",
-            "chooseWXPay"
-          ];
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'chooseImage',
+            'chooseWXPay'
+          ]
         })
         .catch(error => {
-          console.log(error.data);
-        });
+          console.log(error.data)
+        })
     },
-    //微信支付
-    wxPay(params) {
+    // 微信支付
+    wxPay (params) {
       wxPay(params)
         .then(response => {
-          this.weixinPay(response.data);
+          this.weixinPay(response.data)
         })
-        .catch(error => {});
+        .catch(error => {})
     },
-    weixinPay(data) {
-      var vm = this;
-      if (typeof WeixinJSBridge == "undefined") {
-        //微信浏览器内置对象。参考微信官方文档
+    weixinPay (data) {
+      var vm = this
+      if (typeof WeixinJSBridge == 'undefined') {
+        // 微信浏览器内置对象。参考微信官方文档
         if (document.addEventListener) {
           document.addEventListener(
-            "WeixinJSBridgeReady",
+            'WeixinJSBridgeReady',
             vm.onBridgeReady(data),
             false
-          );
+          )
         } else if (document.attachEvent) {
-          document.attachEvent("WeixinJSBridgeReady", vm.onBridgeReady(data));
-          document.attachEvent("onWeixinJSBridgeReady", vm.onBridgeReady(data));
+          document.attachEvent('WeixinJSBridgeReady', vm.onBridgeReady(data))
+          document.attachEvent('onWeixinJSBridgeReady', vm.onBridgeReady(data))
         }
       } else {
-        vm.onBridgeReady(data);
+        vm.onBridgeReady(data)
       }
     },
-    onBridgeReady(data) {
-      var vm = this;
-      WeixinJSBridge.invoke("getBrandWCPayRequest", data, function(res) {
-        if (res.err_msg == "get_brand_wcpay_request:cancel") {
-          Toast.clear();
-          vm.flag = false;
+    onBridgeReady (data) {
+      var vm = this
+      WeixinJSBridge.invoke('getBrandWCPayRequest', data, function (res) {
+        if (res.err_msg == 'get_brand_wcpay_request:cancel') {
+          Toast.clear()
+          vm.flag = false
         } else {
-          vm.$router.push('/paySuccess/'+vm.auctionId);
-          Toast.clear();
-          vm.flag = false;
+          vm.$router.push('/paySuccess/' + vm.auctionId)
+          Toast.clear()
+          vm.flag = false
         }
         // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
         // if(res.err_msg == "get_brand_wcpay_request：ok" ){
@@ -431,15 +431,15 @@ export default {
         // }
 
         //  window.location.href='/reservedBerth'
-      });
+      })
     },
     // 微信支付结束
 
-    //安全支付
-    paymentSafe() {
+    // 安全支付
+    paymentSafe () {
       if (this.order_address == 0) {
-        Toast("请选择地址");
-        return;
+        Toast('请选择地址')
+        return
       }
       let params = {
         channel: this.paymentTimeVal,
@@ -448,231 +448,231 @@ export default {
         order_id: this.order_id,
         // coupon_id:_this.coupon_id,
         order_address: this.order_address
-      };
-      if (this.paymentTimeVal == "balance") {
-        if (this.paymentTimeVal == "balance" && this.paypasswdIs == false) {
-          Toast("请开通余额");
-          return;
+      }
+      if (this.paymentTimeVal == 'balance') {
+        if (this.paymentTimeVal == 'balance' && this.paypasswdIs == false) {
+          Toast('请开通余额')
+          return
         }
         if (parseFloat(this.balance) < parseFloat(this.price)) {
-          Toast("余额不足请充值");
-          return;
+          Toast('余额不足请充值')
+          return
         }
         payment(params)
           .then(res => {
-            this.showkeyBoard(); //发起支付
-            this.order_no = res.data.order_no;
-            this.body = res.data.body;
-            this.type = res.data.attach;
+            this.showkeyBoard() // 发起支付
+            this.order_no = res.data.order_no
+            this.body = res.data.body
+            this.type = res.data.attach
           })
           .catch(err => {
-            Toast(err.data.message);
-          });
+            Toast(err.data.message)
+          })
       }
-      if (this.paymentTimeVal == "wx_pub") {
+      if (this.paymentTimeVal == 'wx_pub') {
         if (this.paypasswdIs == false) {
-          this.showshowlists = true;
-          return;
+          this.showshowlists = true
+          return
         }
-        this.openLoading();
+        this.openLoading()
         if (this.flag) {
-          return;
+          return
         }
-        this.flag = true;
-        this.wxPay(params);
+        this.flag = true
+        this.wxPay(params)
       }
-      if (this.paymentTimeVal == "atm") {
-        //atm支付
+      if (this.paymentTimeVal == 'atm') {
+        // atm支付
       }
     },
 
-    //安全支付发起 回调
-    notify() {
-      this.openLoading();
+    // 安全支付发起 回调
+    notify () {
+      this.openLoading()
       if (this.flag) {
-        return;
+        return
       }
-      this.flag = true;
-      let paymentType = this.paymentTimeVal;
+      this.flag = true
+      let paymentType = this.paymentTimeVal
       let params = {
         order_no: this.order_no,
         attach: this.type,
         paypasswd: md5(this.lastpassword),
         body: this.body
-      };
+      }
       notify(paymentType, params)
         .then(res => {
-          Toast.clear();
-          this.flag = false;
+          Toast.clear()
+          this.flag = false
           this.$router.push({
-            name: "paySuccess",
+            name: 'paySuccess',
             params: { auction_id: this.auctionId }
-          });
+          })
         })
         .catch(err => {
-          alert(err.data.message);
-          //清空密码
-          this.lastpassword = "";
-          this.password = [];
-          this.flag = false;
-          Toast.clear();
-        });
+          alert(err.data.message)
+          // 清空密码
+          this.lastpassword = ''
+          this.password = []
+          this.flag = false
+          Toast.clear()
+        })
     },
 
-    paymentType(i, index) {
-      this.paymentTimeVal = i;
-      this.sw = index;
+    paymentType (i, index) {
+      this.paymentTimeVal = i
+      this.sw = index
     },
 
-    //删除
-    del() {
-      this.password.pop();
-      this.lastpassword = this.password.join("");
+    // 删除
+    del () {
+      this.password.pop()
+      this.lastpassword = this.password.join('')
     },
 
     // 按数字1
-    oneClick() {
+    oneClick () {
       if (this.password.length < 6) {
-        this.password.push(1);
-        this.lastpassword = this.password.join("");
+        this.password.push(1)
+        this.lastpassword = this.password.join('')
       }
       if (this.password.length == 6) {
-        this.notify();
+        this.notify()
       }
     },
     // 按数字2
-    twoClick() {
+    twoClick () {
       if (this.password.length < 6) {
-        this.password.push(2);
-        this.lastpassword = this.password.join("");
+        this.password.push(2)
+        this.lastpassword = this.password.join('')
       }
       if (this.password.length == 6) {
-        this.notify();
+        this.notify()
       }
     },
     // 按数字3
-    threeClick() {
+    threeClick () {
       if (this.password.length < 6) {
-        this.password.push(3);
-        this.lastpassword = this.password.join("");
+        this.password.push(3)
+        this.lastpassword = this.password.join('')
       }
       if (this.password.length == 6) {
-        this.notify();
+        this.notify()
       }
     },
     // 按数字4
-    fourClick() {
+    fourClick () {
       if (this.password.length < 6) {
-        this.password.push(4);
-        this.lastpassword = this.password.join("");
+        this.password.push(4)
+        this.lastpassword = this.password.join('')
       }
       if (this.password.length == 6) {
-        this.notify();
+        this.notify()
       }
     },
     // 按数字5
-    fiveClick() {
+    fiveClick () {
       if (this.password.length < 6) {
-        this.password.push(5);
-        this.lastpassword = this.password.join("");
+        this.password.push(5)
+        this.lastpassword = this.password.join('')
       }
       if (this.password.length == 6) {
-        this.notify();
+        this.notify()
       }
     },
     // 按数字6
-    sixClick() {
+    sixClick () {
       if (this.password.length < 6) {
-        this.password.push(6);
-        this.lastpassword = this.password.join("");
+        this.password.push(6)
+        this.lastpassword = this.password.join('')
       }
       if (this.password.length == 6) {
-        this.notify();
+        this.notify()
       }
     },
     // 按数字7
-    sevenClick() {
+    sevenClick () {
       if (this.password.length < 6) {
-        this.password.push(7);
-        this.lastpassword = this.password.join("");
+        this.password.push(7)
+        this.lastpassword = this.password.join('')
       }
       if (this.password.length == 6) {
-        this.notify();
+        this.notify()
       }
     },
     // 按数字8
-    eightClick() {
+    eightClick () {
       if (this.password.length < 6) {
-        this.password.push(8);
-        this.lastpassword = this.password.join("");
+        this.password.push(8)
+        this.lastpassword = this.password.join('')
       }
       if (this.password.length == 6) {
-        this.notify();
+        this.notify()
       }
     },
     // 按数字9
-    nineClick() {
+    nineClick () {
       if (this.password.length < 6) {
-        this.password.push(9);
-        this.lastpassword = this.password.join("");
+        this.password.push(9)
+        this.lastpassword = this.password.join('')
       }
       if (this.password.length == 6) {
-        this.notify();
+        this.notify()
       }
     },
     // 按数字.
-    dblzeroClick() {
+    dblzeroClick () {
       if (this.password.length < 6) {
-        this.password.push(".");
-        this.lastpassword = this.password.join("");
+        this.password.push('.')
+        this.lastpassword = this.password.join('')
       }
       if (this.password.length == 6) {
-        this.notify();
+        this.notify()
       }
     },
     // 按数字0
-    zeroClick() {
+    zeroClick () {
       // if(this.lastpassword!=''){
       if (this.password.length < 6) {
-        this.password.push("0");
-        this.lastpassword = this.password.join("");
+        this.password.push('0')
+        this.lastpassword = this.password.join('')
       }
       if (this.password.length == 6) {
-        this.notify();
+        this.notify()
       }
       // }
     }
   },
-  mounted() {
-    this.reload();
-    this.order_id = this.$route.query.order_id;
-    if (this.$route.query.adresspage == "true") {
-      this.addressshow = true;
+  mounted () {
+    this.reload()
+    this.order_id = this.$route.query.order_id
+    if (this.$route.query.adresspage == 'true') {
+      this.addressshow = true
     }
     // if (this.$route.query.nowpage == "false") {
     //   this.isshow = false;
     // }
     // this.addressshow = this.$route.params.adresspage; //地址页面
     // this.isshow = this.$route.params.nowpage;//付款页面
-    this.orderPayment();
+    this.orderPayment()
   },
-  beforeRouteEnter(to, from, next) {
-    next();
-    if (from.path == "/dredgeBlancePaid") {
-      Toast("余额开通成功");
+  beforeRouteEnter (to, from, next) {
+    next()
+    if (from.path == '/dredgeBlancePaid') {
+      Toast('余额开通成功')
     }
   },
-  beforeRouteUpdate(to,from,next) {
+  beforeRouteUpdate (to, from, next) {
     if (from.name == 'addressInformation') {
-      this.order_id = to.query.order_id;
-      this.orderPayment();
+      this.order_id = to.query.order_id
+      this.orderPayment()
     }
-    next();
+    next()
   },
-  created() {
-    this.timetoEnd("1525326335", this.endtime);
+  created () {
+    this.timetoEnd('1525326335', this.endtime)
   }
-};
+}
 </script>
 
 <style scoped lang="less">

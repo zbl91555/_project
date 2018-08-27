@@ -16,10 +16,10 @@
 					<span>{{e.price}}</span>
 				</div>
 				<div v-if="e.reason == '提现'" style="font-size:12px;color:#999;position:absolute;right:15px;bottom:10px;">提现中</div>
-			 </li>
-			 <div v-if="nomsg" class="balance">余额<span>{{price}}</span></div>
+      </li>
+      <div v-if="nomsg" class="balance">余额<span>{{price}}</span></div>
 		</ul>
-		
+
 		<div v-else style="text-align: center;margin-top: 200px;padding-bottom: 280px">
 			<img src="../../assets/images/fenleinopaipin.png" alt="">
 			<div style="color: #999999">暂无相关数据</div>
@@ -29,69 +29,69 @@
 </template>
 
 <script>
-import { walletDetail } from "../../api/api";
+import { walletDetail } from '../../api/api'
 // 加载更多后期做
 export default {
-  data() {
+  data () {
     return {
       info: [],
-      price: "0",
+      price: '0',
       page: 0,
       nomsg: true,
-      id: ""
-    };
+      id: ''
+    }
   },
-  created() {
-    window.addEventListener("scroll", this.scrollHandler);
+  created () {
+    window.addEventListener('scroll', this.scrollHandler)
   },
 
-  destroyed() {
-    window.removeEventListener("scroll", this.scrollHandler);
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollHandler)
   },
   methods: {
-    changeDetail(i) {
-      this.id = this.info[i].id;
-      this.$router.push("/looseChange/" + this.id);
+    changeDetail (i) {
+      this.id = this.info[i].id
+      this.$router.push('/looseChange/' + this.id)
     },
-    //注册scroll事件并监听
-    scrollHandler() {
-      const st = document.documentElement.scrollTop || document.body.scrollTop;
-      const ch = this.$refs.banctn.clientHeight;
+    // 注册scroll事件并监听
+    scrollHandler () {
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      const ch = this.$refs.banctn.clientHeight
       if (st + window.innerHeight >= ch) {
-        this.walletDetail();
+        this.walletDetail()
       }
     },
-    walletDetail() {
-      this.page += 1; // 缓存指针
+    walletDetail () {
+      this.page += 1 // 缓存指针
       let params = {
         page: this.page,
         pagenum: 15
-      };
+      }
       walletDetail(params)
         .then(res => {
-					this.info = this.info.concat(res.data.list);
+          this.info = this.info.concat(res.data.list)
           if (this.info.length == 0) {
-            this.nomsg = false;
+            this.nomsg = false
           } else {
-            this.nomsg = true;
+            this.nomsg = true
           }
-          this.price = "￥" + res.data.price;
+          this.price = '￥' + res.data.price
         })
         .catch(err => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     }
   },
-  mounted() {
-    this.walletDetail();
+  mounted () {
+    this.walletDetail()
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
-/*
-	 * @border-color: 统一边框颜色
-	 * */
+  /*
+  * @border-color: 统一边框颜色
+  * */
 
 @border-color: #e5e5e5;
 .app-containertouch {

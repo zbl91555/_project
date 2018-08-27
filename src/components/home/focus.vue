@@ -41,23 +41,23 @@
 </template>
 
 <script>
-import Waterfall from "../common/waterfall";
-import WaterfallSlot from "../common/waterfall-slot";
-import { setTimeout, clearTimeout } from "timers";
-import { focusorder } from "../../api/api";
-import tabBar from "./tabBar";
-import assign from "../../assets/js/assign.js"; //混入式方法
-import { LoadMore } from "vux";
+import Waterfall from '../common/waterfall'
+import WaterfallSlot from '../common/waterfall-slot'
+import { setTimeout, clearTimeout } from 'timers'
+import { focusorder } from '../../api/api'
+import tabBar from './tabBar'
+import assign from '../../assets/js/assign.js' // 混入式方法
+import { LoadMore } from 'vux'
 
 export default {
-  name: "focus",
+  name: 'focus',
   components: { Waterfall, WaterfallSlot, tabBar, LoadMore },
-  props: ["changeRed"],
+  props: ['changeRed'],
   mixins: [assign],
-  data() {
+  data () {
     return {
       isLoading: false,
-      align: "center",
+      align: 'center',
       isBusy: false,
       loadingMore: false,
       firstTime: false,
@@ -67,36 +67,36 @@ export default {
       scroll: 0,
       timeLists: [
         {
-          text: "优选",
-          link: "/recommend"
+          text: '优选',
+          link: '/recommend'
         },
         {
-          text: "淘淘",
-          link: "/home"
+          text: '淘淘',
+          link: '/home'
         },
         {
-          text: "关注",
-          link: "/focus"
+          text: '关注',
+          link: '/focus'
         }
       ],
       _displayTimer: null,
       index: 2,
       num: 0,
-      elseloading: false, //暂无更多数据
+      elseloading: false, // 暂无更多数据
       gap: 200,
       maxGap: 220
-    };
+    }
   },
-  beforeRouteLeave(to, from, next) {
+  beforeRouteLeave (to, from, next) {
     let focus = {
       items: this.items,
       page: this.page,
       scroll: this.scroll
-    };
-    sessionStorage.setItem("focus", JSON.stringify(focus));
-    next();
+    }
+    sessionStorage.setItem('focus', JSON.stringify(focus))
+    next()
   },
-  mounted() {
+  mounted () {
     // if (this.isIos()) {
     // let focus = JSON.parse(sessionStorage.getItem('focus'));
     // if (focus && focus.items.length !=0) {
@@ -112,25 +112,25 @@ export default {
     //     },500)
     //   })
     // }else {
-    this.fetchMore();
+    this.fetchMore()
     // }
     // }else {
     //   this.fetchMore();
     // }
   },
-  created() {
-    this.row = this.isPc ? 3 : 2;
-    this.num = this.pagenum;
-    window.addEventListener("scroll", this.scrollHandler);
+  created () {
+    this.row = this.isPc ? 3 : 2
+    this.num = this.pagenum
+    window.addEventListener('scroll', this.scrollHandler)
     if (this.isPC()) {
-      this.gap = 250;
-      this.maxGap = 300;
+      this.gap = 250
+      this.maxGap = 300
     } else {
-      this.gap = 200;
-      this.maxGap = 220;
+      this.gap = 200
+      this.maxGap = 220
     }
   },
-  activated() {
+  activated () {
     // window.addEventListener('scroll', this.scrollHandler);
     // if (!this.isIos()) {
     // if(this.scroll > 0){
@@ -139,11 +139,11 @@ export default {
     // };
     // }
   },
-  deactivated() {
-    window.removeEventListener("scroll", this.scrollHandler);
+  deactivated () {
+    window.removeEventListener('scroll', this.scrollHandler)
   },
-  destroyed() {
-    window.removeEventListener("scroll", this.scrollHandler);
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollHandler)
   },
   // beforeRouteEnter (to, from, next) {
   //   next(vm => {
@@ -159,139 +159,139 @@ export default {
     //       this.isLoading = false;
     //     }, 500);
     //   },
-    isElementInViewport(el, offset = 0) {
-      const box = el.getBoundingClientRect();
-      const top = box.top >= -offset;
-      const left = box.left >= -offset;
+    isElementInViewport (el, offset = 0) {
+      const box = el.getBoundingClientRect()
+      const top = box.top >= -offset
+      const left = box.left >= -offset
       const bottom =
         box.bottom <=
-        (window.innerHeight || document.documentElement.clientHeight) + offset;
+        (window.innerHeight || document.documentElement.clientHeight) + offset
       const right =
         box.right <=
-        (window.innerWidth || document.documentElement.clientWidth) + offset;
-      return top && left && bottom && right;
+        (window.innerWidth || document.documentElement.clientWidth) + offset
+      return top && left && bottom && right
     },
 
-    shouldLoadMore() {
-      const st = document.documentElement.scrollTop || document.body.scrollTop;
-      this.scroll = st;
-      const ch = this.$refs.ctn.clientHeight;
-      return st + window.innerHeight >= ch * 0.5;
+    shouldLoadMore () {
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      this.scroll = st
+      const ch = this.$refs.ctn.clientHeight
+      return st + window.innerHeight >= ch * 0.5
     },
 
-    async scrollHandler() {
+    async scrollHandler () {
       // 滚动加载数据
       if (this.shouldLoadMore() && (!this.loadingMore && !this.isBusy)) {
-        await this.fetchMore();
+        await this.fetchMore()
       }
 
       // 加载和显示可视区域内的图片
-      clearTimeout(this._displayTimer);
+      clearTimeout(this._displayTimer)
 
       this._displayTimer = setTimeout(() => {
         this.$refs.waterfall.$children.forEach(slot => {
           if (this.isElementInViewport(slot.$el, 50)) {
-            const item = this.items[slot.order];
+            const item = this.items[slot.order]
             // const img = new Image();
             // img.onload = () => {
             // item.lazyCover = item.cover;
-            item.loaded = true;
+            item.loaded = true
             // };
             // img.src = item.cover;
           }
-        });
-      }, this.page <= 1 ? 100 : 50);
+        })
+      }, this.page <= 1 ? 100 : 50)
     },
 
-    reflowed() {
-      this.isBusy = false;
+    reflowed () {
+      this.isBusy = false
     },
 
-    async fetchMore() {
+    async fetchMore () {
       if (!this.loadingMore && !this.isBusy) {
         if (!(this.num > 0)) {
-          this.loadingMore = false;
-          this.elseloading = true;
-          return;
+          this.loadingMore = false
+          this.elseloading = true
+          return
         }
-        this.isBusy = true;
-        this.loadingMore = true;
-        this.page += 1;
+        this.isBusy = true
+        this.loadingMore = true
+        this.page += 1
         let params = {
           page: this.page,
           pagenum: this.pagenum
-        };
+        }
         focusorder(params)
           .then(res => {
-            const pageItems = [];
+            const pageItems = []
             if (res.data.html) {
-              //第一次 分享数据
-              //console.log(res.data.html)
-              this.goShares(res.data.html);
+              // 第一次 分享数据
+              // console.log(res.data.html)
+              this.goShares(res.data.html)
             }
             if (!res.data.items) {
-              //断掉
-              this.isBusy = false;
-              this.loadingMore = false;
+              // 断掉
+              this.isBusy = false
+              this.loadingMore = false
             }
             this.num = res.data.items.length || 0;
             (res.data.items || []).forEach((item, i) => {
-              let coverUrl;
-              coverUrl = item.cover;
-              const m = coverUrl.match(/-W(\d+?)H(\d+)/);
+              let coverUrl
+              coverUrl = item.cover
+              const m = coverUrl.match(/-W(\d+?)H(\d+)/)
               if (!m) {
-                let img = new Image();
+                let img = new Image()
                 img.onload = () => {
-                  item.width = img.width;
-                  item.height = img.height;
-                  item.loaded = false;
-                  item.lazyCover = "";
-                  pageItems.push(item);
-                };
-                img.src = item.coverUrl;
+                  item.width = img.width
+                  item.height = img.height
+                  item.loaded = false
+                  item.lazyCover = ''
+                  pageItems.push(item)
+                }
+                img.src = item.coverUrl
               } else {
-                coverUrl = coverUrl.substring(0, coverUrl.length - 6);
+                coverUrl = coverUrl.substring(0, coverUrl.length - 6)
                 if (m && m.length >= 3) {
-                  item.width = parseInt(m[1]);
-                  item.height = parseInt(m[2]);
-                  item.loaded = false;
-                  item.lazyCover = "";
-                  pageItems.push(item);
+                  item.width = parseInt(m[1])
+                  item.height = parseInt(m[2])
+                  item.loaded = false
+                  item.lazyCover = ''
+                  pageItems.push(item)
                 }
               }
-            });
+            })
             // if (type == "renovate") {
             //   this.items = pageItems;
             // } else {
-            this.items = this.items.concat(pageItems);
+            this.items = this.items.concat(pageItems)
             setTimeout(_ => {
-              this.scrollHandler();
-            });
+              this.scrollHandler()
+            })
             // }
-            this.loadingMore = false;
-            this.isBusy = false;
-            this.firstTime = true;
+            this.loadingMore = false
+            this.isBusy = false
+            this.firstTime = true
             if (this.page === 1) {
               this.$nextTick(() => {
                 // if (!this.count) {
                 //   this.loadMore();
                 //   this.count++;
                 // }
-                this.scrollHandler();
-              });
+                this.scrollHandler()
+              })
             }
           })
           .catch(err => {
-            this.loadingMore = false;
-            this.elseloading = true;
-            this.isBusy = true;
+            this.loadingMore = false
+            this.elseloading = true
+            this.isBusy = true
             // this.$store.commit("updateLoadingStatus", { isLoading: false });
-            this.page--;
-          });
+            this.page--
+          })
       }
-    },
+    }
   }
-};
+}
 </script>
 <style>
 .focus .van-pull-refresh__head {

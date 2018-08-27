@@ -28,21 +28,21 @@
 
 <style lang="less" scoped>
 	/*
-	 * @border-color: 统一边框颜色coupon
-	 * */
-	
+	* @border-color: 统一边框颜色coupon
+	* */
+
 	@border-color: #d2d2d2;
 	@pad: 30px;
 	.app-containerpay {
 		min-height: 1234px;
 		padding-top: @pad;
 	}
-	
+
 	.iconfont {
 		font-size: 24px;
 		margin: 0;
 	}
-	
+
 	.mainpay {
 		background-color: #fff;
 		border-bottom: 1px solid @border-color;
@@ -59,7 +59,7 @@
 					float: right;
 				}
 			}
-			
+
 		}
 		li:nth-last-of-type(1) a {
 			border-bottom: none;

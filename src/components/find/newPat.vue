@@ -18,15 +18,15 @@
 				<div></div>
 			</div>
 		</div>
-	</div>		
+	</div>
 </template>
 <script>
 export default {
-	data() {
-	    return {
-	      
-	    }
-	}
+  data () {
+    return {
+
+    }
+  }
 }
 </script>
 <style scoped>
@@ -37,8 +37,8 @@ export default {
 		border-radius: 3px;
 		background: url('../../assets/images/newuser.png');
 		background-repeat: no-repeat;
-	    background-position: center;
-	    background-size: cover;
+		background-position: center;
+		background-size: cover;
 	}
 	.bordercol{
 		height: 140px;

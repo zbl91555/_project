@@ -35,7 +35,7 @@
                     </div>
                 </li>
             </ul>
-        </div> 
+        </div>
     </form>
     <div class="login-btn" @click="saveAdress()">
         <div class="icon-btn">保存</div>
@@ -52,9 +52,9 @@ import {
   Cell,
   Value2nameFilter as value2name,
   Toast
-} from "vux";
-import { userAddress, handleAddressAdd } from "../../api/api";
-import assign from "../../assets/js/assign.js"; //混入式方法
+} from 'vux'
+import { userAddress, handleAddressAdd } from '../../api/api'
+import assign from '../../assets/js/assign.js' // 混入式方法
 export default {
   components: {
     Group,
@@ -64,65 +64,65 @@ export default {
     Toast
   },
   mixins: [assign],
-  data() {
+  data () {
     return {
       addressList: [],
-      id: "",
-      city: "",
-      name: "",
-      tele: "",
-      province: "",
-      country: "",
-      address: "",
-      title: "选择地区",
+      id: '',
+      city: '',
+      name: '',
+      tele: '',
+      province: '',
+      country: '',
+      address: '',
+      title: '选择地区',
       addressValue: [],
       addressData: ChinaAddressV4Data,
       showSuccess: false,
-      toastText: ""
-    };
+      toastText: ''
+    }
   },
   methods: {
-    back() {
-      this.$router.go(-1);
+    back () {
+      this.$router.go(-1)
     },
-    userAddress() {
-      let _this = this;
+    userAddress () {
+      let _this = this
       userAddress()
         .then(res => {
-          _this.name = res.data.name;
-          _this.tele = res.data.tele;
+          _this.name = res.data.name
+          _this.tele = res.data.tele
         })
-        .catch(function(error) {
-          console.log(error);
-        });
+        .catch(function (error) {
+          console.log(error)
+        })
     },
-    saveAdress() {
-      let _this = this;
+    saveAdress () {
+      let _this = this
       if (!this.name) {
-        _this.showSuccess = true;
-        _this.toastText = "姓名不能为空";
-        return false;
+        _this.showSuccess = true
+        _this.toastText = '姓名不能为空'
+        return false
       }
       if (!this.tele) {
-        _this.showSuccess = true;
-        _this.toastText = "手机不能为空";
-        return false;
+        _this.showSuccess = true
+        _this.toastText = '手机不能为空'
+        return false
       }
-      let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+      let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/
       if (!reg.test(this.tele)) {
-        _this.showSuccess = true;
-        _this.toastText = "手机号输入有误";
-        return false;
+        _this.showSuccess = true
+        _this.toastText = '手机号输入有误'
+        return false
       }
       if (!this.province || !this.city) {
-        _this.showSuccess = true;
-        _this.toastText = "地区不能为空";
-        return false;
+        _this.showSuccess = true
+        _this.toastText = '地区不能为空'
+        return false
       }
       if (!this.address) {
-        _this.showSuccess = true;
-        _this.toastText = "详细地址不能为空";
-        return false;
+        _this.showSuccess = true
+        _this.toastText = '详细地址不能为空'
+        return false
       }
       let params = {
         name: _this.name,
@@ -131,64 +131,64 @@ export default {
         city: _this.city,
         country: _this.country,
         address: _this.address
-      };
+      }
       handleAddressAdd(params)
         .then(res => {
-          let id = this.$route.params.order_id;
-          if (this.$route.params.whichPage == "agreeReturnSale") {
-            this.$router.push("/agreeReturnSale/" + id + "/false" + "/true");
-          } else if (this.$route.params.whichPage == "payment") {
+          let id = this.$route.params.order_id
+          if (this.$route.params.whichPage == 'agreeReturnSale') {
+            this.$router.push('/agreeReturnSale/' + id + '/false' + '/true')
+          } else if (this.$route.params.whichPage == 'payment') {
             this.$router.push({
-              path: "/payment/addressInformation",
-              query: { order_id: id, nowpage: "false", adresspage: "true" }
-            });
+              path: '/payment/addressInformation',
+              query: { order_id: id, nowpage: 'false', adresspage: 'true' }
+            })
           } else {
-            this.$router.go(-1);
+            this.$router.go(-1)
           }
         })
-        .catch(function(error) {
-          console.log(error);
-        });
+        .catch(function (error) {
+          console.log(error)
+        })
     },
-    clear1(userName) {
-      this.$refs.userName.value = "";
-      this.name = "";
+    clear1 (userName) {
+      this.$refs.userName.value = ''
+      this.name = ''
     },
-    clear2(telNumber) {
-      this.$refs.telNumber.value = "";
-      this.tele = "";
+    clear2 (telNumber) {
+      this.$refs.telNumber.value = ''
+      this.tele = ''
     },
-    clear3(address) {
-      this.$refs.address.value = "";
-      this.address = "";
+    clear3 (address) {
+      this.$refs.address.value = ''
+      this.address = ''
     },
-    doShowAddress() {
-      this.showAddress = true;
+    doShowAddress () {
+      this.showAddress = true
       setTimeout(() => {
-        this.showAddress = false;
-      }, 2000);
+        this.showAddress = false
+      }, 2000)
     },
-    onShadowChange(ids, names) {
+    onShadowChange (ids, names) {
 
     },
 
-    getName(value) {
-      let address = value2name(value, ChinaAddressV4Data);
-      let addressArr = address.split(" ");
-      this.province = addressArr[0];
-      this.city = addressArr[1];
-      this.country = addressArr[2];
-      return value2name(value, ChinaAddressV4Data);
+    getName (value) {
+      let address = value2name(value, ChinaAddressV4Data)
+      let addressArr = address.split(' ')
+      this.province = addressArr[0]
+      this.city = addressArr[1]
+      this.country = addressArr[2]
+      return value2name(value, ChinaAddressV4Data)
     },
-    logHide(str) {
+    logHide (str) {
     },
-    logShow(str) {
+    logShow (str) {
     }
   },
-  mounted() {
-    this.userAddress();
+  mounted () {
+    this.userAddress()
   }
-};
+}
 </script>
 <style>
 .addAddress .manage {

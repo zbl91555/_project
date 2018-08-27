@@ -30,7 +30,7 @@
 					</div>
 			</div>
 	</div>
-		  <router-view></router-view>
+    <router-view></router-view>
 	</div>
 </template>
 <script>
@@ -43,87 +43,87 @@ import {
   getLoginMobileCode,
   submissionCode,
   rejoinTheShelves
-} from "../../api/api";
-import { Toast } from "vant";
-import { Actionsheet } from "vux";
-import uploadImg from "./uploadImg";
-import { mapState } from "vuex";
-import assign from "../../assets/js/assign"; //混入式方法
-import biddingAgreement from "./biddingAgreement"; //协议
+} from '../../api/api'
+import { Toast } from 'vant'
+import { Actionsheet } from 'vux'
+import uploadImg from './uploadImg'
+import { mapState } from 'vuex'
+import assign from '../../assets/js/assign' // 混入式方法
+import biddingAgreement from './biddingAgreement' // 协议
 
 export default {
   mixins: [assign],
-  name: "upload",
+  name: 'upload',
   components: {
     biddingAgreement,
     uploadImg,
     Toast
   },
-  data() {
+  data () {
     return {
-      textLength: 0, //字符串长度
+      textLength: 0, // 字符串长度
       basicSetup: true,
-      goodsId: "", //商品id
+      goodsId: '', // 商品id
       isVerify: false, //  是否认证
       showSuccess: false,
-      toastText: "",
-      /*value 在组件中的值*/
-      val: "",
+      toastText: '',
+      /* value 在组件中的值 */
+      val: '',
       aIllegal: [
-        "00",
-        "01",
-        "02",
-        "03",
-        "04",
-        "05",
-        "06",
-        "07",
-        "08",
-        "09",
-        "0..",
-        "."
+        '00',
+        '01',
+        '02',
+        '03',
+        '04',
+        '05',
+        '06',
+        '07',
+        '08',
+        '09',
+        '0..',
+        '.'
       ],
       cursorDuration: 600,
-      bodyHeight: "",
-      bodyOverflow: "",
-      middleType: "",
+      bodyHeight: '',
+      bodyOverflow: '',
+      middleType: '',
       imgSet: [],
       count: 9,
-      dataInfo: {}, //tabBar提交的数据
+      dataInfo: {}, // tabBar提交的数据
 
       // 提交信息相关data
-      desc: "", //描述
+      desc: '', // 描述
       imgList: [],
-      videoUri: "",
+      videoUri: '',
 
       // 高级设置相关data
       advancedSettings: false,
-      isReturn: false, //7天包退  0否 1是
-      freeShip: true, //包邮 1是 2否
-      securitymoney: false, //选择缴纳保证金
-      videoSet: "",
+      isReturn: false, // 7天包退  0否 1是
+      freeShip: true, // 包邮 1是 2否
+      securitymoney: false, // 选择缴纳保证金
+      videoSet: '',
       mobileVeri: false,
       throttle: false,
       sessionData: {},
       uploadInfo: {},
-      disk: ""
-    };
+      disk: ''
+    }
   },
-  created() {
-    this.userifon();
-    //获取session中的数据
-    this.desc = localStorage.getItem("desc") || "";
+  created () {
+    this.userifon()
+    // 获取session中的数据
+    this.desc = localStorage.getItem('desc') || ''
   },
   computed: {
     ...mapState({
       uploadImageParams: state => state.uploadImageParams
     }),
-    isProtocolCover() {
-      return this.$store.state.isProtocol;
+    isProtocolCover () {
+      return this.$store.state.isProtocol
     }
   },
   props: {
-    value: "",
+    value: '',
     inter: {
       default: 8
     },
@@ -131,161 +131,161 @@ export default {
       default: 2
     }
   },
-  //离开时 数据清除
-  beforeRouteLeave(to, from, next) {
-    next();
+  // 离开时 数据清除
+  beforeRouteLeave (to, from, next) {
+    next()
   },
   methods: {
-    go() {
-      this.$store.commit("reviseProtocolClose", false);
-      this.$router.push("/upload/biddingAgreement");
+    go () {
+      this.$store.commit('reviseProtocolClose', false)
+      this.$router.push('/upload/biddingAgreement')
     },
-    //上传回调
-    upload(list) {
-      if (list.name === "img") {
-        this.imgList = list.data;
-        this.uploadInfo = list;
+    // 上传回调
+    upload (list) {
+      if (list.name === 'img') {
+        this.imgList = list.data
+        this.uploadInfo = list
       } else {
-        this.videoUri = list.videoUri;
+        this.videoUri = list.videoUri
       }
     },
-    //发布错误处理
-    error(error) {
-      this.throttle = false;
-      //判断返回的状态码
+    // 发布错误处理
+    error (error) {
+      this.throttle = false
+      // 判断返回的状态码
       if (error.status == 422 || error.status == 400) {
-        Toast(error.data.message);
+        Toast(error.data.message)
       } else if (error.status == 402) {
-        //连续发送三次请求
+        // 连续发送三次请求
         if (this.releaseCount <= 3) {
-          this.release();
-          this.releaseCount++;
+          this.release()
+          this.releaseCount++
         }
       } else if (error.status == 403) {
         if (error.data.code == 40002) {
-          this.$router.push("/errorPage?type=40002");
-          sessionStorage.setItem("err", JSON.stringify(error.data));
+          this.$router.push('/errorPage?type=40002')
+          sessionStorage.setItem('err', JSON.stringify(error.data))
         }
       }
     },
-    //数据填充
-    dataFilling(res) {
-      let data = res.data;
-      this.desc = data.sale.content || "";
-      let imgSet = [];
-      let i = 0;
+    // 数据填充
+    dataFilling (res) {
+      let data = res.data
+      this.desc = data.sale.content || ''
+      let imgSet = []
+      let i = 0
       for (let index = 0; index < data.sale.imgList.length; index++) {
-        imgSet.push({ id: i++, imgUrl: data.sale.imgList[index] });
+        imgSet.push({ id: i++, imgUrl: data.sale.imgList[index] })
       }
-      this.imgSet = imgSet || [];
-      this.videoSet = res.data.sale.videoUri || "";
+      this.imgSet = imgSet || []
+      this.videoSet = res.data.sale.videoUri || ''
     },
-    //协议
-    isProtocol() {
-      this.$store.commit("reviseProtocolClose", true);
+    // 协议
+    isProtocol () {
+      this.$store.commit('reviseProtocolClose', true)
     },
     // 获取用户信息
-    userifon() {
-      let params = this.$route.params.id;
+    userifon () {
+      let params = this.$route.params.id
       if (params) {
-        localStorage.setItem("goodsId", params);
+        localStorage.setItem('goodsId', params)
       };
-      let uploadInfo = localStorage.getItem('uploadInfo');
+      let uploadInfo = localStorage.getItem('uploadInfo')
       !uploadInfo && getPublishStep1(params)
         .then(res => {
           // this.isVerify = res.data.shop.isVerify;
-          this.categoryListes = res.data.categoryList;
-          //获取上架发送的数据
+          this.categoryListes = res.data.categoryList
+          // 获取上架发送的数据
           if (this.$route.params.id) {
-            this.obj = this.$route.params.id;
-            this.dataFilling(res);
+            this.obj = this.$route.params.id
+            this.dataFilling(res)
           }
         })
         .catch(error => {
-          console.log(error);
-          this.error(error);
-        });
+          console.log(error)
+          this.error(error)
+        })
     },
     // 下一步
-    nextStep() {
+    nextStep () {
       if (!this.desc) {
-        Toast("描述不能为空");
-        return false;
+        Toast('描述不能为空')
+        return false
       } else if (this.imgList.length == 0) {
-        Toast("图片不能为空");
+        Toast('图片不能为空')
       }
       if (this.throttle) {
-        return;
+        return
       }
-      this.throttle = true;
+      this.throttle = true
       let params = {
         content: this.desc,
         imgList: this.imgList,
         videoUri: this.videoUri,
         status: 0
-      };
-      this.uploadInfo.videoUri = this.videoUri;
-      localStorage.setItem("uploadInfo", JSON.stringify(this.uploadInfo));
-      localStorage.setItem("desc", this.desc);
-      let id = localStorage.getItem("goodsId") || "";
-      let active = this.$route.query.active; //活动发布
+      }
+      this.uploadInfo.videoUri = this.videoUri
+      localStorage.setItem('uploadInfo', JSON.stringify(this.uploadInfo))
+      localStorage.setItem('desc', this.desc)
+      let id = localStorage.getItem('goodsId') || ''
+      let active = this.$route.query.active // 活动发布
       if (active) {
         params.active = active
       }
       saveDraft(params, id)
-          .then(res => {
-            this.throttle = false;
-            localStorage.setItem("goodsId", res.data.goodsId);
-            if (active) {//活动下一步
-              this.$router.push("/nextUpload/" + res.data.goodsId + '/' + active);
-            }else {
-              this.$router.push("/nextUpload/" + res.data.goodsId);
-            }
-          })
+        .then(res => {
+          this.throttle = false
+          localStorage.setItem('goodsId', res.data.goodsId)
+          if (active) { // 活动下一步
+            this.$router.push('/nextUpload/' + res.data.goodsId + '/' + active)
+          } else {
+            this.$router.push('/nextUpload/' + res.data.goodsId)
+          }
+        })
         .catch(err => {
-          this.throttle = false;
-          console.log(err);
-          this.error(err);
-        });
+          this.throttle = false
+          console.log(err)
+          this.error(err)
+        })
     },
     // 存为草稿
-    saveDraft() {
+    saveDraft () {
       if (this.throttle) {
-        return;
+        return
       }
-      this.throttle = true;
+      this.throttle = true
       if (!this.desc) {
-        Toast("描述不能为空");
-        return false;
+        Toast('描述不能为空')
+        return false
       } else if (this.imgList.length == 0) {
-        Toast("图片不能为空");
+        Toast('图片不能为空')
       }
       let params = {
         content: this.desc,
         imgList: this.imgList,
         videoUri: this.videoUri,
         status: 1
-      };
-      let id = localStorage.getItem("goodsId") || "";
+      }
+      let id = localStorage.getItem('goodsId') || ''
       saveDraft(params, id)
         .then(response => {
           if (response.code == 200) {
-            this.throttle = false;
-            Toast("存草稿成功");
-            this.$router.push("/newStoreManage/drafts");
+            this.throttle = false
+            Toast('存草稿成功')
+            this.$router.push('/newStoreManage/drafts')
           }
         })
-        .catch(function(error) {
-          this.throttle = false;
-          Toast("存草稿失败");
-          this.error(error);
-        });
+        .catch(function (error) {
+          this.throttle = false
+          Toast('存草稿失败')
+          this.error(error)
+        })
     }
   },
-  mounted() {
-    window.scrollTo(0, 0);
+  mounted () {
+    window.scrollTo(0, 0)
   }
-};
+}
 </script>
 
 <style lang="less">
@@ -384,8 +384,8 @@ export default {
   box-sizing: border-box;
 }
 /*.editMain .desc {
-	    margin: 0 10px;
-	    position: relative;
+    margin: 0 10px;
+    position: relative;
 	}*/
 .editMain .desc textarea {
   border: none;

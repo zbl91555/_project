@@ -24,9 +24,9 @@
 
 <style lang="less" scoped>
 	/*
-	 * @border-color: 统一边框颜色
-	 * */
-	
+	* @border-color: 统一边框颜色
+	* */
+
 	@border-color: #e5e5e5;
 	.app-container {
 		min-height: 1234px;

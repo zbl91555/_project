@@ -11,7 +11,7 @@
           <li>成交金额:{{info.true_price}}</li>
           <li>付款时间:{{timestampToTime(parseFloat(info.payment_time))}}</li>
         </ul>
-      </div>      
+      </div>
       <div class="gray"></div>
       <div class="returnmsg">
           <div class="returnheadmsg">收货信息</div>
@@ -42,7 +42,7 @@
             <!-- <div v-if="allSelCompany">请选择快递公司</div> -->
       </div>
       <div class="allFastCompany" v-if="allFastCompany">
-          <div :class="nowindex == index ? 'selected' :''" v-for="(Cpy,index) in info.express" @click="select(index)">{{Cpy.name}}</div>
+          <div :class="nowindex == index ? 'selected' :''" v-for="(Cpy,index) in info.express" :key="Cpy" @click="select(index)">{{Cpy.name}}</div>
           <router-link :to="'/sortTest/'+Id">
              <div @click="select">更多</div>
           </router-link>
@@ -74,79 +74,79 @@
 </template>
 
 <script>
-import { Toast } from "vant";
-import wx from "weixin-js-sdk";
-import assign from "../../../assets/js/assign.js"; //混入式方法
-import { orderDeliverGoods, orderDeliverGoodsSubmit } from "../../../api/api";
+import { Toast } from 'vant'
+import wx from 'weixin-js-sdk'
+import assign from '../../../assets/js/assign.js' // 混入式方法
+import { orderDeliverGoods, orderDeliverGoodsSubmit } from '../../../api/api'
 export default {
   mixins: [assign],
 
-  data() {
+  data () {
     return {
       agree: false,
       info: {},
-      order_id: "",
+      order_id: '',
       allFastCompany: false,
       show: true,
       toDoor: false,
       orderNumbShow: true,
       nowindex: 0,
-      orderNb: "",
-      CompId: "",
-      name: "请选择快递公司",
+      orderNb: '',
+      CompId: '',
+      name: '请选择快递公司',
       allSelCompany: true,
-      Id: "",
+      Id: '',
       unGetshow: false
-    };
+    }
   },
 
   methods: {
-    select(index) {
-      this.nowindex = index;
-      this.CompId = this.info.express[index].type;
-      this.name = this.info.express[index].name;
-      this.allFastCompany = false;
-      this.show = true;
-      this.hide = false;
-      this.allSelCompany = false;
+    select (index) {
+      this.nowindex = index
+      this.CompId = this.info.express[index].type
+      this.name = this.info.express[index].name
+      this.allFastCompany = false
+      this.show = true
+      this.hide = false
+      this.allSelCompany = false
     },
-    sendToDoor() {
-      this.unGetshow = !this.unGetshow;
+    sendToDoor () {
+      this.unGetshow = !this.unGetshow
       if (this.unGetshow) {
-        this.orderNumbShow = false;
-        this.allFastCompany = false;
+        this.orderNumbShow = false
+        this.allFastCompany = false
       } else {
-        this.orderNumbShow = true;
+        this.orderNumbShow = true
       }
     },
-    scan() {
+    scan () {
       wx.scanQRCode({
         needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
-        scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+        scanType: ['qrCode', 'barCode'], // 可以指定扫二维码还是一维码，默认二者都有
         success: res => {
-          let orderNb = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
-          let bool = orderNb.indexOf(",");
-          if (bool == "-1") {
-            this.orderNb = orderNb;
+          let orderNb = res.resultStr // 当needResult 为 1 时，扫码返回的结果
+          let bool = orderNb.indexOf(',')
+          if (bool == '-1') {
+            this.orderNb = orderNb
           } else {
-            let arr = orderNb.split(",");
-            this.orderNb = arr[1];
+            let arr = orderNb.split(',')
+            this.orderNb = arr[1]
           }
         }
-      });
+      })
     },
     // down(){
     //     this.allFastCompany=true;
     //     this.show=false;
     //     this.hide=true
     // },
-    chooseCompany() {
+    chooseCompany () {
       if (this.show) {
-        this.allFastCompany = true;
-        this.show = false;
+        this.allFastCompany = true
+        this.show = false
       } else {
-        this.allFastCompany = false;
-        this.show = true;
+        this.allFastCompany = false
+        this.show = true
       }
     },
     // up(){
@@ -154,58 +154,58 @@ export default {
     //     this.show=true;
     //     this.hide=false
     // },
-    openAgree() {
-      this.agree = true;
+    openAgree () {
+      this.agree = true
     },
-    closeAgree() {
-      this.agree = false;
+    closeAgree () {
+      this.agree = false
     },
-    orderDeliverGoods() {
-      let order_id = this.$route.params.order_id;
-      this.order_id = order_id;
+    orderDeliverGoods () {
+      let order_id = this.$route.params.order_id
+      this.order_id = order_id
       orderDeliverGoods(this.order_id)
         .then(res => {
-          this.info = res.data;
+          this.info = res.data
         })
         .catch(err => {
-          console.log(err.data.message);
-        });
+          console.log(err.data.message)
+        })
     },
-    faHuo() {
-      let order_id = this.$route.params.order_id;
-      let params;
+    faHuo () {
+      let order_id = this.$route.params.order_id
+      let params
       if (this.unGetshow) {
         params = {
-          is_express: 2 //1普通发货 2 送货上门
-        };
+          is_express: 2 // 1普通发货 2 送货上门
+        }
       } else {
         params = {
-          is_express: 1, //1普通发货 2 送货上门
+          is_express: 1, // 1普通发货 2 送货上门
           code: this.orderNb,
           express: this.CompId
-        };
+        }
       }
       orderDeliverGoodsSubmit(order_id, params)
         .then(res => {
-          sessionStorage.setItem("deliverGoods", "true");
-          this.$router.push("/orderDetail/" + order_id);
+          sessionStorage.setItem('deliverGoods', 'true')
+          this.$router.push('/orderDetail/' + order_id)
           // console.log(res.data);
           // this.agree=false;
         })
         .catch(err => {
-          if (err.data.code == "400") {
-            Toast(err.data.message);
+          if (err.data.code == '400') {
+            Toast(err.data.message)
           }
-        });
+        })
     }
   },
-  mounted() {
-    this.Id = this.$route.params.order_id;
-    this.name = this.$route.params.name;
-    this.CompId = this.$route.params.type;
-    this.orderDeliverGoods();
+  mounted () {
+    this.Id = this.$route.params.order_id
+    this.name = this.$route.params.name
+    this.CompId = this.$route.params.type
+    this.orderDeliverGoods()
   }
-};
+}
 </script>
 
 <style scoped>

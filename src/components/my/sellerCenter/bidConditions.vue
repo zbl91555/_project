@@ -21,70 +21,70 @@
     </div>
 </template>
 <script>
-  import {bidConditions,bidSave} from '../../../api/api'
+import {bidConditions, bidSave} from '../../../api/api'
 export default {
-  data() {
+  data () {
     return {
-      store:[],
-      check:false,
-      checked:'',
-      old:''
-    };
+      store: [],
+      check: false,
+      checked: '',
+      old: ''
+    }
   },
-  methods: { 
-    bidConditions(){
-      let _this = this;     
-     bidConditions().then(function (response) { 
-         if(response.code==200){
-          if(response.data=='1'){
+  methods: {
+    bidConditions () {
+      let _this = this
+      bidConditions().then(function (response) {
+        if (response.code == 200) {
+          if (response.data == '1') {
             _this.switchBtn()
             _this.check = true
-          }else{
+          } else {
             _this.check = false
           }
         }
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+        .catch(function (error) {
+          console.log(error)
+        })
     },
-    switchBtn(){
-      if(this.check == true){
+    switchBtn () {
+      if (this.check == true) {
         this.check = false
         this.checked = 0
-      }else{
+      } else {
         this.check = true
         this.checked = 1
       }
     },
-    bidSave(){
-      if(this.old ==  this.checked){
-         this.$router.push('/sellerCenter/sellerSetting');
-      } else{
+    bidSave () {
+      if (this.old == this.checked) {
+        this.$router.push('/sellerCenter/sellerSetting')
+      } else {
         let params = {
           is_weiyue: this.checked
-        };
-        bidSave(params).then(res =>{ 
-          if(res.code==200){
-            this.$router.push('/sellerCenter/sellerSetting');
+        }
+        bidSave(params).then(res => {
+          if (res.code == 200) {
+            this.$router.push('/sellerCenter/sellerSetting')
           }
         })
-        .catch(err =>{
-          console.log(error);
-        });
-        }
+          .catch(err => {
+            console.log(error)
+          })
+      }
     }
-  }, 
-  mounted() {
+  },
+  mounted () {
     this.old = this.$route.params.setting
-    if(this.old == '未开启'){
-        this.old = 0
-    }else if(this.old == '已开启'){
-        this.old = 1
+    if (this.old == '未开启') {
+      this.old = 0
+    } else if (this.old == '已开启') {
+      this.old = 1
     }
-    this.bidConditions();
-  }, 
-};
+    this.bidConditions()
+  }
+}
 </script>
 <style scoped>
   .bidConditions {
@@ -208,5 +208,5 @@ export default {
         -webkit-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
     }
-  
-</style>	
+
+</style>

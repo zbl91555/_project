@@ -2,12 +2,12 @@
   <div class="addressInformation">
   <div class="manage">
      <i class="icon-xiaofeimingxidan iconfont"></i>
-     <router-link :to="'/member/receiveAddress/user/pay/'+orderId"> 
+     <router-link :to="'/member/receiveAddress/user/pay/'+orderId">
      <i style="font-size:14px">管理</i>
-     </router-link> 
+     </router-link>
   </div>
     <div class="addressMain">
-        <div class="addersList" v-for = "(item,index) in Address">
+        <div class="addersList" v-for = "(item) in Address" :key="item">
             <div class="address default" @click="routerLink(item)">
                 <div class="userInfo">
                     <span>{{item.name}}</span>
@@ -35,48 +35,48 @@
   </div>
 </template>
 <script>
-import { addressList } from "../../api/api";
+import { addressList } from '../../api/api'
 export default {
-  props: ["orderId", "whichP", "value"],
-  data() {
+  props: ['orderId', 'whichP', 'value'],
+  data () {
     return {
       Address: [],
-      type: "order",
-      id: ""
-    };
-  },
-  beforeRouteLeave(to, from, next) {
-    if (to.name == "payNow") {
-      this.$emit("input", true);
+      type: 'order',
+      id: ''
     }
-    next();
+  },
+  beforeRouteLeave (to, from, next) {
+    if (to.name == 'payNow') {
+      this.$emit('input', true)
+    }
+    next()
   },
   methods: {
-    routerLink(item) {
-      sessionStorage.setItem('address',JSON.stringify(item));
-      this.$router.push('/payment?order_id=' + sessionStorage.getItem('order_id') + '&address=1');
+    routerLink (item) {
+      sessionStorage.setItem('address', JSON.stringify(item))
+      this.$router.push('/payment?order_id=' + sessionStorage.getItem('order_id') + '&address=1')
     },
-    addressList() {
-      let _this = this;
+    addressList () {
+      let _this = this
       let params = {
-        type: "user"
-      };
+        type: 'user'
+      }
       addressList(params)
-        .then(function(response) {
-          _this.Address = response.data;
+        .then(function (response) {
+          _this.Address = response.data
         })
-        .catch(function(error) {
-          console.log(error);
-        });
+        .catch(function (error) {
+          console.log(error)
+        })
     }
   },
-  mounted() {
-    this.$emit("input", false);
-    this.addressList();
-    this.type = this.$route.query.type;
-    this.id = this.$route.query.id;
+  mounted () {
+    this.$emit('input', false)
+    this.addressList()
+    this.type = this.$route.query.type
+    this.id = this.$route.query.id
   }
-};
+}
 </script>
 <style scoped>
 .addressInformation {

@@ -9,7 +9,7 @@
         <i class="iconfont icon-right"></i>
       </div>
       <div class="phone">
-         <input type="number" class="phonenumber" name="phonenumber" placeholder="请输入手机号" 
+         <input type="number" class="phonenumber" name="phonenumber" placeholder="请输入手机号"
         v-on:input ="choose()"  ref="input1" v-model="phone">
       </div>
       <i class="tipe" v-show="verificationCode"> {{tipe}} </i>
@@ -24,7 +24,7 @@
         <i class="time">{{count}}s</i>
       </div>
       <div class="phone">
-        <input type="number" class="validationnumber" name="validationnumber" placeholder="请输入验证码" 
+        <input type="number" class="validationnumber" name="validationnumber" placeholder="请输入验证码"
         v-on:input ="chooses()"  ref="input2"  v-model="message">
       </div>
       <i class="tipe" v-show="verificationCodes"> {{tipes}} </i>
@@ -35,112 +35,112 @@
 </template>
 
 <script>
-import { getLoginMobileCode, loginMobile } from "../api/api";
+import { getLoginMobileCode, loginMobile } from '../api/api'
 export default {
-  name: "login",
-  data() {
+  name: 'login',
+  data () {
     return {
       show: true,
       shows: false,
-      count: "",
+      count: '',
       hasvalidation: false,
       hasvalidations: false,
       verificationCode: false,
       verificationCodes: false,
-      phone: "",
-      tipe: "",
-      tipes: "",
-      message: "",
-      key: ""
-    };
+      phone: '',
+      tipe: '',
+      tipes: '',
+      message: '',
+      key: ''
+    }
   },
   methods: {
-    close() {
-      let _this = this;
-      _this.show = false;
+    close () {
+      let _this = this
+      _this.show = false
     },
-    closes() {
-      let _this = this;
-      _this.shows = false;
+    closes () {
+      let _this = this
+      _this.shows = false
     },
-    //下一步
-    nextStep() {
-      let _this = this;
-      let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
-      if (_this.phone == "") {
-        _this.verificationCode = true;
-        _this.tipe = "*请输入手机号！";
+    // 下一步
+    nextStep () {
+      let _this = this
+      let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/
+      if (_this.phone == '') {
+        _this.verificationCode = true
+        _this.tipe = '*请输入手机号！'
       } else if (!reg.test(this.phone)) {
-        _this.verificationCode = true;
-        _this.tipe = "*手机号输入有误，请重新输入！";
+        _this.verificationCode = true
+        _this.tipe = '*手机号输入有误，请重新输入！'
       } else {
-        _this.show = false;
-        _this.shows = true;
-        const TIME_COUNT = 60;
-        localStorage.setItem("phone", this.phone);
+        _this.show = false
+        _this.shows = true
+        const TIME_COUNT = 60
+        localStorage.setItem('phone', this.phone)
         if (!this.timer) {
-          this.count = TIME_COUNT;
+          this.count = TIME_COUNT
           this.timer = setInterval(() => {
             if (this.count > 0 && this.count <= TIME_COUNT) {
-              this.count--;
+              this.count--
             } else {
-              this.show = true;
-              clearInterval(this.timer);
-              this.timer = null;
+              this.show = true
+              clearInterval(this.timer)
+              this.timer = null
             }
-          }, 1000);
-          this.getCode();
+          }, 1000)
+          this.getCode()
         }
       }
     },
-    //获取验证码
-    getCode() {
+    // 获取验证码
+    getCode () {
       let params = {
         phone: this.phone,
         type: 0
-      };
+      }
       getLoginMobileCode(params)
         .then(response => {
           if (response.code == 200) {
-            this.key = response.data.key;
+            this.key = response.data.key
           }
         })
-        .catch(function(error) {
-          console.log(error);
-        });
+        .catch(function (error) {
+          console.log(error)
+        })
     },
-    //登录
-    login() {
-      let _this = this;
-      if (_this.message == "") {
-        _this.verificationCodes = true;
-        _this.tipes = "*请输入验证码！";
+    // 登录
+    login () {
+      let _this = this
+      if (_this.message == '') {
+        _this.verificationCodes = true
+        _this.tipes = '*请输入验证码！'
       } else if (!(_this.message.length == 4)) {
-        _this.verificationCodes = true;
-        _this.tipes = "*验证码输入有误，请重新输入！";
+        _this.verificationCodes = true
+        _this.tipes = '*验证码输入有误，请重新输入！'
       } else {
-        _this.verificationCodes = false;
-        _this.logins();
+        _this.verificationCodes = false
+        _this.logins()
       }
     },
-    logins() {
-      let _this = this;
+    logins () {
+      let _this = this
       let params = {
         verification_key: _this.key,
         verification_code: _this.message,
         type: 0
-      };
+      }
       loginMobile(params)
         .then(response => {
           if (response.code == 200) {
-            if (response.message === "已经登陆") {
-              _this.$router.push({ path: "/recommend" });
-              return;
+            if (response.message === '已经登陆') {
+              _this.$router.push({ path: '/recommend' })
+              return
             }
             if (response.data.userInfo.type) {
-              localStorage.setItem("mylink", true);
+              localStorage.setItem('mylink', true)
             } else {
-              localStorage.setItem("mylink", false);
+              localStorage.setItem('mylink', false)
             }
             // cookies.set('Id', response.data.data.auth_id)
             // cookies.setItem('token', response.data.data.access_token)
@@ -148,41 +148,41 @@ export default {
             // sessionStorage.setItem('token', response.data.access_token)
             // _this.$router.push({name:'author',params:{mobile:_this.phone}})
             _this.$store
-              .dispatch("loginSuccess", response.data)
+              .dispatch('loginSuccess', response.data)
               .then(response => {
-                //alert('登陆成功跳转首页')
-                _this.$router.push({ path: "/home" });
-              });
+                // alert('登陆成功跳转首页')
+                _this.$router.push({ path: '/home' })
+              })
           }
         })
-        .catch(function(error) {
-          console.log(error);
-        });
+        .catch(function (error) {
+          console.log(error)
+        })
     },
-    choose() {
-      let _this = this;
-      if (_this.$refs.input1.value == "") {
-        _this.hasvalidation = false;
+    choose () {
+      let _this = this
+      if (_this.$refs.input1.value == '') {
+        _this.hasvalidation = false
       } else {
-        _this.hasvalidation = true;
+        _this.hasvalidation = true
       }
     },
-    chooses() {
-      let _this = this;
-      if (_this.$refs.input2.value == "") {
-        _this.hasvalidations = false;
+    chooses () {
+      let _this = this
+      if (_this.$refs.input2.value == '') {
+        _this.hasvalidations = false
       } else {
-        _this.hasvalidations = true;
+        _this.hasvalidations = true
       }
     }
   },
-  created() {
-    if (localStorage.getItem("phone")) {
-      this.hasvalidation = true;
-      this.phone = localStorage.getItem("phone");
+  created () {
+    if (localStorage.getItem('phone')) {
+      this.hasvalidation = true
+      this.phone = localStorage.getItem('phone')
     }
   }
-};
+}
 </script>
 
 <style scoped>

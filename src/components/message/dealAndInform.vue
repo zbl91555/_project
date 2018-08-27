@@ -33,26 +33,26 @@
 			</div>
 		</div>
 		<Navbar num='3'></Navbar>
-	</div>		
+	</div>
 </template>
 <script>
-import Navbar from "../common/Navbar";
+import Navbar from '../common/Navbar'
 export default {
-	components: {
-    	Navbar
-  	},
-  	data(){
-  		return{
+  components: {
+    Navbar
+  },
+  data () {
+    return {
 
-  		}
-  	}
+    }
+  }
 }
 </script>
 <style scoped>
 	.dealAndInform{
 		background: #f4f4f4;
 		min-height: 1500px
-	}    
+	}
 	.title{
 		overflow: hidden;
 		padding-right: 160px;
@@ -60,7 +60,7 @@ export default {
 	}
 	.floatl{
 		float: left;
-		height: 100px; 
+		height: 100px;
 		width: 200px;
 		border-bottom: 2px solid red;
 		color: red;
@@ -71,7 +71,7 @@ export default {
 	}
 	.floatr{
 		float: right;
-		height: 100px; 
+		height: 100px;
 		width: 200px;
 		line-height: 100px;
 		text-align: center;
@@ -119,8 +119,8 @@ export default {
 		height: 140px;
 		background-image: url('../../assets/images/maijia2.png');
 		background-repeat: no-repeat;
-	    background-position: center;
-	    background-size: cover;
+		background-position: center;
+		background-size: cover;
 	}
 	.orderlistnum{
 		margin-top: 40px

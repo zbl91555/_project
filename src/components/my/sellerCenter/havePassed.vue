@@ -4,7 +4,7 @@
         <div>
           <div>
               <div class="checkselect" v-if="checkselectshow">
-                <!-- <input @click="allselect" class="allScla" id="check" name="allcheck" type="checkbox" ref="allselects"> -->
+                <!--<input @click="allselect" class="allScla" id="check" name="allcheck" type="checkbox" ref="allselects"> -->
                 <div class="allChecked" @click.stop="allselect"><span class="iconfont" :class="allChecked ? 'icon-duihao2' : 'icon-right-1'"></span></div>
                 <div class="mgleft" for="check">全选</div>
                 <button class="selectsomeup" @click="selectsomeup()">{{allids.length >=2? '批量上架' : '上架'}}</button>
@@ -27,7 +27,7 @@
                         {{s.auction_description}}
                       </p>
                         <ul class="otherInfo">
-                          <!-- <li><span>&nbsp;</span></li> -->                
+                          <!-- <li><span>&nbsp;</span></li> -->
                           <li>流拍时间: {{timestampToTime(s.end_time)}}</li>
                         </ul>
                     </div>
@@ -53,23 +53,23 @@
           <div>是否确认重新上架</div>
           <div style="color:rgb(181, 84, 89)" @click.stop="grounding">确定</div>
           <span class="grayTop"></span>
-          <div class="cancelTop" @click="closeshowlists()">取消 </div> 
+          <div class="cancelTop" @click="closeshowlists()">取消 </div>
         </div>
         <!-- 删除 -->
         <div v-if="del">
          <div>确认删除？</div>
          <div @click="somedown">确认</div>
          <span class="grayTop"></span>
-         <div class="cancelTop" @click="closeshowlists()">取消 </div> 
+         <div class="cancelTop" @click="closeshowlists()">取消 </div>
         </div>
         <!-- 修改状态 -->
         <div v-if="hide">
           <div>确认更改当前状态？</div>
           <div @click="swichStatus(isshowIndex)">确认</div>
           <span class="grayTop"></span>
-          <div class="cancelTop" @click="closeshowlists()">取消 </div> 
+          <div class="cancelTop" @click="closeshowlists()">取消 </div>
         </div>
-         
+
          <!-- <div v-if="confirmdelete" @click="singledelete(isshowIndex)">确认</div> -->
       </div>
     </div>
@@ -81,24 +81,24 @@
                 <div class="title">
                   {{nowday}}(今天)
                 </div>
-                <div> 
+                <div>
                   <span class="hourItem" v-for="(item,index) in times" @click="chosenSelection(index)" :class="{selected:index===nowindex}" :key="index">{{item}}</span>
-                </div>  
-              </div>    
-              <div class="dayItem">  
-                <div class="title">  
-                  {{tomorrow}}(明天)  
-                </div>   
-                <div>                                     
-                  <span class="hourItem" v-for="(item,index) in tmortimes" @click="chosenSelection2(index)" :class="{selected:index===nnowindex}" :key="index">{{item}}</span>         
                 </div>
               </div>
-              <div class="dayItem" v-if="ttomorrowshow">  
-                <div class="title">  
-                  {{ttomorrow}}(后天)  
-                </div>   
-                <div>                                     
-                  <span class="hourItem" v-for="(item,index) in ttmortimes" @click="chosenSelection3(index)" :class="{selected:index===nnnowindex}" :key="index">{{item}}</span>         
+              <div class="dayItem">
+                <div class="title">
+                  {{tomorrow}}(明天)
+                </div>
+                <div>
+                  <span class="hourItem" v-for="(item,index) in tmortimes" @click="chosenSelection2(index)" :class="{selected:index===nnowindex}" :key="index">{{item}}</span>
+                </div>
+              </div>
+              <div class="dayItem" v-if="ttomorrowshow">
+                <div class="title">
+                  {{ttomorrow}}(后天)
+                </div>
+                <div>
+                  <span class="hourItem" v-for="(item,index) in ttmortimes" @click="chosenSelection3(index)" :class="{selected:index===nnnowindex}" :key="index">{{item}}</span>
                 </div>
               </div>
               <div class="cbtnItem">
@@ -114,8 +114,8 @@
           </div>
 </template>
 <script>
-import { Toast } from "vant";
-import { LoadMore } from "vux";
+import { Toast } from 'vant'
+import { LoadMore } from 'vux'
 import {
   getstore,
   somedown,
@@ -124,47 +124,47 @@ import {
   swichhide,
   singledown,
   singledelete
-} from "../../../api/api";
+} from '../../../api/api'
 export default {
-  data() {
+  data () {
     return {
       times: [
-        "10:00",
-        "12:00",
-        "16:00",
-        "17:00",
-        "19:00",
-        "20:00",
-        "21:00",
-        "22:00",
-        "23:00"
+        '10:00',
+        '12:00',
+        '16:00',
+        '17:00',
+        '19:00',
+        '20:00',
+        '21:00',
+        '22:00',
+        '23:00'
       ],
       tmortimes: [
-        "10:00",
-        "12:00",
-        "16:00",
-        "17:00",
-        "19:00",
-        "20:00",
-        "21:00",
-        "22:00",
-        "23:00"
+        '10:00',
+        '12:00',
+        '16:00',
+        '17:00',
+        '19:00',
+        '20:00',
+        '21:00',
+        '22:00',
+        '23:00'
       ],
       ttmortimes: [
-        "10:00",
-        "12:00",
-        "16:00",
-        "17:00",
-        "19:00",
-        "20:00",
-        "21:00",
-        "22:00",
-        "23:00"
+        '10:00',
+        '12:00',
+        '16:00',
+        '17:00',
+        '19:00',
+        '20:00',
+        '21:00',
+        '22:00',
+        '23:00'
       ],
       changeRed: 0,
       store: [],
-      liupaiStore: [], //已流拍
-      type: "auctioning",
+      liupaiStore: [], // 已流拍
+      type: 'auctioning',
       pagenum: 8,
       page: 0,
       auctioning: true,
@@ -188,18 +188,18 @@ export default {
       nowindex: -1,
       nnowindex: -1,
       nnnowindex: -1,
-      year: "",
-      month: "",
-      day: "",
-      totaltime: "",
-      oneid: "",
+      year: '',
+      month: '',
+      day: '',
+      totaltime: '',
+      oneid: '',
       confirmupshow: false,
       someconfirmupshow: false,
       tohide: false,
       toshow: false,
       isBusy: false,
       showshowlists: false,
-      isshowIndex: "",
+      isshowIndex: '',
       updown: false,
       hide: false,
       del: false,
@@ -210,379 +210,379 @@ export default {
       count: 0,
       loading: false,
       elseloading: false,
-      textGrounding: "上架",
-      textDelete: "删除",
+      textGrounding: '上架',
+      textDelete: '删除',
       indexs: [],
       flag: false,
       xiajia: true,
       deleteArr: [],
-      img: require("../../../assets/images/beat.png"), //无数据时 显示的图片
-      dataNotAvailable: false, //无数据时 是否展示
-      allChecked: false //全选按钮
-    };
+      img: require('../../../assets/images/beat.png'), // 无数据时 显示的图片
+      dataNotAvailable: false, // 无数据时 是否展示
+      allChecked: false // 全选按钮
+    }
   },
   components: {
     LoadMore
   },
   computed: {
-    isLiupai() {
-      return this.type == "liupai";
+    isLiupai () {
+      return this.type == 'liupai'
     }
   },
-  created() {
-    this.count = this.pagenum;
-    window.addEventListener("scroll", this.scrollHandler);
+  created () {
+    this.count = this.pagenum
+    window.addEventListener('scroll', this.scrollHandler)
   },
 
-  destroyed() {
-    window.removeEventListener("scroll", this.scrollHandler);
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollHandler)
   },
   methods: {
-    grounding() {
-      //上架
+    grounding () {
+      // 上架
       if (!this.liupaiStore[this.indexs[0]].is_can) {
-        this.$router.push("/nextUpload/" + this.allids[0]);
+        this.$router.push('/nextUpload/' + this.allids[0])
       } else {
-        this.$router.push("/upload/" + this.allids[0]);
+        this.$router.push('/upload/' + this.allids[0])
       }
     },
-    isSwichHide(indexs, type) {
-      this.isshowIndex = indexs;
-      this.showshowlists = true;
-      this.hide = false;
-      this.del = false;
-      this.xiajia = false;
-      if (type == "show" || type == "hide") {
-        //显示隐藏
-        this.hide = true;
-      } else if (type == "somedelete") {
-        //删除
+    isSwichHide (indexs, type) {
+      this.isshowIndex = indexs
+      this.showshowlists = true
+      this.hide = false
+      this.del = false
+      this.xiajia = false
+      if (type == 'show' || type == 'hide') {
+        // 显示隐藏
+        this.hide = true
+      } else if (type == 'somedelete') {
+        // 删除
         if (this.allids.length == 0) {
-          Toast("请选择拍品");
-          return;
+          Toast('请选择拍品')
+          return
         }
-        this.del = true;
-      } else if (type == "grounding") {
-        //上架
-        this.xiajia = true;
+        this.del = true
+      } else if (type == 'grounding') {
+        // 上架
+        this.xiajia = true
       }
     },
-    //关闭
-    closeshowlists() {
-      this.showshowlists = false;
+    // 关闭
+    closeshowlists () {
+      this.showshowlists = false
     },
-    toWhere(id) {
-      if (this.type == "caogao") {
-        return;
+    toWhere (id) {
+      if (this.type == 'caogao') {
+        return
       }
-      if (this.type == "shibai") {
-        this.$router.push({ path: "/orderDetail/" + id });
-      } else this.$router.push({ path: "/auction/" + id });
+      if (this.type == 'shibai') {
+        this.$router.push({ path: '/orderDetail/' + id })
+      } else this.$router.push({ path: '/auction/' + id })
     },
 
-    //隐藏
-    swichStatus: function(index) {
+    // 隐藏
+    swichStatus: function (index) {
       if (this.flag) {
-        return false;
+        return false
       }
-      let _this = this;
-      _this.numBer = _this.liupaiStore[index].is_show;
-      let type = "";
-      if (_this.numBer == "0") {
-        type = "hide";
+      let _this = this
+      _this.numBer = _this.liupaiStore[index].is_show
+      let type = ''
+      if (_this.numBer == '0') {
+        type = 'hide'
       } else {
-        type = "show";
+        type = 'show'
       }
-      let hideid = this.liupaiStore[index].id;
+      let hideid = this.liupaiStore[index].id
       let params = {
         type: type
-      };
+      }
       swichhide(params, hideid)
         .then(response => {
-          _this.showshowlists = false;
-          _this.liupaiStore[index].is_show = response.message;
-          this.flag = false;
+          _this.showshowlists = false
+          _this.liupaiStore[index].is_show = response.message
+          this.flag = false
         })
         .catch(error => {
-          console.log(error);
-          this.flag = false;
-        });
+          console.log(error)
+          this.flag = false
+        })
     },
-    //取消
-    cancel: function() {
-      this.pupup = false;
+    // 取消
+    cancel: function () {
+      this.pupup = false
     },
-    //注册scroll事件并监听
-    scrollHandler() {
-      const st = document.documentElement.scrollTop || document.body.scrollTop;
-      const ch = this.$refs.ctn.clientHeight;
+    // 注册scroll事件并监听
+    scrollHandler () {
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      const ch = this.$refs.ctn.clientHeight
       if (st + window.innerHeight >= ch) {
-        this.getstore();
+        this.getstore()
       }
     },
-    sendParames(e) {
+    sendParames (e) {
       this.$router.push({
-        path: "goodsDetails",
+        path: 'goodsDetails',
         query: {
           id: e
         }
-      });
+      })
     },
-    checktime() {
-      let dd = new Date();
-      let hour = dd.getHours();
+    checktime () {
+      let dd = new Date()
+      let hour = dd.getHours()
       if (hour < 10) {
-        this.times = this.times.slice(0);
+        this.times = this.times.slice(0)
       } else if (hour >= 10 && hour < 12) {
-        this.times = this.times.slice(1);
-        this.ttmortimes = this.ttmortimes.slice(0, 1);
-        this.ttomorrowshow = true;
+        this.times = this.times.slice(1)
+        this.ttmortimes = this.ttmortimes.slice(0, 1)
+        this.ttomorrowshow = true
       } else if (hour >= 12 && hour < 16) {
-        this.times = this.times.slice(2);
-        this.ttmortimes = this.ttmortimes.slice(0, 2);
-        this.ttomorrowshow = true;
+        this.times = this.times.slice(2)
+        this.ttmortimes = this.ttmortimes.slice(0, 2)
+        this.ttomorrowshow = true
       } else if (hour >= 16 && hour < 17) {
-        this.times = this.times.slice(3);
-        this.ttmortimes = this.ttmortimes.slice(0, 3);
-        this.ttomorrowshow = true;
+        this.times = this.times.slice(3)
+        this.ttmortimes = this.ttmortimes.slice(0, 3)
+        this.ttomorrowshow = true
       } else if (hour >= 17 && hour < 19) {
-        this.times = this.times.slice(4);
-        this.ttmortimes = this.ttmortimes.slice(0, 4);
-        this.ttomorrowshow = true;
+        this.times = this.times.slice(4)
+        this.ttmortimes = this.ttmortimes.slice(0, 4)
+        this.ttomorrowshow = true
       } else if (hour >= 19 && hour < 20) {
-        this.times = this.times.slice(5);
-        this.ttmortimes = this.ttmortimes.slice(0, 5);
-        this.ttomorrowshow = true;
+        this.times = this.times.slice(5)
+        this.ttmortimes = this.ttmortimes.slice(0, 5)
+        this.ttomorrowshow = true
       } else if (hour >= 20 && hour < 21) {
-        this.times = this.times.slice(6);
-        this.ttmortimes = this.ttmortimes.slice(0, 6);
-        this.ttomorrowshow = true;
+        this.times = this.times.slice(6)
+        this.ttmortimes = this.ttmortimes.slice(0, 6)
+        this.ttomorrowshow = true
       } else if (hour >= 21 && hour < 22) {
-        this.times = this.times.slice(7);
-        this.ttmortimes = this.ttmortimes.slice(0, 7);
-        this.ttomorrowshow = true;
+        this.times = this.times.slice(7)
+        this.ttmortimes = this.ttmortimes.slice(0, 7)
+        this.ttomorrowshow = true
       } else if (hour >= 22 && hour < 23) {
-        this.times = this.times.slice(8);
-        this.ttmortimes = this.ttmortimes.slice(0, 8);
-        this.ttomorrowshow = true;
+        this.times = this.times.slice(8)
+        this.ttmortimes = this.ttmortimes.slice(0, 8)
+        this.ttomorrowshow = true
       } else if (hour >= 23) {
-        this.todayshow = false;
-        this.ttomorrowshow = true;
+        this.todayshow = false
+        this.ttomorrowshow = true
       }
     },
-    chosenSelection(index) {
-      this.nnowindex = -1;
-      this.nowindex = index;
-      this.nnnowindex = -1;
-      let hms = this.times[index];
-      this.seltime(index, 0, hms);
+    chosenSelection (index) {
+      this.nnowindex = -1
+      this.nowindex = index
+      this.nnnowindex = -1
+      let hms = this.times[index]
+      this.seltime(index, 0, hms)
     },
-    chosenSelection2(index) {
-      this.nowindex = -1;
-      this.nnowindex = index;
-      this.nnnowindex = -1;
-      let hms = this.tmortimes[index];
-      this.seltime(index, 1, hms);
+    chosenSelection2 (index) {
+      this.nowindex = -1
+      this.nnowindex = index
+      this.nnnowindex = -1
+      let hms = this.tmortimes[index]
+      this.seltime(index, 1, hms)
     },
-    chosenSelection3(index) {
-      this.nowindex = -1;
-      this.nnnowindex = index;
-      this.nnowindex = -1;
-      let hms = this.ttmortimes[index];
-      this.seltime(index, 2, hms);
+    chosenSelection3 (index) {
+      this.nowindex = -1
+      this.nnnowindex = index
+      this.nnowindex = -1
+      let hms = this.ttmortimes[index]
+      this.seltime(index, 2, hms)
     },
-    seltime(index, whatday, hms) {
-      let dd = new Date();
-      this.year = dd.getFullYear().toString();
-      this.month = (dd.getMonth() + 1).toString();
-      this.day = (dd.getDate() + whatday).toString();
-      let change = this.year + "/" + this.month + "/" + this.day + " " + hms;
-      this.totaltime = Date.parse(new Date(change)) / 1000;
+    seltime (index, whatday, hms) {
+      let dd = new Date()
+      this.year = dd.getFullYear().toString()
+      this.month = (dd.getMonth() + 1).toString()
+      this.day = (dd.getDate() + whatday).toString()
+      let change = this.year + '/' + this.month + '/' + this.day + ' ' + hms
+      this.totaltime = Date.parse(new Date(change)) / 1000
     },
-    getday() {
-      this.nowday = this.GetDateStr(0);
-      this.tomorrow = this.GetDateStr(1);
-      this.ttomorrow = this.GetDateStr(2);
+    getday () {
+      this.nowday = this.GetDateStr(0)
+      this.tomorrow = this.GetDateStr(1)
+      this.ttomorrow = this.GetDateStr(2)
     },
-    GetDateStr(AddDayCount) {
-      let dd = new Date();
-      dd.setDate(dd.getDate() + AddDayCount); //获取AddDayCount天后的日期
-      let y = dd.getFullYear();
-      let m = dd.getMonth() + 1; //获取当前月份的日期
-      let d = dd.getDate();
+    GetDateStr (AddDayCount) {
+      let dd = new Date()
+      dd.setDate(dd.getDate() + AddDayCount) // 获取AddDayCount天后的日期
+      let y = dd.getFullYear()
+      let m = dd.getMonth() + 1 // 获取当前月份的日期
+      let d = dd.getDate()
       if (m < 10) {
-        m = "0" + m;
+        m = '0' + m
       }
       if (d < 10) {
-        d = "0" + d;
+        d = '0' + d
       }
-      return m + "月" + d + "日";
+      return m + '月' + d + '日'
     },
-    exit() {
-      this.pupup = false;
+    exit () {
+      this.pupup = false
     },
-    //获取列表
-    getstore() {
+    // 获取列表
+    getstore () {
       if (this.count == 0) {
-        return;
+        return
       }
-      this.loading = true;
-      let _this = this;
-      this.page += 1;
+      this.loading = true
+      let _this = this
+      this.page += 1
       let params = {
         page: this.page,
         pagenum: this.pagenum,
-        type: "liupai"
-      };
+        type: 'liupai'
+      }
       getstore(params)
         .then(response => {
           if (response.code == 200) {
             for (let i = 0; i < response.data.length; i++) {
               if (this.allChecked) {
-                response.data[i].checked = true;
+                response.data[i].checked = true
               } else {
-                response.data[i].checked = false;
+                response.data[i].checked = false
               }
             }
-            _this.liupaiStore = _this.liupaiStore.concat(response.data);
+            _this.liupaiStore = _this.liupaiStore.concat(response.data)
             if (_this.liupaiStore.length != 0) {
-              _this.checkselectshow = true;
+              _this.checkselectshow = true
             } else {
-              _this.checkselectshow = false;
+              _this.checkselectshow = false
             }
-            this.count = response.data.length;
-            this.loading = false;
+            this.count = response.data.length
+            this.loading = false
           }
         })
         .catch(error => {
-          this.dataNotAvailable = this.liupaiStore.length == 0;
-          this.loading = false;
-          this.elseloading = true;
-          this.count = 0;
-          console.log(error);
-        });
+          this.dataNotAvailable = this.liupaiStore.length == 0
+          this.loading = false
+          this.elseloading = true
+          this.count = 0
+          console.log(error)
+        })
     },
-    //删除
-    somedown() {
+    // 删除
+    somedown () {
       if (this.flag) {
-        return false;
+        return false
       }
-      this.flag = true;
+      this.flag = true
       let params = {
         auc_id: this.allids
-      };
+      }
       somedown(params)
         .then(response => {
           if (response.code == 200) {
-            this.showshowlists = false;
-            this.flag = false;
-            //数据清除
-            let num = 0;
+            this.showshowlists = false
+            this.flag = false
+            // 数据清除
+            let num = 0
             for (let i = 0, len = this.deleteArr.length; i < len; i++) {
-              num = this.liupaiStore.indexOf(this.deleteArr[i]);
-              this.liupaiStore.splice(num, 1);
+              num = this.liupaiStore.indexOf(this.deleteArr[i])
+              this.liupaiStore.splice(num, 1)
             }
             if (this.allChecked) {
-              this.allChecked = false;
+              this.allChecked = false
             }
-            //选中的数据清空
-            this.allids = [];
-            this.indexs = [];
-            this.deleteArr = [];
+            // 选中的数据清空
+            this.allids = []
+            this.indexs = []
+            this.deleteArr = []
           }
         })
         .catch(error => {
-          this.flag = false;
-          console.log(error);
-        });
+          this.flag = false
+          console.log(error)
+        })
     },
-    //选中全选
-    allselect() {
-      this.allids = [];
-      this.indexs = [];
-      this.deleteArr = [];
-      this.allChecked = !this.allChecked;
+    // 选中全选
+    allselect () {
+      this.allids = []
+      this.indexs = []
+      this.deleteArr = []
+      this.allChecked = !this.allChecked
       for (let i = 0; i < this.liupaiStore.length; i++) {
         if (this.allChecked) {
-          this.liupaiStore[i].checked = true;
-          this.allids.push(this.liupaiStore[i].id);
-          this.deleteArr.push(this.liupaiStore[i]);
-          this.indexs.push(i);
+          this.liupaiStore[i].checked = true
+          this.allids.push(this.liupaiStore[i].id)
+          this.deleteArr.push(this.liupaiStore[i])
+          this.indexs.push(i)
         } else {
-          this.liupaiStore[i].checked = false;
+          this.liupaiStore[i].checked = false
         }
       }
     },
-    //选中数据 单选
-    singleselect(id, index, item) {
-      let num = this.allids.indexOf(id);
+    // 选中数据 单选
+    singleselect (id, index, item) {
+      let num = this.allids.indexOf(id)
       if (num > -1) {
-        this.allids.splice(num, 1);
-        this.indexs.splice(num, 1);
-        this.deleteArr.splice(num, 1);
-        item.checked = false;
+        this.allids.splice(num, 1)
+        this.indexs.splice(num, 1)
+        this.deleteArr.splice(num, 1)
+        item.checked = false
       } else {
-        this.allids.push(id);
-        this.indexs.push(index);
-        item.checked = true;
+        this.allids.push(id)
+        this.indexs.push(index)
+        item.checked = true
         // let data = JSON.stringify(item);
         // this.deleteArr.push(JSON.parse(data));
-        this.deleteArr.push(item);
+        this.deleteArr.push(item)
       }
       if (this.allids.length === this.liupaiStore.length) {
-        this.allChecked = true;
+        this.allChecked = true
       } else {
-        this.allChecked = false;
+        this.allChecked = false
       }
     },
-    cancelbts() {
-      this.btnsshow = false;
+    cancelbts () {
+      this.btnsshow = false
     },
-    //判断当前上传数量
-    selectsomeup() {
+    // 判断当前上传数量
+    selectsomeup () {
       if (this.allids.length > 1) {
-        this.pupup = true;
+        this.pupup = true
       } else if (this.allids.length == 1) {
-        this.isSwichHide(this.indexs[0], "grounding");
+        this.isSwichHide(this.indexs[0], 'grounding')
       } else {
-        Toast("请选择拍品");
+        Toast('请选择拍品')
       }
     },
-    //多个确认上架
-    someconfirmup() {
-      this.pupup = false;
-      let _this = this;
+    // 多个确认上架
+    someconfirmup () {
+      this.pupup = false
+      let _this = this
       var params = {
         auc_id: this.allids,
         time: this.totaltime
-      };
+      }
       confirmup(params)
         .then(response => {
           if (response.code == 200) {
-            this.$router.push("/newStoreManage/autioning");
+            this.$router.push('/newStoreManage/autioning')
           }
         })
-        .catch((error) =>{
-          console.log(error);
+        .catch((error) => {
+          console.log(error)
           if (error.status == 403) {
             if (error.data.code == 40002) {
-              this.$router.push("/errorPage?type=40002");
-              sessionStorage.setItem("err", JSON.stringify(error.data));
+              this.$router.push('/errorPage?type=40002')
+              sessionStorage.setItem('err', JSON.stringify(error.data))
             }
           }
-        });
+        })
     }
   },
-  beforeRouteLeave(to, from, next) {
-    localStorage.removeItem("changeRed");
-    next();
+  beforeRouteLeave (to, from, next) {
+    localStorage.removeItem('changeRed')
+    next()
   },
-  mounted() {
-    this.checktime();
-    this.getday();
-    this.getstore();
+  mounted () {
+    this.checktime()
+    this.getday()
+    this.getstore()
   }
-};
+}
 </script>
 <style>
 .storeManagement {
@@ -1090,4 +1090,4 @@ input[type="checkbox"]:checked:after {
      color: #a2a2a2;
   }
 */
-</style>  
+</style>

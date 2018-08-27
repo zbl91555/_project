@@ -12,7 +12,7 @@
           <li>实际付款金额：￥{{info.truePrice}}元</li>
           <li>确认截止：{{timestampToTimeYMDHM(parseFloat(info.endTime))}}</li>
         </ul>
-      </div>  
+      </div>
       <div class="gray"></div>
       <div class="returnReason">
           <div>申请退货理由</div>
@@ -58,82 +58,82 @@
   </div>
 </template>
 <script>
-import {Toast} from "vant"
-import addressInformation from  '../addressInformation'
-import {orderReturnGoods,orderReturnGoodsSubmit} from '../../../api/api';
+import {Toast} from 'vant'
+import addressInformation from '../addressInformation'
+import {orderReturnGoods, orderReturnGoodsSubmit} from '../../../api/api'
 export default {
-  components:{
-        addressInformation,
+  components: {
+    addressInformation
   },
-  data() {
+  data () {
     return {
-      agreeReturnSale:'agreeReturnSale',
+      agreeReturnSale: 'agreeReturnSale',
       info: {},
-      address:{},
-      agree:false,
-      orderId:'',
-      addressshow:false, //地址页面
-      isshow:true,//同意退货页面
-      addressNew:'',//地址信息
-      order_address:'0',//地址id
-    };
+      address: {},
+      agree: false,
+      orderId: '',
+      addressshow: false, // 地址页面
+      isshow: true, // 同意退货页面
+      addressNew: '', // 地址信息
+      order_address: '0' // 地址id
+    }
   },
   methods: {
-      get(item){
-        console.log(item)
-          this.addressUpdate();
-          this.addressNew = item;
-          this.order_address = item.id
-      },
-      addesssSelet(){
-          this.addressshow=true;
-          this.isshow=false;
-      },
-      addressUpdate(){
-          this.addressshow=false;
-          this.isshow=true;
-      },
-      openAgree(){
-          this.agree=true
-      },
-      closeAgree(){
-          this.agree=false
-      },
-      //页面
-      orderReturnGoods: function() {
-        orderReturnGoods(this.orderId).then(res=>{
-           this.info = res.data;
-           console.log(this.info)
-           this.addressNew = res.data.orderReturnAddress;
-           this.order_address = res.data.orderReturnAddress.id;
-        }).catch(function(err) {
-          console.log(err);
-        })
-      },
-      //提交
-      orderReturnGoodsSubmit(){
-        let params = {
-           address_id:this.order_address,
-        };
-        orderReturnGoodsSubmit(params,this.orderId).then(res=> {
-          this.agree=false
-          this.$router.push('/orderDetail/'+this.orderId)
-        }).catch(err=> {
-          Toast('地址不能为空')
-        })
-      },
+    get (item) {
+      console.log(item)
+      this.addressUpdate()
+      this.addressNew = item
+      this.order_address = item.id
+    },
+    addesssSelet () {
+      this.addressshow = true
+      this.isshow = false
+    },
+    addressUpdate () {
+      this.addressshow = false
+      this.isshow = true
+    },
+    openAgree () {
+      this.agree = true
+    },
+    closeAgree () {
+      this.agree = false
+    },
+    // 页面
+    orderReturnGoods: function () {
+      orderReturnGoods(this.orderId).then(res => {
+        this.info = res.data
+        console.log(this.info)
+        this.addressNew = res.data.orderReturnAddress
+        this.order_address = res.data.orderReturnAddress.id
+      }).catch(function (err) {
+        console.log(err)
+      })
+    },
+    // 提交
+    orderReturnGoodsSubmit () {
+      let params = {
+        address_id: this.order_address
+      }
+      orderReturnGoodsSubmit(params, this.orderId).then(res => {
+        this.agree = false
+        this.$router.push('/orderDetail/' + this.orderId)
+      }).catch(err => {
+        Toast('地址不能为空')
+      })
+    }
   },
-   mounted() {
-      this.orderId = this.$route.params.order_id
-      if(this.$route.params.nowpage != undefined){
-        this.isshow = false
-      }
-      if(this.$route.params.adresspage != undefined){
-        this.addressshow = true
-      }
-      this.orderReturnGoods();
-   },
-};
+  mounted () {
+    this.orderId = this.$route.params.order_id
+    if (this.$route.params.nowpage != undefined) {
+      this.isshow = false
+    }
+    if (this.$route.params.adresspage != undefined) {
+      this.addressshow = true
+    }
+    this.orderReturnGoods()
+  }
+}
 </script>
 
 <style scoped>
@@ -209,7 +209,7 @@ export default {
      height:68px;
      border-bottom: 1px solid #e5e5e5;
      line-height: 68px;
-     margin-left:30px; 
+     margin-left:30px;
   }
   .acceptman{
     overflow: hidden;
@@ -257,7 +257,7 @@ export default {
         width: 100%;
         outline: none;
         -webkit-appearance: none;
-        font-size: 28px; 
+        font-size: 28px;
   }
   .bottom{
     height:112px;
@@ -293,7 +293,7 @@ export default {
   }
   .popHeightone{
     height:60px;
-    padding:20px 0px; 
+    padding:20px 0px;
     color: #999999;
     border-bottom: 1px solid #e5e5e5
   }

@@ -2,23 +2,23 @@
 	<div class="returnRequest">
 		<div>
 			<div class="buyer-tool">
-				<a>拍品信息</a>	
+				<a>拍品信息</a>
 			</div>
       <!-- <router-link :to="{name: 'auction', params: {id: info.auctionId }}"> -->
 			<div class="buy-info">
 				<div class="goods-info" v-bind:style="{backgroundImage: 'url(' + info.img + ')'}"></div>
 				<p class="goods-intr">{{info.desc}}</p>
-				<ul class="buyer-detail"> 
-					 <li>截止时间：<i>{{timestampToTime(info.endTime)}}</i></li>
+				<ul class="buyer-detail">
+          <li>截止时间：<i>{{timestampToTime(info.endTime)}}</i></li>
 				</ul>
-			</div>	
+			</div>
       <!-- </router-link>  -->
 		</div>
     <div class="moneys">
         <div>保证金：￥{{info.cashPrice}}元</div>
-    </div>   
+    </div>
     <div class="gray"></div>
-	  <ul>
+    <ul>
       <li class="op" @click="paymentType('balance',0)" :class="{active: sw == 0}">
         <div class="con">
           <span><i class="iconfont icon-duihao2"></i></span>
@@ -65,7 +65,7 @@
       <div class="sharesomething">
         <div style="border-bottom:1px solid #e5e5e5;">  您还未开通余额，不能使用“余额支付”与“微信支付”功能，快去开通吧！</div>
         <div @click="closeshowlists" style="border-right: 1px solid #e5e5e5;">取消</div>
-        <div @click="openRecharge" style="color:red;" class="bordertop">确认</div>          
+        <div @click="openRecharge" style="color:red;" class="bordertop">确认</div>
       </div>
     </div>
     <!-- 自定义键盘 -->
@@ -81,7 +81,7 @@
               </div>
             </div>
             <div class="sixpasswords">
-                  <div v-for="i in items"><span v-if="password[i]">*</span></div></div>
+                  <div v-for="i in items" :key="i"><span v-if="password[i]">*</span></div></div>
           </div>
           <div class="numkey">
             <ul>
@@ -163,7 +163,7 @@
           </div>
         </div>
         <!-- 支付密码输入错入,请重试 -->
-            <div class="wrongPass" v-if="wrongPass==true ">    
+            <div class="wrongPass" v-if="wrongPass==true ">
             </div>
             <div class="enterwrong" v-if="wrongPass==true ">
                 <div class="enterwrong-h">支付密码输入错误,请重试</div>
@@ -174,16 +174,16 @@
             </div>
       </div>
     <div data-v-56c8d168="" id="fixednumMain" v-if="isShow">
-      <div data-v-56c8d168="" @click.stop="isShow=false" class="fixednumMask" style="opacity: 0.38;"></div> 
+      <div data-v-56c8d168="" @click.stop="isShow=false" class="fixednumMask" style="opacity: 0.38;"></div>
       <div data-v-56c8d168="" class="sharesomething">
-        <div data-v-56c8d168="">是否放弃本次支付</div> 
-        <div data-v-56c8d168="" style="color: rgb(181, 84, 89);" @click.stop="goSkip">确定</div> 
-        <span data-v-56c8d168="" class="grayTop"></span> 
+        <div data-v-56c8d168="">是否放弃本次支付</div>
+        <div data-v-56c8d168="" style="color: rgb(181, 84, 89);" @click.stop="goSkip">确定</div>
+        <span data-v-56c8d168="" class="grayTop"></span>
         <div data-v-56c8d168="" class="cancelTop" @click.stop="isShow=false">取消</div>
       </div></div>
     <!-- 弹出提示框 -->
     <div id="fixednumMain" v-if="showalert">
-      <div @click="exitalert()" class="fixednumMask" style="opacity: 0.38;"> 
+      <div @click="exitalert()" class="fixednumMask" style="opacity: 0.38;">
       </div>
       <div class="alertWrongPrice">
         <div class="wrongPrice">
@@ -192,17 +192,17 @@
         <div class="priceGray"></div>
         <div class="knowPrice" @click="exitalert()">
           知道了
-        </div>      
+        </div>
       </div>
     </div>
 
-	 </div>
+  </div>
 </template>
 <script>
-import md5 from "md5";
-import { Toast } from "vant";
-import addressInformation from "../addressInformation";
-import wx from "weixin-js-sdk";
+import md5 from 'md5'
+import { Toast } from 'vant'
+import addressInformation from '../addressInformation'
+import wx from 'weixin-js-sdk'
 import {
   orderPayment,
   payment,
@@ -212,327 +212,326 @@ import {
   auctionCash,
   auctionPublish,
   auctionAddPrice
-} from "../../../api/api";
+} from '../../../api/api'
 export default {
-  data() {
+  data () {
     return {
-      alertmessage: "",
+      alertmessage: '',
       showalert: false,
       info: {},
       addressshow: false,
       isshow: true,
-      info: {},
       bid: false,
       items: [0, 1, 2, 3, 4, 5],
       password: [],
-      lastpassword: "", //传给后台的6位数密码
+      lastpassword: '', // 传给后台的6位数密码
       wrongPass: false,
       config: {},
       payConfig: {},
       sw: 0,
-      price: "0", //价格
-      paymentTimeVal: "balance",
-      type: "cash", //类型
-      attach: "",
-      order_id: "", //订单id
-      order_no: "", //订单编号
-      body: "",
-      auctionId: "", //商品ID
-      projectType: "0", //1诚信保证金  0商品保证金
-      sellerIs: "true", //true 商家   false 用户
-      auctionPrice: "0", //出价价格
-      isShow: false, //弹出窗
-      isSkip: false, //是否可以离开当前页面
+      price: '0', // 价格
+      paymentTimeVal: 'balance',
+      type: 'cash', // 类型
+      attach: '',
+      order_id: '', // 订单id
+      order_no: '', // 订单编号
+      body: '',
+      auctionId: '', // 商品ID
+      projectType: '0', // 1诚信保证金  0商品保证金
+      sellerIs: 'true', // true 商家   false 用户
+      auctionPrice: '0', // 出价价格
+      isShow: false, // 弹出窗
+      isSkip: false, // 是否可以离开当前页面
       next: {},
       showveri: false,
       showshowlists: false,
       wallet: false,
       flag: false
-    };
-  },
-  beforeRouteEnter(to, form, next) {
-    //判断当前是不是由发布页面跳转过来
-    if (form.name == "nextUpload") {
-      sessionStorage.setItem("next", "true");
-      next(vm => {
-        vm.auctionPrice = "200";
-      });
-    } else {
-      sessionStorage.setItem("next", "false");
     }
-    next();
   },
-  beforeRouteLeave(to, from, next) {
-    this.$router.replace(from.fullPath);
-    let flag = sessionStorage.getItem("next");
-    if (this.isSkip || flag == "false") {
-      sessionStorage.removeItem("next");
-      next();
+  beforeRouteEnter (to, form, next) {
+    // 判断当前是不是由发布页面跳转过来
+    if (form.name == 'nextUpload') {
+      sessionStorage.setItem('next', 'true')
+      next(vm => {
+        vm.auctionPrice = '200'
+      })
     } else {
-      this.isShow = true;
-      sessionStorage.removeItem("next");
-      this.next = next;
+      sessionStorage.setItem('next', 'false')
+    }
+    next()
+  },
+  beforeRouteLeave (to, from, next) {
+    this.$router.replace(from.fullPath)
+    let flag = sessionStorage.getItem('next')
+    if (this.isSkip || flag == 'false') {
+      sessionStorage.removeItem('next')
+      next()
+    } else {
+      this.isShow = true
+      sessionStorage.removeItem('next')
+      this.next = next
     }
   },
   methods: {
-    //开启loading效果
-    openLoading() {
+    // 开启loading效果
+    openLoading () {
       const toast = Toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true, // 禁用背景点击
-        loadingType: "spinner",
-        message: "正在支付"
-      });
+        loadingType: 'spinner',
+        message: '正在支付'
+      })
     },
-    exitalert() {
-      this.showalert = false;
-      this.$router.push("/auction/" + this.auctionId);
+    exitalert () {
+      this.showalert = false
+      this.$router.push('/auction/' + this.auctionId)
     },
-    openRecharge() {
-      this.isSkip = true;
+    openRecharge () {
+      this.isSkip = true
       this.$router.push({
-        path: "/dredgeBlancePaid/cashDepositPay",
+        path: '/dredgeBlancePaid/cashDepositPay',
         query: { auctionId: this.auctionId, projectType: this.projectType }
-      });
+      })
     },
-    closeshowlists() {
-      this.showshowlists = false;
+    closeshowlists () {
+      this.showshowlists = false
     },
-    //充值
-    goRecharge(text) {
-      this.isSkip = true;
-      if (text == "充值") {
-        this.$router.push({path : "/newRecharge",query : {auction_id : this.$route.query.auction_id,type : this.$route.query.type}});
+    // 充值
+    goRecharge (text) {
+      this.isSkip = true
+      if (text == '充值') {
+        this.$router.push({path: '/newRecharge', query: {auction_id: this.$route.query.auction_id, type: this.$route.query.type}})
       } else {
         this.$router.push({
-          path: "/dredgeBlancePaid/cashDepositPay",
+          path: '/dredgeBlancePaid/cashDepositPay',
           query: { auctionId: this.auctionId, projectType: this.projectType }
-        });
+        })
       }
     },
-    //放弃支付
-    goSkip() {
-      this.$router.push("/newStoreManage/drafts");
-      this.next && this.next();
+    // 放弃支付
+    goSkip () {
+      this.$router.push('/newStoreManage/drafts')
+      this.next && this.next()
     },
-    showkeyBoard() {
-      this.bid = true;
+    showkeyBoard () {
+      this.bid = true
     },
-    closekeyBoard() {
-      this.bid = false;
-      this.password = [];
+    closekeyBoard () {
+      this.bid = false
+      this.password = []
     },
-    paymentType(i, index) {
-      this.paymentTimeVal = i;
-      this.sw = index;
+    paymentType (i, index) {
+      this.paymentTimeVal = i
+      this.sw = index
     },
-    auctionCash() {
+    auctionCash () {
       auctionCash(this.auctionId, this.projectType)
         .then(res => {
-          this.info = res.data;
-          this.sellerIs = res.data.sellerIs;
-          this.wallet = res.data.paypasswdIs;
+          this.info = res.data
+          this.sellerIs = res.data.sellerIs
+          this.wallet = res.data.paypasswdIs
           if (this.wallet) {
-            this.showshowlists = false;
+            this.showshowlists = false
           } else {
-            this.showshowlists = true;
+            this.showshowlists = true
           }
         })
         .catch(err => {
           // this.$router.push({name:'errorPage'})
-        });
+        })
     },
 
-    //安全支付
-    paymentSafe() {
+    // 安全支付
+    paymentSafe () {
       if (!this.wallet) {
-        this.showshowlists = true;
-        return;
+        this.showshowlists = true
+        return
       }
       let params = {
         channel: this.paymentTimeVal,
         type: this.type,
-        price: this.auctionPrice, //_this.info.cashPrice
+        price: this.auctionPrice, // _this.info.cashPrice
         auction_id: this.auctionId,
         project_type: this.projectType
-      };
-      if (this.paymentTimeVal == "balance") {
+      }
+      if (this.paymentTimeVal == 'balance') {
         payment(params)
           .then(res => {
-            this.showkeyBoard(); //发起支付
-            this.order_no = res.data.order_no;
-            this.body = res.data.body;
-            this.attach = res.data.attach;
+            this.showkeyBoard() // 发起支付
+            this.order_no = res.data.order_no
+            this.body = res.data.body
+            this.attach = res.data.attach
           })
           .catch(err => {
-            this.showalert = true;
-            this.alertmessage = err.data.message;
-          });
+            this.showalert = true
+            this.alertmessage = err.data.message
+          })
       }
-      if (this.paymentTimeVal == "wx_pub") {
+      if (this.paymentTimeVal == 'wx_pub') {
         if (this.flag) {
-          return;
+          return
         };
-        this.flag = true;
-        this.wxPay(params);
+        this.flag = true
+        this.wxPay(params)
       }
-      if (this.paymentTimeVal == "atm") {
-        //atm支付
+      if (this.paymentTimeVal == 'atm') {
+        // atm支付
       }
     },
 
-    //余额支付 安全支付回调
-    notify() {
-      let paymentType = this.paymentTimeVal;
+    // 余额支付 安全支付回调
+    notify () {
+      let paymentType = this.paymentTimeVal
       let params = {
         order_no: this.order_no,
         attach: this.attach,
         paypasswd: md5(this.lastpassword),
         body: this.body
-      };
+      }
       notify(paymentType, params)
         .then(res => {
-          this.isSkip = true;
+          this.isSkip = true
           if (this.sellerIs) {
-            this.upload();
+            this.upload()
           } else {
-            this.confirmprice();
+            this.confirmprice()
           }
         })
         .catch(err => {
-          alert(err.data.message);
-          this.password = [];
-          this.lastpassword = [];
-        });
+          alert(err.data.message)
+          this.password = []
+          this.lastpassword = []
+        })
     },
-    //买家出价
-    confirmprice() {
-      let _this = this;
+    // 买家出价
+    confirmprice () {
+      let _this = this
       let params = {
         auction_price: _this.auctionPrice
-      };
-      let reg = /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/;
+      }
+      let reg = /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/
 
       if (reg.test(_this.auctionPrice)) {
         auctionAddPrice(params, _this.auctionId)
-          .then(function(res) {
+          .then(function (res) {
             if (res.code == 200) {
-              _this.$router.push("/auction/" + _this.auctionId);
+              _this.$router.push('/auction/' + _this.auctionId)
             } else {
-              Toast(res.message);
+              Toast(res.message)
             }
           })
-          .catch(function(error) {
+          .catch(function (error) {
             let err = {
-              err: "err",
+              err: 'err',
               errmsg: error.data.message
-            };
-            sessionStorage.setItem("err", JSON.stringify(err));
-            _this.$router.push("/auction/" + _this.auctionId);
-          });
+            }
+            sessionStorage.setItem('err', JSON.stringify(err))
+            _this.$router.push('/auction/' + _this.auctionId)
+          })
       }
     },
-    //卖家上传拍品
-    upload() {
-      let _this = this;
+    // 卖家上传拍品
+    upload () {
+      let _this = this
       auctionPublish(_this.auctionId)
-        .then(function(res) {
-          console.log(res.code);
+        .then(function (res) {
+          console.log(res.code)
           if (res.code == 200) {
-            _this.$router.push("/auction/" + _this.auctionId);
-            //_this.alertmessage = res.message
+            _this.$router.push('/auction/' + _this.auctionId)
+            // _this.alertmessage = res.message
           } else {
-            Toast(res.message);
+            Toast(res.message)
           }
         })
-        .catch(function(error) {
-          //console.log(error)
-          Toast(error.message);
-        });
-      console.log("卖家上传拍品");
+        .catch(function (error) {
+          // console.log(error)
+          Toast(error.message)
+        })
+      console.log('卖家上传拍品')
     },
 
     // *****微信支付开始*****
-    reload() {
-      this.getSign();
-      wx.config(this.config);
+    reload () {
+      this.getSign()
+      wx.config(this.config)
       wx.checkJsApi({
         jsApiList: [
-          "onMenuShareTimeline",
-          "onMenuShareAppMessage",
-          "chooseImage",
-          "chooseWXPay"
+          'onMenuShareTimeline',
+          'onMenuShareAppMessage',
+          'chooseImage',
+          'chooseWXPay'
         ], // 需要检测的JS接口列表，所有JS接口列表见附录2,
-        success: function(res) {
+        success: function (res) {
           // 以键值对的形式返回，可用的api值true，不可用为false
-          console.log(res);
+          console.log(res)
         }
-      });
+      })
     },
-    wxReady() {
-      wx.ready(function() {});
+    wxReady () {
+      wx.ready(function () {})
     },
-    getSign() {
+    getSign () {
       let params = {
         uri: window.location.href
-      };
+      }
       getSign(params)
         .then(response => {
-          this.config = response.data;
+          this.config = response.data
           this.config.jsApiList = [
-            "onMenuShareTimeline",
-            "onMenuShareAppMessage",
-            "chooseImage",
-            "chooseWXPay"
-          ];
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'chooseImage',
+            'chooseWXPay'
+          ]
         })
         .catch(error => {
-          console.log(error.data);
-        });
+          console.log(error.data)
+        })
     },
-    //微信支付
-    wxPay(params) {
+    // 微信支付
+    wxPay (params) {
       wxPay(params)
         .then(response => {
-          console.log(response);
-          this.weixinPay(response.data);
+          console.log(response)
+          this.weixinPay(response.data)
         })
-        .catch(error => {});
+        .catch(error => {})
     },
-    weixinPay(data) {
-      var vm = this;
-      if (typeof WeixinJSBridge == "undefined") {
-        //微信浏览器内置对象。参考微信官方文档
+    weixinPay (data) {
+      var vm = this
+      if (typeof WeixinJSBridge == 'undefined') {
+        // 微信浏览器内置对象。参考微信官方文档
         if (document.addEventListener) {
           document.addEventListener(
-            "WeixinJSBridgeReady",
+            'WeixinJSBridgeReady',
             vm.onBridgeReady(data),
             false
-          );
+          )
         } else if (document.attachEvent) {
-          document.attachEvent("WeixinJSBridgeReady", vm.onBridgeReady(data));
-          document.attachEvent("onWeixinJSBridgeReady", vm.onBridgeReady(data));
+          document.attachEvent('WeixinJSBridgeReady', vm.onBridgeReady(data))
+          document.attachEvent('onWeixinJSBridgeReady', vm.onBridgeReady(data))
         }
       } else {
-        vm.onBridgeReady(data);
+        vm.onBridgeReady(data)
       }
     },
-    onBridgeReady(data) {
-      var vm = this;
-      WeixinJSBridge.invoke("getBrandWCPayRequest", data, function(res) {
-        if (res.err_msg == "get_brand_wcpay_request:cancel") {
-          console.log("11");
-          vm.flag = false;
-          Toast.clear();
+    onBridgeReady (data) {
+      var vm = this
+      WeixinJSBridge.invoke('getBrandWCPayRequest', data, function (res) {
+        if (res.err_msg == 'get_brand_wcpay_request:cancel') {
+          console.log('11')
+          vm.flag = false
+          Toast.clear()
         } else {
-          vm.isSkip = true;
+          vm.isSkip = true
           if (vm.sellerIs) {
-            vm.upload();
+            vm.upload()
           } else {
-            vm.confirmprice();
+            vm.confirmprice()
           };
-          vm.flag = false;
-          Toast.clear();
+          vm.flag = false
+          Toast.clear()
         }
 
         // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
@@ -546,140 +545,140 @@ export default {
         // }else{
         //   alert("支付失败,请跳转页面"+res.err_msg);
         // }
-      });
+      })
     },
     // *****微信支付结束*****
 
-    //删除
-    del() {
-      this.password.pop();
-      this.lastpassword = this.password.join("");
+    // 删除
+    del () {
+      this.password.pop()
+      this.lastpassword = this.password.join('')
     },
     // 按数字1
-    oneClick() {
-      console.log(this.password);
+    oneClick () {
+      console.log(this.password)
       if (this.password.length < 6) {
-        this.password.push(1);
-        this.lastpassword = this.password.join("");
+        this.password.push(1)
+        this.lastpassword = this.password.join('')
       }
       if (this.password.length == 6) {
-        this.notify();
+        this.notify()
       }
     },
     // 按数字2
-    twoClick() {
+    twoClick () {
       if (this.password.length < 6) {
-        this.password.push(2);
-        this.lastpassword = this.password.join("");
+        this.password.push(2)
+        this.lastpassword = this.password.join('')
       }
       if (this.password.length == 6) {
-        this.notify();
+        this.notify()
       }
     },
     // 按数字3
-    threeClick() {
+    threeClick () {
       if (this.password.length < 6) {
-        this.password.push(3);
-        this.lastpassword = this.password.join("");
+        this.password.push(3)
+        this.lastpassword = this.password.join('')
       }
       if (this.password.length == 6) {
-        this.notify();
+        this.notify()
       }
     },
     // 按数字4
-    fourClick() {
+    fourClick () {
       if (this.password.length < 6) {
-        this.password.push(4);
-        this.lastpassword = this.password.join("");
+        this.password.push(4)
+        this.lastpassword = this.password.join('')
       }
       if (this.password.length == 6) {
-        this.notify();
+        this.notify()
       }
     },
     // 按数字5
-    fiveClick() {
+    fiveClick () {
       if (this.password.length < 6) {
-        this.password.push(5);
-        this.lastpassword = this.password.join("");
+        this.password.push(5)
+        this.lastpassword = this.password.join('')
       }
       if (this.password.length == 6) {
-        this.notify();
+        this.notify()
       }
     },
     // 按数字6
-    sixClick() {
+    sixClick () {
       if (this.password.length < 6) {
-        this.password.push(6);
-        this.lastpassword = this.password.join("");
+        this.password.push(6)
+        this.lastpassword = this.password.join('')
       }
       if (this.password.length == 6) {
-        this.notify();
+        this.notify()
       }
     },
     // 按数字7
-    sevenClick() {
+    sevenClick () {
       if (this.password.length < 6) {
-        this.password.push(7);
-        this.lastpassword = this.password.join("");
+        this.password.push(7)
+        this.lastpassword = this.password.join('')
       }
       if (this.password.length == 6) {
-        this.notify();
+        this.notify()
       }
     },
     // 按数字8
-    eightClick() {
+    eightClick () {
       if (this.password.length < 6) {
-        this.password.push(8);
-        this.lastpassword = this.password.join("");
+        this.password.push(8)
+        this.lastpassword = this.password.join('')
       }
       if (this.password.length == 6) {
-        this.notify();
+        this.notify()
       }
     },
     // 按数字9
-    nineClick() {
+    nineClick () {
       if (this.password.length < 6) {
-        this.password.push(9);
-        this.lastpassword = this.password.join("");
+        this.password.push(9)
+        this.lastpassword = this.password.join('')
       }
       if (this.password.length == 6) {
-        this.notify();
+        this.notify()
       }
     },
     // 按数字.
-    dblzeroClick() {
+    dblzeroClick () {
       if (this.password.length < 6) {
-        this.password.push(".");
-        this.lastpassword = this.password.join("");
+        this.password.push('.')
+        this.lastpassword = this.password.join('')
       }
       if (this.password.length == 6) {
-        this.notify();
+        this.notify()
       }
     },
     // 按数字0
-    zeroClick() {
+    zeroClick () {
       // if(this.lastpassword!=''){
       if (this.password.length < 6) {
-        this.password.push("0");
-        this.lastpassword = this.password.join("");
+        this.password.push('0')
+        this.lastpassword = this.password.join('')
       }
       if (this.password.length == 6) {
-        this.notify();
+        this.notify()
       }
       // }
     }
   },
-  mounted() {
-    this.auctionId = this.$route.query.auction_id;
-    this.projectType = this.$route.query.type;
-    this.auctionPrice = this.$route.query.price;
-    this.auctionCash();
-    this.reload();
+  mounted () {
+    this.auctionId = this.$route.query.auction_id
+    this.projectType = this.$route.query.type
+    this.auctionPrice = this.$route.query.price
+    this.auctionCash()
+    this.reload()
   },
-  destroyed() {
-    window.removeEventListener("popstate");
+  destroyed () {
+    window.removeEventListener('popstate')
   }
-};
+}
 </script>
 
 <style scoped lang="less">

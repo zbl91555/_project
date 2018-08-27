@@ -27,7 +27,7 @@
 						<router-link :to="{name: 'auction', params: {id:1}}">
 							<span class="startP">￥33333</span>
 							<i class="iconfont icon-right"></i>
-							<span>去出价</span>						
+							<span>去出价</span>
 						</router-link>
 					</p>
 				</div>
@@ -57,7 +57,7 @@
 						<router-link to="/">
 							<span>￥33333</span>
 							<i class="iconfont icon-right"></i>
-							<span>去出价</span>						
+							<span>去出价</span>
 						</router-link>
 					</p>
 				</div>
@@ -87,7 +87,7 @@
 						<router-link to="/">
 							<span>￥33333</span>
 							<i class="iconfont icon-right"></i>
-							<span>去出价</span>						
+							<span>去出价</span>
 						</router-link>
 					</p>
 				</div>
@@ -96,33 +96,33 @@
 	</div>
 </template>
 <script type="text/javascript">
-	export default {
-		data() {
-			return {
-				
-			}
-		},
-		methods: {
+export default {
+  data () {
+    return {
 
-		},
-		mounted() {
-			
-		},
-	}
+    }
+  },
+  methods: {
+
+  },
+  mounted () {
+
+  }
+}
 </script>
 <style lang="less" scoped>
 	/*
-	 * @border-color: 统一边框颜色coupon
-	 * @pad: 统一边距
-	 * */
-	
+	* @border-color: 统一边框颜色coupon
+	* @pad: 统一边距
+	* */
+
 	@border-color: #d2d2d2;
 	@pad: 20px;
 	.app-containernewP {
 		min-height: 1234px;
 		background-color: #ededed;
 	}
-	
+
 	.app-containernewP .mainnewP{
 		width: 100%;
 		margin-bottom: 100px;
@@ -211,14 +211,14 @@
 				width: 100%;
 				height: 125px;
 				p:nth-child(1){
-					line-height: 2.5;					
+					line-height: 2.5;
 				}
 				p{
 					font-size: 28px;
-					span:nth-child(1){						
+					span:nth-child(1){
 						color: #9e2026;
 					}
-					i, 
+					i,
 					span:nth-last-of-type(1){
 						float: right;
 						color: #f15511;

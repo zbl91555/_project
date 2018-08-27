@@ -39,121 +39,121 @@
 </template>
 <script>
 // import iscroll from "../../../node_modules/iscroll/build/iscroll-probe"
-import iscroll from "../../../static/lib/iscroll";
-import bscroll from "better-scroll";
-import { category } from "../../api/api";
-import helper from "../../assets/js/helper";
+import Iscroll from '../../../static/lib/iscroll'
+import bscroll from 'better-scroll'
+import { category } from '../../api/api'
+import helper from '../../assets/js/helper'
 
 export default {
-  data() {
+  data () {
     return {
       category: [],
       categoryListHeights: [],
       currentY: 0,
       currentIndexes: 0
-    };
+    }
   },
-  beforeRouteEnter(to, from, next) {
+  beforeRouteEnter (to, from, next) {
     // XXX: 修复iOS版微信HTML5 History兼容性问题
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV === 'production') {
       if (helper.isIos() && to.path !== global.location.pathname) {
         // 此处不可使用location.replace
-        location.assign(to.fullPath);
+        location.assign(to.fullPath)
       } else {
-        next(vm => vm._category());
+        next(vm => vm._category())
       }
     } else {
-      next(vm => vm._category());
+      next(vm => vm._category())
     }
   },
   computed: {
-    //点击左侧导航栏每一个类别
-    currentIndex() {
+    // 点击左侧导航栏每一个类别
+    currentIndex () {
       for (let i = 0; i < this.categoryListHeights.length - 1; i++) {
-        let heightBottom = this.categoryListHeights[i];
-        let heightTop = this.categoryListHeights[i + 1];
-        //对滑动后currentY值不足的情况进行修正
-        let diff = Math.abs(this.currentY - heightTop);
+        let heightBottom = this.categoryListHeights[i]
+        let heightTop = this.categoryListHeights[i + 1]
+        // 对滑动后currentY值不足的情况进行修正
+        let diff = Math.abs(this.currentY - heightTop)
         if (diff < 150) {
-          this.currentY = heightTop;
+          this.currentY = heightTop
         }
-        //判断currentY当前所在的区间
+        // 判断currentY当前所在的区间
         if (this.currentY < heightTop && this.currentY >= heightBottom) {
-          return i;
+          return i
         }
       }
     }
   },
   methods: {
-    //获取数据成功后执行的操作
-    success(response) {
-      this.goShares(response.data.share);
-      this.category = response.data.categoryList;
-      this.category.unshift(response.data.recommendList);
+    // 获取数据成功后执行的操作
+    success (response) {
+      this.goShares(response.data.share)
+      this.category = response.data.categoryList
+      this.category.unshift(response.data.recommendList)
       this.$nextTick(() => {
-          //是在下次 DOM 更新循环结束之后执行延迟回调
-          this.initScroll();
-          this.calcHeight();
-      });
+        // 是在下次 DOM 更新循环结束之后执行延迟回调
+        this.initScroll()
+        this.calcHeight()
+      })
     },
-    //滚动插件初始化
-    initScroll() {
+    // 滚动插件初始化
+    initScroll () {
       if (this.$refs.menu.offsetHeight == 0) {
         setTimeout(_ => {
-          this.initScroll();
-        },100)
-        return;
+          this.initScroll()
+        }, 100)
+        return
       };
       // setTimeout(_ => {
-        this.menuScroll = new iscroll(this.$refs.menu, {
-          click: true
-        });
-        this.foodsScroll = new iscroll(this.$refs.foods, {
-          probeType: 3,
-          click: true
-        });
-        let _this = this;
-        this.foodsScroll.on("scroll", function() {
-          _this.currentY = Math.abs(Math.round(this.y));
-          _this.currentIndex;
-        },100);
+      this.menuScroll = new Iscroll(this.$refs.menu, {
+        click: true
+      })
+      this.foodsScroll = new Iscroll(this.$refs.foods, {
+        probeType: 3,
+        click: true
+      })
+      let _this = this
+      this.foodsScroll.on('scroll', function () {
+        _this.currentY = Math.abs(Math.round(this.y))
+        // _this.currentIndex
+      }, 100)
       // })
     },
-    //计算每一个foodlist元素的高度，累加并输出为一个数组
-    calcHeight() {
-      let foodList = this.$refs.foods.getElementsByClassName("food-list-hook");
-      let height = 0;
-      this.categoryListHeights.push(height);
+    // 计算每一个foodlist元素的高度，累加并输出为一个数组
+    calcHeight () {
+      let foodList = this.$refs.foods.getElementsByClassName('food-list-hook')
+      let height = 0
+      this.categoryListHeights.push(height)
       for (let i = 0; i < foodList.length; i++) {
-        height += foodList[i].clientHeight;
-        this.categoryListHeights.push(height);
+        height += foodList[i].clientHeight
+        this.categoryListHeights.push(height)
       }
     },
-    scrollTo(index) {
-      this.currentIndexes = index;
-      let target = this.categoryListHeights[index];
-      this.foodsScroll.scrollTo(0, -target, 400);
+    scrollTo (index) {
+      this.currentIndexes = index
+      let target = this.categoryListHeights[index]
+      this.foodsScroll.scrollTo(0, -target, 400)
     },
-    //获取数据
-    _category() {
+    // 获取数据
+    _category () {
       // let data = sessionStorage.getItem("category");
       // if (data) {
       //   let response = JSON.parse(data);
       //   this.success(response);
       // } else {
-        category()
-          .then(response => {
-            if (response.code == 200) {
-                this.success(response);
-            }
-          })
-          .catch((error) =>{
-            console.log(error);
-          });
+      category()
+        .then(response => {
+          if (response.code == 200) {
+            this.success(response)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
       // }
     }
-  },
-};
+  }
+}
 </script>
 <style scoped>
 .searchBox {

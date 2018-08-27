@@ -57,70 +57,70 @@
 	</div>
 </template>
 <script>
-import withDrawNextDown from "../withDrawNextDown";
-import { Toast } from "vant";
-import { depositWithdrawView, depositWithdraw } from "../../../api/api";
-import keyboard from "../../home/keyboard"; //数字键盘
+import withDrawNextDown from '../withDrawNextDown'
+import { Toast } from 'vant'
+import { depositWithdrawView, depositWithdraw } from '../../../api/api'
+import keyboard from '../../home/keyboard' // 数字键盘
 export default {
   components: {
     keyboard,
     withDrawNextDown
   },
-  data() {
+  data () {
     return {
       // 键盘相关data
       keyboard: false,
       cursor1: false,
-      val: "",
+      val: '',
       nowPage: true,
       downPage: false,
-      title: "余额提现",
-      link: "/balanceIndex",
+      title: '余额提现',
+      link: '/balanceIndex',
       des: true,
-      price: ""
-    };
+      price: ''
+    }
   },
   methods: {
-    closeKeyboard() {
-      this.keyboard = false;
-      this.cursor1 = false;
+    closeKeyboard () {
+      this.keyboard = false
+      this.cursor1 = false
     },
-    /*输入*/
-    typing(value) {
-      /*如果是点击删除*/
-      if (value === "") {
-        this.del();
+    /* 输入 */
+    typing (value) {
+      /* 如果是点击删除 */
+      if (value === '') {
+        this.del()
       }
-      /*获取新的值*/
-      this.val = this.val + value;
+      /* 获取新的值 */
+      this.val = this.val + value
     },
-    del() {
-      this.val = this.val.slice(0, -1);
+    del () {
+      this.val = this.val.slice(0, -1)
     },
-    depositWithdrawView() {
+    depositWithdrawView () {
       depositWithdrawView()
         .then(res => {
-          this.price = res.data;
+          this.price = res.data
         })
         .catch(err => {
-          console.log(err.response.data.message);
-        });
+          console.log(err.response.data.message)
+        })
     },
-    depositWithdraw() {
+    depositWithdraw () {
       if (
         isNaN(this.val) == true ||
-        this.Trim(this.val, "g") == "" ||
-        this.val.charAt(0) == "0"
+        this.Trim(this.val, 'g') == '' ||
+        this.val.charAt(0) == '0'
       ) {
-        Toast("请输入正确的金额");
-        return;
+        Toast('请输入正确的金额')
+        return
       }
       if (this.val <= 0) {
-        Toast("提现金额必须大于￥1元");
-        return;
+        Toast('提现金额必须大于￥1元')
+        return
       }
       // this.$store.commit("revCash", this.val);
-      this.$router.push({ name: "withdrawDepositCash",params : {price:this.val} });
+      this.$router.push({ name: 'withdrawDepositCash', params: {price: this.val} })
       //     let params = {
       //     	price :this.val
       //     };
@@ -132,11 +132,11 @@ export default {
       //     })
     }
   },
-  created() {
-    this.val = this.$route.params.money;
-    this.depositWithdrawView();
+  created () {
+    this.val = this.$route.params.money
+    this.depositWithdrawView()
   }
-};
+}
 </script>
 <style scoped>
 .newRecharge {
@@ -242,15 +242,15 @@ export default {
             },
             depositWithdraw(){
                 let params = {
-                	price :this.nowprice
-                };
-                depositWithdraw(params).then(res=> {
-                  console.log(res.data);
-                  this.nowPage = false
-		          this.downPage = true
-                }).catch(err=> {
-                	Toast(err.data.message)
-                })
+                price :this.nowprice
+              };
+              depositWithdraw(params).then(res=> {
+                console.log(res.data);
+                this.nowPage = false
+            this.downPage = true
+              }).catch(err=> {
+                Toast(err.data.message)
+              })
             },
 		},
 		created() {
@@ -260,9 +260,9 @@ export default {
 </script> -->
 
 <style lang="less" scoped>
-/*
-	 * @border-color: 统一边框颜色
-	 * */
+  /*
+  * @border-color: 统一边框颜色
+  * */
 
 @border-color: #e5e5e5;
 .title {

@@ -61,7 +61,6 @@
     </div>
 </template>
 
-
 <style scoped>
 .EnterpriseCertification {
   background-color: #f4f4f4;
@@ -156,4 +155,4 @@
 .stepContent{
   font-size: 24px;
 }
-</style>	
+</style>

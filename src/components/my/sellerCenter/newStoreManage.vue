@@ -1,87 +1,86 @@
 <template>
     <div class="newStoreManage">
 		<div class="menu border horizonBottom">
-	        <div class="menuList mode border verticalRight">
-	          <div v-for="(list,index) in timeLists" class="menuItem" :class="{ selected:changeRed == index}" :key="index" @click="Red(index)">{{list.text}}</div>
-	        </div>
+        <div class="menuList mode border verticalRight">
+          <div v-for="(list,index) in timeLists" class="menuItem" :class="{ selected:changeRed == index}" :key="index" @click="Red(index)">{{list.text}}</div>
         </div>
+      </div>
 		<router-view></router-view>
     </div>
 
 </template>
 <script>
-  export default {
-    data () {
-      return {
-       		timeLists:[
-            {
-              "text":"预展中",
-              'type':'manprivateView',
-              'link':'/newStoreManage/manprivateView',
-              'index':0           
-            },
-		        {
-		          "text":"竞拍中",
-		          'type':'auctioning',
-		          'link':'/newStoreManage/autioning',
-              'index':1            
-		        },
-		        {
-		          "text":"已截拍",
-		          'type':'jiepai',
-		          'link':'/newStoreManage/sectionalPat', 
-              'index':2                   
-		        },
-		        {
-		          "text":"已流拍",
-		          'type':'liupai',
-		          'link':'/newStoreManage/havePassed',
-              'index':3  
-		        },
-		        {
-		          "text":"已失败",
-		          'type':'shibai', 
-		          'link':'/newStoreManage/haveFailed', 
-              'index':4                 
-		        },
-		        {
-		          "text":"草稿箱",
-		          'type':'caogao',  
-		          'link':'/newStoreManage/drafts',
-              'index':5                       
-		        }
-		    ],
-		    changeRed:1,
-      }
-    },
-    methods: { 
-    	Red(index){
-    		this.changeRed = index;
-    		this.$router.push(this.timeLists[index].link)
-    	}
-    },
-    watch:{
-    	$route(to,from){
-    		let changeRed = this.timeLists.find((item,index) =>{
-	     		return to.fullPath == item.link
-	    	})
-	    	this.changeRed = changeRed.index
-    	}
-    },
-    mounted(){
-     	let changeRed = this.timeLists.find((item,index) =>{
-     		return this.$route.fullPath == item.link
-    	})
-    	this.changeRed = changeRed.index
+export default {
+  data () {
+    return {
+      timeLists: [
+        {
+          'text': '预展中',
+          'type': 'manprivateView',
+          'link': '/newStoreManage/manprivateView',
+          'index': 0
+        },
+        {
+          'text': '竞拍中',
+          'type': 'auctioning',
+          'link': '/newStoreManage/autioning',
+          'index': 1
+        },
+        {
+          'text': '已截拍',
+          'type': 'jiepai',
+          'link': '/newStoreManage/sectionalPat',
+          'index': 2
+        },
+        {
+          'text': '已流拍',
+          'type': 'liupai',
+          'link': '/newStoreManage/havePassed',
+          'index': 3
+        },
+        {
+          'text': '已失败',
+          'type': 'shibai',
+          'link': '/newStoreManage/haveFailed',
+          'index': 4
+        },
+        {
+          'text': '草稿箱',
+          'type': 'caogao',
+          'link': '/newStoreManage/drafts',
+          'index': 5
+        }
+      ],
+      changeRed: 1
     }
+  },
+  methods: {
+    Red (index) {
+      this.changeRed = index
+      this.$router.push(this.timeLists[index].link)
+    }
+  },
+  watch: {
+    $route (to, from) {
+      let changeRed = this.timeLists.find((item, index) => {
+        return to.fullPath == item.link
+      })
+      this.changeRed = changeRed.index
+    }
+  },
+  mounted () {
+    let changeRed = this.timeLists.find((item, index) => {
+      return this.$route.fullPath == item.link
+    })
+    this.changeRed = changeRed.index
   }
+}
 </script>
 
 <style scoped lang="less">
-  .newStoreManage {
-  }
+
   .newStoreManage .menu {
-  	position: fixed;
+    position: fixed;
     top: 0;
     width: 100%;
     height: 78px;
@@ -183,4 +182,4 @@
     border-bottom: 4px solid #9e2026;
     font-family: PingFang-SC-Heavy;
   }
-</style>  
+</style>

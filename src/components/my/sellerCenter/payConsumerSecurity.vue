@@ -26,69 +26,69 @@
     <keyboard :show="keyboard" @typing="typing" @complete="closeKeyboard"/>
   </div>
   </template>
-    <script>
-import { Toast } from "vant";
-import { pay } from "../../../api/api";
-import keyboard from "../../home/keyboard"; //数字键盘
+<script>
+import { Toast } from 'vant'
+import { pay } from '../../../api/api'
+import keyboard from '../../home/keyboard' // 数字键盘
 export default {
   components: {
     keyboard
   },
   // mixins:[assign],
-  data() {
+  data () {
     return {
       // 键盘相关data
       keyboard: false,
       cursor1: false,
-      val: "",
+      val: '',
       nowPage: true,
       downPage: false,
-      title: "余额提现",
-      link: "/balanceIndex",
+      title: '余额提现',
+      link: '/balanceIndex',
       des: true,
-      price: ""
-    };
-  },
-  methods: {
-    openKeyboard() {
-      this.keyboard = true;
-      this.cursor1 = true;
-      this.des = false;
-    },
-    closeKeyboard() {
-      this.keyboard = false;
-      this.cursor1 = false;
-    },
-    /*输入*/
-    typing(value) {
-      /*如果是点击删除*/
-      if (value === "") {
-        this.del();
-      }
-      /*获取新的值*/
-      this.val = this.val + value;
-    },
-    del() {
-      this.val = this.val.slice(0, -1);
-    },
-    //下一步
-    nextStep() {
-      if (this.val == '') {
-        Toast('请输入金额');
-        return ;
-      }
-       if(this.val>=1000){
-           localStorage.setItem('payPrice',this.val);
-           this.$router.push({name:'consumerPay'})
-       }else{
-          Toast('至少缴纳1000元')
-       }
+      price: ''
     }
   },
-  mounted() {
-    this.price = this.$store.state.twoprice.deposit;
+  methods: {
+    openKeyboard () {
+      this.keyboard = true
+      this.cursor1 = true
+      this.des = false
+    },
+    closeKeyboard () {
+      this.keyboard = false
+      this.cursor1 = false
+    },
+    /* 输入 */
+    typing (value) {
+      /* 如果是点击删除 */
+      if (value === '') {
+        this.del()
+      }
+      /* 获取新的值 */
+      this.val = this.val + value
+    },
+    del () {
+      this.val = this.val.slice(0, -1)
+    },
+    // 下一步
+    nextStep () {
+      if (this.val == '') {
+        Toast('请输入金额')
+        return
+      }
+      if (this.val >= 1000) {
+        localStorage.setItem('payPrice', this.val)
+        this.$router.push({name: 'consumerPay'})
+      } else {
+        Toast('至少缴纳1000元')
+      }
+    }
+  },
+  mounted () {
+    this.price = this.$store.state.twoprice.deposit
   }
-};
+}
 </script>
   <style scoped>
 .newRecharge {

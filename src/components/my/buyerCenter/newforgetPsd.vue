@@ -22,88 +22,88 @@
 </template>
 <script>
 // import forgetPsdNext from "./forgetPsdNext";
-import { walletForgetpwdSubmit } from "../../../api/api";
-import { Toast } from "vant";
-import md5 from "md5";
+import { walletForgetpwdSubmit } from '../../../api/api'
+import { Toast } from 'vant'
+import md5 from 'md5'
 export default {
   components: {
     // forgetPsdNext
   },
-  data() {
+  data () {
     return {
       nowPage: true,
-			subPage: false,
-			newAgainPwd : '',
-      newPwd: "",
-      wrongNowPsd: "",
-      info: "下一步",
-      prompt: "填写您的支付密码"
-    };
+      subPage: false,
+      newAgainPwd: '',
+      newPwd: '',
+      wrongNowPsd: '',
+      info: '下一步',
+      prompt: '填写您的支付密码'
+    }
   },
   methods: {
-    //提交
-    submission() {
-      if (this.Trim(this.newAgainPwd, "g").length < 6) {
-        this.wrongNowPsd = "密码必须是6位数字";
-        return;
+    // 提交
+    submission () {
+      if (this.Trim(this.newAgainPwd, 'g').length < 6) {
+        this.wrongNowPsd = '密码必须是6位数字'
+        return
       }
       if (this.newPwd != this.newAgainPwd) {
-        this.wrongNowPsd = "确认2次密码一致";
-        return;
+        this.wrongNowPsd = '确认2次密码一致'
+        return
       }
       let params = {
         newPwd: md5(this.newAgainPwd)
-      };
+      }
       walletForgetpwdSubmit(params)
         .then(res => {
-          this.$router.push("/balanceIndex/user");
+          this.$router.push('/balanceIndex/user')
         })
         .catch(err => {
-          Toast(err.data.message);
-        });
+          Toast(err.data.message)
+        })
     },
-    //密码输入校验
-    passwordVerifiers(val) {
-      let reg = /(^\s+)|(\s+$)|\s+/g;
+    // 密码输入校验
+    passwordVerifiers (val) {
+      let reg = /(^\s+)|(\s+$)|\s+/g
       if (reg.test(this[val])) {
-        this[val] = this.Trim(this[val], "g");
-				Toast("支付密码必须是6位数字");
-				return true;
+        this[val] = this.Trim(this[val], 'g')
+        Toast('支付密码必须是6位数字')
+        return true
       };
       if (isNaN(+this[val])) {
-        let length = this[val].length;
-        this[val] = this[val].slice(0, length - 1);
-				Toast("支付密码必须是6位数字");
-				return true;
+        let length = this[val].length
+        this[val] = this[val].slice(0, length - 1)
+        Toast('支付密码必须是6位数字')
+        return true
       };
       if (this[val].length > 6) {
-        this[val] = this[val].slice(0, 6);
-				Toast("支付密码必须是6位数字");
-				return true
-			};
-			return false;
+        this[val] = this[val].slice(0, 6)
+        Toast('支付密码必须是6位数字')
+        return true
+      };
+      return false
     },
-    walletForgetpwd() {
-      if (this.info == "提交") {
-				this.submission();
+    walletForgetpwd () {
+      if (this.info == '提交') {
+        this.submission()
       } else {
-				if (this.passwordVerifiers('newPwd')) {
-					return ;
-				}else if (this.Trim(this.newPwd,"g").length < 6) {
-					Toast('支付密码必须是6位数字');
-					return ;
-				}
-        this.info = "提交";
+        if (this.passwordVerifiers('newPwd')) {
+          return
+        } else if (this.Trim(this.newPwd, 'g').length < 6) {
+          Toast('支付密码必须是6位数字')
+          return
+        }
+        this.info = '提交'
       }
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
-/*
-	 * @border-color: 统一边框颜色coupon
-	 * */
+  /*
+  * @border-color: 统一边框颜色coupon
+  * */
 
 @border-color: #d2d2d2;
 @pad: 30px;

@@ -6,22 +6,22 @@
     <div class="rejectReason" v-if="overdueReason">
         {{reasonText}}
     </div>
-  	<div class="verifyMainReal">
-	    <div class="verifyBoxReal userInfo ">
-			<div class="avatar">
-				<div class="img" :style="{backgroundImage: 'url(' + info.avatar + ')'}">
-				</div>
+    <div class="verifyMainReal">
+        <div class="verifyBoxReal userInfo ">
+            <div class="avatar">
+                <div class="img" :style="{backgroundImage: 'url(' + info.avatar + ')'}">
+                </div>
 			</div>
 			<div class="verifyInfo">
 				<div class="userName">
 					{{info.nickname}}
 				</div>
 				<p>
-					{{Time}} 
+					{{Time}}
 				</p>
 			</div>
-			<div class="verifyState ">				
-                    {{verifyState}}		
+			<div class="verifyState ">
+                    {{verifyState}}
 			</div>
 		</div>
 		<div class="unverified">
@@ -31,7 +31,7 @@
 				</div>
 				<div class="applyOptionList">
 					<div class="applyItem" @click.stop="changeTo">
-						
+
 							<div class="applyIcon finished">
 								<span class="fi-stack">
 									<i class="iconfont icon-yonghudianji"></i></span>
@@ -39,12 +39,12 @@
 							<p>
 								个人实名认证
 							</p>
- 							<div v-if="personApply" class="applyBtns">
-    								申请
-    							</div>
+                            <div v-if="personApply" class="applyBtns">
+                                   申请
+                               </div>
                             <div v-if="personApplying" class="applyBtnsNew">
                                     个人认证审核中
-                            </div>	
+                            </div>
                             <div v-if="perapplying" class="applyBtnsGray">
                                     申请
                             </div>
@@ -58,9 +58,9 @@
 							<p>
 								企业实名认证
 							</p>
-    							<div v-if="enterpriseApply" class="applyBtns " >
-    								申请
-    							</div>
+                                <div v-if="enterpriseApply" class="applyBtns " >
+                                    申请
+                                </div>
                                 <div v-if="enterpriseApplying" class="applyBtnsNew">
                                     企业认证审核中
                                 </div>
@@ -73,37 +73,37 @@
 			</div>
 		</div>
 		<div class="verifyBoxReal">
-		    <div class="title">认证特权</div>
-		    <div class="powerList">
-		        <div class="powerItem">
-		        	<i class="iconfont icon-liwu"></i>
-		        	参与平台活动
-		    	</div>
-		        <div class="powerItem">
-		        	<i class="iconfont icon-jinzhi"></i>
-		    		黑名单数量增加到300
-		    	</div>
-		        <div class="powerItem">
-			        <i class="iconfont icon-tixian1"></i>
-			    	提现次数增加到2次/天
-			    </div>
-		        <div class="powerItem">
-		        	<i class="iconfont icon-iconfontzhizuobiaozhun023106"></i>
-		        	店铺当中增加认证标记
-		    	</div>
-		        <div class="powerItem">
-		        	<i class="iconfont icon-xinyi"></i>
-		        	增加点赞次数
-		        </div>
-		        <div class="powerItem">
-		        	<i class="iconfont icon-aaa"></i>
-			        每日上拍件数不限
-			    </div>
-		        <div class="powerItem">
-		        	<i class="iconfont icon-huangguan"></i>
-		        	增加店铺权重
-		    </div>
-		    </div>
+        <div class="title">认证特权</div>
+            <div class="powerList">
+                <div class="powerItem">
+                    <i class="iconfont icon-liwu"></i>
+                    参与平台活动
+                </div>
+                <div class="powerItem">
+                    <i class="iconfont icon-jinzhi"></i>
+                    黑名单数量增加到300
+                </div>
+                <div class="powerItem">
+                    <i class="iconfont icon-tixian1"></i>
+                    提现次数增加到2次/天
+                </div>
+                <div class="powerItem">
+                    <i class="iconfont icon-iconfontzhizuobiaozhun023106"></i>
+                    店铺当中增加认证标记
+                </div>
+                <div class="powerItem">
+                    <i class="iconfont icon-xinyi"></i>
+                    增加点赞次数
+                </div>
+                <div class="powerItem">
+                    <i class="iconfont icon-aaa"></i>
+                    每日上拍件数不限
+                </div>
+                <div class="powerItem">
+                    <i class="iconfont icon-huangguan"></i>
+                    增加店铺权重
+                </div>
+            </div>
 		</div>
         <div class="btn" v-if="payMoneySafe">
           <div v-if="info.state != 'renew'" style="text-align: left;color: #666;">您好，请点击“支付”按钮，完成认证费用的支付</div>
@@ -118,173 +118,169 @@
   </div>
 </template>
 <script type="text/javascript">
-    import {companyView} from '../../../api/api'
-    export default {
-        data() {
-            return {
-                importFileUrl:'',
-                fileList:[],
-                dialogVisible: false,
-                dialogImageUrl:'',
-                info:{},
-                verifyState:'',
-                payMoney:true, //认证未支付
-                personApply:true,
-                enterpriseApply:true,
-                personApplying:false,
-                enterpriseApplying:false,
-                perapplying:false,
-                enterapplying:false,
-                payMoneySafe:false,
-                Time : '立即实名认证享更多特权服务',
-                rejectReason:false,
-                reason:'',
-                reasonText : '',
-                overdueReason:false,
-            }
-        },
-        methods: {
-            paymentSafe(){
-                if(this.info.state == 'unpaid_business'){
-                    this.$router.push('/payment/enterpriseCertiPay')
-                }else{
-                    this.$router.push('/payment/personalCertificatePay')
-                }
-            },
-            changeTo(){
-                if(this.personApply){
-                    this.$router.push('/sellerCenter/applicationPersonalCertification')
-                }else{
-                    return
-                }
-            },
-            changeToEn(){
-                if(this.enterpriseApply){
-                    this.$router.push('/sellerCenter/applicationEnterpriseCertification')
-                }else{
-                    return
-                }
-            },
-            //页面加载
-             companyView(){
-                  companyView().then(
-                        res => {
-                          this.info=res.data;
-                          this.overdueReason = false;
-                          if(this.info.state == 'reject'){
-                                this.rejectReason = true
-                                this.reason = this.info.reason
-                          }
-                          if(this.info.state == 'new_overdue' || this.info.state == 'overdue'){
-                                this.overdueReason = true
-                          }
-                          if(this.info.state == 'renew_overdue'){
-                                this.renewOverdueReason = true
-                          }
-                          if(this.info.state == 'renew'){
-                                this.renew = true
-                          }
-                          if(this.info.is_company_type == 'individual'){
-                                this.verifyState = '已个人认证'
-                          }else if(this.info.is_company_type == 'business'){
-                                this.verifyState = '已企业认证'
-                          }else if(this.info.is_company_type == false){
-                                this.verifyState = '未认证'
-                          }
-                          //判断审核状态
-                          if(this.info.state == 'unpaid_person'){
-                                this.payMoney = false;
-                                this.payMoneySafe = true
-                          }else if(this.info.state == 'unpaid_business'){
-                                this.payMoney = false;
-                                this.payMoneySafe = true
-                          }
-                          if(this.info.state == 'review_person'){
-                                this.personApply = false;
-                                this.personApplying = true;
-                                this.perapplying = false;
-                                this.enterapplying = true;
-                                this.enterpriseApplying = false;
-                                this.enterpriseApply = false
-                          }else if(this.info.state == 'review_business'){
-                                this.enterpriseApply = false;
-                                this.enterpriseApplying = true;
-                                this.enterapplying = false;
-                                this.personApply = false;
-                                this.personApplying = false;
-                                this.perapplying = true;
-                          }else if(this.info.state == 'reject'){
-                                this.payMoney=true; //认证未支付
-                                this.personApply=true;
-                                this.enterpriseApply=true;
-                                this.personApplying=false;
-                                this.enterpriseApplying=false;
-                                this.perapplying=false;
-                                this.enterapplying=false;
-                                this.overdueReason = true;
-                                this.reasonText = this.info.reason;
-                          }else if(this.info.state == 'initial'){
-                                this.payMoney=true; //认证未支付
-                                this.personApply=true;
-                                this.enterpriseApply=true;
-                                this.personApplying=false;
-                                this.enterpriseApplying=false;
-                                this.perapplying=false;
-                                this.enterapplying=false;
-                          }else if(this.info.state == 'approve'){
-                                this.payMoney = false;
-                                this.payMoneySafe = false;
-                                this.Time ='认证有效期至：' + this.timestampToTimeYMD(this.info.company_valid);
-                          }else if(this.info.state == 'overdue'){//身份过期,重新申请
-                                this.payMoney=true; 
-                                this.personApply=true;
-                                this.enterpriseApply=true;
-                                this.personApplying=false;
-                                this.enterpriseApplying=false;
-                                this.perapplying=false;
-                                this.enterapplying=false;
-                                this.overdueReason = true;
-                                this.reasonText = '您的身份已过期，请重新提交申请';
-                          }else if(this.info.state == 'renew_overdue'){//1.0旧用户有效期最后一个月，续费即重新认证
-                                this.payMoney=true; 
-                                this.personApply=true;
-                                this.enterpriseApply=true;
-                                this.personApplying=false;
-                                this.enterpriseApplying=false;
-                                this.perapplying=false;
-                                this.enterapplying=false;
-                                this.overdueReason = true;
-                                this.reasonText = '由于系统更新，身份有效期剩余1个月的旧用户需进行重新认证';
-                                this.Time ='认证有效期至：' + this.timestampToTimeYMD(this.info.company_valid);
-                          }else if(this.info.state == 'renew'){  //2.0新用户有效期最后一个月，续费
-                                this.payMoney = false;
-                                this.payMoneySafe = true;
-                                this.overdueReason = true;
-                                this.reasonText = '您的认证有效期不足一个月，请在过期前续费';
-                          }else if(this.info.state == 'new_overdue'){  //2.0用户过期
-                                this.payMoney=true; 
-                                this.personApply=true;
-                                this.enterpriseApply=true;
-                                this.personApplying=false;
-                                this.enterpriseApplying=false;
-                                this.perapplying=false;
-                                this.enterapplying=false;
-                                this.overdueReason = true;
-                                this.reasonText = '您的身份已过期，请重新提交申请';
-                          }
-                        }
-                    ).catch(err=>{
-                        console.log(err.data.message);
-                    })
-            },
-        },
-        created(){
-            window.scrollTo(0,0)
-        },
-        mounted() {
-            this.companyView()
-        },
+import {companyView} from '../../../api/api'
+export default {
+  data () {
+    return {
+      importFileUrl: '',
+      fileList: [],
+      dialogVisible: false,
+      dialogImageUrl: '',
+      info: {},
+      verifyState: '',
+      payMoney: true, // 认证未支付
+      personApply: true,
+      enterpriseApply: true,
+      personApplying: false,
+      enterpriseApplying: false,
+      perapplying: false,
+      enterapplying: false,
+      payMoneySafe: false,
+      Time: '立即实名认证享更多特权服务',
+      rejectReason: false,
+      reason: '',
+      reasonText: '',
+      overdueReason: false
     }
+  },
+  methods: {
+    paymentSafe () {
+      if (this.info.state == 'unpaid_business') {
+        this.$router.push('/payment/enterpriseCertiPay')
+      } else {
+        this.$router.push('/payment/personalCertificatePay')
+      }
+    },
+    changeTo () {
+      if (this.personApply) {
+        this.$router.push('/sellerCenter/applicationPersonalCertification')
+      }
+    },
+    changeToEn () {
+      if (this.enterpriseApply) {
+        this.$router.push('/sellerCenter/applicationEnterpriseCertification')
+      }
+    },
+    // 页面加载
+    companyView () {
+      companyView().then(
+        res => {
+          this.info = res.data
+          this.overdueReason = false
+          if (this.info.state == 'reject') {
+            this.rejectReason = true
+            this.reason = this.info.reason
+          }
+          if (this.info.state == 'new_overdue' || this.info.state == 'overdue') {
+            this.overdueReason = true
+          }
+          if (this.info.state == 'renew_overdue') {
+            this.renewOverdueReason = true
+          }
+          if (this.info.state == 'renew') {
+            this.renew = true
+          }
+          if (this.info.is_company_type == 'individual') {
+            this.verifyState = '已个人认证'
+          } else if (this.info.is_company_type == 'business') {
+            this.verifyState = '已企业认证'
+          } else if (this.info.is_company_type == false) {
+            this.verifyState = '未认证'
+          }
+          // 判断审核状态
+          if (this.info.state == 'unpaid_person') {
+            this.payMoney = false
+            this.payMoneySafe = true
+          } else if (this.info.state == 'unpaid_business') {
+            this.payMoney = false
+            this.payMoneySafe = true
+          }
+          if (this.info.state == 'review_person') {
+            this.personApply = false
+            this.personApplying = true
+            this.perapplying = false
+            this.enterapplying = true
+            this.enterpriseApplying = false
+            this.enterpriseApply = false
+          } else if (this.info.state == 'review_business') {
+            this.enterpriseApply = false
+            this.enterpriseApplying = true
+            this.enterapplying = false
+            this.personApply = false
+            this.personApplying = false
+            this.perapplying = true
+          } else if (this.info.state == 'reject') {
+            this.payMoney = true // 认证未支付
+            this.personApply = true
+            this.enterpriseApply = true
+            this.personApplying = false
+            this.enterpriseApplying = false
+            this.perapplying = false
+            this.enterapplying = false
+            this.overdueReason = true
+            this.reasonText = this.info.reason
+          } else if (this.info.state == 'initial') {
+            this.payMoney = true // 认证未支付
+            this.personApply = true
+            this.enterpriseApply = true
+            this.personApplying = false
+            this.enterpriseApplying = false
+            this.perapplying = false
+            this.enterapplying = false
+          } else if (this.info.state == 'approve') {
+            this.payMoney = false
+            this.payMoneySafe = false
+            this.Time = '认证有效期至：' + this.timestampToTimeYMD(this.info.company_valid)
+          } else if (this.info.state == 'overdue') { // 身份过期,重新申请
+            this.payMoney = true
+            this.personApply = true
+            this.enterpriseApply = true
+            this.personApplying = false
+            this.enterpriseApplying = false
+            this.perapplying = false
+            this.enterapplying = false
+            this.overdueReason = true
+            this.reasonText = '您的身份已过期，请重新提交申请'
+          } else if (this.info.state == 'renew_overdue') { // 1.0旧用户有效期最后一个月，续费即重新认证
+            this.payMoney = true
+            this.personApply = true
+            this.enterpriseApply = true
+            this.personApplying = false
+            this.enterpriseApplying = false
+            this.perapplying = false
+            this.enterapplying = false
+            this.overdueReason = true
+            this.reasonText = '由于系统更新，身份有效期剩余1个月的旧用户需进行重新认证'
+            this.Time = '认证有效期至：' + this.timestampToTimeYMD(this.info.company_valid)
+          } else if (this.info.state == 'renew') { // 2.0新用户有效期最后一个月，续费
+            this.payMoney = false
+            this.payMoneySafe = true
+            this.overdueReason = true
+            this.reasonText = '您的认证有效期不足一个月，请在过期前续费'
+          } else if (this.info.state == 'new_overdue') { // 2.0用户过期
+            this.payMoney = true
+            this.personApply = true
+            this.enterpriseApply = true
+            this.personApplying = false
+            this.enterpriseApplying = false
+            this.perapplying = false
+            this.enterapplying = false
+            this.overdueReason = true
+            this.reasonText = '您的身份已过期，请重新提交申请'
+          }
+        }
+      ).catch(err => {
+        console.log(err.data.message)
+      })
+    }
+  },
+  created () {
+    window.scrollTo(0, 0)
+  },
+  mounted () {
+    this.companyView()
+  }
+}
 </script>
 <style scoped lang="less">
     .certification .rejectReason{

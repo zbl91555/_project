@@ -158,7 +158,6 @@ function getOptions (vm) {
 }
 
 var verticalLineProcessor = (() => {
-
   function calculate (vm, options, metas, rects) {
     let width = vm.$el.clientWidth
     let grow = options.grow
@@ -227,11 +226,9 @@ var verticalLineProcessor = (() => {
   return {
     calculate
   }
-
 })()
 
 var horizontalLineProcessor = (() => {
-
   function calculate (vm, options, metas, rects) {
     let width = vm.$el.clientWidth
     let total = metas.length
@@ -319,7 +316,6 @@ var horizontalLineProcessor = (() => {
   return {
     calculate
   }
-
 })()
 
 function getLeft (width, contentWidth, align) {
@@ -346,7 +342,7 @@ function render (rects, metas) {
     meta.node[MOVE_CLASS_PROP] = meta.moveClass
     setTransform(meta.node, firstRects[i], lastRects[i])
   })
-  document.body.clientWidth // forced reflow
+  // document.body.clientWidth // forced reflow
   metasNeedToMoveByTransform.forEach((meta) => {
     addClass(meta.node, meta.moveClass)
     clearTransform(meta.node)

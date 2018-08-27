@@ -3,7 +3,7 @@
     <div class = "cover" v-if="show" @click.stop="isShow">
       <div class = "promptMessage">拍品信息进入群发队列，稍后进行发送</div>
       <div class = "confirm" @click.stop="isShow">知道了</div>
-    </div>    
+    </div>
       <div class="topBanner border horizonBottom">
         <div class="send btn" @click.stop="massHair">群&nbsp;&nbsp;发</div>
       </div>
@@ -50,152 +50,152 @@
 </template>
 
 <script>
-  import { groupsentMessage,messageGroup } from '../../../api/api'
-  import { Toast } from 'vant';
-  export default {
-    name : 'groupsentMessage',
-    data() {
-      return {
-        data : [],//渲染列表
-        selectArr : [],//选中的数据
-        isShare : '',//分享后的数据
-        show : false,//弹出层
-        page : 1,
-        pageNum : 6,
-        flag : false,//节流阀
-        num : 0,//发送次数
-        dataLength : 0,//每次获取数据的条数
-        indexs : [],//选中的数据下
-        hide : false,
-        isMassHair : false
-      }
-    },
-    methods : {
-      //判断是否是移动端
-      // browserRedirect() {  
-      //   var sUserAgent = navigator.userAgent.toLowerCase();  
-      //   var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";  
-      //   var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";  
-      //   var bIsMidp = sUserAgent.match(/midp/i) == "midp";  
-      //   var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";  
-      //   var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";  
-      //   var bIsAndroid = sUserAgent.match(/android/i) == "android";  
-      //   var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";  
-      //   var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";  
-      //   if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {  n
-      //     return true;  
-      //   } else {  
-      //     return false;
-      //     }  
-      // },
-      //注册scroll事件并监听 
-      scrollHandler() {
-        const st = document.documentElement.scrollTop || document.body.scrollTop;
-        const ch = this.$refs.grp.clientHeight;
-        if (st + window.innerHeight >= ch) {
-          this.getMessage();
-        }
-      }, 
-      //弹出层
-      isShow() {
-        this.show = false;
-      },
-      //数据获取
-      getMessage() {
-        if (this.dataLength < this.pageNum) {
-          return;
-        }
-        if (this.flag) {
-          return ;
-        };
-        this.flag = true;
-        let params = {
-          page : this.page,
-          pagenum : this.pageNum
-        };
-        groupsentMessage(params).then(res => {
-          if (this.page == 1 && res.data.list.length == 0) {
-            this.hide = true;
-          }
-          this.page++;
-          console.log(res);
-          for (let i = 0; i < res.data.list.length; i++) {
-            res.data.list[i].selected = false;
-          };
-          //匹配已经分享过的数据
-          this.data = this.data.concat(res.data.list);
-          this.flag = false;
-          this.num = res.data.qunfa_num;
-          this.dataLength = res.data.list.length;
-        }).catch(err => {
-          console.log(err);
-        })
-      },
-      //群发
-      massHair() {
-        // let mobile = this.browserRedirect();
-        let ua = window.navigator.userAgent.toLowerCase();
-        let environment = (ua.match(/MicroMessenger/i) == 'micromessenger');
-        if (!environment) {
-          Toast('请到微信分享');
-          return ;
-        };
-        if (this.num == 0) {
-          Toast('一天只能群发消息三次');
-          return ;
-        };
-        if (this.isMassHair) {
-          return ;
-        };
-        this.isMassHair = true;
-        if (this.selectArr.length > 0) {
-          messageGroup(this.selectArr).then(res => {
-            for (let i = 0; i < this.indexs.length; i++) {
-              this.data[+this.indexs[i]] = '';
-            };
-            this.show = true;
-            this.indexs = [];
-            this.selectArr = [];
-            this.num--;
-            this.isMassHair = false;
-          }).catch(err => {
-            this.isMassHair = false;
-            Toast(err.data.message);
-          })
-        }else {
-          Toast('请先分享拍品');
-        }
-      },
-      //分享
-      immediateSharing(id) {
-        this.$router.push('/auction/'+id);
-      },
-      //选中的数组
-      select(id,index) {
-        let flag = this.data[index].selected;
-        let num = this.selectArr.indexOf(id);
-        if (num > -1) {
-          this.data[index].selected = !flag;
-          this.selectArr.splice(num,1);
-          this.indexs.splice(num,1);
-        }else {
-          if (this.selectArr.length >= 7) {
-            Toast('多选不能超过7条');
-            return false;
-          };
-          this.data[index].selected = !flag;
-          this.selectArr.push(id);
-          this.indexs.push(index);
-        };
-      }
-    },
-    created() {
-      this.dataLength = this.pageNum;
-      // this.isShare = JSON.parse(localStorage.getItem('share') || "[]");
-      this.getMessage();
-      window.addEventListener("scroll", this.scrollHandler);
+import { groupsentMessage, messageGroup } from '../../../api/api'
+import { Toast } from 'vant'
+export default {
+  name: 'groupsentMessage',
+  data () {
+    return {
+      data: [], // 渲染列表
+      selectArr: [], // 选中的数据
+      isShare: '', // 分享后的数据
+      show: false, // 弹出层
+      page: 1,
+      pageNum: 6,
+      flag: false, // 节流阀
+      num: 0, // 发送次数
+      dataLength: 0, // 每次获取数据的条数
+      indexs: [], // 选中的数据下
+      hide: false,
+      isMassHair: false
     }
+  },
+  methods: {
+    // 判断是否是移动端
+    // browserRedirect() {
+    //   var sUserAgent = navigator.userAgent.toLowerCase();
+    //   var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+    //   var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+    //   var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+    //   var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+    //   var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+    //   var bIsAndroid = sUserAgent.match(/android/i) == "android";
+    //   var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+    //   var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+    //   if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {  n
+    //     return true;
+    //   } else {
+    //     return false;
+    //     }
+    // },
+    // 注册scroll事件并监听
+    scrollHandler () {
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      const ch = this.$refs.grp.clientHeight
+      if (st + window.innerHeight >= ch) {
+        this.getMessage()
+      }
+    },
+    // 弹出层
+    isShow () {
+      this.show = false
+    },
+    // 数据获取
+    getMessage () {
+      if (this.dataLength < this.pageNum) {
+        return
+      }
+      if (this.flag) {
+        return
+      };
+      this.flag = true
+      let params = {
+        page: this.page,
+        pagenum: this.pageNum
+      }
+      groupsentMessage(params).then(res => {
+        if (this.page == 1 && res.data.list.length == 0) {
+          this.hide = true
+        }
+        this.page++
+        console.log(res)
+        for (let i = 0; i < res.data.list.length; i++) {
+          res.data.list[i].selected = false
+        };
+        // 匹配已经分享过的数据
+        this.data = this.data.concat(res.data.list)
+        this.flag = false
+        this.num = res.data.qunfa_num
+        this.dataLength = res.data.list.length
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    // 群发
+    massHair () {
+      // let mobile = this.browserRedirect();
+      let ua = window.navigator.userAgent.toLowerCase()
+      let environment = (ua.match(/MicroMessenger/i) == 'micromessenger')
+      if (!environment) {
+        Toast('请到微信分享')
+        return
+      };
+      if (this.num == 0) {
+        Toast('一天只能群发消息三次')
+        return
+      };
+      if (this.isMassHair) {
+        return
+      };
+      this.isMassHair = true
+      if (this.selectArr.length > 0) {
+        messageGroup(this.selectArr).then(res => {
+          for (let i = 0; i < this.indexs.length; i++) {
+            this.data[+this.indexs[i]] = ''
+          };
+          this.show = true
+          this.indexs = []
+          this.selectArr = []
+          this.num--
+          this.isMassHair = false
+        }).catch(err => {
+          this.isMassHair = false
+          Toast(err.data.message)
+        })
+      } else {
+        Toast('请先分享拍品')
+      }
+    },
+    // 分享
+    immediateSharing (id) {
+      this.$router.push('/auction/' + id)
+    },
+    // 选中的数组
+    select (id, index) {
+      let flag = this.data[index].selected
+      let num = this.selectArr.indexOf(id)
+      if (num > -1) {
+        this.data[index].selected = !flag
+        this.selectArr.splice(num, 1)
+        this.indexs.splice(num, 1)
+      } else {
+        if (this.selectArr.length >= 7) {
+          Toast('多选不能超过7条')
+          return false
+        };
+        this.data[index].selected = !flag
+        this.selectArr.push(id)
+        this.indexs.push(index)
+      };
+    }
+  },
+  created () {
+    this.dataLength = this.pageNum
+    // this.isShare = JSON.parse(localStorage.getItem('share') || "[]");
+    this.getMessage()
+    window.addEventListener('scroll', this.scrollHandler)
   }
+}
 </script>
 
 <style scoped>
@@ -249,10 +249,10 @@
   color : #9e2026;
 }
 .groupsentMessage {
-  	max-width: 750px;
-    /* min-height: 100vh; */
-    background-color: #f4f4f4;
-    margin-bottom : 1.33334rem;
+  max-width: 750px;
+  /* min-height: 100vh; */
+  background-color: #f4f4f4;
+  margin-bottom : 1.33334rem;
 }
 .groupsentMessage .topBanner {
   position: fixed;
@@ -424,30 +424,30 @@
 }
 .groupsentMessage .saleMsgMain .saleList .saleItem .desc {
 	color: #333;
-  	font-size: 28px;
-  	line-height: 37px;
-  	margin-top: -2px;
-  	word-break: break-all;
-  	-o-text-overflow: ellipsis;
-    text-overflow: ellipsis;
-  	overflow: hidden;
-  	-webkit-line-clamp: 2;
-  	padding-right: 60px;
-  	-webkit-box-flex: 1;
-  	-webkit-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
+  font-size: 28px;
+  line-height: 37px;
+  margin-top: -2px;
+  word-break: break-all;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  padding-right: 60px;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 .groupsentMessage .saleMsgMain .saleList .saleItem .endTime {
 	color: #999;
 	font-size: 24px;
-  	margin-top: 24px;
-  	-webkit-box-flex: 1;
-  	-webkit-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-  	height: 29px;
-  	line-height: 29px;
+  margin-top: 24px;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  height: 29px;
+  line-height: 29px;
 }
 .groupsentMessage .saleMsgMain .saleList  .shareMask {
   width : 100%;
@@ -458,20 +458,20 @@
 .groupsentMessage .saleMsgMain .saleList  .shareMask p{
 	font-size: 24px;
 	color: #333;
-	 float: left;
+  float: left;
 }
 .groupsentMessage .saleMsgMain .saleList  .shareMask .button{
 	width: 154px;
 	height: 58px;
 	line-height: 58px;
 	text-align: center;
-    color: #fff;
-    background-color: #9e2026;
-    font-size: 28px;
-    border-radius: 5px;
-  	float: right;
-  	margin-right: 36px;
-  	margin-top: 20px;
+  color: #fff;
+  background-color: #9e2026;
+  font-size: 28px;
+  border-radius: 5px;
+  float: right;
+  margin-right: 36px;
+  margin-top: 20px;
 }
 .iconfont{
   margin: 0

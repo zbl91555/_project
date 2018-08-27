@@ -26,22 +26,22 @@
 				<span>{{info.contract}}</span>
 				<i class="iconfont icon-right"></i>
 			</a>
-			
+
 			<!-- <router-link :to="'/weChat/'+info.wxaccount" class="list"> -->
 			<!-- <a class="list" @click="wxaccountShow">
 				<span>微信号码</span>
 				<span>{{info.wxaccount}}</span>
 				<i class="iconfont icon-right"></i>
-			</a> -->	
-			
+			</a> -->
+
 			<router-link to="/verification/1" class="list">
 				<span>手机号码</span>
 				<span>{{info.mobile}}</span>
 				<i class="iconfont icon-right"></i>
-			</router-link>	
-			
+			</router-link>
+
 			<router-link :to="'/member/receiveAddress/'+this.type" class="list">
-				
+
 				<span>收货地址</span>
 				<span>
 					<p class = "receivingAddress" style="padding-top:12px">
@@ -67,121 +67,120 @@
 	</div>
 </template>
 <script type="text/javascript">
-	import signed from './signed'
-	import contacts from './contacts'
-	import wechat from './weChat'
-	import receiveAddress from '../receiveAddress'
-	import {getbasicAllInfo} from '../../../api/api'
-	import assign from '../../../assets/js/assign.js'//混入式方法
-	export default {
-		mixins:[assign],
-		data() {
-			return {
-				info: {},
-				address:{},
-				type:'',
-				nowPage:true,
-				signe:false, //个性签名
-				contact:false, //联系人
-				chat:false, //联系人
-				getPsd:false, //联系人
-				addresses:false, //联系人
-				mobile:''
-			}
-		},
-		components:{
-			signed,
-			contacts,
-			wechat,
-		},
-		methods: {
-			//个性签名显示
-			signedShow(){
-				this.nowPage = false;
-				this.signe = true;
-				this.$store.commit('revise',false)
-			},
-			getSigneMsg(item){
-				this.nowPage = true;
-				this.signe = false;
-				this.$store.commit('revise',true)
-				this.info.signature = item
-			},
-			//联系人
-			contractShow(){
-				this.nowPage = false;
-				this.contact = true;
-				this.$store.commit('revise',false)
-			},
-			getContactMsg(item){
-				this.nowPage = true;
-				this.contact = false;
-				this.$store.commit('revise',true)
-				this.info.contract = item
-			},
-			//微信号码
-			wxaccountShow(){
-				this.nowPage = false;
-				this.chat = true
-			},
-			getWechatMsg(item){
-				this.nowPage = true;
-				this.chat = false;
-				this.info.wxaccount = item
-			},
-			//手机号码
-			mobileShow(){
-				this.nowPage = false;
-				this.getPsd = true
-			},
-			getForgetPsdMsg(item){
-				this.nowPage = true;
-				this.getPsd = false;
-				
-			},
-			//收货地址
-			addressShow(){
-				this.nowPage = false;
-				this.addresses = true
-			},
-			getAddressMsg(item){
-				this.nowPage = true;
-				this.addresses = false
-			},
-			getUserInfo: function() {
-				let _this = this;
-				getbasicAllInfo().then((res)=> {
-						if(res.code == '200') {
-							_this.info = res.data;
-							_this.mobile = res.data.mobile;
-							_this.type = res.data.type;
-							_this.address = res.data.address[0] || {
-								name : '',
-								tele : '',
-								province : '',
-								city : '',
-								country : ''
-							};
-							localStorage.setItem('mobile',_this.mobile);
-						};
-					})
-					.catch(function(err) {
-						console.log(err)
-					})
-			}
-		},
-		created() {
-			this.getUserInfo();
-		},
-		// beforeRouteLeave(to,from,next){
+import signed from './signed'
+import contacts from './contacts'
+import wechat from './weChat'
+import receiveAddress from '../receiveAddress'
+import {getbasicAllInfo} from '../../../api/api'
+import assign from '../../../assets/js/assign.js'// 混入式方法
+export default {
+  mixins: [assign],
+  data () {
+    return {
+      info: {},
+      address: {},
+      type: '',
+      nowPage: true,
+      signe: false, // 个性签名
+      contact: false, // 联系人
+      chat: false, // 联系人
+      getPsd: false, // 联系人
+      addresses: false, // 联系人
+      mobile: ''
+    }
+  },
+  components: {
+    signed,
+    contacts,
+    wechat
+  },
+  methods: {
+    // 个性签名显示
+    signedShow () {
+      this.nowPage = false
+      this.signe = true
+      this.$store.commit('revise', false)
+    },
+    getSigneMsg (item) {
+      this.nowPage = true
+      this.signe = false
+      this.$store.commit('revise', true)
+      this.info.signature = item
+    },
+    // 联系人
+    contractShow () {
+      this.nowPage = false
+      this.contact = true
+      this.$store.commit('revise', false)
+    },
+    getContactMsg (item) {
+      this.nowPage = true
+      this.contact = false
+      this.$store.commit('revise', true)
+      this.info.contract = item
+    },
+    // 微信号码
+    wxaccountShow () {
+      this.nowPage = false
+      this.chat = true
+    },
+    getWechatMsg (item) {
+      this.nowPage = true
+      this.chat = false
+      this.info.wxaccount = item
+    },
+    // 手机号码
+    mobileShow () {
+      this.nowPage = false
+      this.getPsd = true
+    },
+    getForgetPsdMsg (item) {
+      this.nowPage = true
+      this.getPsd = false
+    },
+    // 收货地址
+    addressShow () {
+      this.nowPage = false
+      this.addresses = true
+    },
+    getAddressMsg (item) {
+      this.nowPage = true
+      this.addresses = false
+    },
+    getUserInfo: function () {
+      let _this = this
+      getbasicAllInfo().then((res) => {
+        if (res.code == '200') {
+          _this.info = res.data
+          _this.mobile = res.data.mobile
+          _this.type = res.data.type
+          _this.address = res.data.address[0] || {
+            name: '',
+            tele: '',
+            province: '',
+            city: '',
+            country: ''
+          }
+          localStorage.setItem('mobile', _this.mobile)
+        };
+      })
+        .catch(function (err) {
+          console.log(err)
+        })
+    }
+  },
+  created () {
+    this.getUserInfo()
+  }
+  // beforeRouteLeave(to,from,next){
 
-		// }
-	}
+  // }
+}
 </script>
 <style lang="less" scoped>
 	/*
-	 * @border-color: 统一边框颜色
-	 * */
+	* @border-color: 统一边框颜色
+	* */
 	.receivingAddress {
 		width : 100%;
 		line-height: 0.6rem;
@@ -192,11 +191,11 @@
 		background-color: #f4f4f4;
 		padding: 20px 0;
 	}
-	
+
 	.iconfont {
 		font-size: 24px;
 	}
-	
+
 	.app-containerBuyset .info {
 		background-color: #fff;
 		padding-left: 30px;
@@ -251,7 +250,7 @@
 			i {
 				float: right;
 			}
-			span{				
+			span{
 				float: left;
 			}
 			span:nth-child(1) {
@@ -272,7 +271,7 @@
 		.list:nth-child(6) {
 			border: none;
 			line-height: 100px;
-			span:nth-child(1){				
+			span:nth-child(1){
 				line-height: 100px;
 			}
 			span:nth-child(2){

@@ -1,8 +1,8 @@
 <template>
 	<div class="join">
 		<ul class="list" id="join" ref="ctn">
-		
-			<li v-for="(e, $index) in joinList">
+
+			<li v-for="e in joinList" :key="e.uri">
 			<router-link :to="'/auction/'+e.uri">
 					<div class="list-img" v-bind:style="{backgroundImage:'url(' +e.cover +')'}"></div>
 					<p class="title">{{e.desc}}</p>
@@ -14,64 +14,64 @@
 			</router-link>
 			</li>
 		</ul>
-		
+
 	</div>
 </template>
 <script>
-import { join } from "../../../api/api";
+import { join } from '../../../api/api'
 export default {
-  data() {
+  data () {
     return {
       joinList: [],
       page: 0,
       num: 10,
-      flag: false //节流阀
-    };
+      flag: false // 节流阀
+    }
   },
-  props: ["value"],
+  props: ['value'],
   methods: {
-    join() {
+    join () {
       if (this.flag) {
-        return;
+        return
       }
-      this.flag = true;
-      this.page += 1;
+      this.flag = true
+      this.page += 1
       let params = {
         page: this.page,
-        pagenum: "10"
-      };
+        pagenum: '10'
+      }
       join(params)
         .then(res => {
-          this.joinList = res.data;
-          this.num = res.data.length;
-          this.flag = false;
+          this.joinList = res.data
+          this.num = res.data.length
+          this.flag = false
         })
         .catch(err => {
-          console.log(err);
+          console.log(err)
           if (this.joinList.length == 0) {
-            this.$emit("input", true);
+            this.$emit('input', true)
           }
-        });
+        })
     },
-    scrollJoin() {
-      const st = document.documentElement.scrollTop || document.body.scrollTop;
-      const ch = this.$refs.ctn.clientHeight;
+    scrollJoin () {
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      const ch = this.$refs.ctn.clientHeight
       if (st + window.innerHeight >= ch * 0.5) {
-        this.join();
+        this.join()
       }
     }
   },
-  mounted() {
-    this.join();
+  mounted () {
+    this.join()
   },
-  created() {
+  created () {
     // 注册scroll事件并监听
-    window.addEventListener("scroll", this.scrollJoin);
+    window.addEventListener('scroll', this.scrollJoin)
   },
-  destroyed() {
-    window.removeEventListener("scroll", this.scrollJoin);
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollJoin)
   }
-};
+}
 </script>
 <style lang="less" scoped>
 @border-color: #d2d2d2;

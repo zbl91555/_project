@@ -101,51 +101,51 @@
 </template>
 
 <script>
-	import {getSellerUserInfo} from '../../../api/api'
-	export default {
-		data() {
-			return {
-				info: {},
-				myLink: 0,
-			}
-		},
-		methods: {
-			getUserInfo: function() {
-				let _this = this;
-				getUserInfo().then(function(res) {
-						if(res.code == '200') {
-							_this.info = res.data;
-							_this.myLink = _this.info.mylink;
-						}
-					})
-					.catch(function(err) {
-						console.log(err);
-					})
-			},
-			// 设置固定“我的”为卖家中心
-			setLink: function(){
-				let _this = this;
-				if(_this.myLink == 0){
-					_this.myLink = 1;
-					console.log(_this.myLink)
-				} else{
-					_this.myLink = 0;
-					console.log(_this.myLink)
-				}
-			}
-		},
-		mounted() {
-			this.getUserInfo();
-		}
-	}
+import {getSellerUserInfo} from '../../../api/api'
+export default {
+  data () {
+    return {
+      info: {},
+      myLink: 0
+    }
+  },
+  methods: {
+    getUserInfo: function () {
+      let _this = this
+      getUserInfo().then(function (res) {
+        if (res.code == '200') {
+          _this.info = res.data
+          _this.myLink = _this.info.mylink
+        }
+      })
+        .catch(function (err) {
+          console.log(err)
+        })
+    },
+    // 设置固定“我的”为卖家中心
+    setLink: function () {
+      let _this = this
+      if (_this.myLink == 0) {
+        _this.myLink = 1
+        console.log(_this.myLink)
+      } else {
+        _this.myLink = 0
+        console.log(_this.myLink)
+      }
+    }
+  },
+  mounted () {
+    this.getUserInfo()
+  }
+}
 </script>
 
 <style lang="less" scoped>
 	/*
-	 * @border-color: 统一边框颜色
-	 * @pad: 30px: 统一边距尺寸
-	 * */
-	
+	* @border-color: 统一边框颜色
+	* @pad: 30px: 统一边距尺寸
+	* */
+
 	@border-color: #d2d2d2;
 	@pad: 30px;
 	.app-container {
@@ -153,11 +153,11 @@
 		background-color: #ededed;
 		padding: 20px 0;
 	}
-	
+
 	.iconfont {
 		font-size: 12px;
 	}
-	
+
 	.info {
 		background-color: #fff;
 		box-sizing: border-box;
@@ -266,7 +266,7 @@
 						font-size: 80px;
 					}
 					.icon-kaiguan4{
-						color: #d32838;						
+						color: #d32838;
 					}
 					.icon-kaiguan3{
 						color: #ccc;

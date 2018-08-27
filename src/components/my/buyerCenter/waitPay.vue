@@ -2,8 +2,8 @@
 	<div class="app-containerAllOrder" ref="allOrder">
 		<div class="buyer-list">
 			<ul>
-				<li v-for="(e,index) in allList" :key="e.auction_id"> 
-					
+				<li v-for="(e,index) in allList" :key="e.order_id">
+
 						<div class="buyer-tool">
 							<img class="buyerToolbac" :src="e.avatar" alt="">
 							<span @click = "moveTo(e.user_id,e.nickname)" class="nickname">{{e.nickname}}</span>
@@ -12,9 +12,9 @@
 								<a style="width:20px;height:100%;position: absolute;right:8px;padding-right:0;margin-left:8px;" :href="'tel:'+e.mobile"></a>
 							</i>
 							<i @click="alldingDan(e.order_id)" class="iconfont icon-wendang op"></i>
-						</div>  
-					
-					<!-- ,address_id:e.address_id -->  
+						</div>
+
+					<!-- ,address_id:e.address_id -->
 					<router-link :to="{path: '/orderDetail/'+e.order_id+'/all'}">
 						<div class="buy-info">
 							<div class="goods-info" :style="{backgroundImage:'url(' + e.auction_img + ')'}"></div>
@@ -37,7 +37,7 @@
 								<li>成交金额：￥{{e.price}}元</li>
 								<li><div style="float:left">发货截止：</div><countDown style="width:80px;float:left" :endtime='parseFloat(e.abort_fahuo_time)' :dayShow='true' :secShow='false'></countDown></li>
 							</ul>
-							
+
 							<!-- 已发货,等待确认 -->
 							<ul class="buyer-detail" v-else-if="e.showPayment.nameVal === '3'">
 								<li>成交金额：￥{{e.price}}元</li>
@@ -105,7 +105,7 @@
 							</ul>
 						</div>
 					</router-link>
-					<div class="buyer-btn"> 
+					<div class="buyer-btn">
 						<router-link :to="{path:'/payment', query: { order_id:e.order_id}}">
 							<button class="isImpotant" v-if="e.showPayment.showPayment" >立即付款</button>
 						</router-link>
@@ -113,7 +113,7 @@
 						<button class="unImpotant fontCol" @click="showshowlist('payLaterType',e.order_id,index)" v-if="e.showPayment.showDelay">延迟付款</button>
 
 						<button class="unImpotant fontCol" @click="showshowlist('FaceType',e.order_id,index)" v-if="e.showPayment.showFace">当面交易</button>
-						
+
 						<router-link :to="{path: '/returnRequest/'+e.order_id+'/2'}">
 							<button class="unImpotant" v-if="e.showPayment.showApplyMoney">申请退款</button>
 						</router-link>
@@ -124,13 +124,13 @@
 
 						<router-link :to="{path: '/returnRequest/'+e.order_id+'/4'}">
 							<button class="unImpotant" v-if="e.showPayment.showRefuseMoney">拒绝退款</button>
-						</router-link>	
+						</router-link>
 
 						<router-link :to="'/agreeReturnMoney/'+e.order_id">
 							<button class="unImpotant" v-if="e.showPayment.showAgreeMoney">同意退款</button>
 						</router-link>
 						<button class="isImpotant" @click="showshowlist('confirmGetType',e.order_id,index)" v-if="e.showPayment.showReap">确认收货</button>
-       					<router-link :to="{path: '/checkLogistics/'+e.order_id+'/'+e.is_tuihuo}">
+							<router-link :to="{path: '/checkLogistics/'+e.order_id+'/'+e.is_tuihuo}">
 						<button class="unImpotant" v-if="e.showPayment.showLogisticsUser">查看物流</button> <!-- 买家 -->
 						</router-link>
 
@@ -138,7 +138,7 @@
 						<router-link :to="{path: '/checkLogistics/'+e.order_id+'/'+e.is_tuihuo}">
 						<button class="unImpotant" v-if="e.showPayment.showLogisticsSellerr">查看物流</button>
 						</router-link>
-						
+
 						<router-link :to="{path: '/confirmBack/'+e.order_id}">
 						<button class="isImpotant" v-if="e.showPayment.showReturnGood">立即退货</button>
 						</router-link>
@@ -153,7 +153,7 @@
 						<router-link :to="'/agreeReturnConfirmReceipt/'+e.order_id">
 							<button class="unImpotant" v-if="e.showPayment.showReturnGoodAndMoney">收货并退款</button>
 						</router-link>
-						
+
 						<router-link :to="{path: '/returnRequest/'+e.order_id+'/1'}">
 							<button class="unImpotant" v-if="e.showPayment.showApplyGoods">申请退货</button>
 						</router-link>
@@ -164,13 +164,13 @@
 
 						<button class="unImpotant" @click="showshowlist('RefuseReceiveType',e.order_id,index)" v-if="e.showPayment.showRefuseReceiveGood">拒绝收货</button>
 						<router-link :to="{path: '/evaluate/'+e.order_id}">
-							<button :class="isImpotant" v-if="e.showPayment.showEvaluate">立即评价</button>   
+							<button :class="isImpotant" v-if="e.showPayment.showEvaluate">立即评价</button>
 						</router-link>
 
 					</div>
 				</li>
 				<load-more v-if="loading" tip="正在加载"></load-more>
-    			<load-more v-if="elseloading" :show-loading="false" tip="暂无更多数据" background-color="#fbf9fe"></load-more>
+				<load-more v-if="elseloading" :show-loading="false" tip="暂无更多数据" background-color="#fbf9fe"></load-more>
 			</ul>
 			<div class="no-info" v-if="noOrder">
 				<div class="icon"><i class="iconfont icon-dingdan"></i></div>
@@ -183,15 +183,15 @@
 			<div @click="closeshowlists()" class="fixednumMask" style="opacity: 0.38;">
 			</div>
 			<div class="sharesomething">
-				<router-link :to="'/buyeralllists/'+whichType+'/'+orderId">	
+				<router-link :to="'/buyeralllists/'+whichType+'/'+orderId">
 					<div @click="lookshowlists()">{{writer}}</div>
 				</router-link>
-					<div @click="closeshowlists()" class="bordertop">取消</div>					
+					<div @click="closeshowlists()" class="bordertop">取消</div>
 			</div>
 		</div>
 		<!-- 是否弹出打电话 -->
 		<div id="fixednumMain" v-if="showtel">
-			<div @click="closeshowdel()" class="fixednumMask" style="opacity: 0.38;">	
+			<div @click="closeshowdel()" class="fixednumMask" style="opacity: 0.38;">
 			</div>
 			<div class="telsharesomething">
 				<div>
@@ -200,7 +200,7 @@
 				</div>
 				<div>
 					<a :href="'tel:'+telMobile">确认拨打?</a>
-				</div>			  
+				</div>
 			</div>
 		</div>
 		<!-- 弹出弹框 -->
@@ -215,256 +215,253 @@
 				<div v-if="type=='confirmGetType'" style="color:red" @click="confirmGets()">确认收货</div>
 				<div v-if="type=='RefuseReceiveType'" style="color:red" @click="RefuseReceive()">拒绝收货</div>
 				<div v-if="type=='delayedDelivery'" @click="delayedDelivery()"><span style="color:red">延迟收货</span><span style="color:#aba9a5">（收货将会延长7天）</span></div>
-				<div  @click="closeshowlists()" class="bordertop">取消</div>					
+				<div  @click="closeshowlists()" class="bordertop">取消</div>
 			</div>
 		</div>
 	</div>
 </template>
 <script>
-	import { LoadMore } from 'vux'
-	import countDown from '../../common/countDown'
-	import {orderConfirmGoods,order,orderTransaction,orderPaylater,orderRefuseFace,orderRefuseGoods,orderDelayGoods } from '../../../api/api';
-	export default {
-		components:{
-			countDown,
-			LoadMore
-		},
-		data() {
-			return {
-				allList: [],// 所有产品列表
-				nowindex:0,
-				fivebtn:[
-					{
-			          "text":"全部",
-			          'type':'',
-			          'link':'/buyerOrder/-1/'          
-			        },
-			        {
-			          "text":"待付款",
-			          'type':'daifukuan',
-			          'link':'/buyerOrder/0/'                  
-			        },
-			        {
-			          "text":"待发货",
-			          'type':'daifahuo',
-			          'link':'/buyerOrder/1/' 
-			        },
-			        {
-			          "text":"待收货",
-			          'type':'yifahuo',
-			          'link':'/buyerOrder/2/'                   
-			        },
-			        {
-			          "text":"待评价",
-			          'type':'yishouhuo',
-			          'link':'/buyerOrder/3/'                        
-			        }
-				],
-				elseloading:false,
-				loading:false,
-				showshowlists:false,
-				type:"",
-				types:'' ,
-				orderId:'',
-				whichIndex:0,
-				showlists:false,
-				writer:'', //弹框文案
-				showtel:false,
-				noOrder:false,
-				telMobile:'',
-				page:0,
-				params:{},
-				whichType:''
-			}
-		},
-		created() {
-		    window.addEventListener("scroll", this.scrollHandler);
-		},
+import { LoadMore } from 'vux'
+import countDown from '../../common/countDown'
+import { orderConfirmGoods, order, orderTransaction, orderPaylater, orderRefuseFace, orderRefuseGoods, orderDelayGoods } from '../../../api/api'
+export default {
+  components: {
+    countDown,
+    LoadMore
+  },
+  data () {
+    return {
+      allList: [], // 所有产品列表
+      nowindex: 0,
+      fivebtn: [
+        {
+          'text': '全部',
+          'type': '',
+          'link': '/buyerOrder/-1/'
+        },
+        {
+          'text': '待付款',
+          'type': 'daifukuan',
+          'link': '/buyerOrder/0/'
+        },
+        {
+          'text': '待发货',
+          'type': 'daifahuo',
+          'link': '/buyerOrder/1/'
+        },
+        {
+          'text': '待收货',
+          'type': 'yifahuo',
+          'link': '/buyerOrder/2/'
+        },
+        {
+          'text': '待评价',
+          'type': 'yishouhuo',
+          'link': '/buyerOrder/3/'
+        }
+      ],
+      elseloading: false,
+      loading: false,
+      showshowlists: false,
+      type: '',
+      types: '',
+      orderId: '',
+      whichIndex: 0,
+      showlists: false,
+      writer: '', // 弹框文案
+      showtel: false,
+      noOrder: false,
+      telMobile: '',
+      page: 0,
+      params: {},
+      whichType: ''
+    }
+  },
+  created () {
+    window.addEventListener('scroll', this.scrollHandler)
+  },
 
-		destroyed() {
-		    window.removeEventListener("scroll", this.scrollHandler);
-		},
-		methods: {  
-			setOrderLength(){
-				sessionStorage.setItem('orderLength',this.allList.length)
-			},
-			//注册scroll事件并监听 
-		    scrollHandler() {
-		      const st = document.documentElement.scrollTop || document.body.scrollTop;
-		      const ch = this.$refs.allOrder.clientHeight;
-		      if (st + window.innerHeight >= ch) {
-		        this.order(this.whichType);
-		      }
-		    }, 
-			moveTo(id,name){
-				// /member/fansDetails/0Rjd35B6apkJEaN1
-				// <router-link :to="'/storeHome/'+e.user_id">
-				if(this.whichType == 'seller'){
-					this.$router.push('/member/fansDetails/'+id)
-				}else if(this.whichType == 'user'){
-					this.$router.push('/storeHome/'+id)
-					localStorage.setItem('name',name)
-				}
-			},
-		    showshowlist(type,id,index){
-		    	this.type=type,
-                this.showshowlists=true;
-                this.orderId=id;
-                this.whichIndex = index;
-		    },
-		    //关闭
-			closeshowlists(){
-				this.showshowlists=false;
-				this.showlists = false
-			},
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollHandler)
+  },
+  methods: {
+    setOrderLength () {
+      sessionStorage.setItem('orderLength', this.allList.length)
+    },
+    // 注册scroll事件并监听
+    scrollHandler () {
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      const ch = this.$refs.allOrder.clientHeight
+      if (st + window.innerHeight >= ch) {
+        this.order(this.whichType)
+      }
+    },
+    moveTo (id, name) {
+      // /member/fansDetails/0Rjd35B6apkJEaN1
+      // <router-link :to="'/storeHome/'+e.user_id">
+      if (this.whichType == 'seller') {
+        this.$router.push('/member/fansDetails/' + id)
+      } else if (this.whichType == 'user') {
+        this.$router.push('/storeHome/' + id)
+        localStorage.setItem('name', name)
+      }
+    },
+    showshowlist (type, id, index) {
+      this.type = type
+      this.showshowlists = true
+      this.orderId = id
+      this.whichIndex = index
+    },
+    // 关闭
+    closeshowlists () {
+      this.showshowlists = false
+      this.showlists = false
+    },
 
-		    //拒绝当面交易
-		    refuseFaceToFaces(){
-                orderRefuseFace(this.orderId).then(res=> {
-	          		this.showshowlists=false;
-	          		this.allList[this.whichIndex].showPayment.showRefusingFase = false;
-	          		this.$router.push('/newSellerOrder/waitPay')
-        		}).catch(err=> {
-          			console.log(err.response.data.message);
-        		})
-		    },
-			//当面交易
-			transactions(){
-        		orderTransaction(this.orderId).then(res=> {
-          			this.showshowlists=false;
-          		    this.allList[this.whichIndex].showPayment.showFace = false;
-          		    this.$router.push('/newSellerOrder/waitGet')
-        		}).catch(err=> {
-          			console.log(err.response.data.message);
-        		})
-			},
-			//确认收货
-			confirmGets(){
-				orderConfirmGoods(this.orderId).then(res=> {
-          			this.showshowlists=false;
-          			this.allList[this.whichIndex].showPayment.showReap = false;
-          			this.$router.push('/evaluate/'+this.orderId)
-        		}).catch(err=> {
-          			console.log(err.response.data.message);
-        		})
-			},
-			//延迟付款
-			payLaters(){
-        		orderPaylater(this.orderId).then(res=> {
-          			console.log(res.data);
-          			this.showshowlists=false;
-          			this.allList[this.whichIndex].showPayment.showDelay = false;
-          		
-        		}).catch(err=> {
-          			console.log(err.response.data.message);
-        		})
-			},
-			//拒绝收货
-			RefuseReceive(){
-				orderRefuseGoods(this.orderId).then(res=> {
-          			console.log(res.data);
-          			this.showshowlists=false;
-          			this.allList[this.whichIndex].showPayment.showRefuseReceiveGood = false;
-        		}).catch(err=> {
-          			console.log(err.response.data.message);
-        		})
-			},
-			//延迟收货
-			delayedDelivery(){
-				orderDelayGoods(this.orderId).then(res=> {
-          			this.showshowlists=false;
-          			this.allList[this.whichIndex].showPayment.showDelayGoods = false;
-          			this.allList[this.whichIndex].abort_shouhuo_time = parseFloat(this.allList[this.whichIndex].abort_shouhuo_time)+86400 * 7;
-          			
-        		}).catch(err=> {
-          			console.log(err.response.data.message);
-        		})
-			},
-			
+    // 拒绝当面交易
+    refuseFaceToFaces () {
+      orderRefuseFace(this.orderId).then(res => {
+        this.showshowlists = false
+        this.allList[this.whichIndex].showPayment.showRefusingFase = false
+        this.$router.push('/newSellerOrder/waitPay')
+      }).catch(err => {
+        console.log(err.response.data.message)
+      })
+    },
+    // 当面交易
+    transactions () {
+      orderTransaction(this.orderId).then(res => {
+        this.showshowlists = false
+        this.allList[this.whichIndex].showPayment.showFace = false
+        this.$router.push('/newSellerOrder/waitGet')
+      }).catch(err => {
+        console.log(err.response.data.message)
+      })
+    },
+    // 确认收货
+    confirmGets () {
+      orderConfirmGoods(this.orderId).then(res => {
+        this.showshowlists = false
+        this.allList[this.whichIndex].showPayment.showReap = false
+        this.$router.push('/evaluate/' + this.orderId)
+      }).catch(err => {
+        console.log(err.response.data.message)
+      })
+    },
+    // 延迟付款
+    payLaters () {
+      orderPaylater(this.orderId).then(res => {
+        console.log(res.data)
+        this.showshowlists = false
+        this.allList[this.whichIndex].showPayment.showDelay = false
+      }).catch(err => {
+        console.log(err.response.data.message)
+      })
+    },
+    // 拒绝收货
+    RefuseReceive () {
+      orderRefuseGoods(this.orderId).then(res => {
+        console.log(res.data)
+        this.showshowlists = false
+        this.allList[this.whichIndex].showPayment.showRefuseReceiveGood = false
+      }).catch(err => {
+        console.log(err.response.data.message)
+      })
+    },
+    // 延迟收货
+    delayedDelivery () {
+      orderDelayGoods(this.orderId).then(res => {
+        this.showshowlists = false
+        this.allList[this.whichIndex].showPayment.showDelayGoods = false
+        this.allList[this.whichIndex].abort_shouhuo_time = parseFloat(this.allList[this.whichIndex].abort_shouhuo_time) + 86400 * 7
+      }).catch(err => {
+        console.log(err.response.data.message)
+      })
+    },
 
-			//打电话
-			showdel(mobile){
-				this.showtel=true
-				this.telMobile = mobile
-			},
-			//关掉电话
-			closeshowdel(){
-				this.showtel=false
-			},
-			//查看订单
-			lookshowlists(){
-				this.showlists=false
-			},
-			
-			alldingDan(orderid){
-				this.showlists=true
-				this.orderId = orderid
-			},
-			order: function(type) {
-				let _this = this;
-				this.page += 1;
-				let params
-					params = {
-						type: type,
-						page:this.page,
-						pagenum: '10',
-						state: 'daifukuan',
-					}
-				order(params).then(function(res) {
-					_this.allList = _this.allList.concat(res.data);
-					if(res.data.length == '0'){
-						_this.loading = false
-						_this.elseloading = true
-					}else{
-						if(_this.allList.length > '3'){
-							_this.loading = true
-							_this.elseloading = false
-						}else{
-							_this.loading = false
-							_this.elseloading = false
-						}
-					}
-					if(_this.allList.length == '0'){ // 如果没有订单，则显示0订单占位符
-						_this.noOrder = true;
-					}else{
-						_this.noOrder = false;
-					}
-				}).catch(function(err) {
-					this.$router.push({name:'errorPage'})
-					console.log(err);
-				})
-			},
+    // 打电话
+    showdel (mobile) {
+      this.showtel = true
+      this.telMobile = mobile
+    },
+    // 关掉电话
+    closeshowdel () {
+      this.showtel = false
+    },
+    // 查看订单
+    lookshowlists () {
+      this.showlists = false
+    },
 
-			Red(index){
-				this.allList=[];
-				this.nowindex=index;
-				this.page = 0;
-				let types = this.$route.params.types;
-				this.type=this.fivebtn[index].type;
-				this.$router.push(this.fivebtn[index].link+types)
-				this.order(this.whichType);
-			},
-		},
-		mounted() {
-			if(this.$route.path == '/newBuyOrders/waitPay'){
-				this.whichType = 'user'
-				this.writer = "查看该买家的所有订单"
-			}else{
-				this.whichType = 'seller'
-				this.writer = "查看该店铺的所有订单"
-			}
-			// this.params = JSON.parse(localStorage.getItem('params'))
-			// if(this.$route.params.type != 6){
-			// 	this.nowindex=parseInt(this.$route.params.type)+1;
-			// 	this.type=this.fivebtn[this.nowindex].type;
-			// }else{
-			// 	this.type = this.params.type
-			// 	this.types = this.params.state
-			// 	this.nowindex = 6
-			// }
-			this.order(this.whichType);
-		}
-	}
+    alldingDan (orderid) {
+      this.showlists = true
+      this.orderId = orderid
+    },
+    order: function (type) {
+      let _this = this
+      this.page += 1
+      let params
+      params = {
+        type: type,
+        page: this.page,
+        pagenum: '10',
+        state: 'daifukuan'
+      }
+      order(params).then(function (res) {
+        _this.allList = _this.allList.concat(res.data)
+        if (res.data.length == '0') {
+          _this.loading = false
+          _this.elseloading = true
+        } else {
+          if (_this.allList.length > '3') {
+            _this.loading = true
+            _this.elseloading = false
+          } else {
+            _this.loading = false
+            _this.elseloading = false
+          }
+        }
+        if (_this.allList.length == '0') { // 如果没有订单，则显示0订单占位符
+          _this.noOrder = true
+        } else {
+          _this.noOrder = false
+        }
+      }).catch(function (err) {
+        this.$router.push({name: 'errorPage'})
+        console.log(err)
+      })
+    },
+
+    Red (index) {
+      this.allList = []
+      this.nowindex = index
+      this.page = 0
+      let types = this.$route.params.types
+      this.type = this.fivebtn[index].type
+      this.$router.push(this.fivebtn[index].link + types)
+      this.order(this.whichType)
+    }
+  },
+  mounted () {
+    if (this.$route.path == '/newBuyOrders/waitPay') {
+      this.whichType = 'user'
+      this.writer = '查看该买家的所有订单'
+    } else {
+      this.whichType = 'seller'
+      this.writer = '查看该店铺的所有订单'
+    }
+    // this.params = JSON.parse(localStorage.getItem('params'))
+    // if(this.$route.params.type != 6){
+    // 	this.nowindex=parseInt(this.$route.params.type)+1;
+    // 	this.type=this.fivebtn[this.nowindex].type;
+    // }else{
+    // 	this.type = this.params.type
+    // 	this.types = this.params.state
+    // 	this.nowindex = 6
+    // }
+    this.order(this.whichType)
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -473,7 +470,7 @@
     background-color: #f4f4f4;
     overflow: hidden;
   }
-  
+
   .app-containerAllOrder .buyer-nav {
     width: 100%;
     height: 78px;
@@ -507,12 +504,12 @@
     }
   }
   .buyerToolbac {
-  	width:40px;
-	margin-top:18px;
-	height:40px;
+		width:40px;
+		margin-top:18px;
+		height:40px;
   }
   .app-containerAllOrder .buyer-list {
-  	padding-bottom:100px;
+		padding-bottom:100px;
     li {
       margin-top: 10px;
       background-color: #fff;
@@ -619,7 +616,7 @@
       }
     }
   }
-  
+
   .no-info {
     height: 375px;
     width: 277px;
@@ -688,24 +685,24 @@
     border-radius: 20px
   }
   .menuItemClass{
-  	   width: 88%;
-  	   height: 74px;
-  	   display: flex;
-  	   justify-content: space-between;
-  }
-  .menuItem {
-	    font-size: 30px;
-	    text-align: center;
-	    padding:0 16px;
-	    height: 74px;
-	    line-height: 74px;
-	    color: #999999
-  	}
-  	.selected {
-  		font-size: 30px;
-	    color: #9e2026;
-	     font-weight : 700;
-	    border-bottom:4px solid #9e2026;
+		width: 88%;
+		height: 74px;
+		display: flex;
+		justify-content: space-between;
+}
+.menuItem {
+	font-size: 30px;
+	text-align: center;
+	padding:0 16px;
+	height: 74px;
+	line-height: 74px;
+	color: #999999
+}
+.selected {
+	font-size: 30px;
+	color: #9e2026;
+	font-weight : 700;
+	border-bottom:4px solid #9e2026;
 	}
 	.buyer-status{
 		height: 30px;
@@ -714,7 +711,7 @@
 		font-size: 24px;
 		margin-top: 24px;
 		line-height: 30px;
-	} 
+	}
 	.icon-sousuo{
 		margin: 0;
 	}
@@ -738,4 +735,3 @@
 		color: #333;
 	}
 </style>
-

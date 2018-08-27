@@ -6,7 +6,7 @@
 				<img src="../../assets/images/loading.png" alt="">
 			</div>
 			<div class = "uploadingInfo"><span>正在上传{{loadingShowNum+ '/' + loadingShowTotal}}</span></div>
-		</div>	
+		</div>
     <!-- 上传 -->
     <div class = "uploaded clearfix">
 						<div class = "el-col">
@@ -60,238 +60,239 @@
 </template>
 
 <script>
-import { getUpSign } from '../../api/api';
-import moment,{ duration } from 'moment' //格式化时间
-import $ from 'jquery';
-import { Circle,ImagePreview,Toast  } from 'vant';//进度条组件
+import { getUpSign } from '../../api/api'
+import moment, { duration } from 'moment' // 格式化时间
+import $ from 'jquery'
+import { Circle, ImagePreview, Toast } from 'vant'// 进度条组件
 // import qVideo from 'qVideo';
 
-  export default {
-		name : 'uploadOther',
-		components : {
-			'van-circle' : Circle
-		},
-    data() {
-      return {
-        imgList : [],
-        fileList:[],
-        loadingShow : false,
-        loadingShowTotal : 0,
-        loadingShowNum : 0,
-        flag : false,
-				imgFlag : true,
-				videoUri : '',
-        etag : [],
-				imgLists : [],
-				currentRate : 0,//進度條進度
-				text:'1%',
-				percentage : 1,
-				percentageShow : false,//進度條是否展示
+export default {
+  name: 'uploadOther',
+  components: {
+    'van-circle': Circle
+  },
+  data () {
+    return {
+      imgList: [],
+      fileList: [],
+      loadingShow: false,
+      loadingShowTotal: 0,
+      loadingShowNum: 0,
+      flag: false,
+      imgFlag: true,
+      videoUri: '',
+      etag: [],
+      imgLists: [],
+      currentRate: 0, // 進度條進度
+      text: '1%',
+      percentage: 1,
+      percentageShow: false // 進度條是否展示
+    }
+  },
+  created () {
+
+  },
+  computed: {
+    // 判断当前页面
+    isPath () {
+      let num = location.hash.indexOf('upload')
+      if (num > -1) {
+        return true
+      } else {
+        return false
       }
-		},
-		created() {
-			
-		},
-		computed : {
-			//判断当前页面
-			isPath() {
-				let num = location.hash.indexOf('upload');
-				if (num > -1) {
-					return true;
-				}else {
-					return false;
-				}
-			},
-		},
-		props : ['imgSet','count','upload'],
-		watch : {
-			'imgSet': {
-        handler:  function(val) {
-          if (this.imgSet && this.imgSet.length > 0) {console.log(this.imgSet);
-						this.imgList = this.imgSet;console.log(this.imgList);
-						let imgLists = this.imgSet.map(item => {
-							let reg = /\d{8}.*-[W]\d{3}[H]\d{3}/;
-							return reg.exec(item.imgUrl);
-						})
-						this.imgLists = imgLists.map(item => {
-							return item['0']
-						});
-						this.$store.commit('addUploadImg',this.imgLists);
-						console.log(this.imgLists);
-					}
-				},
-        deep: true,
-			}
-		},
-    methods : {
-		//视频初始化
-		// videoPlay(fileId) {
+    }
+  },
+  props: ['imgSet', 'count', 'upload'],
+  watch: {
+    'imgSet': {
+      handler: function (val) {
+        if (this.imgSet && this.imgSet.length > 0) {
+          console.log(this.imgSet)
+          this.imgList = this.imgSet; console.log(this.imgList)
+          let imgLists = this.imgSet.map(item => {
+            let reg = /\d{8}.*-[W]\d{3}[H]\d{3}/
+            return reg.exec(item.imgUrl)
+          })
+          this.imgLists = imgLists.map(item => {
+            return item['0']
+          })
+          this.$store.commit('addUploadImg', this.imgLists)
+          console.log(this.imgLists)
+        }
+      },
+      deep: true
+    }
+  },
+  methods: {
+    // 视频初始化
+    // videoPlay(fileId) {
     //     	new qcVideo.Player("id_video_container", {
     //         "file_id": fileId,
     //         "app_id": this.appId,
     //         "width":640,
     //         "height":480
     //     })
-		// 	},
-			//图片预览
-			preview(index) {
-				ImagePreview(this.imgList.map(item => item.imgUrl),index);
-			},
-      //随机数
-      uuid() {
-        var S4 = function () {
-                  return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-                  };
-                  return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
-      },
-      // 移除图片
-		deleteImg(index) {
-      this.imgList.splice(index,1);
-			this.$store.commit('deleteUploadImg',{index});
-			this.$emit('upload',this.imgLists);
-			if (this.imgList.length < +this.count) {
-				this.imgFlag = true;
-			}
-		},
-		//移除视频
-		deleteVideo(e) {
-			this.videoUri = '';
-			this.$store.commit('uploadVideo','');
-		},
-    //图片上传
-    uploadImg(e) {
-        if (e.target.files.length === 0) {
-					return;
-				};
-        let num = this.imgList.length;
-        if (e.target.files.length + num > +this.count) {
-          Toast('图片的数量最多不能超过'+ +this.count + '张哦');
-          return false;
-				};
-				if (this.videoUri !== '' && e.target.files.length + num > 8) {
-					Toast('亲！图片和视频的数量一共只有9张呦');
-					return false;
-				}
-				this.loadingShow = true;
-        this.loadingShowTotal = e.target.files.length;
-        for (let i = 0; i <= e.target.files.length - 1; i++) {
-        const filePost = e.target.files[i];
-              
-              let FilePostName = this.uuid();
+    // 	},
+    // 图片预览
+    preview (index) {
+      ImagePreview(this.imgList.map(item => item.imgUrl), index)
+    },
+    // 随机数
+    uuid () {
+      var S4 = function () {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
+      }
+      return (S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4())
+    },
+    // 移除图片
+    deleteImg (index) {
+      this.imgList.splice(index, 1)
+      this.$store.commit('deleteUploadImg', {index})
+      this.$emit('upload', this.imgLists)
+      if (this.imgList.length < +this.count) {
+        this.imgFlag = true
+      }
+    },
+    // 移除视频
+    deleteVideo (e) {
+      this.videoUri = ''
+      this.$store.commit('uploadVideo', '')
+    },
+    // 图片上传
+    uploadImg (e) {
+      if (e.target.files.length === 0) {
+        return
+      };
+      let num = this.imgList.length
+      if (e.target.files.length + num > +this.count) {
+        Toast('图片的数量最多不能超过' + +this.count + '张哦')
+        return false
+      };
+      if (this.videoUri !== '' && e.target.files.length + num > 8) {
+        Toast('亲！图片和视频的数量一共只有9张呦')
+        return false
+      }
+      this.loadingShow = true
+      this.loadingShowTotal = e.target.files.length
+      for (let i = 0; i <= e.target.files.length - 1; i++) {
+        const filePost = e.target.files[i]
 
-              const request = new XMLHttpRequest();
+        let FilePostName = this.uuid()
 
-              getUpSign({name:FilePostName}).then(response => {
-                  const Authorization=response.data.Authorization;
-                  const Host = 'http://'+response.data.bucket+'-'+response.data.appId+'.cos.'+response.data.region+'.myqcloud.com/'+FilePostName;
-                  request.open("PUT", Host,false);
-                  request.setRequestHeader('Authorization',Authorization);
-                  request.send(filePost);
-                  if(request.readyState>3){
-											this.loadingShowNum++;
-                      this.etag.push(request.getResponseHeader('Etag'));
-                      let img = new Image();
-                      img.onload = () => {
-                        if (e.target.files.length + num >= +this.count) {
-                          this.imgFlag = false;
-                        };
-                        let filePic={};
-                        let id = moment().format("YYYYMMDD")+''+FilePostName+'-W'+img.width+'H'+img.height;
-                        filePic.id = id;
-                        filePic.imgUrl = request.responseURL;
-                        this.imgLists.push(id);
-                        //服务器返回的图片地址 集合
-                        this.imgList.push(filePic);
-												//将数据保存到vuex中
-												this.$emit('upload',this.imgLists);
-												this.$store.commit('addUploadImg',this.imgLists);
-                        if (this.loadingShowTotal === this.loadingShowNum) {
-                          this.loadingShow = false;
-                          this.loadingShowNum = 0;
-                        }
-											};
-											img.src = request.responseURL;
-                          }
-                        }).catch((error) => {
-                            console.log(error);
-                        });
+        const request = new XMLHttpRequest()
+
+        getUpSign({name: FilePostName}).then(response => {
+          const Authorization = response.data.Authorization
+          const Host = 'http://' + response.data.bucket + '-' + response.data.appId + '.cos.' + response.data.region + '.myqcloud.com/' + FilePostName
+          request.open('PUT', Host, false)
+          request.setRequestHeader('Authorization', Authorization)
+          request.send(filePost)
+          if (request.readyState > 3) {
+            this.loadingShowNum++
+            this.etag.push(request.getResponseHeader('Etag'))
+            let img = new Image()
+            img.onload = () => {
+              if (e.target.files.length + num >= +this.count) {
+                this.imgFlag = false
+              };
+              let filePic = {}
+              let id = moment().format('YYYYMMDD') + '' + FilePostName + '-W' + img.width + 'H' + img.height
+              filePic.id = id
+              filePic.imgUrl = request.responseURL
+              this.imgLists.push(id)
+              // 服务器返回的图片地址 集合
+              this.imgList.push(filePic)
+              // 将数据保存到vuex中
+              this.$emit('upload', this.imgLists)
+              this.$store.commit('addUploadImg', this.imgLists)
+              if (this.loadingShowTotal === this.loadingShowNum) {
+                this.loadingShow = false
+                this.loadingShowNum = 0
+              }
             }
-		},
-		//获取视频本地地址
-		getFileURL(file) {
-				var getUrl = null;
-				if (window.createObjectURL != undefined) { // basic
-					getUrl = window.createObjectURL(file);
-				} else if (window.URL != undefined) { // mozilla(firefox)
-					getUrl = window.URL.createObjectURL(file);
-				} else if (window.webkitURL != undefined) { // webkit or chrome
-					getUrl = window.webkitURL.createObjectURL(file);
-				}
-					return getUrl;
-		},
-		//获取视频时长
-		selectFile(e){
-				var url = this.getFileURL(e.target.files[0]);
-				if (url) {
-					let maxSize = 1024 * 1024 * 20;
-						if (e.target.files[0].size <= maxSize) {
-							this.videoUri = '1';
-							this.percentageShow = true;
-							let orderNumber = setInterval(_ => {if (this.percentage <= 90) {this.percentage += 1;this.text = this.percentage + '%'}},26)
-							this.uploadSDK(e,orderNumber);
-						}else {
-							Toast('视频超过15秒 请重新上传');
-						}
-				}
-		},
-		//视频上传
-		uploadVideo(e) {
-				if (this.imgList.length >= 9) {
-					Toast('亲！图片和视频的数量一共只有9张呦');	
-					return false
-				}
-				this.selectFile(e);
-		},
-		//视频上传SDK
-		uploadSDK(e,orderNumber) {
-			let videoFile = e.target.files[0];
-				let filePostName = this.uuid();
-				var getSignature = (callback) => {
-					getUpSign({name:filePostName,bucket:'vod'}).then(res => {
-						this.appId = res.data.appId;
-						callback(res.data.Authorization);
-					})
-					};
-				qcVideo.ugcUploader.start({
-					videoFile: videoFile,//视频，类型为 File
-					getSignature: getSignature,//前文中所述的获取上传签名的函数
-					error: (result) => {//上传失败时的回调函数
-							console.log('上传失败的原因：' + result.msg);
-					},
-					finish: (result) => {//上传成功时的回调函数
-							console.log('上传结果的fileId：' + result.fileId);
-							console.log('上传结果的视频名称：' + result.videoName);
-							console.log('上传结果的视频地址：' + result.videoUrl);
-							this.percentageShow = false;
-							this.text = "1%";
-							this.percentage = 1;
-							this.fileID = result.fileId;
-							this.videoUri = result.videoUrl;
-							this.$store.commit('uploadVideo',this.videoUri);
-							// this.videoPlay(result.fileId);
-					},
-					progress: (result) => {
-						console.log('上传进度：' + result.curr);
-						if (result.curr >= 1) {
-							this.percentage = 100;
-							this.text = '100%';
-							clearInterval(orderNumber);
-						}
-			}
-		});
-		},
-	},
-	}
+            img.src = request.responseURL
+          }
+        }).catch((error) => {
+          console.log(error)
+        })
+      }
+    },
+    // 获取视频本地地址
+    getFileURL (file) {
+      var getUrl = null
+      if (window.createObjectURL != undefined) { // basic
+        getUrl = window.createObjectURL(file)
+      } else if (window.URL != undefined) { // mozilla(firefox)
+        getUrl = window.URL.createObjectURL(file)
+      } else if (window.webkitURL != undefined) { // webkit or chrome
+        getUrl = window.webkitURL.createObjectURL(file)
+      }
+      return getUrl
+    },
+    // 获取视频时长
+    selectFile (e) {
+      var url = this.getFileURL(e.target.files[0])
+      if (url) {
+        let maxSize = 1024 * 1024 * 20
+        if (e.target.files[0].size <= maxSize) {
+          this.videoUri = '1'
+          this.percentageShow = true
+          let orderNumber = setInterval(_ => { if (this.percentage <= 90) { this.percentage += 1; this.text = this.percentage + '%' } }, 26)
+          this.uploadSDK(e, orderNumber)
+        } else {
+          Toast('视频超过15秒 请重新上传')
+        }
+      }
+    },
+    // 视频上传
+    uploadVideo (e) {
+      if (this.imgList.length >= 9) {
+        Toast('亲！图片和视频的数量一共只有9张呦')
+        return false
+      }
+      this.selectFile(e)
+    },
+    // 视频上传SDK
+    uploadSDK (e, orderNumber) {
+      let videoFile = e.target.files[0]
+      let filePostName = this.uuid()
+      var getSignature = (callback) => {
+        getUpSign({name: filePostName, bucket: 'vod'}).then(res => {
+          this.appId = res.data.appId
+          callback(res.data.Authorization)
+        })
+      }
+      qcVideo.ugcUploader.start({
+        videoFile: videoFile, // 视频，类型为 File
+        getSignature: getSignature, // 前文中所述的获取上传签名的函数
+        error: (result) => { // 上传失败时的回调函数
+          console.log('上传失败的原因：' + result.msg)
+        },
+        finish: (result) => { // 上传成功时的回调函数
+          console.log('上传结果的fileId：' + result.fileId)
+          console.log('上传结果的视频名称：' + result.videoName)
+          console.log('上传结果的视频地址：' + result.videoUrl)
+          this.percentageShow = false
+          this.text = '1%'
+          this.percentage = 1
+          this.fileID = result.fileId
+          this.videoUri = result.videoUrl
+          this.$store.commit('uploadVideo', this.videoUri)
+          // this.videoPlay(result.fileId);
+        },
+        progress: (result) => {
+          console.log('上传进度：' + result.curr)
+          if (result.curr >= 1) {
+            this.percentage = 100
+            this.text = '100%'
+            clearInterval(orderNumber)
+          }
+        }
+      })
+    }
+  }
+}
 </script>
 
 <style>
@@ -374,9 +375,9 @@ video {
 	text-align : center;
 }
 
-@keyframes run 
+@keyframes run
 {
-	from {transform:rotate(0deg);}	
+	from {transform:rotate(0deg);}
 	to {transform:rotate(360deg);}
 }
 
@@ -397,7 +398,7 @@ video {
 }
 
 .clearfix{
- 	zoom:1;
+	zoom:1;
 }
 
 .img-ui li {
@@ -483,7 +484,7 @@ video {
 .el-upload--picture-card {
 	position: relative;
 	background-color: #fff !important;
-	border: 0.026667rem solid #d2d2d2 !important;	
+	border: 0.026667rem solid #d2d2d2 !important;
 	border-radius: 0.08rem;
 	line-height: 0.6rem;
 	padding-top: 0.293333rem;
@@ -514,4 +515,3 @@ video {
 	border : none;
 }
 </style>
-

@@ -1,106 +1,106 @@
 <template>
 	<div class="app-containerAllOrder">
 			<div class="buyer-nav">
-			  <div class="menuItemClass">
-				<div v-for="(list,index) in fivebtn" class="menuItem" :class="{ selected:nowindex == index}" :key="list.auction_id" @click="Red(index)">{{list.text}}
-				</div>
-			  </div>
+      <div class="menuItemClass">
+      <div v-for="(list,index) in fivebtn" class="menuItem" :class="{ selected:nowindex == index}" :key="list.auction_id" @click="Red(index)">{{list.text}}
+      </div>
+      </div>
 				<router-link class="search iconfont icon-sousuo" to="/search/buyer">
 				</router-link>
 			</div>
-			<router-view></router-view>		
+			<router-view></router-view>
 	</div>
 </template>
 <script>
-	export default {
-		data() {
-			return {
-				nowindex:0,
-				fivebtn:[
-					{
-			          "text":"全部",
-			          'type':'',
-			          'link':'/newBuyOrders/all'          
-			        },
-			        {
-			          "text":"待付款",
-			          'type':'daifukuan',
-			          'link':'/newBuyOrders/waitPay'                  
-			        },
-			        {
-			          "text":"待发货",
-			          'type':'daifahuo',
-			          'link':'/newBuyOrders/waitSend' 
-			        },
-			        {
-			          "text":"待收货",
-			          'type':'yifahuo',
-			          'link':'/newBuyOrders/waitGet'                   
-			        },
-			        {
-			          "text":"待评价",
-			          'type':'yishouhuo',
-			          'link':'/newBuyOrders/waitEva'                        
-			        }
-				],
-			}
-		},
-    watch:{
-        $route(newv,old){
-            if(newv.fullPath == '/newBuyOrders/waitPay'){
-              this.nowindex = 1
-            }
+export default {
+  data () {
+    return {
+      nowindex: 0,
+      fivebtn: [
+        {
+          'text': '全部',
+          'type': '',
+          'link': '/newBuyOrders/all'
+        },
+        {
+          'text': '待付款',
+          'type': 'daifukuan',
+          'link': '/newBuyOrders/waitPay'
+        },
+        {
+          'text': '待发货',
+          'type': 'daifahuo',
+          'link': '/newBuyOrders/waitSend'
+        },
+        {
+          'text': '待收货',
+          'type': 'yifahuo',
+          'link': '/newBuyOrders/waitGet'
+        },
+        {
+          'text': '待评价',
+          'type': 'yishouhuo',
+          'link': '/newBuyOrders/waitEva'
         }
-    },
-    beforeRouteEnter(to,from,next){
-      next(vm => {
-        if(vm.$route.name == 'all'){
-          vm.nowindex = 0
-        }
-        if(vm.$route.name == 'waitPay'){
-          vm.nowindex = 1
-        }
-        if(vm.$route.name == 'waitSend'){
-          vm.nowindex = 2
-        }
-        if(vm.$route.name == 'waitGet'){
-          vm.nowindex = 3
-        }
-        if(vm.$route.name == 'waitEva'){
-          vm.nowindex = 4
-        }
-        if(vm.$route.name == 'serchOrder'){
-          vm.nowindex = 5
-        }
-      })
-    },
-		methods: {  
-			Red(index){
-				this.nowindex=index;
-				this.$router.push(this.fivebtn[index].link)
-			},
-		},
-		mounted(){
-			if(this.$route.name == 'all'){
-				this.nowindex = 0
-			}
-			if(this.$route.name == 'waitPay'){
-				this.nowindex = 1
-			}
-			if(this.$route.name == 'waitSend'){
-				this.nowindex = 2
-			}
-			if(this.$route.name == 'waitGet'){
-				this.nowindex = 3
-			}
-			if(this.$route.name == 'waitEva'){
-				this.nowindex = 4
-			}
-			if(this.$route.name == 'serchOrder'){
-				this.nowindex = 5
-			}
-		}	
-	}
+      ]
+    }
+  },
+  watch: {
+    $route (newv, old) {
+      if (newv.fullPath == '/newBuyOrders/waitPay') {
+        this.nowindex = 1
+      }
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      if (vm.$route.name == 'all') {
+        vm.nowindex = 0
+      }
+      if (vm.$route.name == 'waitPay') {
+        vm.nowindex = 1
+      }
+      if (vm.$route.name == 'waitSend') {
+        vm.nowindex = 2
+      }
+      if (vm.$route.name == 'waitGet') {
+        vm.nowindex = 3
+      }
+      if (vm.$route.name == 'waitEva') {
+        vm.nowindex = 4
+      }
+      if (vm.$route.name == 'serchOrder') {
+        vm.nowindex = 5
+      }
+    })
+  },
+  methods: {
+    Red (index) {
+      this.nowindex = index
+      this.$router.push(this.fivebtn[index].link)
+    }
+  },
+  mounted () {
+    if (this.$route.name == 'all') {
+      this.nowindex = 0
+    }
+    if (this.$route.name == 'waitPay') {
+      this.nowindex = 1
+    }
+    if (this.$route.name == 'waitSend') {
+      this.nowindex = 2
+    }
+    if (this.$route.name == 'waitGet') {
+      this.nowindex = 3
+    }
+    if (this.$route.name == 'waitEva') {
+      this.nowindex = 4
+    }
+    if (this.$route.name == 'serchOrder') {
+      this.nowindex = 5
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -109,7 +109,7 @@
     background-color: #f4f4f4;
     overflow: hidden;
   }
-  
+
   .app-containerAllOrder .buyer-nav {
     width: 100%;
     height: 78px;
@@ -143,9 +143,9 @@
     }
   }
   .buyerToolbac {
-  	width:40px;
-	margin-top:18px;
-	height:40px;
+    width:40px;
+    margin-top:18px;
+    height:40px;
   }
   .app-containerAllOrder .buyer-list {
     li {
@@ -254,7 +254,7 @@
       }
     }
   }
-  
+
   .no-info {
     height: 375px;
     width: 277px;
@@ -323,24 +323,24 @@
     border-radius: 20px
   }
   .menuItemClass{
-  	   width: 88%;
-  	   height: 74px;
-  	   display: flex;
-  	   justify-content: space-between;
+    width: 88%;
+    height: 74px;
+    display: flex;
+    justify-content: space-between;
   }
   .menuItem {
-	    font-size: 30px;
-	    text-align: center;
-	    padding:0 16px;
-	    height: 74px;
-	    line-height: 74px;
-	    color: #999999
-  	}
-  	.selected {
-  		font-size: 30px;
-	    color: #9e2026;
-	     font-weight : 700;
-	    border-bottom:4px solid #9e2026;
+    font-size: 30px;
+    text-align: center;
+    padding:0 16px;
+    height: 74px;
+    line-height: 74px;
+    color: #999999
+  }
+  .selected {
+    font-size: 30px;
+    color: #9e2026;
+    font-weight : 700;
+    border-bottom:4px solid #9e2026;
 	}
 	.buyer-status{
 		height: 30px;
@@ -349,7 +349,7 @@
 		font-size: 24px;
 		margin-top: 24px;
 		line-height: 30px;
-	} 
+	}
 	.icon-sousuo{
 		margin: 0;
 	}
@@ -373,4 +373,3 @@
 		color: #333;
 	}
 </style>
-

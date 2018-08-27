@@ -1,8 +1,8 @@
 <template>
   <div class="storeHome" ref="ctn">
     <div class="page-shop-index">
-    	<div class="header border horizonBottom">
-    	 <router-link :to="{path:'/storeIntroduced/'+userMsg.sellerId}">
+      <div class="header border horizonBottom">
+        <router-link :to="{path:'/storeIntroduced/'+userMsg.sellerId}">
 			<div class="avatar">
 				<div class="headimg"  v-bind:style="{backgroundImage: 'url(' + userMsg.headimgurl + ')'}">
 				</div>
@@ -46,30 +46,30 @@
 								<span>
 									<i class="iconfont icon-anquanbaozhang"></i>
 								</span>
-								<span class="txt">￥{{userMsg.topicCash}}元</span> 
+								<span class="txt">￥{{userMsg.topicCash}}元</span>
 							</div>
 						</div>
 					</div>
 
 					<div class="operation clearfix" v-show="!selfIs">
-						<div class="attention" @click="focusShop()">
-					        <span>{{focus}}</span>
-					    </div>
-					    <div class="private">
-					    	<router-link :to="{path: userMsg.selfIs ? '/news' : '/news/' + userMsg.sellerId}">
-					        	<span>私信</span>
-					    	</router-link>
-					    </div>
-					</div>
-					<div class="qrCode">
-				    	<i @click="open()" class="iconfont icon-erweima"></i>
-				    </div>
-				</div>
-	    	</div>
-	    <div class="storeDes">
+            <div class="attention" @click="focusShop()">
+                  <span>{{focus}}</span>
+              </div>
+              <div class="private">
+                <router-link :to="{path: userMsg.selfIs ? '/news' : '/news/' + userMsg.sellerId}">
+                    <span>私信</span>
+                </router-link>
+              </div>
+          </div>
+          <div class="qrCode">
+              <i @click="open()" class="iconfont icon-erweima"></i>
+            </div>
+        </div>
+        </div>
+      <div class="storeDes">
 			<i class="iconfont  icon-notice"></i>
 			{{userMsg.sellerdesc}}
-		</div>	
+		</div>
 		<div class="tabBox tabBoxFrame sticky" >
 			<div class="tabListBox">
 				<div class="tabBox">
@@ -98,7 +98,7 @@
         <swiper dots-position="center" height="330px">
           <swiper-item v-for="(list, index) in youxuanList" :key="index">
             <router-link :to="{name: 'auction', params: {id: list.id }}">
-              <div class="lotPic" v-bind:style ="{ backgroundImage: 'url(' + list.auction_img + ')'}"> 
+              <div class="lotPic" v-bind:style ="{ backgroundImage: 'url(' + list.auction_img + ')'}">
                 <i class="desc">{{list.auction_description}}</i>
                 <div class="time" v-if="list.preview">
                   <div style="width:60px;position:absolute;left:0;right:0">距离开拍:</div>
@@ -141,7 +141,7 @@
               </router-link>
             </div>
           </div>
-          <div class="singPic">   
+          <div class="singPic">
                 <div class="bacPic" :style="{backgroundImage: 'url(' + yuzhanList.auction_img + ')'}">
                     <div class="time"><span>距离开拍:{{tostahour}}时{{tostamin}}分{{tostasec}}</span> </div>
                 </div>
@@ -206,17 +206,17 @@
   </div>
 </template>
 <script>
-import countDown from "../common/countDown";
-import countDownCo from "../common/countDownCo";
-import { Swiper, Actionsheet, Toast, SwiperItem } from "vux";
+import countDown from '../common/countDown'
+import countDownCo from '../common/countDownCo'
+import { Swiper, Actionsheet, Toast, SwiperItem } from 'vux'
 import {
   useinfo,
   auctionFocus,
   cancelFocus,
   ShopTwoDimensionalCode,
   storeyuzhan
-} from "../../api/api";
-import { ImagePreview } from "vant"; //图片预览
+} from '../../api/api'
+import { ImagePreview } from 'vant' // 图片预览
 export default {
   components: {
     Actionsheet,
@@ -226,409 +226,409 @@ export default {
     countDown,
     countDownCo
   },
-  data() {
+  data () {
     return {
-      isshow: true, //今日拍品头部是否展示
+      isshow: true, // 今日拍品头部是否展示
       auctionList: [],
       userMsg: [],
       auctionType: [
         {
-          text: "店铺首页",
-          type: "new"
+          text: '店铺首页',
+          type: 'new'
         },
         {
-          text: "即将截拍",
-          type: "upcoming"
+          text: '即将截拍',
+          type: 'upcoming'
         },
         {
-          text: "全部拍品",
-          type: "total"
+          text: '全部拍品',
+          type: 'total'
         }
       ],
       pagenum: 15,
       page: 0,
       changeRed: 0,
-      type: "new",
-      user_id: "",
+      type: 'new',
+      user_id: '',
       menus1: {
-        menu3: "关注该店铺",
-        menu4: "关注"
+        menu3: '关注该店铺',
+        menu4: '关注'
       },
       showSuccess: false,
       focusUser: false,
-      focus: "关注",
-      toastText: "",
-      selfIs: "",
-      toendhours: "00",
-      toendminite: "00",
-      toendsecond: "00",
+      focus: '关注',
+      toastText: '',
+      selfIs: '',
+      toendhours: '00',
+      toendminite: '00',
+      toendsecond: '00',
       upcoming: false,
       youxuanList: [],
       youxuanListFlag: true,
       yuzhanListFlag: true,
       previewImg: [],
       yuzhanList: {},
-      tostahour: "00",
-      tostamin: "00",
-      tostasec: "00",
+      tostahour: '00',
+      tostamin: '00',
+      tostasec: '00',
       datashow: true,
-      starttimer: "", //定时器
+      starttimer: '', // 定时器
       status: {
-        //字典
-        auctioning: "竞拍中",
-        preview: "预展中",
-        sectional: "已截拍",
-        abortive: "已流拍"
+        // 字典
+        auctioning: '竞拍中',
+        preview: '预展中',
+        sectional: '已截拍',
+        abortive: '已流拍'
       },
-      flagArr: [], //数据获取节流阀
-      noData: true, //是否展示没有数据图片
-      newList: [], //今日拍品
-      upcomingList: [], //即将截拍
-      totalList: [], //全部拍品
-      isImagePreview : false,//二维码图片是否展示
-    };
+      flagArr: [], // 数据获取节流阀
+      noData: true, // 是否展示没有数据图片
+      newList: [], // 今日拍品
+      upcomingList: [], // 即将截拍
+      totalList: [], // 全部拍品
+      isImagePreview: false // 二维码图片是否展示
+    }
   },
-  created() {
-    window.addEventListener("scroll", this.scrollHandler);
+  created () {
+    window.addEventListener('scroll', this.scrollHandler)
   },
 
-  destroyed() {
-    window.removeEventListener("scroll", this.scrollHandler);
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollHandler)
   },
   methods: {
-    //判断当前的type值 渲染相对应的数组
-    isType() {
-      let list = [];
-      if (this.type == "new") {
-        list = this.newList;
-      } else if (this.type == "upcoming") {
-        list = this.upcomingList;
-      } else if (this.type == "total") {
-        list = this.totalList;
+    // 判断当前的type值 渲染相对应的数组
+    isType () {
+      let list = []
+      if (this.type == 'new') {
+        list = this.newList
+      } else if (this.type == 'upcoming') {
+        list = this.upcomingList
+      } else if (this.type == 'total') {
+        list = this.totalList
       }
-      return list;
+      return list
     },
-    //判断价格 有没有出过价
-    isPrice(price) {
-      if (price > "0") {
-        return true;
+    // 判断价格 有没有出过价
+    isPrice (price) {
+      if (price > '0') {
+        return true
       } else {
-        return false;
+        return false
       }
     },
-    //字典
-    dataStatus(state) {
-      return this.status[state];
+    // 字典
+    dataStatus (state) {
+      return this.status[state]
     },
-    //获取数据列表
-    getDataList() {
-      this.user_id = this.$route.params.user_id;
+    // 获取数据列表
+    getDataList () {
+      this.user_id = this.$route.params.user_id
       let params = {
-        type: "one"
-      };
+        type: 'one'
+      }
       storeyuzhan(this.user_id, params)
         .then(res => {
-          this.usermsg(res);
-          this.storeyouxuan(res);
-          this.storeyuzhan(res);
+          this.usermsg(res)
+          this.storeyouxuan(res)
+          this.storeyuzhan(res)
         })
         .catch(err => {
-          this.yuzhanListFlag = false;
-        });
+          this.yuzhanListFlag = false
+        })
     },
-    //二维码预览
-    open() {
+    // 二维码预览
+    open () {
       ShopTwoDimensionalCode(this.user_id)
         .then(res => {
-          this.previewImg = [res.data.url];
-          this.isImagePreview = true;
+          this.previewImg = [res.data.url]
+          this.isImagePreview = true
         })
         .catch(error => {
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
-    //关注或者取消
-    click(key) {
-      if (this.focus == "关注") {
-        let seller_id = this.user_id;
-        cancelFocus(seller_id, "focus")
+    // 关注或者取消
+    click (key) {
+      if (this.focus == '关注') {
+        let seller_id = this.user_id
+        cancelFocus(seller_id, 'focus')
           .then(res => {
             if (res.code == 200) {
-              this.showSuccess = true;
-              this.toastText = "关注成功";
-              this.focus = "已关注";
-              this.menus1.menu3 = "取消关注将无法看到该店铺的拍品";
-              this.menus1.menu4 = "取消关注";
+              this.showSuccess = true
+              this.toastText = '关注成功'
+              this.focus = '已关注'
+              this.menus1.menu3 = '取消关注将无法看到该店铺的拍品'
+              this.menus1.menu4 = '取消关注'
             }
           })
           .catch(err => {
-            console.log(err);
-          });
+            console.log(err)
+          })
       }
-      if (this.focus == "已关注") {
-        let seller_id = this.user_id;
-        cancelFocus(seller_id, "cancel")
+      if (this.focus == '已关注') {
+        let seller_id = this.user_id
+        cancelFocus(seller_id, 'cancel')
           .then(res => {
             if (res.code == 200) {
-              this.showSuccess = true;
-              this.toastText = "取消关注成功";
-              this.focus = "关注";
-              this.menus1.menu3 = "关注该店铺";
-              this.menus1.menu4 = "关注";
+              this.showSuccess = true
+              this.toastText = '取消关注成功'
+              this.focus = '关注'
+              this.menus1.menu3 = '关注该店铺'
+              this.menus1.menu4 = '关注'
             }
           })
           .catch(err => {
-            console.log(err);
-          });
+            console.log(err)
+          })
       }
     },
-    //注册scroll事件并监听
-    scrollHandler() {
-      const st = document.documentElement.scrollTop || document.body.scrollTop;
-      const ch = this.$refs.ctn.clientHeight;
+    // 注册scroll事件并监听
+    scrollHandler () {
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      const ch = this.$refs.ctn.clientHeight
       if (st + window.innerHeight >= ch) {
-        let list = this.isType();
-        this.useinfo(list);
+        let list = this.isType()
+        this.useinfo(list)
       }
     },
-    usermsg(res) {
-      let _this = this;
+    usermsg (res) {
+      let _this = this
       //   _this.user_id = this.$route.params.user_id;
       //   storehomeusermsg(_this.user_id)
       //     .then(function(res) {
-      _this.goShares(res.data.share);
-      _this.userMsg = res.data.top;
-      let data = res.data.top;
-      _this.focus = data.isAttention;
-      _this.selfIs = data.selfIs;
-      document.title = data.sellerName + "的店铺";
+      _this.goShares(res.data.share)
+      _this.userMsg = res.data.top
+      let data = res.data.top
+      _this.focus = data.isAttention
+      _this.selfIs = data.selfIs
+      document.title = data.sellerName + '的店铺'
       if (_this.focus == true) {
-        _this.focus = "已关注";
-        _this.menus1.menu3 = "取消关注将无法看到该店铺的拍品";
-        _this.menus1.menu4 = "取消关注";
+        _this.focus = '已关注'
+        _this.menus1.menu3 = '取消关注将无法看到该店铺的拍品'
+        _this.menus1.menu4 = '取消关注'
       } else {
-        _this.focus = "关注";
+        _this.focus = '关注'
       }
       // })
       // .catch(function(error) {
       //   console.log(error);
       // });
     },
-    useinfo(list) {
-      list = list ? list : this.newList;
-      let flag = this.flagArr.indexOf(this.type);
+    useinfo (list) {
+      list = list || this.newList
+      let flag = this.flagArr.indexOf(this.type)
       if (flag > -1) {
-        return;
+        return
       }
-      this.page += 1;
-      if (this.type == "upcoming") {
-        this.upcoming = true;
+      this.page += 1
+      if (this.type == 'upcoming') {
+        this.upcoming = true
       } else {
-        this.upcoming = false;
+        this.upcoming = false
       }
-      let _this = this;
-      _this.user_id = this.$route.params.user_id;
+      let _this = this
+      _this.user_id = this.$route.params.user_id
       let params = {
         page: _this.page,
         pagenum: _this.pagenum,
         type: _this.type
-      };
+      }
       useinfo(params, _this.user_id)
         .then(res => {
-          list.push(...res.data);
-          _this.auctionList = list;
+          list.push(...res.data)
+          _this.auctionList = list
           _this.auctionList.length > 0 &&
-            _this.auctionList.forEach(function(item) {
-              _this.timetoend(item.end_time);
-            });
+            _this.auctionList.forEach(function (item) {
+              _this.timetoend(item.end_time)
+            })
         })
         .catch(error => {
-          console.log(error);
-          this.flagArr.push(this.type);
+          console.log(error)
+          this.flagArr.push(this.type)
           if (_this.auctionList.length == 0) {
-            this.noData = false;
+            this.noData = false
           }
-        });
+        })
     },
-    //预展
-    storeyuzhan(res) {
+    // 预展
+    storeyuzhan (res) {
       if (res.data.preview == false) {
-        this.yuzhanListFlag = false;
+        this.yuzhanListFlag = false
       } else {
-        this.yuzhanList = res.data.preview;
-        this.Kaitimetoend(this.yuzhanList.time);
+        this.yuzhanList = res.data.preview
+        this.Kaitimetoend(this.yuzhanList.time)
       }
     },
-    //开拍倒计时
-    Kaitimetoend(starttime) {
-      let self = this;
-      clearInterval(this.starttimer);
-      this.starttimer = setInterval(function() {
-        let nowTime = new Date();
-        let t = starttime - Math.floor(nowTime.getTime() / 1000);
+    // 开拍倒计时
+    Kaitimetoend (starttime) {
+      let self = this
+      clearInterval(this.starttimer)
+      this.starttimer = setInterval(function () {
+        let nowTime = new Date()
+        let t = starttime - Math.floor(nowTime.getTime() / 1000)
         if (t > 0) {
-          let stahour = Math.floor(t / 3600);
-          let stamin = Math.floor((t / 60) % 60);
-          let stasec = Math.floor(t % 60);
-          stahour = stahour < 10 ? "0" + stahour : stahour;
-          stamin = stamin < 10 ? "0" + stamin : stamin;
-          stasec = stasec < 10 ? "0" + stasec : stasec;
+          let stahour = Math.floor(t / 3600)
+          let stamin = Math.floor((t / 60) % 60)
+          let stasec = Math.floor(t % 60)
+          stahour = stahour < 10 ? '0' + stahour : stahour
+          stamin = stamin < 10 ? '0' + stamin : stamin
+          stasec = stasec < 10 ? '0' + stasec : stasec
           if (stahour <= 0) {
-            self.tostahour = "00";
+            self.tostahour = '00'
           }
           if (stahour <= 0 && stamin <= 0) {
-            self.tostahour = "00";
+            self.tostahour = '00'
           }
           if (stamin <= 0) {
-            self.tostamin = "00";
+            self.tostamin = '00'
           }
-          self.tostahour = stahour;
-          self.tostamin = stamin;
-          self.tostasec = stasec;
+          self.tostahour = stahour
+          self.tostamin = stamin
+          self.tostasec = stasec
         } else {
-          clearInterval(this.starttimer);
-          self.tostahour = "00";
-          self.tostamin = "00";
-          self.tostasec = "00";
+          clearInterval(this.starttimer)
+          self.tostahour = '00'
+          self.tostamin = '00'
+          self.tostasec = '00'
         }
-      }, 1000);
+      }, 1000)
     },
     // 优选数据
-    storeyouxuan(res) {
-      let _this = this;
+    storeyouxuan (res) {
+      let _this = this
       //   _this.user_id = this.$route.params.user_id;
       //   storeyouxuan(_this.user_id)
       //     .then(res => {
       if (res.data.preferenceIs === false || res.data.preference === false) {
-        this.youxuanListFlag = false;
-        return;
+        this.youxuanListFlag = false
+        return
       }
-      _this.youxuanList = _this.youxuanList.concat(res.data.preference);
+      _this.youxuanList = _this.youxuanList.concat(res.data.preference)
       // })
       // .catch(function(error) {
       //   console.log(error);
       // });
     },
-    Red(index) {
-      this.page = 0; //分页值归零
-      this.auctionList = []; //渲染数组置空
-      this.changeRed = index;
-      this.type = this.auctionType[index].type; //发送请求的type值更新
-      this.flagArr = []; //节流阀数组置空
-      this.noData = true; //暂无数据图片初始化
-      //渲染今日拍品 截拍 全部的数组清空
-      this.newList = [];
-      this.upcomingList = [];
-      this.totalList = [];
-      if (this.type == "upcoming") {
-        this.upcoming = true;
+    Red (index) {
+      this.page = 0 // 分页值归零
+      this.auctionList = [] // 渲染数组置空
+      this.changeRed = index
+      this.type = this.auctionType[index].type // 发送请求的type值更新
+      this.flagArr = [] // 节流阀数组置空
+      this.noData = true // 暂无数据图片初始化
+      // 渲染今日拍品 截拍 全部的数组清空
+      this.newList = []
+      this.upcomingList = []
+      this.totalList = []
+      if (this.type == 'upcoming') {
+        this.upcoming = true
       } else {
-        this.upcoming = false;
+        this.upcoming = false
       }
       if (index == 0) {
-        this.isshow = true;
+        this.isshow = true
         if (this.youxuanList.length != 0) {
-          this.youxuanListFlag = true;
+          this.youxuanListFlag = true
         } else {
-          this.youxuanListFlag = false;
+          this.youxuanListFlag = false
         }
         if (this.yuzhanList.time) {
-          this.yuzhanListFlag = true;
+          this.yuzhanListFlag = true
         } else {
-          this.yuzhanListFlag = false;
+          this.yuzhanListFlag = false
         }
       } else {
-        this.isshow = false;
-        this.youxuanListFlag = false;
-        this.yuzhanListFlag = false;
+        this.isshow = false
+        this.youxuanListFlag = false
+        this.yuzhanListFlag = false
       }
-      let list = this.isType();
-      this.useinfo(list);
+      let list = this.isType()
+      this.useinfo(list)
     },
-    //点击关注按钮
-    focusShop() {
-      this.focusUser = true;
+    // 点击关注按钮
+    focusShop () {
+      this.focusUser = true
     },
-    //点赞
-    giveLike(uri, index) {
-      let _this = this;
-      _this.article_id = uri;
+    // 点赞
+    giveLike (uri, index) {
+      let _this = this
+      _this.article_id = uri
       auctionFocus(_this.article_id)
         .then(res => {
-          this.youxuanList[index].like = true;
-          this.youxuanList[index].likenum++;
+          this.youxuanList[index].like = true
+          this.youxuanList[index].likenum++
         })
-        .catch(function(error) {
-          console.log(error);
-        });
+        .catch(function (error) {
+          console.log(error)
+        })
     },
 
-    //进行倒计时
-    timetoend(endtime) {
-      let self = this;
-      let timer = setInterval(function() {
-        let nowTime = new Date();
-        let enddTime = new Date(endtime * 1000);
-        let t = endtime - Math.floor(nowTime.getTime() / 1000);
-        let month = enddTime.getMonth() + 1;
-        let day = enddTime.getDate();
-        let endhour = enddTime.getHours();
-        let endminite = enddTime.getMinutes();
-        month = month < 10 ? "0" + month : month;
-        day = day < 10 ? "0" + day : day;
-        endhour = endhour < 10 ? "0" + endhour : endhour;
-        endminite = endminite < 10 ? "0" + endminite : endminite;
-        self.month = month;
-        self.day = day;
-        self.endhour = endhour;
-        self.endminite = endminite;
+    // 进行倒计时
+    timetoend (endtime) {
+      let self = this
+      let timer = setInterval(function () {
+        let nowTime = new Date()
+        let enddTime = new Date(endtime * 1000)
+        let t = endtime - Math.floor(nowTime.getTime() / 1000)
+        let month = enddTime.getMonth() + 1
+        let day = enddTime.getDate()
+        let endhour = enddTime.getHours()
+        let endminite = enddTime.getMinutes()
+        month = month < 10 ? '0' + month : month
+        day = day < 10 ? '0' + day : day
+        endhour = endhour < 10 ? '0' + endhour : endhour
+        endminite = endminite < 10 ? '0' + endminite : endminite
+        self.month = month
+        self.day = day
+        self.endhour = endhour
+        self.endminite = endminite
 
         if (t > 0) {
-          let hour = Math.floor(t / 3600);
-          let min = Math.floor((t / 60) % 60);
-          let sec = Math.floor(t % 60);
-          hour = hour < 10 ? "0" + hour : hour;
-          min = min < 10 ? "0" + min : min;
-          sec = sec < 10 ? "0" + sec : sec;
+          let hour = Math.floor(t / 3600)
+          let min = Math.floor((t / 60) % 60)
+          let sec = Math.floor(t % 60)
+          hour = hour < 10 ? '0' + hour : hour
+          min = min < 10 ? '0' + min : min
+          sec = sec < 10 ? '0' + sec : sec
           if (hour <= 0) {
-            self.toendhours = "00";
+            self.toendhours = '00'
           }
           if (min <= 0) {
-            self.toendminite = "00";
+            self.toendminite = '00'
           }
           if (t <= 300) {
-            self.show = true;
+            self.show = true
           }
-          self.toendhours = hour;
-          self.toendminite = min;
-          self.toendsecond = sec;
+          self.toendhours = hour
+          self.toendminite = min
+          self.toendsecond = sec
         } else {
-          clearInterval(timer);
-          self.toendhours = "00";
-          self.toendminite = "00";
-          self.toendsecond = "00";
-          self.haveend = false;
-          self.havepaimaiend = true;
+          clearInterval(timer)
+          self.toendhours = '00'
+          self.toendminite = '00'
+          self.toendsecond = '00'
+          self.haveend = false
+          self.havepaimaiend = true
         }
-      }, 1000);
+      }, 1000)
     }
   },
-  mounted() {
-    this.getDataList();
+  mounted () {
+    this.getDataList()
     // let name = localStorage.getItem("name");
     // document.title = name + "的店铺";
-    window.scrollTo(0, 0);
-    let list = this.isType();
-    this.useinfo(list);
+    window.scrollTo(0, 0)
+    let list = this.isType()
+    this.useinfo(list)
     if (
-      this.auctionList.length == "0" &&
+      this.auctionList.length == '0' &&
       this.yuzhanListFlag == false &&
       this.youxuanListFlag == false
     ) {
-      this.data = false;
+      this.data = false
     }
   }
-};
+}
 </script>
 <style>
 /* .van-image-preview__image {

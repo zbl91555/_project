@@ -18,26 +18,26 @@
 </template>
 
 <script>
-import { commodityDetailsQRCode } from '../../api/api';
-  export default {
-    name : 'sharedTwoDimensionalCode',
-    data() {
-      return {
-      url : ''
-      }
-    },
-    mounted() {
-      let params = {
-        auctionId : this.$route.params.id,
-      }
-      commodityDetailsQRCode(this.$route.params.id).then(res => {
-        console.log(res);
-        this.url = res.data.url;
-      }).catch(err => {
-        console.log(err);
-      })
-    },
+import { commodityDetailsQRCode } from '../../api/api'
+export default {
+  name: 'sharedTwoDimensionalCode',
+  data () {
+    return {
+      url: ''
+    }
+  },
+  mounted () {
+    let params = {
+      auctionId: this.$route.params.id
+    }
+    commodityDetailsQRCode(this.$route.params.id).then(res => {
+      console.log(res)
+      this.url = res.data.url
+    }).catch(err => {
+      console.log(err)
+    })
   }
+}
 </script>
 
 <style>
@@ -61,7 +61,7 @@ import { commodityDetailsQRCode } from '../../api/api';
 <style lang="less" scoped>
 	img {
 		width : 100%;
-	} 
+	}
   .sharedTwoDimensionalCode {
     width : 100%;
     height : 100%;
@@ -70,7 +70,7 @@ import { commodityDetailsQRCode } from '../../api/api';
     background : url('../../assets/images/shared.png');
     background-size : 100% 100%;
     position: relative;
-    
+
     .frontCover {
       height : 645px;
       overflow : hidden;
@@ -129,4 +129,3 @@ import { commodityDetailsQRCode } from '../../api/api';
     }
   }
 </style>
-

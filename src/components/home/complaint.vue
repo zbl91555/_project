@@ -6,7 +6,7 @@
     <form id="J_login_form">
         <div class="login-frame">
             <ul>
-                <li  v-for="(list,index) in complaintContent" @click="pitch(list,index)">
+                <li  v-for="(list,index) in complaintContent" :key="list" @click="pitch(list,index)">
                     <p>
                         {{list.text}}
                     </p>
@@ -15,7 +15,7 @@
                     </div>
                 </li>
             </ul>
-        </div> 
+        </div>
     </form>
     <div class="descBox">
         <textarea maxlength="200" @input="descInput" v-model="desc" placeholder="请输入投诉描述"></textarea>
@@ -33,93 +33,93 @@
   </div>
 </template>
 <script>
-    import {Toast} from 'vant';
-    import {hascomplaint,saveComplaint} from '../../api/api'
+import {Toast} from 'vant'
+import {hascomplaint, saveComplaint} from '../../api/api'
 export default {
-    data() {
-        return {
-            complaintContent:[
-                {
-                    "text":"违禁品",
-                    pitchShow: true               
-                },
-                {
-                    "text":"图片、设置与描述不符",
-                    pitchShow: false 
+  data () {
+    return {
+      complaintContent: [
+        {
+          'text': '违禁品',
+          pitchShow: true
+        },
+        {
+          'text': '图片、设置与描述不符',
+          pitchShow: false
 
-                },
-                {
-                    "text":"售假" ,
-                    pitchShow: false           
-                },
-                {
-                    "text":"分类错误", 
-                    pitchShow: false             
-                }
-            ],
-            pitchShow:'违禁品',
-            remnant: 200,
-            hasnum:0,
-            greynone:true,
-            desc:'',
-            id:'',
-            auction_id:'',
-            title:'违禁品',
-            idSubmit:true
+        },
+        {
+          'text': '售假',
+          pitchShow: false
+        },
+        {
+          'text': '分类错误',
+          pitchShow: false
         }
+      ],
+      pitchShow: '违禁品',
+      remnant: 200,
+      hasnum: 0,
+      greynone: true,
+      desc: '',
+      id: '',
+      auction_id: '',
+      title: '违禁品',
+      idSubmit: true
+    }
+  },
+  mounted () {
+    this.complaint()
+  },
+  methods: {
+    // 判断有没有投诉过
+    complaint () {
+      hascomplaint(this.$route.query.auction_id).then(res => {
+        this.idSubmit = res.data.idSubmit
+      })
     },
-    mounted(){
-        this.complaint()
+    // 勾选投诉原因
+    pitch (list, index) {
+      for (let i = 0; i < this.complaintContent.length; i++) {
+        this.complaintContent[i].pitchShow = false
+      }
+      list.pitchShow = true
+      this.greynone = false
+      this.title = list.text
     },
-    methods: { 
-        //判断有没有投诉过
-        complaint(){
-            hascomplaint(this.$route.query.auction_id).then(res => {
-                this.idSubmit = res.data.idSubmit
-            })
-        },
-        //勾选投诉原因
-        pitch(list, index){
-            for (let i = 0; i < this.complaintContent.length; i++) {
-                this.complaintContent[i].pitchShow = false;
-              }
-            list.pitchShow = true;
-            this.greynone = false
-            this.title=list.text
-        },
-        //已写了的字数
-        descInput(){
-            let txtVal = this.desc.length;
-            this.hasnum = txtVal
-            if (txtVal>0){
-                this.greynone=false
-            }else{
-                this.greynone=true
-            }
-        },
-        // 提交投诉
-        complaintSubmit(){
-            let _this = this;
-            _this.id = this.$route.query.auction_id;
-            let params = {
-                title:_this.title,
-                content:_this.desc,
-            };
-            // if(_this.title == '' && _this.desc == ''){
-            //     Toast('请勾选原因或填写原因')
-            //     return
-            // } 
-            saveComplaint(params,_this.id).then(function(res) {
-                    Toast(res.message)
-                     _this.$router.push({ path: '/auction/'+_this.id})
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
-            },
-         },
-        // 获取有没有投诉过   
-    };
+    // 已写了的字数
+    descInput () {
+      let txtVal = this.desc.length
+      this.hasnum = txtVal
+      if (txtVal > 0) {
+        this.greynone = false
+      } else {
+        this.greynone = true
+      }
+    },
+    // 提交投诉
+    complaintSubmit () {
+      let _this = this
+      _this.id = this.$route.query.auction_id
+      let params = {
+        title: _this.title,
+        content: _this.desc
+      }
+      // if(_this.title == '' && _this.desc == ''){
+      //     Toast('请勾选原因或填写原因')
+      //     return
+      // }
+      saveComplaint(params, _this.id).then(function (res) {
+        Toast(res.message)
+        _this.$router.push({ path: '/auction/' + _this.id })
+      })
+        .catch(function (error) {
+          console.log(error)
+        })
+    }
+  }
+  // 获取有没有投诉过
+}
 </script>
 <style scoped>
     .complaint .icon-finish{
@@ -154,7 +154,7 @@ export default {
         padding: 0;
     }
     .complaint .login-frame .weui-cell_access .weui-cell__ft:after{
-        display:none;   
+        display:none;
     }
     .vux-popup-picker-container .vux-popup-header.vux-1px-b{
         height: 80px;
@@ -188,7 +188,7 @@ export default {
         color: #666;
         width: 70%;
     }
-   
+
     .complaint .arrow{
         position: absolute;
         right: 4%;
@@ -217,7 +217,7 @@ export default {
         width: 100%;
         margin-top: 135px;
         outline: none;
-        -webkit-appearance: none; 
+        -webkit-appearance: none;
         font-size: 28px;
     }
     .complaint .descBox {

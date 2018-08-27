@@ -1,5 +1,5 @@
 <template>
-  	<div class="userifon">
+  <div class="userifon">
 		<div class="userHeader">
 			<div class="avatar">
 				<div class="img" v-bind:style="{backgroundImage: 'url(' + storeInfos.avatar + ')'}"></div>
@@ -80,7 +80,7 @@
 				<div class="black">
 					<i class="iconfont icon-right"></i>
 				</div>
-			</div>			
+			</div>
 		</div>
 		<div class="userInfo" v-if="!storeInfos.me">
 			<div class="tel blackListButton" @click="shieldingBtn()" >
@@ -96,139 +96,139 @@
 	</div>
 </template>
 <script>
-import { Actionsheet, Toast } from "vux";
-import { storeInfo, shielduser, cancelshielduser } from "../../api/api";
+import { Actionsheet, Toast } from 'vux'
+import { storeInfo, shielduser, cancelshielduser } from '../../api/api'
 export default {
   components: {
     Actionsheet,
     Toast
   },
-  data() {
+  data () {
     return {
       storeInfos: [],
       pagenum: 10,
       page: 1,
-      user_id: "",
-      is_company: "",
-      gold: "",
-      level: "",
+      user_id: '',
+      is_company: '',
+      gold: '',
+      level: '',
       shield: false,
       menus2: {
-        menu1: "屏蔽该用户",
-        menu2: "查看屏蔽用户"
+        menu1: '屏蔽该用户',
+        menu2: '查看屏蔽用户'
       },
       showSuccess: false,
-      toastText: "",
-      is_pingbi: "",
-      isshow: "",
-      pingbi_count: ""
-    };
+      toastText: '',
+      is_pingbi: '',
+      isshow: '',
+      pingbi_count: ''
+    }
   },
   methods: {
-    storeInfo() {
-      this.user_id = this.$route.params.seller_id;
+    storeInfo () {
+      this.user_id = this.$route.params.seller_id
       storeInfo(this.user_id)
         .then(res => {
           if (res.code == 200) {
             if (res.data.me == true) {
               this.menus2 = {
-                menu2: "查看屏蔽用户"
-              };
+                menu2: '查看屏蔽用户'
+              }
             } else {
-              if (res.data.is_pingbi == "0") {
+              if (res.data.is_pingbi == '0') {
                 this.menus2 = {
-                  menu1: "屏蔽该用户",
-                  menu2: "查看屏蔽用户"
-                };
-              } else if (res.data.is_pingbi == "1") {
+                  menu1: '屏蔽该用户',
+                  menu2: '查看屏蔽用户'
+                }
+              } else if (res.data.is_pingbi == '1') {
                 this.menus2 = {
-                  menu1: "取消屏蔽该用户",
-                  menu2: "查看屏蔽用户"
-                };
+                  menu1: '取消屏蔽该用户',
+                  menu2: '查看屏蔽用户'
+                }
               }
             }
-            this.storeInfos = res.data;
-            this.pingbi_count = res.data.pingbi_count;
+            this.storeInfos = res.data
+            this.pingbi_count = res.data.pingbi_count
 
-            this.is_pingbi = res.data.is_pingbi;
+            this.is_pingbi = res.data.is_pingbi
             //   localStorage.setItem('name',this.storeInfos.nickname)
-            document.title = this.storeInfos.nickname + "的店铺信息";
-            this.level = res.data.user_id;
+            document.title = this.storeInfos.nickname + '的店铺信息'
+            this.level = res.data.user_id
             if (res.data.is_company == true) {
-              this.is_company = "已实名认证";
+              this.is_company = '已实名认证'
             } else {
-              this.is_company = "未实名认证";
+              this.is_company = '未实名认证'
             }
 
-            if (res.data.xiaobaojin == "1") {
-              let pric = res.data.xiaobaojin_price;
-              this.gold = "已缴纳" + pric + "元";
+            if (res.data.xiaobaojin == '1') {
+              let pric = res.data.xiaobaojin_price
+              this.gold = '已缴纳' + pric + '元'
             } else {
-              this.gold = "未缴纳";
+              this.gold = '未缴纳'
             }
           }
         })
         .catch(err => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     },
-    //点击屏蔽按钮
-    shieldingBtn() {
-      this.shield = true;
+    // 点击屏蔽按钮
+    shieldingBtn () {
+      this.shield = true
     },
-    shielduser() {
-      console.log(this.user_id);
-      //0 未屏蔽 1 已屏蔽  2自己
-      if (this.is_pingbi == "0") {
+    shielduser () {
+      console.log(this.user_id)
+      // 0 未屏蔽 1 已屏蔽  2自己
+      if (this.is_pingbi == '0') {
         let params = {
-          type: "add"
-        };
+          type: 'add'
+        }
         shielduser(this.user_id, params)
           .then(res => {
             //   this.showSuccess = true;
             // this.toastText='屏蔽成功'
-            this.storeInfo();
-            this.menus2.menu1 = "取消屏蔽该用户";
-            this.$router.push("/shieldingUsers");
+            this.storeInfo()
+            this.menus2.menu1 = '取消屏蔽该用户'
+            this.$router.push('/shieldingUsers')
           })
           .catch(err => {
-            console.log(err);
-          });
-      } else if (this.is_pingbi == "1") {
+            console.log(err)
+          })
+      } else if (this.is_pingbi == '1') {
         let params = {
-          type: "cancel"
-        };
+          type: 'cancel'
+        }
         shielduser(this.user_id, params)
           .then(res => {
-            this.showSuccess = true;
-            this.toastText = "取消屏蔽用户成功";
-            this.menus2.menu1 = "屏蔽该用户";
-            this.storeInfo();
+            this.showSuccess = true
+            this.toastText = '取消屏蔽用户成功'
+            this.menus2.menu1 = '屏蔽该用户'
+            this.storeInfo()
           })
           .catch(err => {
-            console.log(err);
-          });
+            console.log(err)
+          })
       } else {
-        this.showSuccess = true;
-        this.toastText = "无法屏蔽自己";
+        this.showSuccess = true
+        this.toastText = '无法屏蔽自己'
       }
     },
-    //查看屏蔽用户
-    viewshielduser() {
+    // 查看屏蔽用户
+    viewshielduser () {
       // 屏蔽为空时，不跳转屏蔽列表
-      if (this.pingbi_count == "0") {
-        this.showSuccess = true;
-        this.toastText = "您没有屏蔽的用户";
+      if (this.pingbi_count == '0') {
+        this.showSuccess = true
+        this.toastText = '您没有屏蔽的用户'
       } else {
-        this.$router.push({ path: "/shieldingUsers" });
+        this.$router.push({ path: '/shieldingUsers' })
       }
     }
   },
 
-  mounted() {
-    this.storeInfo();
+  mounted () {
+    this.storeInfo()
   }
-};
+}
 </script>
 <style>
 .userifon {

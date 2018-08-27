@@ -1,7 +1,7 @@
 <template>
   <div class="extendedService">
     <div class="menuTitle">扩展服务</div>
-   	<div class="menuMain">
+    <div class="menuMain">
 		<dl>
 			<router-link  to="/sellerReport">
 				<dd class="window ">
@@ -11,7 +11,7 @@
 						</span>
 					</span>
 					<div>
-						店铺报表 
+						店铺报表
 					</div>
 				</dd>
 			</router-link>
@@ -38,38 +38,37 @@
 						唐卡活动发布
 					</div>
 				</dd>
-			</router-link>	
+			</router-link>
 		</dl>
 	</div>
-	<!-- <router-view></router-view> -->
   </div>
 </template>
 
 <script>
-import { isOpenRelease } from "../../../api/api";
+import { isOpenRelease } from '../../../api/api'
 export default {
-  name: "extendedService",
-  data() {
+  name: 'extendedService',
+  data () {
     return {
-		activityShow : false,
-	};
-  },
-  methods: {
-    //活动发布入口
-    isOpenRelease() {
-      isOpenRelease()
-        .then(res => {
-          this.activityShow = res.data.thanka;
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      activityShow: false
     }
   },
-  created() {
-    this.isOpenRelease();
+  methods: {
+    // 活动发布入口
+    isOpenRelease () {
+      isOpenRelease()
+        .then(res => {
+          this.activityShow = res.data.thanka
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+  },
+  created () {
+    this.isOpenRelease()
   }
-};
+}
 </script>
 
 <style>

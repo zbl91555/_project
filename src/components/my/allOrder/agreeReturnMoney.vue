@@ -11,14 +11,14 @@
           <li>实际付款金额：￥{{info.truePrice}}元</li>
           <li>付款截止：{{timestampToTime(info.endTime)}}</li>
         </ul>
-      </div>  
+      </div>
       <div class="gray"></div>
       <div class="returnReason">
           <div>申请退款理由</div>
           <div>{{info.reason}}</div>
       </div>
       <div class="gray"></div>
-    
+
       <div class="login-btn">
         <input value="同意退款" @click="orderAgreeRefundSubmit" class="icon-btn" type="button">
       </div>
@@ -32,39 +32,39 @@
 
 <script>
 
-import {orderAgreeRefund,orderAgreeRefundSubmit} from '../../../api/api';
+import {orderAgreeRefund, orderAgreeRefundSubmit} from '../../../api/api'
 export default {
-  data() {
+  data () {
     return {
       info: {},
-      orderId:''
-    };
+      orderId: ''
+    }
   },
   methods: {
-      //页面
-      orderAgreeRefund: function() {
-        let _this = this;
-        orderAgreeRefund(this.orderId).then(res=>{
-           _this.info = res.data;
-        }).catch(function(err) {
-          console.log(err);
-        })
-      },
-      //提交
-      orderAgreeRefundSubmit(){
-        orderAgreeRefundSubmit(this.orderId).then(res=> {
-          this.$router.push('/orderDetail/'+this.orderId)
-          console.log(res.data);
-        }).catch(err=> {
-          console.log(err.response.data.message);
-        })
-      },
+    // 页面
+    orderAgreeRefund: function () {
+      let _this = this
+      orderAgreeRefund(this.orderId).then(res => {
+        _this.info = res.data
+      }).catch(function (err) {
+        console.log(err)
+      })
+    },
+    // 提交
+    orderAgreeRefundSubmit () {
+      orderAgreeRefundSubmit(this.orderId).then(res => {
+        this.$router.push('/orderDetail/' + this.orderId)
+        console.log(res.data)
+      }).catch(err => {
+        console.log(err.response.data.message)
+      })
+    }
   },
-   mounted() {
-      this.orderId = this.$route.params.order_id
-      this.orderAgreeRefund();
-   },
-};
+  mounted () {
+    this.orderId = this.$route.params.order_id
+    this.orderAgreeRefund()
+  }
+}
 </script>
 
 <style scoped>
@@ -147,7 +147,7 @@ export default {
      height:68px;
      border-bottom: 1px solid #e5e5e5;
      line-height: 68px;
-     margin-left:30px; 
+     margin-left:30px;
   }
   .acceptman{
     overflow: hidden;
@@ -184,7 +184,7 @@ export default {
         border-radius: 5px;
         width: 100%;
         outline: none;
-        -webkit-appearance: none; 
+        -webkit-appearance: none;
         font-size: 28px;
   }
   .bottom{

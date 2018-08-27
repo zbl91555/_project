@@ -15,58 +15,57 @@
 	</div>
 </template>
 
-
 <script>
-	import {rewardWithdrawal,rewardWithdrawalSubmit} from '../../../api/api'
-	export default {
-		data() {
-			return {
-				info:{},
-				price:''
-			}
-		},
-		methods: {
-			rewardWithdrawal:function(){
-				let _this = this;
-				rewardWithdrawal().then(function(res){
-					 _this.info =res.data
-				})
-				.catch(function(err){
-					console.log(err);
-				})
-			},
-			rewardWithdrawalSubmit:function(){
-				let _this = this;
-				let params = {
-			            price:this.price,
-			      };
-				rewardWithdrawalSubmit(params).then(function(res){
-					_this.$router.push('/buyerCenter/PromotionGift')
-					 _this.info =res.data
-				})
-				.catch(function(err){
-					console.log(err.message);
-				})
-			},
-		},
-		mounted() {
-			this.rewardWithdrawal();
-		},
-	}
+import {rewardWithdrawal, rewardWithdrawalSubmit} from '../../../api/api'
+export default {
+  data () {
+    return {
+      info: {},
+      price: ''
+    }
+  },
+  methods: {
+    rewardWithdrawal: function () {
+      let _this = this
+      rewardWithdrawal().then(function (res) {
+        _this.info = res.data
+      })
+        .catch(function (err) {
+          console.log(err)
+        })
+    },
+    rewardWithdrawalSubmit: function () {
+      let _this = this
+      let params = {
+        price: this.price
+      }
+      rewardWithdrawalSubmit(params).then(function (res) {
+        _this.$router.push('/buyerCenter/PromotionGift')
+        _this.info = res.data
+      })
+        .catch(function (err) {
+          console.log(err.message)
+        })
+    }
+  },
+  mounted () {
+    this.rewardWithdrawal()
+  }
+}
 </script>
 
 <style lang="less" scoped>
 	/*
-	 * @border-color: 统一边框颜色
-	 * */
-	
+	* @border-color: 统一边框颜色
+	* */
+
 	@border-color: #e5e5e5;
 	.app-containerProm {
 		min-height: 1234px;
 		background-color: #f4f4f4;
 		padding-top: 30px;
 	}
-	
+
 	.app-containerProm .list {
 		height: 110px;
 		width: 100%;

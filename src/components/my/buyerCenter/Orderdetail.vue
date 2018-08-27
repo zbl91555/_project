@@ -43,7 +43,7 @@
 						<li>成交金额：￥{{orderDetailList.price}}元</li>
 						<li><div style="float:left">发货截止：</div><countDown style="width:80px;float:left" :endtime='parseFloat(orderDetailList.abort_fahuo_time)' :dayShow='true' :secShow='false'></countDown></li>
 					</ul>
-					
+
 					<!-- 已发货,等待确认 -->
 					<ul class="buyer-detail" v-else-if="orderDetailList.btnStatus.nameVal === '3'">
 						<li>成交金额：￥{{orderDetailList.price}}元</li>
@@ -105,7 +105,7 @@
 						<li>小二介入：{{timestampToTime(parseFloat(orderDetailList.platform_time))}}</li>
 						<!-- <li><div style="float:left">小二介入：</div><countDown style="width:80px;float:left" :endtime='parseFloat(orderDetailList.platform_time)' :dayShow='false' :secShow='true'></countDown></li> -->
 					</ul>
-				</div>	
+				</div>
 			</router-link>
 			<div class="need-pay">
 				<div>
@@ -118,7 +118,7 @@
 				</router-link>
 				<button @click="showshowlist('payLaterType',orderDetailList.order_id)" class="unImpotant fontCol"  v-if="orderDetailList.btnStatus.showDelay">延迟付款</button>
 				<button @click="showshowlist('FaceType',orderDetailList.order_id)" class="unImpotant fontCol"  v-if="orderDetailList.btnStatus.showFace">当面交易</button>
-				
+
 				<router-link :to="{path: '/returnRequest/'+orderDetailList.order_id+'/2'}">
 					<button class="unImpotant" v-if="orderDetailList.btnStatus.showApplyMoney">申请退款</button>
 				</router-link>
@@ -129,7 +129,7 @@
 
 				<router-link :to="{path: '/returnRequest/'+orderDetailList.order_id+'/4'}">
 					<button class="unImpotant" v-if="orderDetailList.btnStatus.showRefuseMoney">拒绝退款</button>
-				</router-link>	
+				</router-link>
 
 				<router-link :to="'/agreeReturnMoney/'+orderDetailList.order_id">
 					<button class="unImpotant" v-if="orderDetailList.btnStatus.showAgreeMoney">同意退款</button>
@@ -143,7 +143,7 @@
 				<router-link :to="{path: '/checkLogistics/'+orderDetailList.order_id+'/'+orderDetailList.is_tuihuo}">
 				<button class="unImpotant" v-if="orderDetailList.btnStatus.showLogisticsSellerr">查看物流</button>
 				</router-link>
-				
+
 				<router-link :to="{path: '/confirmBack/'+orderDetailList.order_id}">
 				<button class="isImpotant" v-if="orderDetailList.btnStatus.showReturnGood">立即退货</button>
 				</router-link>
@@ -158,7 +158,7 @@
 				<router-link :to="'/agreeReturnConfirmReceipt/'+orderDetailList.order_id">
 					<button class="unImpotant" v-if="orderDetailList.btnStatus.showReturnGoodAndMoney">收货并退款</button>
 				</router-link>
-				
+
 				<router-link :to="{path: '/returnRequest/'+orderDetailList.order_id+'/1'}">
 					<button class="unImpotant" v-if="orderDetailList.btnStatus.showApplyGoods">申请退货</button>
 				</router-link>
@@ -166,7 +166,7 @@
 				<button @click="showshowlist('refuseFaceType',orderDetailList.order_id)" class="unImpotant"  v-if="orderDetailList.btnStatus.showRefusingFase">拒绝当面交易</button >
 				<button @click="showshowlist('RefuseReceiveType',orderDetailList.order_id)" class="unImpotant"  v-if="orderDetailList.btnStatus.showRefuseReceiveGood">拒绝收货</button>
 				<router-link :to="{path: '/evaluate/'+orderDetailList.order_id}">
-					<button :class="isImpotant" v-if="orderDetailList.btnStatus.showEvaluate">立即评价</button>   
+					<button :class="isImpotant" v-if="orderDetailList.btnStatus.showEvaluate">立即评价</button>
 				</router-link>
 			</div>
 		</div>
@@ -192,16 +192,16 @@
 			<div class="ordermessageone">
 				<div class="ordermessagetel"><i>{{orderDetailList.order_sn}}</i><i class="wordacol">货款交易编号:&nbsp;&nbsp;</i></div>
 			</div>
-			<div class="smaTwoIn" v-show="platformCancels||platformShow">	  
+			<div class="smaTwoIn" v-show="platformCancels||platformShow">
 				<div @click="platformCancel" class="icon-btn" v-show="platformCancels">
 					<i class="wordacol">撤销介入</i>
 					<i class="icon-kefu1 iconfont"></i>
 				</div>
-					<div v-show="platformShow" @click="applyKojiin"> 
+					<div v-show="platformShow" @click="applyKojiin">
 						<i class="wordacol">小二介入</i>
 						<i class="icon-kefu1 iconfont"></i>
 					</div>
-			</div> 
+			</div>
 		</div>
 		<div class="gray"></div>
 		<div v-if="orderDetailList.orderAddress">
@@ -326,10 +326,10 @@
 			<div @click="closeshowlists()" class="fixednumMask" style="opacity: 0.38;">
 			</div>
 			<div class="sharesomething">
-				<router-link :to="'/buyeralllists/'+order_id">	
+				<router-link :to="'/buyeralllists/'+order_id">
 					<div @click="lookshowlists()">查看该店铺的所有订单</div>
 				</router-link>
-					<div @click="closeshowlists()" class="bordertop">取消</div>					
+					<div @click="closeshowlists()" class="bordertop">取消</div>
 			</div>
 		</div>
 		<!-- 是否弹出继续发货 -->
@@ -337,10 +337,10 @@
 			<div @click="closedeliverGoods()" class="fixednumMask" style="opacity: 0.38;">
 			</div>
 			<div class="continusharesomething">
-				<router-link :to="'/buyerOrder/'+1+'/seller'">	
+				<router-link :to="'/buyerOrder/'+1+'/seller'">
 					<div class="deliverGoods" >继续发货</div>
-				</router-link> 
-					<div @click="closedeliverGoods()" class="bordertop">取消</div>					
+				</router-link>
+					<div @click="closedeliverGoods()" class="bordertop">取消</div>
 			</div>
 		</div>
 		<!-- 是否撤销小二介入  -->
@@ -350,12 +350,12 @@
 			<div class="sharesomething">
 					<div class="deliverGoods">是否要撤销小二介入？</div>
 					<div class="bordertop" @click="platformCancelSmall">确认</div>
-					<div @click="closedeliverGoods()" class="bordertop">取消</div>				
+					<div @click="closedeliverGoods()" class="bordertop">取消</div>
 			</div>
 		</div>
 		<!-- 是否弹出打电话 -->
 		<div id="fixednumMain" v-if="showtel">
-			<div @click="closeshowdel()" class="fixednumMask" style="opacity: 0.38;">	
+			<div @click="closeshowdel()" class="fixednumMask" style="opacity: 0.38;">
 			</div>
 			<div class="telsharesomething">
 				<div>
@@ -364,7 +364,7 @@
 				</div>
 				<div>
 					<a :href="'tel:'+tel">确认拨打?</a>
-				</div>			
+				</div>
 			</div>
 		</div>
 		<!-- 弹出弹框 -->
@@ -379,265 +379,264 @@
 				<div v-if="type=='confirmGetType'" style="color:red" @click="confirmGets()">确认收货</div>
 				<div v-if="type=='RefuseReceiveType'" style="color:red" @click="RefuseReceive()">拒绝收货</div>
 				<div v-if="type=='delayedDelivery'" @click="delayedDelivery()"><span style="color:red">延迟收货</span><span style="color:#aba9a5">（收货将会延长7天）</span></div>
-				<div  @click="closeshowlists()" class="bordertop">取消</div>					
+				<div  @click="closeshowlists()" class="bordertop">取消</div>
 			</div>
 		</div>
 		<!-- 是否弹出小二介入弹框 -->
 		<!-- <div id="fixednumMain" v-if="applySmallIn">
-			<div @click="closeshowdel()" class="fixednumMask" style="opacity: 0.38;">	
+			<div @click="closeshowdel()" class="fixednumMask" style="opacity: 0.38;">
 			</div>
 			<div class="telsharesomething">
 				<div style="margin-top:25px">
 					<span>已申请小二介入</span>
-				</div>		
+				</div>
 			</div>
 		</div> -->
 	</div>
 </template>
 <script>
-	import { Toast } from 'vant';
-	import countDown from '../../common/countDown'
-    import {orderShow,platformCancel,orderRefuseFace,orderTransaction,orderConfirmGoods,orderPaylater,orderRefuseGoods,orderDelayGoods,platformView} from '../../../api/api';
-    import ClipboardJS from 'clipboard'
-	export default {
-		components: {
-			countDown
-		},
-		data() {
-			return {
-				orderDetailList:{btnStatus : {}},
-				showlists:false,
-				showtel:false,
-				applySmall:false,
-				order_id:'',
-				deliverGoods:false,
-				tel:'',
-				btnStatus:{},
-				seeMoreSale:true,
-				seeMoreSaleshang:false,
-				linkPath: true,
-				showshowlists:false, //按钮往下
-				type:'',
-				orderId:'',
-				text:''  //拍品编号
-			}
-		},
-		computed:{
-			platformShow(){
-				let show = this.btnStatus.showWaiterUser||this.orderDetailList.btnStatus.showWaiterSeller;
-				return show;
-			},
-			platformCancels(){
-				let show = this.btnStatus.showCancelWaiterUser||this.orderDetailList.btnStatus.showCancelWaiterSeller;
-				return show;
-			},
-		},
-		
-		methods: {
-			auctionSn(){
-				let clipboard =  new ClipboardJS('#auctionSn');
-				clipboard.on('success', (e) =>{
-					Toast('复制拍品编号成功')
-				});
-				clipboard.on('error', (e) =>{
-					Toast('复制失败 请手动复制');
-				});
-			},
-			//小二介入申请
-			applyKojiin(){
-				platformView(this.order_id).then(
-                    res => {
-                      if(res.code == '200'){
-                       this.$router.push({path:'/buyerCenter/buyerOrder/Kojiin',query:{order_id:this.order_id}})
-                      }
-                    }
-                    ).catch(err=>{
-                    	if(err.data.code == '400'){
-                      		Toast(err.data.message)
-                        } 
-                    })
-			},
-			//拒绝当面交易
-		    refuseFaceToFaces(){
-                orderRefuseFace(this.orderId).then(res=> {
-	          		this.showshowlists=false;
-	          		this.orderDetailList.btnStatus.showRefusingFase = false;
-        		}).catch(err=> {
-          			console.log(err.response.data.message);
-        		})
-		    },
-			//当面交易
-			transactions(){
-        		orderTransaction(this.orderId).then(res=> {
-          			this.showshowlists=false;
-          		    this.orderDetailList.btnStatus.showFace = false;
-        		}).catch(err=> {
-          			console.log(err.response.data.message);
-        		})
-			},
-			//确认收货
-			confirmGets(){
-				orderConfirmGoods(this.orderId).then(res=> {
-          			this.showshowlists=false;
-          			this.orderDetailList.btnStatus.showReap = false;
-          			this.$router.push('/evaluate/'+this.orderId)
-        		}).catch(err=> {
-          			console.log(err.response.data.message);
-        		})
-			},
-			//延迟付款
-			payLaters(){
-        		orderPaylater(this.orderId).then(res=> {
-          			this.showshowlists=false;
-          			this.orderDetailList.btnStatus.showDelay = false;
-        		}).catch(err=> {
-          			console.log(err.response.data.message);
-        		})
-			},
-			//拒绝收货
-			RefuseReceive(){
-				orderRefuseGoods(this.orderId).then(res=> {
-          			this.showshowlists=false;
-          			this.orderDetailList.btnStatus.showRefuseReceiveGood = false;
-        		}).catch(err=> {
-          			console.log(err.response.data.message);
-        		})
-			},
-			//延迟收货
-			delayedDelivery(){
-				orderDelayGoods(this.orderId).then(res=> {
-          			this.showshowlists=false;
-          			this.orderDetailList.btnStatus.showDelayGoods = false;
-          			this.orderDetailList.abort_shouhuo_time = parseFloat(this.orderDetailList.abort_shouhuo_time)+86400 * 7;
-        		}).catch(err=> {
-          			console.log(err.response.data.message);
-        		})
-			},
-			//关闭弹框
-			closeshowlists(){
-				this.showshowlists=false;
-				this.showlists = false
-			},
-			//打开弹框
-			showshowlist(type,id){
-		    	this.type=type,
-					this.showshowlists=true;
-					this.orderId=id;
-		    },
-			toanather(link){
-				if(link!=0 && this.orderDetailList.isExpress != '2'){
-					this.$router.push(link)
-				}else{
-					return
-				}
-			},
-			//看更多售后信息
-			moreAfterSale(){
-				this.seeMoreSale = false
-				this.seeMoreSaleshang = true
-				this.orderShow()
-			},
-			initAfterSale(){
-				this.seeMoreSale = true
-				this.seeMoreSaleshang = false
-				this.orderShow()
-			},
-			closedeliverGoods(){
-				this.deliverGoods = false
-				this.applySmall = false	
-			},
-			//打电话
-			showdel(){
-				this.showtel=true
-			},
-			//关掉电话
-			closeshowdel(){
-				this.showtel = false
-				this.applySmallIn = false
-			},
-			//打卖家电话
-			callSellPhone(){
-				this.showtel=true
-			},
-			//查看订单
-			lookshowlists(){
-				this.showlists=false
-			},
-			alldingDan(){
-				this.showlists=true
-			},
-			orderShow(){
-				this.order_id = this.$route.params.order_id
-				orderShow(this.order_id).then(res =>{
-					this.orderDetailList = res.data;
-					this.text = res.data.auction_sn;
-					this.btnStatus = res.data.btnStatus;
-					this.tel = res.data.mobile;
-					if(this.orderDetailList.afterSaleList.length<=2){
-						this.seeMoreSale = false
-						this.seeMoreSaleshang = false
-					}else{
-						if(this.seeMoreSale == true){
-						this.seeMoreSaleshang = false
-						this.orderDetailList.afterSaleList = this.orderDetailList.afterSaleList.slice(0,2)
-						}
-					}
-					let linkPath = res.data.process.find(function(v){
-						return v.link
-					})
-					if(linkPath.link.substring(0,15) == '/checkLogistics'){
-						if(res.data.expressCode == false){
-							this.linkPath = false
-						}else{
-							this.linkPath = true
-						}
-					}
-					
-				}).catch(err =>{
-					 console.log(err)
-				})
-			},
-			platformCancel(){
-				this.applySmall = true
-				// let _this = this;
-				// _this.order_id = this.$route.params.order_id
+import { Toast } from 'vant'
+import countDown from '../../common/countDown'
+import {orderShow, platformCancel, orderRefuseFace, orderTransaction, orderConfirmGoods, orderPaylater, orderRefuseGoods, orderDelayGoods, platformView} from '../../../api/api'
+import ClipboardJS from 'clipboard'
+export default {
+  components: {
+    countDown
+  },
+  data () {
+    return {
+      orderDetailList: {btnStatus: {}},
+      showlists: false,
+      showtel: false,
+      applySmall: false,
+      order_id: '',
+      deliverGoods: false,
+      tel: '',
+      btnStatus: {},
+      seeMoreSale: true,
+      seeMoreSaleshang: false,
+      linkPath: true,
+      showshowlists: false, // 按钮往下
+      type: '',
+      orderId: '',
+      text: '' // 拍品编号
+    }
+  },
+  computed: {
+    platformShow () {
+      let show = this.btnStatus.showWaiterUser || this.orderDetailList.btnStatus.showWaiterSeller
+      return show
+    },
+    platformCancels () {
+      let show = this.btnStatus.showCancelWaiterUser || this.orderDetailList.btnStatus.showCancelWaiterSeller
+      return show
+    }
+  },
+
+  methods: {
+    auctionSn () {
+      let clipboard = new ClipboardJS('#auctionSn')
+      clipboard.on('success', (e) => {
+        Toast('复制拍品编号成功')
+      })
+      clipboard.on('error', (e) => {
+        Toast('复制失败 请手动复制')
+      })
+    },
+    // 小二介入申请
+    applyKojiin () {
+      platformView(this.order_id).then(
+        res => {
+          if (res.code == '200') {
+            this.$router.push({path: '/buyerCenter/buyerOrder/Kojiin', query: {order_id: this.order_id}})
+          }
+        }
+      ).catch(err => {
+        if (err.data.code == '400') {
+          Toast(err.data.message)
+        }
+      })
+    },
+    // 拒绝当面交易
+    refuseFaceToFaces () {
+      orderRefuseFace(this.orderId).then(res => {
+        this.showshowlists = false
+        this.orderDetailList.btnStatus.showRefusingFase = false
+      }).catch(err => {
+        console.log(err.response.data.message)
+      })
+    },
+    // 当面交易
+    transactions () {
+      orderTransaction(this.orderId).then(res => {
+        this.showshowlists = false
+        this.orderDetailList.btnStatus.showFace = false
+      }).catch(err => {
+        console.log(err.response.data.message)
+      })
+    },
+    // 确认收货
+    confirmGets () {
+      orderConfirmGoods(this.orderId).then(res => {
+        this.showshowlists = false
+        this.orderDetailList.btnStatus.showReap = false
+        this.$router.push('/evaluate/' + this.orderId)
+      }).catch(err => {
+        console.log(err.response.data.message)
+      })
+    },
+    // 延迟付款
+    payLaters () {
+      orderPaylater(this.orderId).then(res => {
+        this.showshowlists = false
+        this.orderDetailList.btnStatus.showDelay = false
+      }).catch(err => {
+        console.log(err.response.data.message)
+      })
+    },
+    // 拒绝收货
+    RefuseReceive () {
+      orderRefuseGoods(this.orderId).then(res => {
+        this.showshowlists = false
+        this.orderDetailList.btnStatus.showRefuseReceiveGood = false
+      }).catch(err => {
+        console.log(err.response.data.message)
+      })
+    },
+    // 延迟收货
+    delayedDelivery () {
+      orderDelayGoods(this.orderId).then(res => {
+        this.showshowlists = false
+        this.orderDetailList.btnStatus.showDelayGoods = false
+        this.orderDetailList.abort_shouhuo_time = parseFloat(this.orderDetailList.abort_shouhuo_time) + 86400 * 7
+      }).catch(err => {
+        console.log(err.response.data.message)
+      })
+    },
+    // 关闭弹框
+    closeshowlists () {
+      this.showshowlists = false
+      this.showlists = false
+    },
+    // 打开弹框
+    showshowlist (type, id) {
+      this.type = type
+      this.showshowlists = true
+      this.orderId = id
+    },
+    toanather (link) {
+      if (link != 0 && this.orderDetailList.isExpress != '2') {
+        this.$router.push(link)
+      } else {
+
+      }
+    },
+    // 看更多售后信息
+    moreAfterSale () {
+      this.seeMoreSale = false
+      this.seeMoreSaleshang = true
+      this.orderShow()
+    },
+    initAfterSale () {
+      this.seeMoreSale = true
+      this.seeMoreSaleshang = false
+      this.orderShow()
+    },
+    closedeliverGoods () {
+      this.deliverGoods = false
+      this.applySmall = false
+    },
+    // 打电话
+    showdel () {
+      this.showtel = true
+    },
+    // 关掉电话
+    closeshowdel () {
+      this.showtel = false
+      this.applySmallIn = false
+    },
+    // 打卖家电话
+    callSellPhone () {
+      this.showtel = true
+    },
+    // 查看订单
+    lookshowlists () {
+      this.showlists = false
+    },
+    alldingDan () {
+      this.showlists = true
+    },
+    orderShow () {
+      this.order_id = this.$route.params.order_id
+      orderShow(this.order_id).then(res => {
+        this.orderDetailList = res.data
+        this.text = res.data.auction_sn
+        this.btnStatus = res.data.btnStatus
+        this.tel = res.data.mobile
+        if (this.orderDetailList.afterSaleList.length <= 2) {
+          this.seeMoreSale = false
+          this.seeMoreSaleshang = false
+        } else {
+          if (this.seeMoreSale == true) {
+            this.seeMoreSaleshang = false
+            this.orderDetailList.afterSaleList = this.orderDetailList.afterSaleList.slice(0, 2)
+          }
+        }
+        let linkPath = res.data.process.find(function (v) {
+          return v.link
+        })
+        if (linkPath.link.substring(0, 15) == '/checkLogistics') {
+          if (res.data.expressCode == false) {
+            this.linkPath = false
+          } else {
+            this.linkPath = true
+          }
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    platformCancel () {
+      this.applySmall = true
+      // let _this = this;
+      // _this.order_id = this.$route.params.order_id
     //             platformCancel(_this.order_id).then(res=> {
     //               console.log(res.data);
     //             }).catch(err=> {
     //               console.log(err.response.data.message);
     //             })
-            },
-            platformCancelSmall(){
-            	this.order_id = this.$route.params.order_id
-                platformCancel(this.order_id).then(res=> {
-                  this.applySmall = false;
-                  this.orderShow()
-                }).catch(err=> {
-                  console.log(err.response.data.message);
-                })
-            }
-		},
-		mounted() {
-			let clipboard =  new ClipboardJS('#auctionSn');
-			clipboard.on('success', (e) =>{
-				Toast('复制拍品编号成功')
-			});
-			clipboard.on('error', (e) =>{
-				Toast('复制失败 请手动复制');
-			});
-			if(sessionStorage.getItem('deliverGoods') == 'true'){
-				if(sessionStorage.getItem('orderLength') == '1'){
-					this.deliverGoods = false
-				}else{
-					this.deliverGoods = true;
-					sessionStorage.setItem("deliverGoods", "false");
-				}
-			}else{
-				this.deliverGoods = false
-			}
-			this.orderShow()
-		}
-	}
+    },
+    platformCancelSmall () {
+      this.order_id = this.$route.params.order_id
+      platformCancel(this.order_id).then(res => {
+        this.applySmall = false
+        this.orderShow()
+      }).catch(err => {
+        // console.log(err.response.data.message)
+      })
+    }
+  },
+  mounted () {
+    let clipboard = new ClipboardJS('#auctionSn')
+    clipboard.on('success', (e) => {
+      Toast('复制拍品编号成功')
+    })
+    clipboard.on('error', (e) => {
+      Toast('复制失败 请手动复制')
+    })
+    if (sessionStorage.getItem('deliverGoods') == 'true') {
+      if (sessionStorage.getItem('orderLength') == '1') {
+        this.deliverGoods = false
+      } else {
+        this.deliverGoods = true
+        sessionStorage.setItem('deliverGoods', 'false')
+      }
+    } else {
+      this.deliverGoods = false
+    }
+    this.orderShow()
+  }
+}
 </script>
 
 <style lang='less' scoped>
@@ -680,7 +679,7 @@
 		color: #333;
 	}
     .icon-jiantouxiangxia,.icon-jiantouxiangshang{
-    	float: right;
+		float: right;
     }
 	@border-color: #e5e5e5;
 	.orderDetail{
@@ -778,7 +777,7 @@
 					line-height: 76px;
 					float: left;
 					position: relative;
-					padding-right: 40px;	
+					padding-right: 40px;
 	}
 	.buyer-tool	a i {
 					margin: 0;
@@ -799,7 +798,7 @@
 					border: none;
 					background-color: #fff;
 					color: #f15511;
-					
+
 	}
 	.waitepaywords{
 		height: 30px;
@@ -922,7 +921,7 @@
 	}
 	.lovepic span{
 		margin: auto;
-		line-height:114px; 
+		line-height:114px;
 	}
 	.icon-xin3{
 		color:#fe8483;
@@ -932,8 +931,8 @@
 		height: 428px;
 		background: url('../../../assets/images/newuser.png');
 		background-repeat: no-repeat;
-	    background-position: center;
-	    background-size: cover;
+		background-position: center;
+		background-size: cover;
 	}
 	.allmaylike{
 		overflow: hidden;
@@ -1039,7 +1038,7 @@
 		font-size: 16px;
 		margin-left: 20px;
 	}
-	
+
 	.sendMethod div:nth-child(2){
 		margin-left: 10px
 	}
@@ -1059,7 +1058,7 @@
     font-size: 30px
   }
   .continusharesomething{
-  	position: fixed;
+	position: fixed;
     left:0;
     bottom: 0;
     z-index: 1100;
@@ -1093,16 +1092,16 @@
     border-radius: 20px
   }
   .menuItem {
-	    font-size: 28px;
-	    text-align: center;
-	    padding:0 16px;
-	    float: left;
-	    height: 100px;
-	    line-height: 100px
-  	}
-  	.selected {
-	    color: #9e2026;
-	    border-bottom: 8px solid #9e2026;
+		font-size: 28px;
+		text-align: center;
+		padding:0 16px;
+		float: left;
+		height: 100px;
+		line-height: 100px
+	}
+	.selected {
+		color: #9e2026;
+		border-bottom: 8px solid #9e2026;
 	}
 	.buyer-status{
 		font-size: 24px;

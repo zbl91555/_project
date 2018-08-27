@@ -3,7 +3,7 @@
       <div class="container--3ienn show--1M_If">
         <div class="searchContainer">
           <!-- <i class="iconfont icon-search"></i> -->
-          
+
           <input type="text" class="search" value="" placeholder="搜索">
           <!-- <div class="none">
             <span class="wptFM fi-stack">
@@ -141,16 +141,16 @@
   </div>
 </template>
 
-<script> 
-  export default {
-    data(){
-      return{
-       
-      }
-    },
-    methods:{
+<script>
+export default {
+  data () {
+    return {
+
     }
+  },
+  methods: {
   }
+}
 </script>
 
 <style scoped>
@@ -190,10 +190,6 @@
     padding: 24px  20px;
     text-align: center;
 }
-
-
-
-
 
 /*.container--3ienn .country--XaWaa {
   width: 100%;

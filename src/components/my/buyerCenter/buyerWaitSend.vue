@@ -12,7 +12,7 @@
 		</div>
 		<div class="buyer-list">
 			<ul>
-				<li v-for="(e, i) in allList">
+				<li v-for="(e, i) in allList" :key="e">
 					<div class="buyer-tool" :style="{backgroundImage:'url(' + e.avatar + ')'}">
 						<router-link to="/myHome" style="">{{e.nickname}}<i class="iconfont icon-right"></i></router-link>
 						<button class="buyer-status">{{e.change}}</button>
@@ -52,15 +52,15 @@
 			<div @click="closeshowlists()" class="fixednumMask" style="opacity: 0.38;">
 			</div>
 			<div class="sharesomething">
-				<router-link to="/buyerCenter/buyerOrder/buyeralllists">	
+				<router-link to="/buyerCenter/buyerOrder/buyeralllists">
 					<div @click="lookshowlists()">查看该店铺的所有订单</div>
 				</router-link>
-					<div @click="closeshowlists()" class="bordertop">取消</div>					
+					<div @click="closeshowlists()" class="bordertop">取消</div>
 			</div>
 		</div>
 		<!-- 是否弹出打电话 -->
 		<div id="fixednumMain" v-if="showtel==true ">
-			<div @click="closeshowdel()" class="fixednumMask" style="opacity: 0.38;">	
+			<div @click="closeshowdel()" class="fixednumMask" style="opacity: 0.38;">
 			</div>
 			<div class="telsharesomething">
 				<div>
@@ -69,55 +69,55 @@
 				</div>
 				<div>
 					<a href="">确认拨打?</a>
-				</div>			
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 <script>
-	import {/*getSendInfo*/} from '../../../api/api'
-	export default {
-		components: {},
-		data() {
-			return {
-				// 所有产品列表
-				allList: [],
-				noOrder: false,
-				// 一次请求多少订单数量这里就是多少false，如果付款3天后未发货，就可显示申请退款按钮；
-				refundBtn: [false, false, false, false, false, false, false, false, false, false], 
-				showlists:false,
-				showtel:false
-			}
-		},
-		methods: {
-			//打电话
-			showdel(){
-				this.showtel=true
-			},
-			//关掉电话
-			closeshowdel(){
-				this.showtel=false
-			},
-			//查看订单
-			lookshowlists(){
-				this.showlists=false
-			},
-			//关闭
-			closeshowlists(){
-				this.showlists=false
-			},
-			alldingDan(){
-				this.showlists=true
-			},
-			getSendInfo: function() {
-				let _this = this;
-				let params = {
-						type: 'user',
-						state: 'daifahuo',
-						page: '1',
-						pagenum: '10',
-					};
-				/*getSendInfo(params).then(function(res) {
+import {/* getSendInfo */} from '../../../api/api'
+export default {
+  components: {},
+  data () {
+    return {
+      // 所有产品列表
+      allList: [],
+      noOrder: false,
+      // 一次请求多少订单数量这里就是多少false，如果付款3天后未发货，就可显示申请退款按钮；
+      refundBtn: [false, false, false, false, false, false, false, false, false, false],
+      showlists: false,
+      showtel: false
+    }
+  },
+  methods: {
+    // 打电话
+    showdel () {
+      this.showtel = true
+    },
+    // 关掉电话
+    closeshowdel () {
+      this.showtel = false
+    },
+    // 查看订单
+    lookshowlists () {
+      this.showlists = false
+    },
+    // 关闭
+    closeshowlists () {
+      this.showlists = false
+    },
+    alldingDan () {
+      this.showlists = true
+    },
+    getSendInfo: function () {
+      let _this = this
+      let params = {
+        type: 'user',
+        state: 'daifahuo',
+        page: '1',
+        pagenum: '10'
+      }
+      /* getSendInfo(params).then(function(res) {
 					if(res.code == '200') {
 						_this.allList = res.data;
 						// 如果没有订单，则显示0订单占位符
@@ -133,19 +133,19 @@
 					}
 				}).catch(function(err) {
 					console.log(err);
-				})*/
-			},
-			getNow: function() {
-				let _this = this;
-				let now = _this.timestampToTimeYMD(+new Date() / 1000);
+				}) */
+    },
+    getNow: function () {
+      let _this = this
+      let now = _this.timestampToTimeYMD(+new Date() / 1000)
 
-				return now;
-			}
-		},
-		mounted() {
-			this.getSendInfo();
-		}
-	}
+      return now
+    }
+  },
+  mounted () {
+    this.getSendInfo()
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -154,7 +154,7 @@
 		background-color: #f4f4f4;
 		overflow: hidden;
 	}
-	
+
 	.buyer-nav {
 		width: 100%;
 		height: 78px;
@@ -186,7 +186,7 @@
 			font-weight: bold;
 		}
 	}
-	
+
 	.buyer-list {
 		margin-bottom: 100px;
 		position: relative;
@@ -278,7 +278,7 @@
 						height: 25px;
 						line-height: 25px;
 						float: right;
-						
+
 						i{
 							font-size: 24px;
 							margin: 0;
@@ -305,7 +305,7 @@
 			}
 		}
 	}
-	
+
 	.no-info {
 		height: 375px;
 		width: 277px;

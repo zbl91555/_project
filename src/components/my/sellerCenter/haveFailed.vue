@@ -33,7 +33,7 @@
             <button class="btnall" @click="sendmsg()">确认上架</button>
 
           <button class="btnall canselmgl" @click="cancelbts()">取消</button>
-        </div> -->  
+        </div> -->
       </div>
       <!-- 弹出弹框 -->
     <div id="fixednumMain" v-if="showshowlists">
@@ -49,7 +49,7 @@
          <div v-if="confirm" @click="swichStatus(isshowIndex)">确认</div>
          <div style="color:rgb(181, 84, 89)" v-if="reconfirm" @click.stop="grounding(isshowIndex)">重新上架</div>
         <span class="grayTop"></span>
-        <div class="cancelTop" @click="closeshowlists()">取消 </div> 
+        <div class="cancelTop" @click="closeshowlists()">取消 </div>
       </div>
     </div>
       <!--弹出选择时间-->
@@ -60,24 +60,24 @@
                 <div class="title">
                   {{nowday}}(今天)
                 </div>
-                <div> 
+                <div>
                   <span class="hourItem" v-for="(item,index) in times" @click="chosenSelection(index)" :class="{selected:index===nowindex}" :key="index">{{item}}</span>
-                </div>  
-              </div>    
-              <div class="dayItem">  
-                <div class="title">  
-                  {{tomorrow}}(明天)  
-                </div>   
-                <div>                                     
-                  <span class="hourItem" v-for="(item,index) in tmortimes" @click="chosenSelection2(index)" :class="{selected:index===nnowindex}" :key="index">{{item}}</span>         
                 </div>
               </div>
-              <div class="dayItem" v-if="ttomorrowshow">  
-                <div class="title">  
-                  {{ttomorrow}}(后天)  
-                </div>   
-                <div>                                     
-                  <span class="hourItem" v-for="(item,index) in ttmortimes" @click="chosenSelection3(index)" :class="{selected:index===nnnowindex}" :key="index">{{item}}</span>         
+              <div class="dayItem">
+                <div class="title">
+                  {{tomorrow}}(明天)
+                </div>
+                <div>
+                  <span class="hourItem" v-for="(item,index) in tmortimes" @click="chosenSelection2(index)" :class="{selected:index===nnowindex}" :key="index">{{item}}</span>
+                </div>
+              </div>
+              <div class="dayItem" v-if="ttomorrowshow">
+                <div class="title">
+                  {{ttomorrow}}(后天)
+                </div>
+                <div>
+                  <span class="hourItem" v-for="(item,index) in ttmortimes" @click="chosenSelection3(index)" :class="{selected:index===nnnowindex}" :key="index">{{item}}</span>
                 </div>
               </div>
               <div class="cbtnItem">
@@ -93,8 +93,8 @@
           </div>
 </template>
 <script>
-import { Toast } from "vant";
-import { LoadMore } from "vux";
+import { Toast } from 'vant'
+import { LoadMore } from 'vux'
 import {
   getstore,
   somedown,
@@ -103,18 +103,18 @@ import {
   swichhide,
   singledown,
   singledelete
-} from "../../../api/api";
+} from '../../../api/api'
 export default {
-  data() {
+  data () {
     return {
       changeRed: 0,
       store: [],
-      auctionStore: [], //竞拍中
-      jiepaiStore: [], //已截拍
-      liupaiStore: [], //已流拍
-      shibaiStore: [], //已失败
-      caogaoStore: [], //草稿箱
-      type: "auctioning",
+      auctionStore: [], // 竞拍中
+      jiepaiStore: [], // 已截拍
+      liupaiStore: [], // 已流拍
+      shibaiStore: [], // 已失败
+      caogaoStore: [], // 草稿箱
+      type: 'auctioning',
       pagenum: 5,
       page: 0,
       auctioning: true,
@@ -138,18 +138,18 @@ export default {
       nowindex: -1,
       nnowindex: -1,
       nnnowindex: -1,
-      year: "",
-      month: "",
-      day: "",
-      totaltime: "",
-      oneid: "",
+      year: '',
+      month: '',
+      day: '',
+      totaltime: '',
+      oneid: '',
       confirmupshow: false,
       someconfirmupshow: false,
       tohide: false,
       toshow: false,
       isBusy: false,
       showshowlists: false,
-      isshowIndex: "",
+      isshowIndex: '',
       updown: false,
       hide: false,
       del: false,
@@ -161,83 +161,83 @@ export default {
       loading: false,
       elseloading: false,
       xiajia: true,
-      img: require("../../../assets/images/beat.png"), //无数据时 显示的图片
-      dataNotAvailable: false //无数据时 是否展示
-    };
+      img: require('../../../assets/images/beat.png'), // 无数据时 显示的图片
+      dataNotAvailable: false // 无数据时 是否展示
+    }
   },
   components: {
     LoadMore
   },
   computed: {
-    isLiupai() {
-      return this.type == "liupai";
+    isLiupai () {
+      return this.type == 'liupai'
     }
   },
-  created() {
-    this.count = this.pagenum;
-    window.addEventListener("scroll", this.scrollHandler);
+  created () {
+    this.count = this.pagenum
+    window.addEventListener('scroll', this.scrollHandler)
   },
 
-  destroyed() {
-    window.removeEventListener("scroll", this.scrollHandler);
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollHandler)
   },
   methods: {
-    //注册scroll事件并监听
-    scrollHandler() {
-      const st = document.documentElement.scrollTop || document.body.scrollTop;
-      const ch = this.$refs.ctn.clientHeight;
+    // 注册scroll事件并监听
+    scrollHandler () {
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      const ch = this.$refs.ctn.clientHeight
       if (st + window.innerHeight >= ch) {
-        console.log("加载");
-        this.getstore();
+        console.log('加载')
+        this.getstore()
       }
     },
-    //获取列表
-    getstore() {
+    // 获取列表
+    getstore () {
       if (this.count == 0 || this.loading) {
-        return;
+        return
       }
-      this.loading = true;
-      let _this = this;
-      this.page += 1;
+      this.loading = true
+      let _this = this
+      this.page += 1
       let params = {
         page: this.page,
         pagenum: this.pagenum,
-        type: "shibai"
-      };
+        type: 'shibai'
+      }
       getstore(params)
         .then(response => {
           if (response.code == 200) {
-            _this.shibaiStore = _this.shibaiStore.concat(response.data);
-            _this.checkselectshow = false;
-            _this.count = response.data.length;
-            _this.loading = false;
+            _this.shibaiStore = _this.shibaiStore.concat(response.data)
+            _this.checkselectshow = false
+            _this.count = response.data.length
+            _this.loading = false
           }
         })
         .catch(error => {
-          this.dataNotAvailable = this.shibaiStore.length == 0;
-          this.loading = false;
-          this.elseloading = true;
-          this.count = 0;
-          console.log(error);
-        });
+          this.dataNotAvailable = this.shibaiStore.length == 0
+          this.loading = false
+          this.elseloading = true
+          this.count = 0
+          console.log(error)
+        })
     },
-    toWhere(id) {
-      if (this.type == "caogao") {
-        return;
+    toWhere (id) {
+      if (this.type == 'caogao') {
+        return
       }
-      if (this.type == "shibai") {
-        this.$router.push({ path: "/orderDetail/" + id });
-      } else this.$router.push({ path: "/auction/" + id });
+      if (this.type == 'shibai') {
+        this.$router.push({ path: '/orderDetail/' + id })
+      } else this.$router.push({ path: '/auction/' + id })
     }
   },
-  beforeRouteLeave(to, from, next) {
-    localStorage.removeItem("changeRed");
-    next();
+  beforeRouteLeave (to, from, next) {
+    localStorage.removeItem('changeRed')
+    next()
   },
-  mounted() {
-    this.getstore();
+  mounted () {
+    this.getstore()
   }
-};
+}
 </script>
 <style scoped>
 .storeManagement {
@@ -722,4 +722,4 @@ input[type="checkbox"]:checked:after {
      color: #a2a2a2;
   }
 */
-</style>  
+</style>

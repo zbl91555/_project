@@ -12,71 +12,71 @@
 </template>
 
 <script>
-	import {Toast} from 'vant'
-	import {sendSigned} from '../../../api/api'
-	export default {
-		data() {
-			return {
-				oldMsg: '',
-				newMsg: '',
-				shibaiShow:true
-			}
-		},
-		props:['signes'],
-		methods: {
-			clear(){
-				this.newMsg = '';
-				this.shibaiShow = false
-			},
-			sendSigned: function() {
-				if(this.newMsg == ''){
-					alert('个性签名不能为空')
-				}
-				if(this.oldMsg == this.newMsg) {
-					this.$emit('getsigneMsg',this.newMsg)
-					return;
-				}
-				let params = {
-					signature: this.newMsg,
-				};
-				sendSigned(params).then(res =>{
-						if(res.code == '200') {
-							this.$emit('getsigneMsg',this.newMsg)
-							this.$store.commit('revise',true)
-							// this.$router.push('/buyerCenter/buyerSet')
-						}
-					})
-					.catch(err =>{
-						Toast(err.data.message)
-					})
-			}
-		},
-		mounted() {
-			this.oldMsg = this.signes
-			this.newMsg = this.signes
-			if(this.newMsg == ''){
-				this.shibaiShow = false
-			}else{
-				this.shibaiShow = true
-			}
-		},
-		watch:{
-			newMsg(now,old){
-				if(now == ''){
-					this.shibaiShow = false
-				}else{
-					this.shibaiShow = true
-				}
-			}
-		}
-	}
+import {Toast} from 'vant'
+import {sendSigned} from '../../../api/api'
+export default {
+  data () {
+    return {
+      oldMsg: '',
+      newMsg: '',
+      shibaiShow: true
+    }
+  },
+  props: ['signes'],
+  methods: {
+    clear () {
+      this.newMsg = ''
+      this.shibaiShow = false
+    },
+    sendSigned: function () {
+      if (this.newMsg == '') {
+        alert('个性签名不能为空')
+      }
+      if (this.oldMsg == this.newMsg) {
+        this.$emit('getsigneMsg', this.newMsg)
+        return
+      }
+      let params = {
+        signature: this.newMsg
+      }
+      sendSigned(params).then(res => {
+        if (res.code == '200') {
+          this.$emit('getsigneMsg', this.newMsg)
+          this.$store.commit('revise', true)
+          // this.$router.push('/buyerCenter/buyerSet')
+        }
+      })
+        .catch(err => {
+          Toast(err.data.message)
+        })
+    }
+  },
+  mounted () {
+    this.oldMsg = this.signes
+    this.newMsg = this.signes
+    if (this.newMsg == '') {
+      this.shibaiShow = false
+    } else {
+      this.shibaiShow = true
+    }
+  },
+  watch: {
+    newMsg (now, old) {
+      if (now == '') {
+        this.shibaiShow = false
+      } else {
+        this.shibaiShow = true
+      }
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
 	/*
-	 * @border-color: 统一边框颜色
-	 * */
-	
+	* @border-color: 统一边框颜色
+	* */
+
 	@border-color: #e5e5e5;
 	.app-container {
 		min-height: 1302px;
@@ -94,7 +94,7 @@
 		padding: 0 30px;
 		box-sizing: border-box;
 	}
-	
+
 	.list {
 		height: 110px;
 		background-color: #fff;
@@ -122,7 +122,7 @@
 			float: left;
 		}
 	}
-	
+
 	.sub {
 		height: 88px;
 		margin-top: 200px;

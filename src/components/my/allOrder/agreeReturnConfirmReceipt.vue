@@ -11,7 +11,7 @@
           <li>实际付款金额：￥{{info.truePrice}}元</li>
           <li>截止时间：{{timestampToTime(info.addTime)}}</li>
         </ul>
-      </div>  
+      </div>
       <div class="gray"></div>
       <div class="returnReason">
           <div>申请退货理由</div>
@@ -51,49 +51,49 @@
   </div>
 </template>
 <script>
-import {confirmReceipt,confirmReceiptSubmit} from '../../../api/api';
+import {confirmReceipt, confirmReceiptSubmit} from '../../../api/api'
 export default {
-  data() {
+  data () {
     return {
       info: {},
-      address:{},
-      agree:false,
-      orderId:'',
-      addressId:'',
-    };
+      address: {},
+      agree: false,
+      orderId: '',
+      addressId: ''
+    }
   },
   methods: {
-      openAgree(){
-          this.agree=true
-      },
-      closeAgree(){
-          this.agree=false
-      },
-      //页面
-      confirmReceipt: function() {
-        confirmReceipt(this.orderId).then(res=>{
-           this.info = res.data;
-           this.address = res.data.orderReturnAddress;
-           this.addressId = res.data.orderReturnAddress.id;
-        }).catch(function(err) {
-          console.log(err);
-        })
-      },
-      //提交
-      confirmReceiptSubmit(){
-        confirmReceiptSubmit(this.orderId).then(res=> {
-          this.agree=false
-          this.$router.push('/orderDetail/'+this.orderId)
-        }).catch(err=> {
-          console.log(err.response.data.message);
-        })
-      },
+    openAgree () {
+      this.agree = true
+    },
+    closeAgree () {
+      this.agree = false
+    },
+    // 页面
+    confirmReceipt: function () {
+      confirmReceipt(this.orderId).then(res => {
+        this.info = res.data
+        this.address = res.data.orderReturnAddress
+        this.addressId = res.data.orderReturnAddress.id
+      }).catch(function (err) {
+        console.log(err)
+      })
+    },
+    // 提交
+    confirmReceiptSubmit () {
+      confirmReceiptSubmit(this.orderId).then(res => {
+        this.agree = false
+        this.$router.push('/orderDetail/' + this.orderId)
+      }).catch(err => {
+        console.log(err.response.data.message)
+      })
+    }
   },
-   mounted() {
-      this.orderId = this.$route.params.order_id
-      this.confirmReceipt();
-   },
-};
+  mounted () {
+    this.orderId = this.$route.params.order_id
+    this.confirmReceipt()
+  }
+}
 </script>
 
 <style scoped>
@@ -176,7 +176,7 @@ export default {
      height:68px;
      border-bottom: 1px solid #e5e5e5;
      line-height: 68px;
-     margin-left:30px; 
+     margin-left:30px;
   }
   .acceptman{
     overflow: hidden;
@@ -224,7 +224,7 @@ export default {
         width: 100%;
         outline: none;
         font-size: 28px;
-        -webkit-appearance: none; 
+        -webkit-appearance: none;
   }
   .bottom{
     height:112px;
@@ -260,7 +260,7 @@ export default {
   }
   .popHeightone{
     height:60px;
-    padding:20px 0px; 
+    padding:20px 0px;
     color: #999999;
     border-bottom: 1px solid #e5e5e5
   }

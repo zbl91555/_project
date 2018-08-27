@@ -1,6 +1,6 @@
 <template>
   <nav class="app-nav" >
-    <div  v-bind:key = "item.title" v-for = "(item, $index) in isMsgList" :class="{'activity' : item.linkTo == '/thanka'}">
+    <div  v-bind:key = "item.title" v-for = "(item, $index) in isMsgList" v-bind:class="{'activity' : item.linkTo == '/thanka'}">
     <!-- <router-link  :to="item.linkTo" >  -->
       <div class="tab-bar" :class="$index == showIndex?'selected':''" @click="selectNav(item, $index)">
         <div class="icon">    <!-- item.selected ? item.iconClasses : item.iconClass -->
@@ -14,28 +14,28 @@
     </div>
   </nav>
 </template>
-  <script>
+<script>
 export default {
-  props: ["showIndex", "msgLists"],
-  data() {
+  props: ['showIndex', 'msgLists'],
+  data () {
     return {
       isMsgList: {}
-    };
-  },
-  methods: {
-    selectNav(item, index) {
-      this.$router.push(this.isMsgList[index].linkTo);
-      for (let i = 0; i < this.msgList.length; i++) {
-        this.msgList[i].selected = false;
-      }
-      this.isMsgList[index].selected = true;
     }
   },
-  created() {
-    this.isMsgList = this.msgLists;
+  methods: {
+    selectNav (item, index) {
+      this.$router.push(this.isMsgList[index].linkTo)
+      for (let i = 0; i < this.msgList.length; i++) {
+        this.msgList[i].selected = false
+      }
+      this.isMsgList[index].selected = true
+    }
   },
-  mounted() {}
-};
+  created () {
+    this.isMsgList = this.msgLists
+  },
+  mounted () {}
+}
 </script>
 
 <style lang="less">

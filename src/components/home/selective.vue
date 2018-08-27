@@ -13,12 +13,12 @@
               <div class="nickName">{{item.name}}</div>
           </router-link>
           <div class="attentionIt" @click="focusShop(item.isAttention,item.uri,indexs)" v-show="item.isAttention==true">
-              <span>已关注</span> 
+              <span>已关注</span>
             </div>
             <div class="attentionIts attentionIt" @click="focusShop(item.isAttention,item.uri,indexs)" v-show="item.isAttention==false">
               <i class="iconfont icon-untitled44"></i>
-              <span>关注</span> 
-            </div> 
+              <span>关注</span>
+            </div>
           </div>
           <swiper dots-position="center" >
             <swiper-item  v-for = "(list,index) in item.shopList" :key="list.uri">
@@ -58,55 +58,55 @@
       <i class="el-icon-loading"></i>
       <span class="loading-text">加载更多...</span>
     </div>
-    <load-more v-if="elseloading" :show-loading="false" tip="暂无更多数据" background-color="#fbf9fe"></load-more>    
+    <load-more v-if="elseloading" :show-loading="false" tip="暂无更多数据" background-color="#fbf9fe"></load-more>
     <actionsheet v-model="focusUser" :menus="menus1" @on-click-menu-menu4="cancelFocus" show-cancel></actionsheet>
   </div>
 </template>
 
 <script>
-import { Swiper, Actionsheet , Toast, SwiperItem,LoadMore} from 'vux';
-import { chosen, storehomeusermsg, useinfo, shopFocus, auctionFocus, shopCancel} from '../../api/api'
+import { Swiper, Actionsheet, Toast, SwiperItem, LoadMore } from 'vux'
+import { chosen, storehomeusermsg, useinfo, shopFocus, auctionFocus, shopCancel } from '../../api/api'
 import tabBar from './tabBar'
 import assign from '../../assets/js/assign.js'
 export default {
-    mixins:[assign],
-    name : 'selective',
+  mixins: [assign],
+  name: 'selective',
   data () {
     return {
-      isLoading : false,
-      scroll : 0,
-      userData:[],
+      isLoading: false,
+      scroll: 0,
+      userData: [],
       timeLists: [
         {
-          text: "淘淘",
-          link: "/Home"
+          text: '淘淘',
+          link: '/Home'
         },
         {
-          text: "关注",
-          link: "/focus"
+          text: '关注',
+          link: '/focus'
         },
         {
-          text: "精选",
-          link: "/selective"
+          text: '精选',
+          link: '/selective'
         }
       ],
-      page:0,
-      pagenum:4,
+      page: 0,
+      pagenum: 4,
       menus1: {
         menu3: '取消关注将无法看到该店铺的拍品',
-        menu4: '取消关注',
+        menu4: '取消关注'
       },
-      showSuccess:false,
-      focusUser:false,
-      toastText:'',
-      index : 2,
-      flag : false,
-      numFlag : false,
-      uri : '',
-      indexs : 0,
-      num : 0,
-      loadingMore : false,
-      elseloading : false
+      showSuccess: false,
+      focusUser: false,
+      toastText: '',
+      index: 2,
+      flag: false,
+      numFlag: false,
+      uri: '',
+      indexs: 0,
+      num: 0,
+      loadingMore: false,
+      elseloading: false
     }
   },
   components: {
@@ -119,12 +119,12 @@ export default {
   },
   beforeRouteLeave (to, from, next) {
     let selective = {
-      userData : this.userData,
-      page : this.page,
-      scroll : this.scroll,
-    };
-    sessionStorage.setItem('selective',JSON.stringify(selective));
-    next();
+      userData: this.userData,
+      page: this.page,
+      scroll: this.scroll
+    }
+    sessionStorage.setItem('selective', JSON.stringify(selective))
+    next()
   },
   methods: {
     // onRefresh() {
@@ -135,120 +135,119 @@ export default {
     //       this.isLoading = false;
     //     }, 500);
     //   },
-    //注册scroll事件并监听 
-    scrollHandler() {
-      const st = document.documentElement.scrollTop || document.body.scrollTop;
-      this.scroll = st;
-      const ch = this.$refs.ctn.clientHeight * 0.5;
+    // 注册scroll事件并监听
+    scrollHandler () {
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      this.scroll = st
+      const ch = this.$refs.ctn.clientHeight * 0.5
       if (st + window.innerHeight >= ch) {
-        this.chosen();
+        this.chosen()
       }
-    }, 
+    },
     userList_onIndexChange (index) {
       this.userList_index = index
     },
-     //信息数据
-    chosen(type){
+    // 信息数据
+    chosen (type) {
       if ((this.flag || this.numFlag) && type != 'renovate') {
-        return false;
+        return false
       };
       if (!(this.num > 0) && type != 'renovate') {
-        this.loadingMore = false;
-        this.elseloading = true;
-        return false;
+        this.loadingMore = false
+        this.elseloading = true
+        return false
       };
-      this.loadingMore = true;
-      this.flag = true;
-      this.page += 1;
-      let _this = this;
+      this.loadingMore = true
+      this.flag = true
+      this.page += 1
+      let _this = this
       let params = {
-          page : this.page,
-          pagenum:this.pagenum,
-      };
-      chosen(params).then((res) =>{
-          if(res.data.html){
-              this.goShares(res.data.html);
-          };
-          if(res.code == 200) {
-            this.loadingMore = false;
-            let items = res.data.items;
-            if (items.length < this.pagenum) {
-              this.numFlag = false;
-            }
-            if (type == 'renovate') {
-              this.userData = items;
-            }else {
-              this.userData = this.userData.concat(items);
-            }
-            this.flag = false;
-          }
-      })
-      .catch((error) =>{
-        console.log(error);
-        this.numFlag = true;
-        this.flag = false;
-        this.loadingMore = false;
-        this.elseloading = true;
-        });
-      },
-      //点击关注按钮
-        focusShop(isAttention,uri,index){
-          this.indexs = index;
-          this.uri = uri;
-          let _this = this;
-          if(isAttention==false){
-            let params = {
-              type:'focus',
-              seller_id:uri
-            };
-            shopFocus(uri).then((response) => {
-          if(response.code==200){
-            this.showSuccess = true;
-            this.toastText='关注成功';
-            this.userData[_this.indexs].isAttention = true;
-          }
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-      }else{
-          this.focusUser = true;
-        }
-          
-      },
-      //取消关注
-      cancelFocus(isAttention,uri){
-        let _this = this;
-        let params = {
-          type:'cancel',
-          seller_id:this.uri
+        page: this.page,
+        pagenum: this.pagenum
+      }
+      chosen(params).then((res) => {
+        if (res.data.html) {
+          this.goShares(res.data.html)
         };
-          shopCancel(this.uri).then( (response)=> {
-          if(response.code==200){
-            this.showSuccess = true;
-            this.toastText='取消关注成功';
-            this.userData[this.indexs].isAttention = false;
+        if (res.code == 200) {
+          this.loadingMore = false
+          let items = res.data.items
+          if (items.length < this.pagenum) {
+            this.numFlag = false
+          }
+          if (type == 'renovate') {
+            this.userData = items
+          } else {
+            this.userData = this.userData.concat(items)
+          }
+          this.flag = false
+        }
+      })
+        .catch((error) => {
+          console.log(error)
+          this.numFlag = true
+          this.flag = false
+          this.loadingMore = false
+          this.elseloading = true
+        })
+    },
+    // 点击关注按钮
+    focusShop (isAttention, uri, index) {
+      this.indexs = index
+      this.uri = uri
+      let _this = this
+      if (isAttention == false) {
+        let params = {
+          type: 'focus',
+          seller_id: uri
+        }
+        shopFocus(uri).then((response) => {
+          if (response.code == 200) {
+            this.showSuccess = true
+            this.toastText = '关注成功'
+            this.userData[_this.indexs].isAttention = true
           }
         })
+          .catch(function (error) {
+            console.log(error)
+          })
+      } else {
+        this.focusUser = true
+      }
+    },
+    // 取消关注
+    cancelFocus (isAttention, uri) {
+      let _this = this
+      let params = {
+        type: 'cancel',
+        seller_id: this.uri
+      }
+      shopCancel(this.uri).then((response) => {
+        if (response.code == 200) {
+          this.showSuccess = true
+          this.toastText = '取消关注成功'
+          this.userData[this.indexs].isAttention = false
+        }
+      })
         .catch(function (error) {
-            console.log(error);
-        });
-      },
-      //点赞
-      giveLike(uri,indexs,index){
-        let _this = this;
-        this.article_id = uri;
-        console.log(_this.article_id);
-          auctionFocus(_this.article_id).then((res) => {
-           this.userData[indexs].shopList[index].isLiked = true;
-        }).catch(function(error){
-          console.log(error);
+          console.log(error)
         })
-      },
+    },
+    // 点赞
+    giveLike (uri, indexs, index) {
+      let _this = this
+      this.article_id = uri
+      console.log(_this.article_id)
+      auctionFocus(_this.article_id).then((res) => {
+        this.userData[indexs].shopList[index].isLiked = true
+      }).catch(function (error) {
+        console.log(error)
+      })
+    }
   },
-  created() {
-    this.num = this.pagenum;
-    window.addEventListener("scroll", this.scrollHandler);
+  created () {
+    this.num = this.pagenum
+    window.addEventListener('scroll', this.scrollHandler)
   },
   // activated() {
   //     window.addEventListener('scroll', this.scrollHandler);
@@ -259,33 +258,33 @@ export default {
   //       };
   //     }
   //   },
-  deactivated(){
-     window.removeEventListener('scroll', this.scrollHandler);
+  deactivated () {
+    window.removeEventListener('scroll', this.scrollHandler)
   },
-  destroyed() {
-    window.removeEventListener("scroll", this.scrollHandler);
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollHandler)
   },
-  mounted() {
-      // if (this.isIos()) {
-        // let selective = JSON.parse(sessionStorage.getItem('selective'));
-        // if (selective && selective.userData.length !=0) {
-        //   this.userData = selective.userData;
-        //   this.page = selective.page;
-        //   this.$nextTick(_ => {
-        //     setTimeout(_ => {
-        //       this.scroll = selective.scroll;
-        //       if(this.scroll > 0){
-        //         window.scrollTo(0,this.scroll);
-        //       };
-        //     },500)
-        //   })
-        // }else {
-          this.chosen();
-        // }
+  mounted () {
+    // if (this.isIos()) {
+    // let selective = JSON.parse(sessionStorage.getItem('selective'));
+    // if (selective && selective.userData.length !=0) {
+    //   this.userData = selective.userData;
+    //   this.page = selective.page;
+    //   this.$nextTick(_ => {
+    //     setTimeout(_ => {
+    //       this.scroll = selective.scroll;
+    //       if(this.scroll > 0){
+    //         window.scrollTo(0,this.scroll);
+    //       };
+    //     },500)
+    //   })
+    // }else {
+    this.chosen()
+    // }
     // }else {
     //   this.chosen();
     // }
-  },
+  }
 }
 
 </script>
@@ -378,7 +377,7 @@ export default {
   max-width: 750px;
   box-sizing: border-box;
   min-height: 170px;
-  padding-bottom: 1.3333rem;  
+  padding-bottom: 1.3333rem;
   height : 100%;
 }
 .recommend-templete .navigation{
@@ -525,7 +524,6 @@ export default {
   border : 1px solid #f15511;
 }
 
-
 .recommend-templete .saleList .saleItem:first-child .avatar {
   top: 0.26rem;
 }
@@ -644,7 +642,6 @@ export default {
   font-size:34px;
   vertical-align: bottom;
 }
-
 
 /*弹窗样式*/
   .recommend-templete .weui-mask{

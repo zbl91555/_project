@@ -12,70 +12,69 @@
 </template>
 
 <script>
-	import {sendContact} from '../../../api/api'
-	export default {
-		data() {
-			return {
-				old:'',
-				contact: '',
-				shibaiShow:true
-			}
-		},
-		props:['contac'],
-		methods: {
-			clear(){
-				this.contact = '';
-				this.shibaiShow = false
-			},
-			sendContact: function() {
-				if(this.contact == ''){
-					alert('联系人不能为空')
-				}
-				if (this.old == this.contact) {
-					this.$emit('getcontactMsg',this.contact) 
-				}else{
-					let params = {
-							contract: this.contact,
-						};
-					sendContact(params).then(res =>{
-						if(res.code == '200') {
-							this.$emit('getcontactMsg',this.contact)
-							// this.$router.push('/buyerCenter/buyerSet')
-						}
-					})
-					.catch(err =>{
-						console.log(err)
-					})
-				}
-				
-			}
-		},
-		mounted() {
-			this.old = this.contac
-			this.contact = this.contac
-			if(this.contact == ''){
-				this.shibaiShow = false
-			}else{
-				this.shibaiShow = true
-			}
-	    },
-	    watch:{
-			contact(now,old){
-				if(now == ''){
-					this.shibaiShow = false
-				}else{
-					this.shibaiShow = true
-				}
-			}
-		}
-	}
+import {sendContact} from '../../../api/api'
+export default {
+  data () {
+    return {
+      old: '',
+      contact: '',
+      shibaiShow: true
+    }
+  },
+  props: ['contac'],
+  methods: {
+    clear () {
+      this.contact = ''
+      this.shibaiShow = false
+    },
+    sendContact: function () {
+      if (this.contact == '') {
+        alert('联系人不能为空')
+      }
+      if (this.old == this.contact) {
+        this.$emit('getcontactMsg', this.contact)
+      } else {
+        let params = {
+          contract: this.contact
+        }
+        sendContact(params).then(res => {
+          if (res.code == '200') {
+            this.$emit('getcontactMsg', this.contact)
+            // this.$router.push('/buyerCenter/buyerSet')
+          }
+        })
+          .catch(err => {
+            console.log(err)
+          })
+      }
+    }
+  },
+  mounted () {
+    this.old = this.contac
+    this.contact = this.contac
+    if (this.contact == '') {
+      this.shibaiShow = false
+    } else {
+      this.shibaiShow = true
+    }
+  },
+  watch: {
+    contact (now, old) {
+      if (now == '') {
+        this.shibaiShow = false
+      } else {
+        this.shibaiShow = true
+      }
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
 	/*
-	 * @border-color: 统一边框颜色
-	 * */
-	
+	* @border-color: 统一边框颜色
+	* */
+
 	@border-color: #e5e5e5;
 	.app-container {
 		min-height: 1234px;
@@ -117,7 +116,7 @@
 			float: left;
 		}
 	}
-	
+
 	.sub {
 		height: 88px;
 		margin-top: 200px;

@@ -32,7 +32,7 @@
          <div style="color:#b55459;" @click="singledown(isshowIndex)">确认下架</div>
          <div style="color:rgb(181, 84, 89)" @click.stop="grounding(isshowIndex)">重新上架</div>
         <span class="grayTop"></span>
-        <div class="cancelTop" @click="showshowlists = !showshowlists">取消</div> 
+        <div class="cancelTop" @click="showshowlists = !showshowlists">取消</div>
       </div>
     </div>
       <!-- loading elseloading -->
@@ -42,8 +42,8 @@
   </div>
 </template>
 <script>
-import { Toast } from "vant";
-import { LoadMore } from "vux";
+import { Toast } from 'vant'
+import { LoadMore } from 'vux'
 import {
   getstore,
   somedown,
@@ -52,25 +52,25 @@ import {
   swichhide,
   singledown,
   singledelete
-} from "../../../api/api";
+} from '../../../api/api'
 export default {
-  data() {
+  data () {
     return {
       changeRed: 0,
       store: [],
-      auctionStore: [], //竞拍中
-      type: "auctioning",
+      auctionStore: [], // 竞拍中
+      type: 'auctioning',
       pagenum: 5,
       page: 0,
       auctioning: true,
-      oneid: "",
+      oneid: '',
       confirmupshow: false,
       someconfirmupshow: false,
       tohide: false,
       toshow: false,
       isBusy: false,
       showshowlists: false,
-      isshowIndex: "",
+      isshowIndex: '',
       confirm: false,
       reconfirm: false,
       confirmdelete: false,
@@ -78,128 +78,128 @@ export default {
       count: 0,
       loading: false,
       elseloading: false,
-      img: require("../../../assets/images/beat.png"), //无数据时 显示的图片
-      dataNotAvailable: false //无数据时 是否展示
-    };
+      img: require('../../../assets/images/beat.png'), // 无数据时 显示的图片
+      dataNotAvailable: false // 无数据时 是否展示
+    }
   },
   components: {
     LoadMore
   },
-  created() {
-    this.count = this.pagenum;
-    window.addEventListener("scroll", this.scrollHandler);
+  created () {
+    this.count = this.pagenum
+    window.addEventListener('scroll', this.scrollHandler)
   },
 
-  destroyed() {
-    window.removeEventListener("scroll", this.scrollHandler);
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollHandler)
   },
   methods: {
-    //弹窗显示
-    isShowshowlists(index) {
-      this.isshowIndex = index;
-      this.showshowlists = true;
+    // 弹窗显示
+    isShowshowlists (index) {
+      this.isshowIndex = index
+      this.showshowlists = true
     },
-    grounding() {
-      //上架
+    grounding () {
+      // 上架
       if (!this.auctionStore[this.isshowIndex].is_can) {
-        this.$router.push("/nextUpload/" + this.auctionStore[this.isshowIndex].id);
+        this.$router.push('/nextUpload/' + this.auctionStore[this.isshowIndex].id)
       } else {
-        this.$router.push("/upload/" + this.auctionStore[this.isshowIndex].id);
+        this.$router.push('/upload/' + this.auctionStore[this.isshowIndex].id)
       }
     },
-    //跳转到详情页
-    toWhere(id) {
-      if (this.type == "caogao") {
-        return;
+    // 跳转到详情页
+    toWhere (id) {
+      if (this.type == 'caogao') {
+        return
       }
-      if (this.type == "shibai") {
-        this.$router.push({ path: "/orderDetail/" + id });
-      } else this.$router.push({ path: "/auction/" + id });
+      if (this.type == 'shibai') {
+        this.$router.push({ path: '/orderDetail/' + id })
+      } else this.$router.push({ path: '/auction/' + id })
     },
-    //下架
-    singledown() {
+    // 下架
+    singledown () {
       if (this.flag) {
-        return false;
+        return false
       }
-      this.flag = true;
-      let downid = this.auctionStore[this.isshowIndex].id;
+      this.flag = true
+      let downid = this.auctionStore[this.isshowIndex].id
       singledown(downid)
         .then(response => {
           if (response.code == 200) {
-            this.showshowlists = false;
-            this.flag = false;
-            this.$router.push("/newStoreManage/drafts");
+            this.showshowlists = false
+            this.flag = false
+            this.$router.push('/newStoreManage/drafts')
           }
         })
         .catch(error => {
-          console.log(error);
-          this.flag = true;
-        });
+          console.log(error)
+          this.flag = true
+        })
     },
-    //注册scroll事件并监听
-    scrollHandler() {
-      const st = document.documentElement.scrollTop || document.body.scrollTop;
-      const ch = this.$refs.ctn.clientHeight;
+    // 注册scroll事件并监听
+    scrollHandler () {
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      const ch = this.$refs.ctn.clientHeight
       if (st + window.innerHeight >= ch) {
-        this.getstore();
+        this.getstore()
       }
     },
-    //获取列表
-    getstore() {
+    // 获取列表
+    getstore () {
       if (this.loading || this.elseloading) {
-        return;
+        return
       }
-      this.loading = true;
-      let _this = this;
-      this.page += 1;
+      this.loading = true
+      let _this = this
+      this.page += 1
       let params = {
         page: this.page,
         pagenum: this.pagenum,
-        type: "auctioning"
-      };
+        type: 'auctioning'
+      }
       getstore(params)
         .then(response => {
           if (response.code == 200) {
-            _this.auctionStore = _this.auctionStore.concat(response.data);
-            _this.loading = false;
+            _this.auctionStore = _this.auctionStore.concat(response.data)
+            _this.loading = false
           }
         })
         .catch(error => {
-          this.dataNotAvailable = this.auctionStore.length == 0;
-          this.elseloading = true;
-          this.loading = false;
-          console.log(error);
-        });
+          this.dataNotAvailable = this.auctionStore.length == 0
+          this.elseloading = true
+          this.loading = false
+          console.log(error)
+        })
     },
-    //置顶
-    ToTop(e, index) {
+    // 置顶
+    ToTop (e, index) {
       if (this.flag) {
-        return;
+        return
       }
-      this.flag = true;
-      let _this = this;
+      this.flag = true
+      let _this = this
       ToTop(e)
-        .then(function(response) {
+        .then(function (response) {
           if (response.code == 200) {
-            let arr = _this.auctionStore.splice(index, 1);
-            _this.auctionStore.unshift(arr[0]);
-            _this.flag = false;
+            let arr = _this.auctionStore.splice(index, 1)
+            _this.auctionStore.unshift(arr[0])
+            _this.flag = false
           }
         })
-        .catch(function(error) {
-          console.log(error);
-          _this.flag = false;
-        });
+        .catch(function (error) {
+          console.log(error)
+          _this.flag = false
+        })
     }
   },
-  beforeRouteLeave(to, from, next) {
-    localStorage.removeItem("changeRed");
-    next();
+  beforeRouteLeave (to, from, next) {
+    localStorage.removeItem('changeRed')
+    next()
   },
-  mounted() {
-    this.getstore();
+  mounted () {
+    this.getstore()
   }
-};
+}
 </script>
 <style scoped>
 .storeManagement {
@@ -686,4 +686,4 @@ input[type="checkbox"]:checked:after {
      color: #a2a2a2;
   }
 */
-</style>  
+</style>

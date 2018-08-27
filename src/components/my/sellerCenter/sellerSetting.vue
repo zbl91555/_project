@@ -2,37 +2,37 @@
   <div class="sellerSetting">
     <div class="userInfobox">
     <router-link  to="/member/setData">
-    	<div class=" userInfoitem basic  unverified ">
-    		<div class="avatar">
-    			<div class="img" v-bind:style="{backgroundImage: 'url(' + sellerInfo.avatar + ')'}"></div>
-    		</div>
-    		<div class="detailInfo">
-    			<div class="nickname">{{sellerInfo.nickname}}</div>
-    			<div class="introduce">{{sellerInfo.is_company=='已'?'头像、地区每月可修改一次':'资料设置一周可修改一次'}}</div>
-    			<div class="setting">
-	    			<div class="arrow">
-	    				<i class="iconfont icon-right"></i>
-	    			</div>
-	    				<div class="desc">设置</div>
-    			</div>
-    		</div>
-    	</div><!-- /member/addressInformation -->
+    <div class=" userInfoitem basic  unverified ">
+      <div class="avatar">
+        <div class="img" v-bind:style="{backgroundImage: 'url(' + sellerInfo.avatar + ')'}"></div>
+      </div>
+      <div class="detailInfo">
+        <div class="nickname">{{sellerInfo.nickname}}</div>
+        <div class="introduce">{{sellerInfo.is_company=='已'?'头像、地区每月可修改一次':'资料设置一周可修改一次'}}</div>
+        <div class="setting">
+          <div class="arrow">
+            <i class="iconfont icon-right"></i>
+          </div>
+            <div class="desc">设置</div>
+        </div>
+      </div>
+    </div><!-- /member/addressInformation -->
     </router-link>
-    	<router-link  :to="'/member/receiveAddress/'+this.type">
-    	<div class=" userInfoitem border address return" style="min-height: 80px;">
-    		<div class="titleSetting" style="line-height: 80px;">退货地址</div>
-    		<div class="info" style="line-height: 80px;">
-    			<div style="height: 80px;">
-	    			<span style="margin-top: 20px;font-size: 16px;">{{sellerInfo.address.name}} {{sellerInfo.address.tele}}</span>
-	    			{{sellerInfo.address.province }} {{sellerInfo.address.city}} {{sellerInfo.address.country}} {{sellerInfo.address.address}}
-    			</div>
-    		</div>
-    		<div class="arrow">
-    			<i class="iconfont icon-right"></i>
-    		</div>
-    	</div>
-    	</router-link>
+    <router-link  :to="'/member/receiveAddress/'+this.type">
+    <div class=" userInfoitem border address return" style="min-height: 80px;">
+      <div class="titleSetting" style="line-height: 80px;">退货地址</div>
+      <div class="info" style="line-height: 80px;">
+        <div style="height: 80px;">
+          <span style="margin-top: 20px;font-size: 16px;">{{sellerInfo.address.name}} {{sellerInfo.address.tele}}</span>
+          {{sellerInfo.address.province }} {{sellerInfo.address.city}} {{sellerInfo.address.country}} {{sellerInfo.address.address}}
+        </div>
+      </div>
+      <div class="arrow">
+        <i class="iconfont icon-right"></i>
+      </div>
     </div>
+    </router-link>
+  </div>
     <div class="label">资质信息</div>
     <div class="userInfobox qualify right">
 		<router-link  to="/sellerCenter/realnameApplication">
@@ -115,7 +115,7 @@
 		<div class="info">
 			<div class="switchBtn" @click="switchBtn()">
 				<input v-model="switchBoolen" class="switch" type="checkbox" value="on">
-			</div>   
+			</div>
 		</div>
 	</div>
 </div>
@@ -123,105 +123,105 @@
   </div>
 </template>
 <script>
-import { Toast } from "vux";
-import { getSellerUserInfo, switchBtn } from "../../../api/api";
-import assign from "../../../assets/js/assign.js"; //混入式方法
+import { Toast } from 'vux'
+import { getSellerUserInfo, switchBtn } from '../../../api/api'
+import assign from '../../../assets/js/assign.js' // 混入式方法
 export default {
   components: {
     Toast
   },
   mixins: [assign],
-  data() {
+  data () {
     return {
-      sellerInfo: {address : {}},
+      sellerInfo: {address: {}},
       isShow: false,
-      mylink: "0",
-      pingbi: "",
+      mylink: '0',
+      pingbi: '',
       showSuccess: false,
-      toastText: "",
-      type: "",
+      toastText: '',
+      type: '',
       switchBoolen: false
-    };
+    }
   },
   methods: {
-    sellerInfos() {
+    sellerInfos () {
       getSellerUserInfo()
         .then(res => {
           if (res.code == 200) {
-            this.type = res.data.type;
-            this.sellerInfo = res.data;
-            this.mylink = res.data.mylink;
-            this.pingbi = res.data.pingbi;
+            this.type = res.data.type
+            this.sellerInfo = res.data
+            this.mylink = res.data.mylink
+            this.pingbi = res.data.pingbi
             if (this.sellerInfo.is_company == true) {
-              this.sellerInfo.is_company = "已";
-              this.isShow = !this.isShow;
-              if (this.sellerInfo.is_company_type == "individual") {
-                this.sellerInfo.is_company_type = "个人";
+              this.sellerInfo.is_company = '已'
+              this.isShow = !this.isShow
+              if (this.sellerInfo.is_company_type == 'individual') {
+                this.sellerInfo.is_company_type = '个人'
               } else {
-                this.sellerInfo.is_company_type = "企业";
+                this.sellerInfo.is_company_type = '企业'
               }
             } else {
-              this.sellerInfo.is_company = "未";
-              this.sellerInfo.is_company_type = "";
+              this.sellerInfo.is_company = '未'
+              this.sellerInfo.is_company_type = ''
             }
 
-            if (this.sellerInfo.deposit == "1") {
-              this.sellerInfo.deposit = "已缴纳";
+            if (this.sellerInfo.deposit == '1') {
+              this.sellerInfo.deposit = '已缴纳'
             } else {
-              this.sellerInfo.deposit = "未缴纳";
+              this.sellerInfo.deposit = '未缴纳'
             }
-            if (this.sellerInfo.sellersetting == "1") {
-              this.sellerInfo.sellersetting = "已开启";
+            if (this.sellerInfo.sellersetting == '1') {
+              this.sellerInfo.sellersetting = '已开启'
             } else {
-              this.sellerInfo.sellersetting = "未开启";
+              this.sellerInfo.sellersetting = '未开启'
             }
-            if (this.mylink == "1") {
-              this.switchBoolen = true;
+            if (this.mylink == '1') {
+              this.switchBoolen = true
             } else {
-              this.switchBoolen = false;
+              this.switchBoolen = false
             }
           }
         })
-        .catch(function(error) {
-          console.log(error);
-        });
+        .catch(function (error) {
+          console.log(error)
+        })
     },
-    switchBtn() {
-      let type;
-      if (this.mylink == "0") {
-        type = "seller";
-      } else if (this.mylink == "1") {
-        type = "user";
+    switchBtn () {
+      let type
+      if (this.mylink == '0') {
+        type = 'seller'
+      } else if (this.mylink == '1') {
+        type = 'user'
       }
       let params = {
         type: type
-      };
+      }
       switchBtn(params)
         .then(res => {
-          if (type == 'seller') {//卖家
-            localStorage.setItem("mylink", true);
-          } else {//买家
-            localStorage.setItem("mylink", false);
+          if (type == 'seller') { // 卖家
+            localStorage.setItem('mylink', true)
+          } else { // 买家
+            localStorage.setItem('mylink', false)
           }
         })
         .catch(err => {
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
-    //屏蔽用户
-    shieldingBtn() {
-      if (this.pingbi == "0") {
-        this.showSuccess = true;
-        this.toastText = "您没有屏蔽的用户";
+    // 屏蔽用户
+    shieldingBtn () {
+      if (this.pingbi == '0') {
+        this.showSuccess = true
+        this.toastText = '您没有屏蔽的用户'
       } else {
-        this.$router.push({ path: "/shieldingUsers" });
+        this.$router.push({ path: '/shieldingUsers' })
       }
     }
   },
-  mounted() {
-    this.sellerInfos();
+  mounted () {
+    this.sellerInfos()
   }
-};
+}
 </script>
 <style scoped>
 .icon-right {

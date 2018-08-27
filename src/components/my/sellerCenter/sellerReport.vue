@@ -2,13 +2,13 @@
     <div class="sellerReport">
       <div class="menu border horizonBottom">
         <div class="menuList mode border verticalRight">
-          <div v-for="(list,index) in timeLists" class="menuItem" :class="{ selected:changeRed == index}" @click="Red(index)">{{list.text}}</div>
+          <div v-for="(list,index) in timeLists" :key="index" class="menuItem" v-bind:class="{ selected:changeRed == index}" @click="Red(index)">{{list.text}}</div>
         </div>
       </div>
       <div class="reportsMain">
         <div class="reportItem">
           <div class="reportTitle border horizonBottom" targetstatus="deal">
-            成拍报表            
+            成拍报表
             <!-- <a href="/reports/capital#type=deal" class="more"> -->
               <!-- <i class="iconfont icon-right"></i> -->
             <!-- </a> -->
@@ -25,7 +25,7 @@
           </div>
         </div>
         <div class="reportItem">
-          <div class="reportTitle border horizonBottom" targetstatus="deal">销售报表</div> 
+          <div class="reportTitle border horizonBottom" targetstatus="deal">销售报表</div>
           <div class="reportInfo">
             <div class="reportData">
               <div>
@@ -56,7 +56,7 @@
               </div>
             </div>
           </div>
-        </div> 
+        </div>
         <div class="reportItem">
           <div class="reportTitle border horizonBottom" targetstatus="deal">待收款报表</div>
           <div class="reportInfo">
@@ -99,80 +99,79 @@
               </div>
             </div>
           </div>
-        </div> 
+        </div>
       </div>
     </div>
 </template>
 <script>
-  import {seller_report} from '../../../api/api'
+import {seller_report} from '../../../api/api'
 export default {
-  data() {
+  data () {
     return {
-      timeLists:[
+      timeLists: [
         {
-          "text":"截拍时间",
-          'type':'colligate'                 
+          'text': '截拍时间',
+          'type': 'colligate'
         },
         {
-          "text":"今天",
-          'type':'today'                 
+          'text': '今天',
+          'type': 'today'
         },
         {
-          "text":"昨天",
-          'type':'yesterday'                 
+          'text': '昨天',
+          'type': 'yesterday'
         },
         {
-          "text":"7天",
-          'type':'recent7'                 
+          'text': '7天',
+          'type': 'recent7'
         },
         {
-          "text":"30天",
-          'type':'recent30'                       
+          'text': '30天',
+          'type': 'recent30'
         }
       ],
-      changeRed:1,
-      reportList:[],
-      type:'today',
-      pagenum:5,
-      page:1,
-    };
+      changeRed: 1,
+      reportList: [],
+      type: 'today',
+      pagenum: 5,
+      page: 1
+    }
   },
-  created(){ 
+  created () {
   },
-  methods: { 
-    sendParames(e){
+  methods: {
+    sendParames (e) {
       this.$router.push({
-        path: 'goodsDetails', 
+        path: 'goodsDetails',
         query: {
           id: e
         }
       })
     },
-    seller_report(){
-      let _this = this;   // 缓存指针  
+    seller_report () {
+      let _this = this // 缓存指针
       let params = {
-        type:this.type
-      };
-      seller_report(params).then(function (response) { 
-         if(response.code==200){
-          _this.reportList = response.data;
+        type: this.type
+      }
+      seller_report(params).then(function (response) {
+        if (response.code === 200) {
+          _this.reportList = response.data
         }
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+        .catch(function (error) {
+          console.log(error)
+        })
     },
-    Red:function(index){
-      this.changeRed = index;
-      this.type=this.timeLists[index].type;
-      this.seller_report();
-    },
-  
-  }, 
-  mounted() {
-    this.seller_report();
-  }, 
-};
+    Red: function (index) {
+      this.changeRed = index
+      this.type = this.timeLists[index].type
+      this.seller_report()
+    }
+  },
+  mounted () {
+    this.seller_report()
+  }
+}
 </script>
 <style scoped>
   .sellerReport {
@@ -334,7 +333,6 @@ export default {
     box-sizing: border-box;
 }
 
-
 .reportsMain .reportInfo .reportData {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -352,4 +350,4 @@ export default {
     color: #333;
 }
 
-</style>	
+</style>

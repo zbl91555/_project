@@ -61,25 +61,24 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
-      
-    };
+
+    }
   },
-  created(){ 
+  created () {
   },
-  methods: { 
-    
-    getstore(){
-      let _this = this;     
-      
-    },
-    
-  }, 
-  mounted() {
+  methods: {
+
+    getstore () {
+      let _this = this
+    }
+
+  },
+  mounted () {
     // this.getstore();
-  }, 
-};
+  }
+}
 </script>
 <style scoped>
   .luckyBagrecord{
@@ -150,7 +149,7 @@ export default {
     line-height: 70px;
     padding-right: 20px;
     margin-right: 15px;
-   
+
 }
   .icon-right{
     margin:0;
@@ -164,7 +163,7 @@ export default {
     box-sizing: border-box;
     min-height: 100vh;
     padding-bottom: 60px;
-  }  
+  }
   .luckyBagrecord {
     min-height: calc(100vh + 60px) !important;
   }
@@ -172,7 +171,7 @@ export default {
     height: 100px;
     line-height: 100px;
     background-color: #FFF;
-    
+
   }
   .luckyBagrecord .top .title {
     float: left;

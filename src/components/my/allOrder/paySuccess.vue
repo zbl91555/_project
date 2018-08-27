@@ -2,23 +2,23 @@
 	<div class="returnRequest">
 		<div>
 			<div class="buyer-tool">
-				<a href="">拍品信息</a>	
+				<a href="">拍品信息</a>
 			</div>
       <router-link :to="{path:'/orderDetail/'+SuccessMsg.order.order_id}">
-  			<div class="buy-info">
-  				<div class="goods-info" v-bind:style="{backgroundImage: 'url(' + SuccessMsg.img + ')'}"></div>
-  				<p class="goods-intr">{{SuccessMsg.desc}}</p>
-  				<ul class="buyer-detail"> 
-  					<li>支付成功</li>
-  				</ul>
-  			</div>
-      </router-link>	 
+      <div class="buy-info">
+        <div class="goods-info" v-bind:style="{backgroundImage: 'url(' + SuccessMsg.img + ')'}"></div>
+        <p class="goods-intr">{{SuccessMsg.desc}}</p>
+        <ul class="buyer-detail">
+          <li>支付成功</li>
+        </ul>
+      </div>
+      </router-link>
 		</div>
     <div class="moneys">
         <div>运费:包邮</div>
         <div>保证金：￥{{SuccessMsg.cashprice}}元</div>
         <div>金额：￥{{SuccessMsg.order.truePrice}}元</div>
-    </div> 
+    </div>
     <div class="gray"></div>
     <div>
         <div class="somesquare">
@@ -43,35 +43,35 @@
       <button>完成</button>
     </router-link>
     </div>
-    
-	 </div>
+
+  </div>
 </template>
 <script>
 
-  import {paysuccess} from '../../../api/api';
-	export default {
-		components: {},
-		data() {
-			return {
-	        SuccessMsg:{}  
-			}
-		},
-		methods: {
-      paysuccess(){
-        let auction_id = this.$route.params.auction_id
-        paysuccess(auction_id).then(res => {
-             console.log(res.data)
-             this.SuccessMsg = res.data
-        }).catch(err => {
-           this.$router.push({name:'errorPage'})
-           console.log(err)
-        })
-      } 
-		},
-		mounted() {
-			this.paysuccess()
-		}
-	}
+import {paysuccess} from '../../../api/api'
+export default {
+  components: {},
+  data () {
+    return {
+      SuccessMsg: {}
+    }
+  },
+  methods: {
+    paysuccess () {
+      let auction_id = this.$route.params.auction_id
+      paysuccess(auction_id).then(res => {
+        console.log(res.data)
+        this.SuccessMsg = res.data
+      }).catch(err => {
+        this.$router.push({name: 'errorPage'})
+        console.log(err)
+      })
+    }
+  },
+  mounted () {
+    this.paysuccess()
+  }
+}
 </script>
 
 <style scoped lang="less">
@@ -149,21 +149,21 @@
         font-size: 24px;
         color: #999;
         overflow: hidden;
-    	}
-    	.complaintTitle i:nth-child(1){
+      }
+      .complaintTitle i:nth-child(1){
 				font-size: 30px;
 				color:black;
 				float: left;
-    	}
+      }
       .complaintTitle i:nth-child(2){
         color:#f15511;
       }
-    	.icon-jiantouxiangxia{
-    		margin: 0
-    	}
-    	.icon-jiantouxiangshang{
-    		margin: 0
-    	}
+      .icon-jiantouxiangxia{
+        margin: 0
+      }
+      .icon-jiantouxiangshang{
+        margin: 0
+      }
     #J_login_form{
         border-bottom:2px solid #e5e5e5;
     }
@@ -184,7 +184,7 @@
         color: #666;
         width: 70%;
     }
-   
+
     .arrow{
         position: absolute;
         left: 4%;
@@ -213,7 +213,7 @@
         width: 100%;
         margin-top: 135px;
         outline: none;
-        -webkit-appearance: none; 
+        -webkit-appearance: none;
     }
     .address{
       overflow: hidden;
@@ -404,10 +404,10 @@
        margin: 0;
     }
     .pay{
-    	width: 10%;
-    	float: right;
-    	padding: 45px 0;
-    	color: #f15511
+      width: 10%;
+      float: right;
+      padding: 45px 0;
+      color: #f15511
     }
     .msg2 {
         height: 100%;

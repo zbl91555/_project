@@ -1,138 +1,138 @@
 <template>
   <div class="fans"  ref="ctn">
     <div class="friendsMain">
-	    <div class="friend" v-for = "(item,index) in fansList" :key="item.uid">
-	        <router-link :to="{path: '/member/fansDetails/'+item.uid}">
-		    <div class="avatar" v-bind:style="{backgroundImage: 'url(' + item.avatar + ')'}"></div>
-		    <div class="friendDetails">
-		        <div class="nickname">
-		            <span>{{item.nickname}}</span>
-		        </div>
-				<div class="signature">{{item.signature}}</div>
-		        
-		    </div>
-    		</router-link>
-    		<div class="attention" @click="focus(item.uid,item.guanzhu,index)">
-			    <div class="status"  v-show="item.guanzhu == 0"> 
-			       	<i class="iconfont icon-untitled44"></i>
-			        <span>关注</span>
-			    </div>
-			    <div class="statuses" v-show="item.guanzhu == 1"> 
-			        <span>已关注</span>
-			    </div>
-			</div>
-    	</div>
+      <div class="friend" v-for = "(item,index) in fansList" :key="item.uid">
+          <router-link :to="{path: '/member/fansDetails/'+item.uid}">
+        <div class="avatar" v-bind:style="{backgroundImage: 'url(' + item.avatar + ')'}"></div>
+        <div class="friendDetails">
+            <div class="nickname">
+                <span>{{item.nickname}}</span>
+            </div>
+        <div class="signature">{{item.signature}}</div>
+
+        </div>
+        </router-link>
+        <div class="attention" @click="focus(item.uid,item.guanzhu,index)">
+          <div class="status"  v-show="item.guanzhu == 0">
+              <i class="iconfont icon-untitled44"></i>
+              <span>关注</span>
+          </div>
+          <div class="statuses" v-show="item.guanzhu == 1">
+              <span>已关注</span>
+          </div>
+      </div>
+      </div>
     </div>
     <toast v-model="showSuccess" :text="toastText" type="text"  :time="1000" is-show-mask></toast>
   </div>
 </template>
 <script>
-import { Toast } from "vux";
-import { fanInfos, shopFocus, shopCancel } from "../../../api/api";
+import { Toast } from 'vux'
+import { fanInfos, shopFocus, shopCancel } from '../../../api/api'
 export default {
   components: {
     Toast
   },
-  data() {
+  data () {
     return {
       fansList: [],
       pagenum: 10,
       page: 0,
       showSuccess: false,
-      toastText: "",
-      guanzhu: "",
+      toastText: '',
+      guanzhu: '',
       index: 0,
-      falg: false, //关注限制
-      dropDown: false //下拉限制
-    };
+      falg: false, // 关注限制
+      dropDown: false // 下拉限制
+    }
   },
-  created() {
-    window.addEventListener("scroll", this.scrollHandler);
+  created () {
+    window.addEventListener('scroll', this.scrollHandler)
   },
 
-  destroyed() {
-    window.removeEventListener("scroll", this.scrollHandler);
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollHandler)
   },
   methods: {
-    //注册scroll事件并监听
-    scrollHandler() {
-      const st = document.documentElement.scrollTop || document.body.scrollTop;
-      const ch = this.$refs.ctn.clientHeight;
+    // 注册scroll事件并监听
+    scrollHandler () {
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      const ch = this.$refs.ctn.clientHeight
       if (st + window.innerHeight >= ch) {
-        this.fanInfos();
+        this.fanInfos()
       }
     },
-    fanInfos() {
-      let _this = this;
+    fanInfos () {
+      let _this = this
       if (this.dropDown) {
-        return;
+        return
       }
-      this.dropDown = true;
-      _this.page += 1;
+      this.dropDown = true
+      _this.page += 1
       let params = {
         page: this.page,
         pagenum: this.pagenum
-      };
+      }
       fanInfos(params)
         .then(response => {
           if (response.code == 200) {
-            _this.fansList = _this.fansList.concat(response.data);
-            this.dropDown = false;
+            _this.fansList = _this.fansList.concat(response.data)
+            this.dropDown = false
           }
         })
         .catch(error => {
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
-    //关注用户
-    shopFocus(uid) {
+    // 关注用户
+    shopFocus (uid) {
       shopFocus(uid)
         .then(response => {
           if (response.code == 200) {
-            this.showSuccess = true;
-            this.toastText = "关注成功";
-            this.fansList[this.index].guanzhu = 1;
-            this.flag = false;
+            this.showSuccess = true
+            this.toastText = '关注成功'
+            this.fansList[this.index].guanzhu = 1
+            this.flag = false
           }
         })
-        .catch(function(error) {
-          this.toastText = "未成功";
-          this.flag = false;
-        });
+        .catch(function (error) {
+          this.toastText = '未成功'
+          this.flag = false
+        })
     },
-    //取消关注
-    shopCancel(uid) {
+    // 取消关注
+    shopCancel (uid) {
       shopCancel(uid)
         .then(res => {
           if (res.code == 200) {
-            this.showSuccess = true;
-            this.toastText = "取消关注成功";
-            this.fansList[this.index].guanzhu = 0;
-            this.flag = false;
+            this.showSuccess = true
+            this.toastText = '取消关注成功'
+            this.fansList[this.index].guanzhu = 0
+            this.flag = false
           }
         })
         .catch(err => {
-          this.toastText = "未成功";
-          this.flag = false;
-        });
+          this.toastText = '未成功'
+          this.flag = false
+        })
     },
-    focus(uid, guanzhu, index) {
+    focus (uid, guanzhu, index) {
       if (this.flag) {
-        return false;
+        return false
       }
-      this.flag = true;
-      this.index = index;
+      this.flag = true
+      this.index = index
       if (guanzhu == 0) {
-        this.shopFocus(uid);
+        this.shopFocus(uid)
       } else {
-        this.shopCancel(uid);
+        this.shopCancel(uid)
       }
     }
   },
-  mounted() {
-    this.fanInfos();
+  mounted () {
+    this.fanInfos()
   }
-};
+}
 </script>
 <style scoped>
 .fans {

@@ -12,58 +12,58 @@
 </template>
 
 <script>
-	import { Toast } from "vant";
-	import {sendnickName} from '../../../api/api'
-	export default {
-		data(){
-			return {
-				nickName: '',
-				shibaiShow:true
-			}
-		},
-		methods: {
-			clear(){
-				this.nickName = '';
-				this.shibaiShow = false
-			},
-			sendnickName: function(){
-				let params = {
-					nickname : this.nickName
-				}
-				sendnickName(params).then(res =>{
-					if(res.code == '200'){
-						this.$router.push('/member/setData')
-					}
-				}).catch(err =>{
-					Toast(err.data.message)
-				})
-			}
-		},
-		mounted() {
-			this.nickName = this.$route.params.nickName
-			if(this.nickName == ''){
-				this.shibaiShow = false
-			}else{
-				this.shibaiShow = true
-			}
-		},
-		watch:{
-			nickName(now,old){
-				if(now == ''){
-					this.shibaiShow = false
-				}else{
-					this.shibaiShow = true
-				}
-			}
-		}
-	}
+import { Toast } from 'vant'
+import {sendnickName} from '../../../api/api'
+export default {
+  data () {
+    return {
+      nickName: '',
+      shibaiShow: true
+    }
+  },
+  methods: {
+    clear () {
+      this.nickName = ''
+      this.shibaiShow = false
+    },
+    sendnickName: function () {
+      let params = {
+        nickname: this.nickName
+      }
+      sendnickName(params).then(res => {
+        if (res.code == '200') {
+          this.$router.push('/member/setData')
+        }
+      }).catch(err => {
+        Toast(err.data.message)
+      })
+    }
+  },
+  mounted () {
+    this.nickName = this.$route.params.nickName
+    if (this.nickName == '') {
+      this.shibaiShow = false
+    } else {
+      this.shibaiShow = true
+    }
+  },
+  watch: {
+    nickName (now, old) {
+      if (now == '') {
+        this.shibaiShow = false
+      } else {
+        this.shibaiShow = true
+      }
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
 	/*
-	 * @border-color: 统一边框颜色
-	 * */
-	
+	* @border-color: 统一边框颜色
+	* */
+
 	@border-color: #e5e5e5;
 	.app-container {
 		min-height: 1302px;
@@ -105,7 +105,7 @@
 			float: left;
 		}
 	}
-	
+
 	.sub {
 		height: 88px;
 		margin-top: 200px;

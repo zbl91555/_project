@@ -10,7 +10,7 @@
           <li>成交金额：￥price元</li>
           <li>截拍时间：47时59分40秒</li>
         </ul>
-      </div>      
+      </div>
       <div class="gray"></div>
       <div class="applyBackReason">
           <div>申请退货理由</div>
@@ -24,7 +24,7 @@
       </div>
       <div class="thesame borde">理由不符</div>
       <div class="thesame">其他</div>
-      
+
       <div class="login-btn">
         <input @click="refuseReturnSale()" value="拒绝退货" class="icon-btn" type="button">
         <table>
@@ -57,67 +57,67 @@
 </template>
 
 <script>
-import {orderAgreeRefund,orderAgreeRefundSubmit} from '../../../api/api';
+import {orderAgreeRefund, orderAgreeRefundSubmit} from '../../../api/api'
 export default {
-  
-  data() {
+
+  data () {
     return {
-      agree:false,
-      show:true,
-      hide:false,
-      allreasons:false
-    };
+      agree: false,
+      show: true,
+      hide: false,
+      allreasons: false
+    }
   },
 
-  mounted() {
+  mounted () {
     this.getRefuseMsg()
   },
 
   methods: {
-      down(){
-          this.allreasons=true;
-          this.show=false;
-          this.hide=true
-      },
-      up(){
-          this.allreasons=false;
-          this.show=true;
-          this.hide=false
-      },
-      openAgree(){
-          this.agree=true
-      },
-      closeAgree(){
-          this.agree=false
-      },
-      refuseReturnSale(){
-        this.agree=true
-      },
-      //页面
-      getRefuseMsg(){
-        let order_id = this.$route.query.order_id;
-        let params = {
-            order_id: order_id,
-          };
-        orderAgreeRefund(params).then(res=>{
-           this.info = res.data;
-        }).catch(function(err) {
-          console.log(err);
-        })
-      },
-      //提交
-      agreeRefuse(){
-        let params = {
-           order_id:'787',
-        };
-        orderAgreeRefundSubmit(params).then(res=> {
-          console.log(res.data);
-        }).catch(err=> {
-          console.log(err.response.data.message);
-        })
+    down () {
+      this.allreasons = true
+      this.show = false
+      this.hide = true
+    },
+    up () {
+      this.allreasons = false
+      this.show = true
+      this.hide = false
+    },
+    openAgree () {
+      this.agree = true
+    },
+    closeAgree () {
+      this.agree = false
+    },
+    refuseReturnSale () {
+      this.agree = true
+    },
+    // 页面
+    getRefuseMsg () {
+      let order_id = this.$route.query.order_id
+      let params = {
+        order_id: order_id
       }
+      orderAgreeRefund(params).then(res => {
+        this.info = res.data
+      }).catch(function (err) {
+        console.log(err)
+      })
+    },
+    // 提交
+    agreeRefuse () {
+      let params = {
+        order_id: '787'
+      }
+      orderAgreeRefundSubmit(params).then(res => {
+        console.log(res.data)
+      }).catch(err => {
+        console.log(err.response.data.message)
+      })
+    }
   }
-};
+}
 </script>
 
 <style scoped>
@@ -182,7 +182,7 @@ export default {
      height:68px;
      border-bottom: 1px solid #e5e5e5;
      line-height: 68px;
-     margin-left:30px; 
+     margin-left:30px;
   }
   .acceptman{
     overflow: hidden;
@@ -219,7 +219,7 @@ export default {
         border-radius: 5px;
         width: 100%;
         outline: none;
-        -webkit-appearance: none; 
+        -webkit-appearance: none;
   }
   .bottom{
     height:112px;
@@ -255,7 +255,7 @@ export default {
   }
   .popHeightone{
     height:60px;
-    padding:20px 0px; 
+    padding:20px 0px;
     color: #999999;
     border-bottom: 1px solid #e5e5e5;
     line-height: 60px;

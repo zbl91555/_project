@@ -4,107 +4,85 @@ import Vue from 'vue'
 import App from './App'
 import axios from 'axios'
 import 'lib-flexible'
-import routes from './router/routers.js'
+import routes from './router'
 import VueRouter from 'vue-router'
 import store from './vuex/store'
 import token from './common/token'
-import './assets/iconfont/iconfont.css' //字体图标
-import Util from './assets/js/util.js'; // 引入公共方法
+import './assets/iconfont/iconfont.css'
+import Util from './assets/js/util.js'
 import { Swiper, DatetimePlugin } from 'vux'
-import { PullRefresh } from 'vant'; //引入vant
-import wx from 'weixin-js-sdk';
-import { getSign, wxShare, openActivity } from './api/api';
+import { PullRefresh } from 'vant' // 引入vant
+import wx from 'weixin-js-sdk'
+import { getSign, wxShare } from './api/api'
 import Vconsole from 'vconsole'
 
-let vConsole = new Vconsole();
-Vue.use(DatetimePlugin);
+const vConsole = new Vconsole()
 
-Vue.use(PullRefresh); //引入vux
-Vue.component('swiper', Swiper); //插件全局注册轮播插件
+Vue.use(DatetimePlugin)
 
-Vue.use(Util, {
-  wx,
-  getSign,
-  wxShare
-});
-Vue.use(VueRouter);
+Vue.use(PullRefresh) // 引入vux
+Vue.component('swiper', Swiper) // 插件全局注册轮播插件
 
-Vue.config.productionTip = false;
+Vue.use(Util, { wx, getSign, wxShare })
+Vue.use(VueRouter)
 
-axios.defaults.withCredentials = true;
+Vue.config.productionTip = false
 
+axios.defaults.withCredentials = true
 
-let nowTime = Math.round(new Date().getTime() / 1000);
-//拦截器 当token的时候每次请求都会携带过去
+let nowTime = Math.round(new Date().getTime() / 1000)
+// 拦截器 当token的时候每次请求都会携带过去
 axios.interceptors.request.use(config => {
   if (token.getToken() && store.state.AuthUser.token_expire > nowTime) {
-    config.headers['Authorization'] = 'Bearer ' + token.getToken();
+    config.headers['Authorization'] = 'Bearer ' + token.getToken()
   }
   return config
 }, error => {
   return Promise.reject(error)
-});
+})
 
-//响应拦截器
+// 响应拦截器
 axios.interceptors.response.use(response => {
   return response
 }, error => {
-  /*if (error.response.status === 401) {
-    //清除cookie
-    store.commit('unsetAuthUser');
-    sessionStorage.setItem('url', document.URL);
-    return router.push({
-      path: '/author'
-    });
-  }else if(error.response.status === 503) {
-    return router.push('/503Error');
-  }else if(error.response.status == 403) {
-    if (JSON.parse(error.request.response).code == 40001) {
-      store.commit('updateLoadingStatus',{isLoading : false});
-      return router.push({
-        path : '/errorPage?type=40001&msg=' + JSON.parse(error.request.response).message
-      })
-    }
-  }*/
   switch (error.response.status) {
     case 401:
-      //清除cookie
-      store.commit('unsetAuthUser');
-      sessionStorage.setItem('url', document.URL);
+      // 清除cookie
+      store.commit('unsetAuthUser')
+      sessionStorage.setItem('url', document.URL)
       return router.push({
         path: '/author'
-      });
-      break;
+      })
+      break
     case 403:
       switch (JSON.parse(error.request.response).code) {
         case 40001:
           store.commit('updateLoadingStatus', {
             isLoading: false
-          });
+          })
           return router.push({
             path: '/errorPage?type=40001&msg=' + JSON.parse(error.request.response).message
-          });
-          break;
+          })
+          break
         case 40002:
-          break;
+          break
       }
-      break;
+      break
     case 503:
-      return router.push('/503Error');
-      break;
-
+      return router.push('/503Error')
+      break
   }
   return Promise.reject(error.response)
-});
+})
 const routeParams = {
   mode: process.env.NODE_ENV === 'production' ? 'history' : 'hash',
   routes,
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {
       if (to.name == '首页') {
         return new Promise((resolve, reject) => {
           setTimeout(() => {
-            resolve(savedPosition);
+            resolve(savedPosition)
           }, 200)
         })
       } else {
@@ -115,8 +93,8 @@ const routeParams = {
       }
     }
   }
-};
-//页面无底部导航
+}
+// 页面无底部导航
 const urls = [
   '发布',
   'author',
@@ -156,58 +134,58 @@ const urls = [
   'merchantRecruit',
   'payNow',
   '503Error',
-  'nextUpload',
-];
+  'nextUpload'
+]
 let titles = [
-  "拍品详情",
-  "分类",
-  "分类详情",
-  "发现",
-  "买家中心",
-  "卖家中心",
-  "个人信息",
-  "资料信息",
-  "地址管理",
-  "实名认证",
-  "消保金",
-  "出价条件设置",
-  "粉丝",
-  "屏蔽用户",
-  "我的钱包",
-  "拍品管理",
-  "群发消息",
-  "推荐有礼",
-  "营销工具",
-  "扩展服务",
-  "充值",
-  "提现",
-  "支付安全",
-  "重置密码",
-  "忘记支付密码",
-  "修改身份信息",
-  "买家保证金",
-  "消息",
-  "身份证验证",
-  "忘记密码",
-  "系统维护中..."
-];
-//挂载路由
-const router = new VueRouter(routeParams);
-//vue-router的全局钩子
-let isLogin;
-let ua = window.navigator.userAgent.toLowerCase();
+  '拍品详情',
+  '分类',
+  '分类详情',
+  '发现',
+  '买家中心',
+  '卖家中心',
+  '个人信息',
+  '资料信息',
+  '地址管理',
+  '实名认证',
+  '消保金',
+  '出价条件设置',
+  '粉丝',
+  '屏蔽用户',
+  '我的钱包',
+  '拍品管理',
+  '群发消息',
+  '推荐有礼',
+  '营销工具',
+  '扩展服务',
+  '充值',
+  '提现',
+  '支付安全',
+  '重置密码',
+  '忘记支付密码',
+  '修改身份信息',
+  '买家保证金',
+  '消息',
+  '身份证验证',
+  '忘记密码',
+  '系统维护中...'
+]
+// 挂载路由
+const router = new VueRouter(routeParams)
+// vue-router的全局钩子
+let isLogin
+let ua = window.navigator.userAgent.toLowerCase()
 // 登录后跳转方法
 Vue.prototype.goBeforeLoginUrl = () => {
-  let url = sessionStorage.getItem('user_hash_path') || '';
+  let url = sessionStorage.getItem('user_hash_path') || ''
   if (url) {
-    let routerPath = JSON.parse(sessionStorage.getItem('user_hash_path'));
-    router.push(routerPath[routerPath.length - 1]);
+    let routerPath = JSON.parse(sessionStorage.getItem('user_hash_path'))
+    router.push(routerPath[routerPath.length - 1])
   } else {
     url = '/home'
-    router.push(url);
+    router.push(url)
   }
-};
-//活动时间判断
+}
+// 活动时间判断
 // function activityTime({
 //   endTime,
 //   openTime
@@ -241,27 +219,27 @@ Vue.prototype.goBeforeLoginUrl = () => {
 //     }
 //   }
 // }
-//判断底导航是否需要切换
-function isNavChange(name) {
+// 判断底导航是否需要切换
+function isNavChange (name) {
   if (localStorage.getItem('mylink') == 'true') {
-    Vue.prototype.msgList[3].linkTo = "/sellerCenter";
+    Vue.prototype.msgList[3].linkTo = '/sellerCenter'
   } else {
-    Vue.prototype.msgList[3].linkTo = "/buyerCenter";
+    Vue.prototype.msgList[3].linkTo = '/buyerCenter'
   };
   if (name == '卖家中心' || name == 'auction') {
     Vue.set(Vue.prototype.msgList, 2, {
       iconClass: 'icon-camera2',
       iconClasses: 'icon-camera2',
-      linkTo: "/upload",
-      title: "发布",
+      linkTo: '/upload',
+      title: '发布',
       selected: false
     })
   } else {
     Vue.set(Vue.prototype.msgList, 2, {
       iconClass: 'icon-faxian2',
       iconClasses: 'icon-faxian',
-      linkTo: "/find",
-      title: "发现",
+      linkTo: '/find',
+      title: '发现',
       selected: false
     })
   }
@@ -285,61 +263,50 @@ function isNavChange(name) {
   // }
 }
 router.beforeEach((to, from, next) => {
-  //修改头部title
-  /*if (to.name != '店铺首页' && to.name != '卖家信息') {
-    let title = titles.find(item => {
-      return to.meta.title == item;
-    });
-    if (title) {
-      document.title = title;
-    }else {
-      document.title = "淘拍堂";
-    }
-  }*/
-  document.title = to.meta.title ? to.meta.title : '淘拍堂';
-
-  //路由发生变化 修改底导航
-  isNavChange(to.name);
+  // 修改浏览器title
+  document.title = to.meta.title ? to.meta.title : '淘拍堂'
+  // 路由发生变化 修改底导航
+  isNavChange(to.name)
 
   if (urls.some((item, index) => {
-      return item == to.name
-    })) {
-    store.commit('revise', false);
+    return item == to.name
+  })) {
+    store.commit('revise', false)
   } else {
-    store.commit('revise');
+    store.commit('revise')
   }
 
   if (to.name != 'author' && to.name != '503Error' && to.name != 'errorPage') {
-    store.commit('saveUserPath', to.fullPath);
+    store.commit('saveUserPath', to.fullPath)
   }
 
   if (!store.state.AuthUser.authorization || !token.getRefreshToken() || !token.getToken()) {
-    isLogin = false;
+    isLogin = false
   } else {
-    isLogin = true;
+    isLogin = true
   }
 
   if (!store.state.uploadWechatLocation) {
-    store.commit('uploadWechatLocation', location.origin + to.fullPath);
+    store.commit('uploadWechatLocation', location.origin + to.fullPath)
   }
 
-  if (!isLogin && to.query.r === "wechat" && ua.match(/micromessenger/i) == 'micromessenger') {
+  if (!isLogin && to.query.r === 'wechat' && ua.match(/micromessenger/i) == 'micromessenger') {
     next({
       path: '/author'
-    });
+    })
   }
 
   // 检测路由 权限
   if (to.meta.requiresAuth) {
     if (!store.state.AuthUser.authorization || (token.getToken() && store.state.AuthUser.token_expire > nowTime)) {
-      next();
+      next()
     } else {
       next({
         path: '/author'
-      });
+      })
     }
   }
-  next();
+  next()
 })
 
 /* eslint-disable no-new */
@@ -351,9 +318,9 @@ new Vue({
   components: {
     App
   },
-  mounted() {
+  mounted () {
     window.addEventListener('resize', _ => {
-      this.responsive();
+      this.responsive()
     })
   },
   render: h => h(App)

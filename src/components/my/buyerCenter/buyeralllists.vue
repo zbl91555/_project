@@ -12,13 +12,13 @@
 		</div>
 		<div class="buyer-list">
 			<ul>
-				<li v-for="(e, i) in allList">
+				<li v-for="(e, i) in allList" :key="e">
 					<div class="buyer-tool" :style="{backgroundImage:'url(' + e.avatar + ')'}">
 						<router-link to="/myHome" style="">{{e.nickname}}<i class="iconfont icon-right"></i></router-link>
 						<button class="buyer-status">{{e.change}}</button>
 						<i><div class="waitepaywords">{{e.showPayment.title}}</div></i>
 						<i class="iconfont icon-shouji op"></i>
-						<i @click="alldingDan()" class="iconfont icon-wendang op"></i>	
+						<i @click="alldingDan()" class="iconfont icon-wendang op"></i>
 					</div>
 					<router-link :to="{path: '/orderDetail/'+e.order_id+'/all'}">
 						<div class="buy-info">
@@ -31,7 +31,7 @@
 						</div>
 					</router-link>
 					<div class="need-pay" v-if="isTimeOut[i] == true">应付：￥{{e.trueprice}}</div>
-					
+
 				</li>
 			</ul>
 			<div class="no-info" v-if="noOrder">
@@ -45,87 +45,87 @@
 			<div @click="closeshowlists()" class="fixednumMask" style="opacity: 0.38;">
 			</div>
 			<div class="sharesomething">
-				<router-link to:>	
+				<router-link to:>
 					<div @click="lookshowlists()">查看该店铺的所有订单</div>
 				</router-link>
-					<div @click="closeshowlists()" class="bordertop">取消</div>					
+					<div @click="closeshowlists()" class="bordertop">取消</div>
 			</div>
 		</div>
 	</div>
 </template>
 <script>
-	import {getSellerOrders} from '../../../api/api'
-	export default {
-		data() {
-			return {
-				// 所有产品列表
-				allList: [],
-				// 0订单的占位符
-				noOrder: false,
-				// 如果下单48小时未付款，则显示交易失败，隐藏应付款和立即付款按钮
-				isTimeOut: [true, true, true, true, true, true, true, true, true, true],
-				page:0,
-				showlists:false,
-				type:''
-			}
-		},
-		created() {
-    		window.addEventListener("scroll", this.scrollHandler);
-  		},
- 		destroyed() {
-    		window.removeEventListener("scroll", this.scrollHandler);
-  		},
-		methods: {
-			//查看订单
-			lookshowlists(){
-				this.showlists=false
-			},
-			//关闭
-			closeshowlists(){
-				this.showlists=false
-			},
-			alldingDan(){
-				this.showlists=true
-			},
-			scrollHandler() {
-			      const st = document.documentElement.scrollTop || document.body.scrollTop;
-			      const ch = this.$refs.ctn.clientHeight;
-			      if (st + window.innerHeight >= ch) {
-			        this.order();
-			      }
-    		}, 
-			getSellerOrders(type,orderId) {
-				this.page += 1;
-				let params= {
-					type: type,
-					page: this.page,
-					pagenum: '10',
-				};
-				getSellerOrders(orderId,params).then(res => {
-					if(res.code == '200') {
-						this.allList = this.allList.concat(res.data)	
-						if(this.allList.length == '0') { // 如果没有订单，则显示0订单占位符
-							_his.noOrder = true;
-						}
-						
-						// 如果下单48小时未付款，则显示交易失败，隐藏应付款和立即付款按钮
-						this.allList.forEach(function(e, i){
-							if(e.add_time * 1000 <= (+new Date()) - (86400000 * 2)){
-								this.isTimeOut[i] = false;
-							}
-						})
-					}
-				}).catch(err => {
-					console.log(err);
-				})
-			}
-		},
-		mounted() {
-			this.type = this.$route.params.types
-			let orderId = this.$route.params.orderId
-			this.getSellerOrders(this.type,orderId);
-		}
-	}
+import {getSellerOrders} from '../../../api/api'
+export default {
+  data () {
+    return {
+      // 所有产品列表
+      allList: [],
+      // 0订单的占位符
+      noOrder: false,
+      // 如果下单48小时未付款，则显示交易失败，隐藏应付款和立即付款按钮
+      isTimeOut: [true, true, true, true, true, true, true, true, true, true],
+      page: 0,
+      showlists: false,
+      type: ''
+    }
+  },
+  created () {
+    window.addEventListener('scroll', this.scrollHandler)
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollHandler)
+  },
+  methods: {
+    // 查看订单
+    lookshowlists () {
+      this.showlists = false
+    },
+    // 关闭
+    closeshowlists () {
+      this.showlists = false
+    },
+    alldingDan () {
+      this.showlists = true
+    },
+    scrollHandler () {
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      const ch = this.$refs.ctn.clientHeight
+      if (st + window.innerHeight >= ch) {
+        this.order()
+      }
+    },
+    getSellerOrders (type, orderId) {
+      this.page += 1
+      let params = {
+        type: type,
+        page: this.page,
+        pagenum: '10'
+      }
+      getSellerOrders(orderId, params).then(res => {
+        if (res.code == '200') {
+          this.allList = this.allList.concat(res.data)
+          if (this.allList.length == '0') { // 如果没有订单，则显示0订单占位符
+            _his.noOrder = true
+          }
+
+          // 如果下单48小时未付款，则显示交易失败，隐藏应付款和立即付款按钮
+          this.allList.forEach(function (e, i) {
+            if (e.add_time * 1000 <= (+new Date()) - (86400000 * 2)) {
+              this.isTimeOut[i] = false
+            }
+          })
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    }
+  },
+  mounted () {
+    this.type = this.$route.params.types
+    let orderId = this.$route.params.orderId
+    this.getSellerOrders(this.type, orderId)
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -135,7 +135,7 @@
 		background-color: #f4f4f4;
 		overflow: hidden;
 	}
-	
+
 	.buyer-nav {
 		width: 100%;
 		height: 78px;
@@ -167,7 +167,7 @@
 			font-weight: bold;
 		}*/
 	}
-	
+
 	.buyer-list {
 		margin-bottom: 100px;
 		position: relative;
@@ -289,7 +289,7 @@
 			}
 		}
 	}
-	
+
 	.no-info {
 		height: 375px;
 		width: 277px;

@@ -2,19 +2,19 @@
       <div class = "cover" @click.stop="isShow">
       <div class = "promptMessage">该拍品已经下架</div>
       <div class = "confirm" @click.stop="isShow">知道了</div>
-    </div> 
+    </div>
 </template>
 
 <script>
-  export default {
-    name : 'auctionErr',
-    methods : {
-      //弹出层
-      isShow() {
-        this.$router.push('/home')
-      },
+export default {
+  name: 'auctionErr',
+  methods: {
+    // 弹出层
+    isShow () {
+      this.$router.push('/home')
     }
   }
+}
 </script>
 
 <style scoped>
@@ -49,4 +49,3 @@
   z-index : 992;
 }
 </style>
-

@@ -10,7 +10,7 @@
           <li>成交金额:{{info.price}}</li>
           <li>同意退货:{{timestampToTime(parseFloat(info.tuihuoTime))}}</li>
         </ul>
-      </div>      
+      </div>
       <div class="gray"></div>
       <div class="returnmsg">
           <div class="returnheadmsg">卖家退货地址</div>
@@ -42,7 +42,7 @@
             <div>{{CmoName}}</div>
       </div>
       <div class="allFastCompany" v-if="allFastCompany">
-          <div :class="nowindex == index ? 'selected' : ''" v-for="(Cmp,index) in info.express" @click="select(index)">{{Cmp.name}}</div>
+          <div :class="nowindex == index ? 'selected' : ''" v-for="(Cmp,index) in info.express" :key="Cmp" @click="select(index)">{{Cmp.name}}</div>
           <router-link :to="'/sortTest/'+Id+'/confirmBack'">
               <div>更多</div>
           </router-link>
@@ -77,133 +77,133 @@
 </template>
 
 <script>
-import { Toast } from 'vant';
-import {orderReturnGoodsNow,orderReturnGoodsNowSubmit} from '../../../api/api'
+import { Toast } from 'vant'
+import {orderReturnGoodsNow, orderReturnGoodsNowSubmit} from '../../../api/api'
 export default {
-  data() {
+  data () {
     return {
-      btnoneShow:true,
-      btntwoShow:false,
-      agree:false,
-      info:{},
-      order_id:'',
-      hide:false,
-      allFastCompany:false,
-      show:true,
-      xiashow:true,
-      shanghide:false,
-      nowindex:0,
-      CmoId:'',
-      tuihuoExpresscode:'',
-      unGetshow:false,
-      refuseGetshow:false,
-      CmoName:'请选择快递公司',
-      Id:'',
-      CompId:'',
-    };
+      btnoneShow: true,
+      btntwoShow: false,
+      agree: false,
+      info: {},
+      order_id: '',
+      hide: false,
+      allFastCompany: false,
+      show: true,
+      xiashow: true,
+      shanghide: false,
+      nowindex: 0,
+      CmoId: '',
+      tuihuoExpresscode: '',
+      unGetshow: false,
+      refuseGetshow: false,
+      CmoName: '请选择快递公司',
+      Id: '',
+      CompId: ''
+    }
   },
   methods: {
-      select(index){
-          this.nowindex = index;
-          this.CmoId = this.info.express[index].type;
-          this.allFastCompany=false;
-          this.xiashow=true;
-          this.shanghide=false;
-          this.CmoName = this.info.express[index].name
-      },
-      unGet(){
-        this.unGetshow=!this.unGetshow;
-        this.refuseGetshow = false
-        if(this.unGetshow){
-          this.show = false;
-          this.btnoneShow = false;
-          this.btntwoShow = true;
-          this.allFastCompany=false;
-        }else{
-          this.show = true;
-          this.btnoneShow = true;
-          this.btntwoShow = false;
-        }
-      },
-      refuseGet(){
-        this.refuseGetshow=!this.refuseGetshow;
-        this.unGetshow = false
-        if(this.refuseGetshow){
-          this.show = false;
-          this.btnoneShow = false;
-          this.btntwoShow = true;
-          this.allFastCompany=false;
-        }else{
-          this.show = true;
-          this.btnoneShow = true;
-          this.btntwoShow = false;
-        }
-      },
-      down(){
-          this.allFastCompany=true;
-          this.xiashow=false;
-          this.shanghide=true
-      },
-      openAgree(){
-          this.agree=true
-      },
-      closeAgree(){
-          this.agree=false
-      },
-      //页面
-      orderReturnGoodsNow(){
-        let order_id = this.$route.params.order_id
-          orderReturnGoodsNow(order_id).then(
-          res => {
-              this.info=res.data
-          }).catch(err=>{
-              console.log(err.response.data.message);
-          })
-      },
-      //确认退货
-      tuihuo(){
-        let order_id = this.$route.params.order_id
-        let params
-        if(this.unGetshow==true){
-            params = {
-                 type:'nogoods',  
-              };
-        }
-        if(this.refuseGetshow==true){
-            params = {
-                 type:'reject',  
-              };
-        }
-        if(this.unGetshow==false &&this.refuseGetshow==false){
-          if(this.CmoId == ''){
-            Toast('请选择快递公司')
-          }
-          if(this.tuihuoExpresscode == ''){
-              Toast('请填写快递单号')
-          }
-            params = {
-                 type:'normal',
-                 express:this.CmoId,
-                 tuihuo_expresscode:this.tuihuoExpresscode,  
-              };
-        }
-          orderReturnGoodsNowSubmit(order_id,params).then(
-          res => {
-              this.$router.push('/orderDetail/'+order_id)
-              this.info=res.data
-              this.refs.agreeReturnMoney.scrollTop = 0
-          }).catch(err=>{
-              console.log(err.response.data.message);
-          })
+    select (index) {
+      this.nowindex = index
+      this.CmoId = this.info.express[index].type
+      this.allFastCompany = false
+      this.xiashow = true
+      this.shanghide = false
+      this.CmoName = this.info.express[index].name
+    },
+    unGet () {
+      this.unGetshow = !this.unGetshow
+      this.refuseGetshow = false
+      if (this.unGetshow) {
+        this.show = false
+        this.btnoneShow = false
+        this.btntwoShow = true
+        this.allFastCompany = false
+      } else {
+        this.show = true
+        this.btnoneShow = true
+        this.btntwoShow = false
       }
-  },
-  mounted() {
-      this.CmoName = this.$route.params.name;
-      this.CmoId = this.$route.params.type;
-      this.Id = this.$route.params.order_id;
-      this.orderReturnGoodsNow()
+    },
+    refuseGet () {
+      this.refuseGetshow = !this.refuseGetshow
+      this.unGetshow = false
+      if (this.refuseGetshow) {
+        this.show = false
+        this.btnoneShow = false
+        this.btntwoShow = true
+        this.allFastCompany = false
+      } else {
+        this.show = true
+        this.btnoneShow = true
+        this.btntwoShow = false
+      }
+    },
+    down () {
+      this.allFastCompany = true
+      this.xiashow = false
+      this.shanghide = true
+    },
+    openAgree () {
+      this.agree = true
+    },
+    closeAgree () {
+      this.agree = false
+    },
+    // 页面
+    orderReturnGoodsNow () {
+      let order_id = this.$route.params.order_id
+      orderReturnGoodsNow(order_id).then(
+        res => {
+          this.info = res.data
+        }).catch(err => {
+        console.log(err.response.data.message)
+      })
+    },
+    // 确认退货
+    tuihuo () {
+      let order_id = this.$route.params.order_id
+      let params
+      if (this.unGetshow == true) {
+        params = {
+          type: 'nogoods'
+        }
+      }
+      if (this.refuseGetshow == true) {
+        params = {
+          type: 'reject'
+        }
+      }
+      if (this.unGetshow == false && this.refuseGetshow == false) {
+        if (this.CmoId == '') {
+          Toast('请选择快递公司')
+        }
+        if (this.tuihuoExpresscode == '') {
+          Toast('请填写快递单号')
+        }
+        params = {
+          type: 'normal',
+          express: this.CmoId,
+          tuihuo_expresscode: this.tuihuoExpresscode
+        }
+      }
+      orderReturnGoodsNowSubmit(order_id, params).then(
+        res => {
+          this.$router.push('/orderDetail/' + order_id)
+          this.info = res.data
+          this.refs.agreeReturnMoney.scrollTop = 0
+        }).catch(err => {
+        console.log(err.response.data.message)
+      })
     }
-};
+  },
+  mounted () {
+    this.CmoName = this.$route.params.name
+    this.CmoId = this.$route.params.type
+    this.Id = this.$route.params.order_id
+    this.orderReturnGoodsNow()
+  }
+}
 </script>
 
 <style scoped>
@@ -212,7 +212,7 @@ export default {
      overflow-x:hidden
    }
    .icon-finish{
-    margin: 0; 
+    margin: 0;
     width: 35px;
     font-size: 24px;
    }
@@ -287,7 +287,7 @@ export default {
      height:68px;
      border-bottom: 1px solid #e5e5e5;
      line-height: 68px;
-     margin-left:30px; 
+     margin-left:30px;
   }
   .acceptman{
     overflow: hidden;
@@ -333,7 +333,7 @@ export default {
         border-radius: 5px;
         width: 100%;
         outline: none;
-        -webkit-appearance: none; 
+        -webkit-appearance: none;
         font-size: 28px;
   }
   .bottom{
@@ -370,7 +370,7 @@ export default {
   }
   .popHeightone{
     height:60px;
-    padding:20px 0px; 
+    padding:20px 0px;
     color: #999999;
     border-bottom: 1px solid #e5e5e5;
     line-height: 60px;

@@ -39,30 +39,30 @@
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				num: '',
-				sw: 0,
-			}
-		},
-		methods: {
-			aa: function(i) {
-				let _this = this;
-				_this.sw = i;
-			}
-		},
-		mounted() {
-			this.num = this.$route.query.detail;
-		},
-	}
+export default {
+  data () {
+    return {
+      num: '',
+      sw: 0
+    }
+  },
+  methods: {
+    aa: function (i) {
+      let _this = this
+      _this.sw = i
+    }
+  },
+  mounted () {
+    this.num = this.$route.query.detail
+  }
+}
 </script>
 
 <style lang="less" scoped>
 	/*
-	 * @border-color: 边框统一颜色
-	 * */
-	
+	* @border-color: 边框统一颜色
+	* */
+
 	@border-color: #e5e5e5;
 	.app-container {
 		min-height: 1234px;

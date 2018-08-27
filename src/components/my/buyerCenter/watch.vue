@@ -1,8 +1,8 @@
 <template>
 	<div class="watch">
 		<ul class="list" ref="ctn">
-		
-			<li v-for="e in likeList">
+
+			<li v-for="e in likeList" :key="e.uri">
 				<router-link :to="'/auction/'+e.uri">
 					<div class="list-img" v-bind:style="{backgroundImage: 'url(' + e.cover + ')'}"></div>
 					<p class="title">{{e.desc}}</p>
@@ -14,66 +14,66 @@
 				</router-link>
 			</li>
 		</ul>
-		
+
 	</div>
 </template>
 <script>
-import { watch } from "../../../api/api";
+import { watch } from '../../../api/api'
 export default {
-  data() {
+  data () {
     return {
       likeList: [],
       page: 0,
-			num: 10,
-			flag : false,//节流阀
-    };
+      num: 10,
+      flag: false // 节流阀
+    }
   },
-  props: ["value"],
+  props: ['value'],
   methods: {
-    watch() {
-			if (this.flag) {
-				return;
-			};
-			this.flag = true;
-      this.page += 1;
+    watch () {
+      if (this.flag) {
+        return
+      };
+      this.flag = true
+      this.page += 1
       let params = {
         page: this.page,
-        pagenum: "10"
-      };
+        pagenum: '10'
+      }
       watch(params)
         .then(res => {
-          if (res.code == "200") {
-            this.likeList = res.data;
-						this.num = res.data.length;
-						this.flag = false;
+          if (res.code == '200') {
+            this.likeList = res.data
+            this.num = res.data.length
+            this.flag = false
           }
         })
         .catch(err => {
-          console.log(err);
+          console.log(err)
           if (this.likeList.length == 0) {
-            this.$emit("input", true);
+            this.$emit('input', true)
           }
-        });
+        })
     },
-    scrollLike() {
-      const st = document.documentElement.scrollTop || document.body.scrollTop;
-      const ch = this.$refs.ctn.clientHeight;
+    scrollLike () {
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      const ch = this.$refs.ctn.clientHeight
       if (st + window.innerHeight >= ch * 0.5) {
-        this.watch();
+        this.watch()
       }
     }
   },
-  mounted() {
-    this.watch();
+  mounted () {
+    this.watch()
   },
-  created() {
+  created () {
     // 注册scroll事件并监听
-    window.addEventListener("scroll", this.scrollLike);
+    window.addEventListener('scroll', this.scrollLike)
   },
-  destroyed() {
-    window.removeEventListener("scroll", this.scrollLike);
+  destroyed () {
+    window.removeEventListener('scroll', this.scrollLike)
   }
-};
+}
 </script>
 <style lang="less" scoped>
 @border-color: #d2d2d2;

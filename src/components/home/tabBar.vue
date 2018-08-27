@@ -12,61 +12,59 @@
 </template>
 
 <script>
-// import wx from 'weixin-js-sdk';
-import {getSign} from '../../api/api';
-import {mapState} from 'vuex';
-// import uploadImg from './uploadImg';
-  export default {
-    name : 'tabBar',
-    props : ['changeRed'],
-    data() {
-      return {
-        timeLists: [
+import {getSign} from '../../api/api'
+import {mapState} from 'vuex'
+export default {
+  name: 'tabBar',
+  props: ['changeRed'],
+  data () {
+    return {
+      timeLists: [
         {
-          text: "优选",
-          link: "/recommend"
+          text: '优选',
+          link: '/recommend'
         },
         {
-          text: "淘淘",
-          link: "/home"
+          text: '淘淘',
+          link: '/home'
         },
         {
-          text: "关注",
-          link: "/focus"
+          text: '关注',
+          link: '/focus'
         }
       ],
-      config : {}
-      }
+      config: {}
+    }
+  },
+  computed: {
+    ...mapState({
+      WxSign: state => state.WxSign
+    })
+  },
+  components: {
+    // uploadImg
+  },
+  methods: {
+    // 数据保存至session
+    upload (data) {
+      this.$router.push('/upload')
+      // if (data === '') {
+      //   return ;
+      // };
+      // sessionStorage.setItem('uploadImg',JSON.stringify(data));
     },
-      computed: {
-          ...mapState({
-              WxSign: state => state.WxSign,
-          })
-      },
-      components : {
-        // uploadImg
-      },
-    methods : {
-      //数据保存至session
-      upload(data){
-        this.$router.push('/upload');
-        // if (data === '') {
-        //   return ;
-        // };
-        // sessionStorage.setItem('uploadImg',JSON.stringify(data));
-      },
-       // tab点击跳转Start
-    Red(index) {
-      this.link = this.timeLists[index].link;
+    // tab点击跳转Start
+    Red (index) {
+      this.link = this.timeLists[index].link
       this.$router.push({
         path: this.link
-      });
-    },
-    },
-    created() {
-        
-    },
+      })
+    }
+  },
+  created () {
+
   }
+}
 </script>
 
 <style lang="less">
@@ -147,4 +145,3 @@ import {mapState} from 'vuex';
   text-align: center;
 }
 </style>
-

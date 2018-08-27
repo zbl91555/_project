@@ -26,79 +26,79 @@
 </div>
 </template>
 <script>
-import { keywords, keywordsSeach } from "../../api/api";
+import { keywords, keywordsSeach } from '../../api/api'
 export default {
-  data() {
+  data () {
     return {
-      keywords: "",
+      keywords: '',
       boxes: [],
       sellers: [],
       noPaipin: false,
-      searchResult: false,
-    };
+      searchResult: false
+    }
   },
-  created() {},
+  created () {},
   methods: {
-    toTaotao() {
-      this.$router.push('/home');
+    toTaotao () {
+      this.$router.push('/home')
     },
-    getData() {
-        this.noPaipin = false;
-        let params = {
-          keywords: this.keywords
-        };
-        keywords(params)
-          .then(res => {
-            this.boxes = res.data.cate;
-            this.sellers = res.data.seller;
-            if (this.boxes != [] || this.sellers != []) {
-              this.searchResult = true;
-            }
-          })
-          .catch(err => {
-            console.log(err);
-          });
-    },
-    serchKeywords() {
+    getData () {
+      this.noPaipin = false
       let params = {
         keywords: this.keywords
-      };
-      keywordsSeach(params)
+      }
+      keywords(params)
         .then(res => {
-          let id = res.data.id;
-          let type = res.data.type;
-          if (type == 1) {
-            this.$router.push("/category/categoryDetails/" + id);
-          }
-          if (type == 2) {
-            this.$router.push("/storeHome/" + id);
-          }
-          if (type == 3) {
-            this.boxes = [];
-            this.sellers = [];
-            this.noPaipin = true;
+          this.boxes = res.data.cate
+          this.sellers = res.data.seller
+          if (this.boxes != [] || this.sellers != []) {
+            this.searchResult = true
           }
         })
         .catch(err => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     },
-    allclear() {
-      this.boxes = [];
-      this.sellers = [];
+    serchKeywords () {
+      let params = {
+        keywords: this.keywords
+      }
+      keywordsSeach(params)
+        .then(res => {
+          let id = res.data.id
+          let type = res.data.type
+          if (type == 1) {
+            this.$router.push('/category/categoryDetails/' + id)
+          }
+          if (type == 2) {
+            this.$router.push('/storeHome/' + id)
+          }
+          if (type == 3) {
+            this.boxes = []
+            this.sellers = []
+            this.noPaipin = true
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
-    linkTo(id) {
-      this.$router.push("/category/categoryDetails/" + id);
+    allclear () {
+      this.boxes = []
+      this.sellers = []
     },
-    linkToStore(id, name) {
-      this.$router.push("/storeHome/" + id);
-      localStorage.setItem("name", name);
+    linkTo (id) {
+      this.$router.push('/category/categoryDetails/' + id)
     },
-    clear() {
-      this.keywords = "";
+    linkToStore (id, name) {
+      this.$router.push('/storeHome/' + id)
+      localStorage.setItem('name', name)
+    },
+    clear () {
+      this.keywords = ''
     }
   }
-};
+}
 </script>
 <style scoped lang="less">
 .serchHead {

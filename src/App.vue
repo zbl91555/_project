@@ -1,17 +1,18 @@
 <template>
   <div id="app">
-    <!-- 导航 -->
-    <navbar v-if="isNavBar" :showIndex='showIndex' :msgLists="msgLists"></navbar>
-    <!-- loading -->
-    <!-- <loading v-model="loading.status" :text="loading.text"></loading> -->
-    <loading v-model="isLoading" :text="text"></loading>
-    <div v-if="isLoading" class="appMask"></div>
-
     <!--主体内容视图-->
     <transition :name="transitionName" mode="out-in">
-      <!-- <keep-alive include="home"> -->
-        <router-view class="main-view"></router-view>
-      <!-- </keep-alive> -->
+        <div  class="main-view">
+          <!-- 头部导航 -->
+          <navbar v-if="isNavBar" :showIndex='showIndex' :msgLists="msgLists"></navbar>
+
+          <!-- loading -->
+          <loading v-model="isLoading" :text="text"></loading>
+          <div v-if="isLoading" class="appMask"></div>
+          <keep-alive>
+            <router-view></router-view>
+          </keep-alive>
+        </div>
     </transition>
   </div>
 </template>
@@ -40,7 +41,7 @@ export default {
       isIndex: true, // 用于navbar导航
       transitionName: 'slide-left',
       showIndex: 0,
-      home: ['recommend', 'focus', '精选'], // 首页高亮的页面
+      home: ['recommend', 'focus', 'index'], // 首页高亮的页面
       classifi: ['分类', '分类详情'], // 分类
       find: ['发现'], // 发现
       mine: ['买家中心', '买家中心-订单详情', '设置', '卖家中心', '店铺设置'], // 买家中心
@@ -326,6 +327,8 @@ body {
 li,
 ul {
   list-style: none;
+  overflow: scroll;
+  /* height: 100%; */
 }
 img {
   vertical-align: top;

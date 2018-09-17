@@ -85,7 +85,7 @@ export const paysuccess = (auction_id) => {
 // ***首页***
 // 首页数据
 export const getDiscoverList = params => {
-  return axios.get('/api/discover', { params: params }).then(response => response.data)
+  return axios.get('/api/recommend', { params: params }).then(response => response.data)
 }
 // 优选数据
 export const getRecommend = params => {

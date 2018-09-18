@@ -56,7 +56,7 @@
 <script>
 import withDrawNextDown from './withDrawNextDown'
 import { Toast } from 'vant'
-import {walletWithdrawal, walletWithdrawalSubmit, filterNum, subMethod} from '../../api/api'
+import { walletWithdrawal, walletWithdrawalSubmit, filterNum, subMethod } from '../../api/api'
 import keyboard from '../home/keyboard' // 数字键盘
 export default {
   components: {

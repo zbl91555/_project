@@ -22,7 +22,7 @@
 <script>
 import { Toast } from 'vux'
 
-import {shieldList, shielduser} from '../../api/api'
+import { shieldList, shielduser } from '../../api/api'
 export default {
   components: {
     Toast

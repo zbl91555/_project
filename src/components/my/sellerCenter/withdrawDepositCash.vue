@@ -36,7 +36,7 @@
 import withDrawNextDown from '../withDrawNextDown'
 import wx from 'weixin-js-sdk'
 import { Toast } from 'vant'
-import {getSign, wxPay, walletWithdrawalSubmit, depositWithdraw} from '../../../api/api'
+import { getSign, wxPay, walletWithdrawalSubmit, depositWithdraw } from '../../../api/api'
 import assign from '../../../assets/js/assign.js'// 混入式方法
 export default {
   mixins: [assign],

@@ -28,7 +28,7 @@ export default [
         }
       },
       {
-        path: 'focus',
+        path: '/focus',
         component: focus,
         name: 'focus',
         meta: {
@@ -37,7 +37,7 @@ export default [
         } // 需要登陆
       },
       {
-        path: 'recommend',
+        path: '/recommend',
         name: 'recommend',
         component: recommend,
         meta: {

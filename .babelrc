@@ -4,7 +4,7 @@
       "debug": true,
       "modules": false,
       "targets": {
-        "browsers": ["> 1%", "last 2 versions", "not ie <= 8"]
+        "browsers": ["> 1%", "not ie <= 10"]
       }
     }],
     "stage-2"
@@ -12,7 +12,7 @@
   "plugins": ["transform-vue-jsx", "transform-runtime",["import", { "libraryName": "vant", "style": true }]],
   "env": {
     "test": {
-      "presets": ["env", "es2015","stage-2","stage-2"],
+      "presets": ["env", "es2015","stage-2"],
       "plugins": ["transform-vue-jsx", "transform-es2015-modules-commonjs", "dynamic-import-node"]
     }
   }

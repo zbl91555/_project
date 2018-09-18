@@ -17,7 +17,7 @@
       </ul>
     </div>
     <div class="foods-wrapper" ref="foods">
-      <ul style="height:700px">
+      <ul>
         <li  v-for="item in category" class="paddingBottom food-list food-list-hook" :key="item.id">
           <p class="title">{{item.name}}</p>
           <ul >

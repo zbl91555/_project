@@ -18,9 +18,9 @@
     </div>
     <div class="foods-wrapper" ref="foods">
       <ul>
-        <li v-for="item in category" class="paddingBottom food-list food-list-hook" :key="item.id">
+        <li  v-for="item in category" class="paddingBottom food-list food-list-hook" :key="item.id">
           <p class="title">{{item.name}}</p>
-          <ul>
+          <ul >
             <li class="food-item border-1px">
               <div class="icon" v-for="food in item.childCategory" :key="food.id">
                 <router-link :to="'/category/categoryDetails/'+food.id">
@@ -256,6 +256,7 @@ export default {
   -ms-flex: 1;
   flex: 1;
   width: 5.25rem;
+  height:100%;
   background: white;
 }
 .category .foods-wrapper .title {

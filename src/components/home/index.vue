@@ -1,9 +1,78 @@
 <template>
   <div class="dredge" ref="ctn">
     <tabBar :changeRed="changeRed"></tabBar>
-    <keep-alive>
-      <router-view class="home-view"></router-view>
-    </keep-alive>
+    <div class = "main" ref="main">
+    <activityEntrance :img="activityImg" :activityEntranceShow="activityEntranceShow"></activityEntrance>
+    <!-- 轮播图 -->
+    <!-- <swiper :list="demoList" style="width:100%;margin:0 auto;" :aspect-ratio="300/800" height="180px" dots-class="custom-bottom" dots-position="center"></swiper> -->
+
+    <!-- 图片瀑布流 -->
+  <!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh"> -->
+    <!-- <div class="mescroll" id="mescroll"> -->
+    <waterfall
+      ref="waterfall"
+      :class="{ initshow: firstTime }"
+      :align="align" :line-gap="gap" :min-line-gap="100" :max-line-gap="maxGap" :single-max-width="300"
+      :watch="items"
+      @reflowed="reflowed"
+    >
+      <waterfall-slot v-for="(item, index) in items" :width="item.width" :height="item.height" :order="index" :key="item.uri">
+        <router-link :to="{name: 'auction', params: {id: item.uri }}">
+          <div class="item">
+            <div class="item-image" :style="{ 'background-image': `url(${item.cover})`,'background-position' : 'center' }"></div>
+            <div class="item-cover" :class="{ 'item-loaded': item.loaded }"></div>
+            <div class="info">
+              <div v-if="item.sellerAvatar != null " class="avatar" :style="{backgroundImage:'url(' + item.sellerAvatar + ')'}"></div>
+              <div v-else class="iconfont icon-wutouxiang"></div>
+              <div class="price false">
+                <span class="money" v-if="item.price > item.startPrice">￥{{item.price}}</span>
+                <span class="money" v-else>￥{{item.startPrice}}<span> 起</span> </span>
+              </div>
+            </div>
+          </div>
+        </router-link>
+      </waterfall-slot>
+    </waterfall>
+    <!-- </div> -->
+  <!-- </van-pull-refresh> -->
+
+    <!-- loading信息 -->
+    <div class="loading-more" v-show="loadingMore">
+      <i class="el-icon-loading"></i>
+      <span class="loading-text">加载更多...</span>
+    </div>
+
+    <!-- 绑定手机号 -->
+    <div class="loginValidation" v-show="bindphone">
+      <div class="maskout"></div>
+      <div class="login" v-show="show">
+        <i class="iconfont icon-guanbi" @click="close()"></i><p>登录</p>
+        <div class="phone" @touchstart.stop="focus('phones')">
+          <span class="phones">{{ phones }}</span>
+          <p class="placeholder" v-show="phones.length === 0">请输入手机号</p>
+        </div>
+        <i class="tipe" v-show="verificationCode"> {{tipe}} </i>
+        <div class="nextStep" @click="nextStep()" :class="{ selected: hasvalidation }">下一步</div>
+      </div>
+      <div class="validation" v-show="shows">
+        <i class="iconfont icon-guanbi" @click="closes()"></i>
+        <p>请输入验证码</p>
+        <div class="region">
+          {{phones}}
+          <i class="time">{{count}}s</i>
+        </div>
+        <div class="phone" @touchstart.stop="focus('Verification')">
+          <span class="Verification">{{ Verification }}</span>
+          <p class="placeholder" v-show="Verification.length === 0">请输入验证码</p>
+        </div>
+        <i class="tipe" v-show="verificationCodes"> {{tipes}} </i>
+        <div class="nextStep" @click="login()" :class="{ selected: hasvalidations }">登录</div>
+      </div>
+  </div>
+    <!-- 自定义键盘 -->
+    <keyboard :show="keyboard" @typing="typing"/>
+    </div>
+     <load-more v-if="elseloading" :show-loading="false" tip="暂无更多数据" background-color="#fbf9fe"></load-more>
   </div>
 </template>
 
@@ -19,14 +88,14 @@ import {
   SwiperItem,
   LoadMore
 } from 'vux'
-import Waterfall from './common/waterfall'
-import WaterfallSlot from './common/waterfall-slot'
+import Waterfall from '../common/waterfall'
+import WaterfallSlot from '../common/waterfall-slot'
 import { setTimeout, clearTimeout } from 'timers'
-import keyboard from './keyboards' // 数字键盘
-import tabBar from './home/tabBar'
+import keyboard from '../keyboards' // 数字键盘
+import tabBar from '../home/tabBar'
 import { mapState } from 'vuex'
-import activityEntrance from './activityPage/activityEntrance.vue'
-import { getDiscoverList, openActivity } from '../api/api'
+import activityEntrance from '../activityPage/activityEntrance.vue'
+import { getDiscoverList, openActivity } from '../../api/api'
 // import assign from '../assets/js/assign.js' // 混入式方法
 
 // 轮播图图片
@@ -207,7 +276,7 @@ export default {
       // 加载和显示可视区域内的图片
       clearTimeout(this._displayTimer)
       this._displayTimer = setTimeout(() => {
-        this.$refs.waterfall && this.$refs.waterfall.$children.forEach(slot => {
+        this.$refs.waterfall.$children.forEach(slot => {
           if (this.isElementInViewport(slot.$el, 50)) {
             const item = this.items[slot.order]
             // const img = new Image();
@@ -244,7 +313,7 @@ export default {
           page: this.page,
           pagenum: this.pagenum
         }
-        /* getDiscoverList(params)
+        getDiscoverList(params)
           .then(res => {
             // 修改loading状态
             this.$store.commit('updateLoadingStatus', { isLoading: false })
@@ -313,7 +382,6 @@ export default {
             this.isBusy = true
             this.page--
           })
-          */
       }
     },
     // 瀑布流相关操作End
@@ -561,7 +629,7 @@ export default {
         this.activityEntranceShow = false
       })
     }
-
+    window.addEventListener('scroll', this.scrollHandler)
     if (this.isPC()) {
       this.gap = 250
       this.maxGap = 300
@@ -572,7 +640,6 @@ export default {
   },
   mounted () {
     // if (this.isIos()) {
-    window.addEventListener('scroll', this.scrollHandler)
     let data = sessionStorage.getItem('home')
     // let state = sessionStorage.getItem("state");
     if (data) {

@@ -53,6 +53,7 @@ export default {
   name: 'focus',
   components: { Waterfall, WaterfallSlot, tabBar, LoadMore },
   props: ['changeRed'],
+  changeRed: 2,
   mixins: [assign],
   data () {
     return {
@@ -65,6 +66,7 @@ export default {
       page: 0,
       pagenum: 10,
       scroll: 0,
+
       timeLists: [
         {
           text: '优选',

@@ -22,15 +22,21 @@ export default {
       timeLists: [
         {
           text: '优选',
-          link: '/recommend'
+          link: '/recommend',
+          name: 'recommend',
+          com: 'recommend'
         },
         {
           text: '淘淘',
-          link: '/home'
+          link: '/home',
+          name: 'index',
+          com: 'index'
         },
         {
           text: '关注',
-          link: '/focus'
+          link: '/focus',
+          name: 'focus',
+          com: 'focus'
         }
       ],
       config: {}
@@ -56,8 +62,11 @@ export default {
     // tab点击跳转Start
     Red (index) {
       this.link = this.timeLists[index].link
+      this.name = this.timeLists[index].name
+      this.com = this.timeLists[index].com
       this.$router.push({
-        path: this.link
+        // path: `/home${this.link}`
+        name: this.name
       })
     }
   },

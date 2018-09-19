@@ -1,7 +1,7 @@
 <template>
   <div class="dredge" ref="ctn">
     <tabBar :changeRed="changeRed"></tabBar>
-    <keep-alive>
+    <keep-alive >
       <router-view class="home-view"></router-view>
     </keep-alive>
   </div>
@@ -158,7 +158,7 @@ export default {
       scroll: this.scroll,
       isBusy: this.isBusy
     }
-    sessionStorage.setItem('home', JSON.stringify(home))
+    sessionStorage.setItem('index', JSON.stringify(home))
     next()
   },
   methods: {
@@ -724,8 +724,8 @@ export default {
   background-color: #dc7a7a;
   // border: solid 1px #c8c8c8;
   border-radius: 50%;
-  background-size: cover;
-  background-position: center;
+  background-size: contain;
+  background-position: center top;
   background-repeat: no-repeat;
   z-index: 2;
   box-sizing: border-box;
@@ -769,8 +769,8 @@ export default {
   width: 100%;
   height: 100%;
   // height: calc(~"100% - 60px");
-  background-size: cover;
-  background-position : center;
+  background-size: contain;
+  background-position : center top;
 }
 .dredge .item-cover {
   display: flex;
@@ -781,7 +781,7 @@ export default {
   top: 0;
   background-color: #fff;
   width: 100%;
-  height: calc(~"100% - 31px");
+  // height: calc(~"100% - 31px");
   transition: opacity 0.5s ease-in;
   opacity: 1;
 }

@@ -1,81 +1,79 @@
 <template>
   <div class="recommend" ref="ctn">
     <tabBar :changeRed="changeRed"></tabBar>
-        <div class = "main" ref="main"
-        @touchstart="touchstart"
-        @touchend="touchend"
+      <div class = "main" ref="main"
+      @touchstart="touchstart"
+      @touchend="touchend">
+        <activityEntrance :img="activityImg" :activityEntranceShow="activityEntranceShow"></activityEntrance>
+        <!-- 轮播图 -->
+        <!-- <swiper :list="demoList" style="width:100%;margin:0 auto;" :aspect-ratio="300/800" height="180px" dots-class="custom-bottom" dots-position="center"></swiper> -->
+
+        <!-- 图片瀑布流 -->
+        <!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh"> -->
+        <!-- <div class="mescroll" id="mescroll"> -->
+        <waterfall
+          ref="waterfall"
+          :class="{ initshow: firstTime }"
+          :align="align" :line-gap="gap" :min-line-gap="100" :max-line-gap="maxGap" :single-max-width="300"
+          :watch="items"
+          @reflowed="reflowed"
         >
-    <activityEntrance :img="activityImg" :activityEntranceShow="activityEntranceShow"></activityEntrance>
-    <!-- 轮播图 -->
-    <!-- <swiper :list="demoList" style="width:100%;margin:0 auto;" :aspect-ratio="300/800" height="180px" dots-class="custom-bottom" dots-position="center"></swiper> -->
-
-    <!-- 图片瀑布流 -->
-  <!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh"> -->
-    <!-- <div class="mescroll" id="mescroll"> -->
-    <waterfall
-      ref="waterfall"
-      :class="{ initshow: firstTime }"
-      :align="align" :line-gap="gap" :min-line-gap="100" :max-line-gap="maxGap" :single-max-width="300"
-      :watch="items"
-      @reflowed="reflowed"
-    >
-      <waterfall-slot v-for="(item, index) in items" :width="item.width" :height="item.height" :order="index" :key="item.uri">
-        <router-link :to="{name: 'auction', params: {id: item.uri }}">
-          <div class="item">
-            <div class="item-image" :style="{ 'background-image': `url(${item.cover})`,'background-position' : 'center' }"></div>
-            <div class="item-cover" :class="{ 'item-loaded': item.loaded }"></div>
-            <div class="info">
-              <div v-if="item.sellerAvatar != null " class="avatar" :style="{backgroundImage:'url(' + item.sellerAvatar + ')'}"></div>
-              <div v-else class="iconfont icon-wutouxiang"></div>
-              <div class="price false">
-                <span class="money" v-if="item.price > item.startPrice">￥{{item.price}}</span>
-                <span class="money" v-else>￥{{item.startPrice}}<span> 起</span></span>
+          <waterfall-slot v-for="(item, index) in items" :width="item.width" :height="item.height" :order="index" :key="item.uri">
+            <router-link :to="{name: 'auction', params: {id: item.uri }}">
+              <div class="item">
+                <div class="item-image" :style="{ 'background-image': `url(${item.cover})`,'background-position' : 'center top' }"></div>
+                <div class="item-cover" :class="{ 'item-loaded': item.loaded }"></div>
+                <div class="info">
+                  <div v-if="item.sellerAvatar != null " class="avatar" :style="{backgroundImage:'url(' + item.sellerAvatar + ')'}"></div>
+                  <div v-else class="iconfont icon-wutouxiang"></div>
+                  <div class="price false">
+                    <span class="money" v-if="item.price > item.startPrice">￥{{item.price}}</span>
+                    <span class="money" v-else>￥{{item.startPrice}}<span> 起</span></span>
+                  </div>
+                </div>
               </div>
+            </router-link>
+          </waterfall-slot>
+        </waterfall>
+        <!-- </div> -->
+        <!-- </van-pull-refresh> -->
+        <!-- loading信息 -->
+        <div class="loading-more" v-show="loadingMore">
+          <i class="el-icon-loading"></i>
+          <span class="loading-text">加载更多...</span>
+        </div>
+
+        <!-- 绑定手机号 -->
+        <div class="loginValidation" v-show="bindphone">
+            <div class="maskout"></div>
+            <div class="login" v-show="show">
+              <i class="iconfont icon-guanbi" @click="close()"></i><p>登录</p>
+              <div class="phone" @touchstart.stop="focus('phones')">
+                <span class="phones">{{ phones }}</span>
+                <p class="placeholder" v-show="phones.length === 0">请输入手机号</p>
+              </div>
+              <i class="tipe" v-show="verificationCode"> {{tipe}} </i>
+              <div class="nextStep" @click="nextStep()" :class="{ selected: hasvalidation }">下一步</div>
             </div>
-          </div>
-        </router-link>
-      </waterfall-slot>
-    </waterfall>
-    <!-- </div> -->
-  <!-- </van-pull-refresh> -->
-
-    <!-- loading信息 -->
-    <div class="loading-more" v-show="loadingMore">
-      <i class="el-icon-loading"></i>
-      <span class="loading-text">加载更多...</span>
-    </div>
-
-    <!-- 绑定手机号 -->
-    <div class="loginValidation" v-show="bindphone">
-      <div class="maskout"></div>
-      <div class="login" v-show="show">
-        <i class="iconfont icon-guanbi" @click="close()"></i><p>登录</p>
-        <div class="phone" @touchstart.stop="focus('phones')">
-          <span class="phones">{{ phones }}</span>
-          <p class="placeholder" v-show="phones.length === 0">请输入手机号</p>
+            <div class="validation" v-show="shows">
+              <i class="iconfont icon-guanbi" @click="closes()"></i>
+              <p>请输入验证码</p>
+              <div class="region">
+                {{phones}}
+                <i class="time">{{count}}s</i>
+              </div>
+              <div class="phone" @touchstart.stop="focus('Verification')">
+                <span class="Verification">{{ Verification }}</span>
+                <p class="placeholder" v-show="Verification.length === 0">请输入验证码</p>
+              </div>
+              <i class="tipe" v-show="verificationCodes"> {{tipes}} </i>
+              <div class="nextStep" @click="login()" :class="{ selected: hasvalidations }" >登录</div>
+            </div>
         </div>
-        <i class="tipe" v-show="verificationCode"> {{tipe}} </i>
-        <div class="nextStep" @click="nextStep()" :class="{ selected: hasvalidation }">下一步</div>
+        <!-- 自定义键盘 -->
+        <keyboard :show="keyboard" @typing="typing"/>
       </div>
-      <div class="validation" v-show="shows">
-        <i class="iconfont icon-guanbi" @click="closes()"></i>
-        <p>请输入验证码</p>
-        <div class="region">
-          {{phones}}
-          <i class="time">{{count}}s</i>
-        </div>
-        <div class="phone" @touchstart.stop="focus('Verification')">
-          <span class="Verification">{{ Verification }}</span>
-          <p class="placeholder" v-show="Verification.length === 0">请输入验证码</p>
-        </div>
-        <i class="tipe" v-show="verificationCodes"> {{tipes}} </i>
-        <div class="nextStep" @click="login()" :class="{ selected: hasvalidations }" >登录</div>
-      </div>
-  </div>
-    <!-- 自定义键盘 -->
-    <keyboard :show="keyboard" @typing="typing"/>
-    </div>
-     <load-more v-if="elseloading" :show-loading="false" tip="暂无更多数据" background-color="#fbf9fe"></load-more>
+      <load-more v-if="elseloading" :show-loading="false" tip="暂无更多数据" background-color="#fbf9fe"></load-more>
   </div>
 </template>
 
@@ -287,7 +285,7 @@ export default {
       // 加载和显示可视区域内的图片
       clearTimeout(this._displayTimer)
       this._displayTimer = setTimeout(() => {
-        this.$refs.waterfall.$children.forEach(slot => {
+        this.$refs.waterfall && this.$refs.waterfall.$children.forEach(slot => {
           if (this.isElementInViewport(slot.$el, 50)) {
             const item = this.items[slot.order]
             // const img = new Image();
@@ -783,8 +781,8 @@ export default {
   background-color: #dc7a7a;
   // border: solid 1px #c8c8c8;
   border-radius: 50%;
-  background-size: cover;
-  background-position: center;
+  background-size: contain;
+  background-position: center top;
   background-repeat: no-repeat;
   z-index: 2;
   box-sizing: border-box;
@@ -828,8 +826,8 @@ export default {
   width: 100%;
   height: 100%;
   // height: calc(~"100% - 60px");/*no*/
-  background-size: cover;
-  background-position : center;
+  background-size: contain;
+  background-position : center top;
 }
 .recommend .item-cover {
   display: flex;
@@ -840,7 +838,7 @@ export default {
   top: 0;
   background-color: #fff;
   width: 100%;
-  height: calc(~"100% - 31px");
+  // height: calc(~"100% - 31px");
   transition: opacity 0.5s ease-in;
   opacity: 1;
 }

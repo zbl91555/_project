@@ -258,7 +258,7 @@ let routes = [{
   component: resolve => require(['../components/Home.vue'], resolve),
   name: '首页',
   meta: {
-    //   keepAlive : true,
+    keepAlive: true,
     requiresAuth: true,
     requiresWx: true,
     title: '淘拍堂'

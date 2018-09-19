@@ -19,7 +19,7 @@
       <waterfall-slot v-for="(item, index) in items" :width="item.width" :height="item.height" :order="index" :key="item.uri">
         <router-link :to="{name: 'auction', params: {id: item.uri }}">
           <div class="item">
-            <div class="item-image" :style="{ 'background-image': `url(${item.cover})`,'background-position' : 'center' }"></div>
+            <div class="item-image" :style="{ 'background-image': `url(${item.cover})`,'background-position' : 'center top' }"></div>
             <div class="item-cover" :class="{ 'item-loaded': item.loaded }"></div>
             <div class="info">
               <div v-if="item.sellerAvatar != null " class="avatar" :style="{backgroundImage:'url(' + item.sellerAvatar + ')'}"></div>
@@ -276,7 +276,7 @@ export default {
       // 加载和显示可视区域内的图片
       clearTimeout(this._displayTimer)
       this._displayTimer = setTimeout(() => {
-        this.$refs.waterfall.$children.forEach(slot => {
+        this.$refs.waterfall && this.$refs.waterfall.$children.forEach(slot => {
           if (this.isElementInViewport(slot.$el, 50)) {
             const item = this.items[slot.order]
             // const img = new Image();
@@ -752,35 +752,25 @@ export default {
 
 /*瀑布流样式*/
 .dredge .vue-waterfall {
+    width: 100%;
   transition: opacity 1s ease-in;
   opacity: 0;
-  // padding-bottom : 1.333rem;
+  padding-bottom : 1.333rem;
+}
+.dredge .loading-text {
+  margin-left: 20px;
 }
 .dredge .item .info {
   position: relative;
   background: #fff;
-  bottom: 31px; /*no*/
+  bottom: 26px; /*no*/
 }
-/*瀑布流样式*/
 .dredge .loading-more {
   text-align: center;
   font-size: 28px;
   font-weight: bold;
   margin: 20px 0;
   color: #999;
-}
-.dredge .loading-text {
-  margin-left: 20px;
-}
-.dredge .vue-waterfall {
-  width: 100%;
-  transition: opacity 1s ease-in;
-  opacity: 0;
-}
-.dredge .item .info {
-  position: relative;
-  background: #fff;
-  bottom: 31px; /*no*/
 }
 .dredge .item .info .avatar {
   position: absolute;
@@ -791,8 +781,8 @@ export default {
   background-color: #dc7a7a;
   // border: solid 1px #c8c8c8;
   border-radius: 50%;
-  background-size: cover;
-  background-position: center;
+  background-size: contain;
+  background-position: center top;
   background-repeat: no-repeat;
   z-index: 2;
   box-sizing: border-box;
@@ -834,10 +824,10 @@ export default {
 }
 .dredge .item-image {
   width: 100%;
-  height: 100%;
-  // height: calc(~"100% - 60px");
-  background-size: cover;
-  background-position : center;
+  // height: 100%;
+  height: calc(~"100% - 6px");
+  background-size: contain;
+  background-position : center top;
 }
 .dredge .item-cover {
   display: flex;
@@ -848,7 +838,8 @@ export default {
   top: 0;
   background-color: #fff;
   width: 100%;
-  height: calc(~"100% - 31px");
+  // height: calc(~"100% - 31px");
+  height:20px;
   transition: opacity 0.5s ease-in;
   opacity: 1;
 }

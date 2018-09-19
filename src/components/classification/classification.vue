@@ -17,7 +17,7 @@
       </ul>
     </div>
     <div class="foods-wrapper" ref="foods">
-      <ul>
+      <ul >
         <li  v-for="item in category" class="paddingBottom food-list food-list-hook" :key="item.id">
           <p class="title">{{item.name}}</p>
           <ul >
@@ -26,7 +26,7 @@
                 <router-link :to="'/category/categoryDetails/'+food.id">
                   <img width="66" height="66" :src="food.image">
                   <i>{{food.name}}</i>
-                 </router-link>
+                </router-link>
               </div>
             </li>
           </ul>
@@ -132,6 +132,7 @@ export default {
     scrollTo (index) {
       this.currentIndexes = index
       let target = this.categoryListHeights[index]
+      console.log(target)
       this.foodsScroll.scrollTo(0, -target, 400)
     },
     // 获取数据
@@ -258,7 +259,13 @@ export default {
   width: 5.25rem;
   height:100%;
   background: white;
+  overflow: auto;
+  height: 100%;
 }
+/* .category .foods-wrapper::-webkit-scrollbar,
+.category .foods-wrapper::-webkit-scrollbar{
+  display: none;
+} */
 .category .foods-wrapper .title {
   position: relative;
   width: 82%;

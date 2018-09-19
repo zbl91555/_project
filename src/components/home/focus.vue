@@ -14,7 +14,7 @@
         <waterfall-slot v-for="(item, index) in items" :width="item.width" :height="item.height" :order="index" :key="item.uri">
           <div class="item">
             <router-link :to="{name: 'auction', params: {id: item.uri }}">
-              <div class="item-image" :style="{ 'background-image': `url(${item.cover})`,'background-position' : 'center' }"></div>
+              <div class="item-image" :style="{ 'background-image': `url(${item.cover})`,'background-position' : 'center top' }"></div>
               <div class="item-cover" :class="{ 'item-loaded': item.loaded }"></div>
             </router-link>
             <div class="info">
@@ -411,8 +411,8 @@ export default {
   background-color: #dc7a7a;
   // border: solid 1px #c8c8c8;
   border-radius: 50%;
-  background-size: cover;
-  background-position: center;
+  background-size: contain;
+  background-position: center top;
   background-repeat: no-repeat;
   z-index: 2;
   box-sizing: border-box;
@@ -456,8 +456,8 @@ export default {
   width: 100%;
   height: 100%;
   // height: calc(~"100% - 60px");
-  background-size: cover;
-  background-position : center;
+  background-size: contain;
+  background-position : center top;
 }
 .focus .item-cover {
   display: flex;

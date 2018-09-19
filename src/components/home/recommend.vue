@@ -22,7 +22,7 @@
       <waterfall-slot v-for="(item, index) in items" :width="item.width" :height="item.height" :order="index" :key="item.uri">
         <router-link :to="{name: 'auction', params: {id: item.uri }}">
           <div class="item">
-            <div class="item-image" :style="{ 'background-image': `url(${item.cover})`,'background-position' : 'center' }"></div>
+            <div class="item-image" :style="{ 'background-image': `url(${item.cover})`,'background-position' : 'top center' }"></div>
             <div class="item-cover" :class="{ 'item-loaded': item.loaded }"></div>
             <div class="info">
               <div v-if="item.sellerAvatar != null " class="avatar" :style="{backgroundImage:'url(' + item.sellerAvatar + ')'}"></div>
@@ -337,8 +337,9 @@ export default {
               this.isBusy = false
               this.loadingMore = false
             }
-            this.num = res.data.items.length || 0;
-            (res.data.items || []).forEach((item, i) => {
+            this.num = res.data.items.length || 0
+            const items = res.data.items || []
+            items.forEach((item, i) => {
               let coverUrl
               coverUrl = item.cover
               const m = coverUrl.match(/-W(\d+?)H(\d+)/)
@@ -828,7 +829,8 @@ export default {
   width: 100%;
   height: 100%;
   // height: calc(~"100% - 60px");/*no*/
-  background-size: cover;
+  // FIXME:
+  background-size: contain;
   background-position : center;
 }
 .recommend .item-cover {

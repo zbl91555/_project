@@ -172,7 +172,8 @@ var verticalLineProcessor = (() => {
       rect.top = tops[offset]
       rect.left = strategy.left + (offset ? sum(strategy.width.slice(0, offset)) : 0)
       rect.width = width
-      rect.height = Math.min(meta.height * (options.fixedHeight ? 1 : width / meta.width), 250)
+      // FIXME: add 31 height
+      rect.height = Math.min(meta.height * (options.fixedHeight ? 1 : width / meta.width), 250) + 31
       tops[offset] = tops[offset] + rect.height
     })
     vm.style.height = Math.max.apply(Math, tops) + 'px'

@@ -1,9 +1,19 @@
 <template>
   <div class="dredge" ref="ctn">
     <tabBar :changeRed="changeRed"></tabBar>
+    <!-- <keep-alive>
+    <router-view class="home-view"></router-view>
+    </keep-alive> -->
+
     <keep-alive>
-      <router-view class="home-view"></router-view>
+        <router-view class="home-view" v-if="$route.meta.keepAlive">
+            <!-- 这里是会被缓存的视图组件，比如 page1,page2 -->
+        </router-view>
     </keep-alive>
+
+    <router-view class="home-view" v-if="!$route.meta.keepAlive">
+        <!-- 这里是不被缓存的视图组件，比如 page3 -->
+    </router-view>
   </div>
 </template>
 
@@ -66,6 +76,7 @@ export default {
       isLoading: false,
       demoList: demoList,
       changeRed: 1,
+      str: '', // 加载页面后执行获取数据的方法，插入到此
       timeLists: [
         {
           text: '优选',
@@ -162,6 +173,10 @@ export default {
     next()
   },
   methods: {
+    getData () {
+      // getData方法，模拟从后台请求数据
+      this.str = '我是通过调用方法加载的数据。。。'
+    },
     // 活动接口
     openActivity ({ endTime, openTime, img }) {
       let newTime = new Date().getTime() / 1000

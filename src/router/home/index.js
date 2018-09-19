@@ -21,7 +21,8 @@ export default [
         component: homeIndex,
         name: 'index',
         meta: {
-          //   keepAlive : true,
+          keepAlive: true, // 此组件需要被缓存
+          isBack: false, // 用于判断上一个页面是哪个
           requiresAuth: true,
           requiresWx: true,
           title: '淘拍堂'
@@ -33,7 +34,9 @@ export default [
         name: 'focus',
         meta: {
           requiresAuth: true,
-          title: '淘拍堂'
+          title: '淘拍堂',
+          isBack: false, // 用于判断上一个页面是哪个
+          keepAlive: true // 此组件需要被缓存
         } // 需要登陆
       },
       {
@@ -41,7 +44,9 @@ export default [
         name: 'recommend',
         component: recommend,
         meta: {
-          title: '淘拍堂'
+          title: '淘拍堂',
+          isBack: false, // 用于判断上一个页面是哪个
+          keepAlive: true // 此组件需要被缓存
         }
       }
     ]

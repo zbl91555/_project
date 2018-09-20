@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {getSign, wxPay} from '../api/api'
+import { getSign, wxPay } from '../api/api'
 var wx = require('weixin-js-sdk')
 export default {
   data () {

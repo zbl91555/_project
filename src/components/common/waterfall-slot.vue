@@ -72,5 +72,4 @@ export default {
     this.notify()
   }
 }
-
 </script>

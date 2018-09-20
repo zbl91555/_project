@@ -1,6 +1,7 @@
 <template>
   <div class="dredge" ref="ctn">
     <tabBar :changeRed="changeRed"></tabBar>
+<<<<<<< HEAD
     <!-- <keep-alive>
     <router-view class="home-view"></router-view>
     </keep-alive> -->
@@ -9,6 +10,10 @@
         <router-view class="home-view" v-if="$route.meta.keepAlive">
             <!-- 这里是会被缓存的视图组件，比如 page1,page2 -->
         </router-view>
+=======
+    <keep-alive >
+      <router-view class="home-view"></router-view>
+>>>>>>> 00f1eb799599664ebe2887e7869b0a199e4745e5
     </keep-alive>
 
     <router-view class="home-view" v-if="!$route.meta.keepAlive">
@@ -169,7 +174,7 @@ export default {
       scroll: this.scroll,
       isBusy: this.isBusy
     }
-    sessionStorage.setItem('home', JSON.stringify(home))
+    sessionStorage.setItem('index', JSON.stringify(home))
     next()
   },
   methods: {
@@ -739,8 +744,8 @@ export default {
   background-color: #dc7a7a;
   // border: solid 1px #c8c8c8;
   border-radius: 50%;
-  background-size: cover;
-  background-position: center;
+  background-size: contain;
+  background-position: center top;
   background-repeat: no-repeat;
   z-index: 2;
   box-sizing: border-box;
@@ -784,8 +789,8 @@ export default {
   width: 100%;
   height: 100%;
   // height: calc(~"100% - 60px");
-  background-size: cover;
-  background-position : center;
+  background-size: contain;
+  background-position : center top;
 }
 .dredge .item-cover {
   display: flex;
@@ -796,7 +801,7 @@ export default {
   top: 0;
   background-color: #fff;
   width: 100%;
-  height: calc(~"100% - 31px");
+  // height: calc(~"100% - 31px");
   transition: opacity 0.5s ease-in;
   opacity: 1;
 }

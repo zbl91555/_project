@@ -6,6 +6,7 @@ const withDrawNextCash = () => import('../../components/my/withDrawNextCash.vue'
 const rechargeMethod = () => import('../../components/my/buyerCenter/rechargeMethod.vue')
 // 零钱明细
 const looseChange = () => import('../../components/my/looseChange.vue')
+
 const balance = () => import('../../components/my/balance.vue')
 const touchBalance = () => import('../../components/my/touchBalance.vue')
 export default [

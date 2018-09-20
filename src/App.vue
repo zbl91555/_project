@@ -10,7 +10,7 @@
           <loading v-model="isLoading" :text="text"></loading>
           <div v-if="isLoading" class="appMask"></div>
           <keep-alive>
-            <router-view></router-view>
+            <router-view ></router-view>
           </keep-alive>
         </div>
     </transition>

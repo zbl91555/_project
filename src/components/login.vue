@@ -9,7 +9,7 @@
         <i class="iconfont icon-right"></i>
       </div>
       <div class="phone">
-         <input type="number" class="phonenumber" name="phonenumber" placeholder="请输入手机号"
+         <input type="phone" class="phonenumber" name="phonenumber" placeholder="请输入手机号"
         v-on:input ="choose()"  ref="input1" v-model="phone">
       </div>
       <i class="tipe" v-show="verificationCode"> {{tipe}} </i>
@@ -24,7 +24,7 @@
         <i class="time">{{count}}s</i>
       </div>
       <div class="phone">
-        <input type="number" class="validationnumber" name="validationnumber" placeholder="请输入验证码"
+        <input type="phone" class="validationnumber" name="validationnumber" placeholder="请输入验证码"
         v-on:input ="chooses()"  ref="input2"  v-model="message">
       </div>
       <i class="tipe" v-show="verificationCodes"> {{tipes}} </i>

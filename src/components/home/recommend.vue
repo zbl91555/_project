@@ -43,29 +43,6 @@
           <span class="loading-text">加载更多...</span>
         </div>
 
-<<<<<<< HEAD
-    <!-- 图片瀑布流 -->
-  <!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh"> -->
-    <!-- <div class="mescroll" id="mescroll"> -->
-    <waterfall
-      ref="waterfall"
-      :class="{ initshow: firstTime }"
-      :align="align" :line-gap="gap" :min-line-gap="100" :max-line-gap="maxGap" :single-max-width="300"
-      :watch="items"
-      @reflowed="reflowed"
-    >
-      <waterfall-slot v-for="(item, index) in items" :width="item.width" :height="item.height" :order="index" :key="item.uri">
-        <router-link :to="{name: 'auction', params: {id: item.uri }}">
-          <div class="item">
-            <div class="item-image" :style="{ 'background-image': `url(${item.cover})`,'background-position' : 'top center' }"></div>
-            <div class="item-cover" :class="{ 'item-loaded': item.loaded }"></div>
-            <div class="info">
-              <div v-if="item.sellerAvatar != null " class="avatar" :style="{backgroundImage:'url(' + item.sellerAvatar + ')'}"></div>
-              <div v-else class="iconfont icon-wutouxiang"></div>
-              <div class="price false">
-                <span class="money" v-if="item.price > item.startPrice">￥{{item.price}}</span>
-                <span class="money" v-else>￥{{item.startPrice}}<span> 起</span></span>
-=======
         <!-- 绑定手机号 -->
         <div class="loginValidation" v-show="bindphone">
             <div class="maskout"></div>
@@ -74,7 +51,6 @@
               <div class="phone" @touchstart.stop="focus('phones')">
                 <span class="phones">{{ phones }}</span>
                 <p class="placeholder" v-show="phones.length === 0">请输入手机号</p>
->>>>>>> 00f1eb799599664ebe2887e7869b0a199e4745e5
               </div>
               <i class="tipe" v-show="verificationCode"> {{tipe}} </i>
               <div class="nextStep" @click="nextStep()" :class="{ selected: hasvalidation }">下一步</div>
@@ -152,6 +128,7 @@ export default {
   mixins: [assign],
   data () {
     return {
+      isFirstEnter: false, // 是否第一次进入，默认false
       scroll: 0,
       isLoading: false,
       // demoList: demoList,
@@ -250,6 +227,14 @@ export default {
       isBusy: this.isBusy
     }
     sessionStorage.setItem('recommend', JSON.stringify(recommend))
+    next()
+  },
+  beforeRouteEnter (to, from, next) {
+    if (from.name == 'auction') {
+      to.meta.isBack = true
+      // 判断是从哪个路由过来的，
+      // 如果是page2过来的，表明当前页面不需要刷新获取新数据，直接用之前缓存的数据即可
+    }
     next()
   },
   methods: {
@@ -631,6 +616,17 @@ export default {
     //   window.scrollTo(0, this.scroll);
     // }
     // }
+
+    if (!this.$route.meta.isBack || this.isFirstEnter) {
+      // 如果isBack是false，表明需要获取新数据，否则就不再请求，直接使用缓存的数据
+      // 如果isFirstEnter是true，表明是第一次进入此页面或用户刷新了页面，需获取新数据
+      this.str = ''// 把数据清空，可以稍微避免让用户看到之前缓存的数据
+      this.fetchMore()
+    }
+    // 恢复成默认的false，避免isBack一直是true，导致下次无法获取数据
+    this.$route.meta.isBack = false
+    // 恢复成默认的false，避免isBack一直是true，导致每次都获取新数据
+    this.isFirstEnter = false
   },
   created () {
     this.num = this.pagenum
@@ -658,6 +654,9 @@ export default {
       this.gap = 200
       this.maxGap = 220
     }
+    this.isFirstEnter = true
+    // 只有第一次进入或者刷新页面后才会执行此钩子函数
+    // 使用keep-alive后（2+次）进入不会再执行此钩子函数
   },
   mounted () {
     let data = sessionStorage.getItem('recommend')
@@ -851,14 +850,8 @@ export default {
   width: 100%;
   height: 100%;
   // height: calc(~"100% - 60px");/*no*/
-<<<<<<< HEAD
-  // FIXME:
-  background-size: contain;
-  background-position : center;
-=======
   background-size: contain;
   background-position : center top;
->>>>>>> 00f1eb799599664ebe2887e7869b0a199e4745e5
 }
 .recommend .item-cover {
   display: flex;

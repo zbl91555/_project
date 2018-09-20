@@ -1,7 +1,6 @@
 <template>
   <div class="dredge" ref="ctn">
     <tabBar :changeRed="changeRed"></tabBar>
-<<<<<<< HEAD
     <!-- <keep-alive>
     <router-view class="home-view"></router-view>
     </keep-alive> -->
@@ -9,11 +8,10 @@
     <keep-alive>
         <router-view class="home-view" v-if="$route.meta.keepAlive">
             <!-- 这里是会被缓存的视图组件，比如 page1,page2 -->
+            <recommend></recommend>
+            <index></index>
+            <focus></focus>
         </router-view>
-=======
-    <keep-alive >
-      <router-view class="home-view"></router-view>
->>>>>>> 00f1eb799599664ebe2887e7869b0a199e4745e5
     </keep-alive>
 
     <router-view class="home-view" v-if="!$route.meta.keepAlive">
@@ -42,6 +40,9 @@ import tabBar from './home/tabBar'
 import { mapState } from 'vuex'
 import activityEntrance from './activityPage/activityEntrance.vue'
 import { getDiscoverList, openActivity } from '../api/api'
+import recommend from './home/recommend'
+import index from './home/index'
+import focus from './home/focus'
 // import assign from '../assets/js/assign.js' // 混入式方法
 
 // 轮播图图片
@@ -177,11 +178,15 @@ export default {
     sessionStorage.setItem('index', JSON.stringify(home))
     next()
   },
+  beforeRouteEnter (to, from, next) {
+    if (from.name == 'auction') {
+      to.meta.isBack = true
+      // 判断是从哪个路由过来的，
+      // 如果是page2过来的，表明当前页面不需要刷新获取新数据，直接用之前缓存的数据即可
+    }
+    next()
+  },
   methods: {
-    getData () {
-      // getData方法，模拟从后台请求数据
-      this.str = '我是通过调用方法加载的数据。。。'
-    },
     // 活动接口
     openActivity ({ endTime, openTime, img }) {
       let newTime = new Date().getTime() / 1000
@@ -240,7 +245,7 @@ export default {
       }, this.page <= 1 ? 100 : 50)
       // 滚动加载数据
       if (this.shouldLoadMore() && (!this.loadingMore && !this.isBusy)) {
-        await this.fetchMore()
+        // await this.fetchMore()
       }
     },
     reflowed () {
@@ -562,6 +567,21 @@ export default {
     //   window.scrollTo(0, this.scroll);
     // }
     // }
+    // 路由导航钩子，此时还不能获取组件实例 `this`，所以无法在data中定义变量（利用vm除外）
+    // 参考 https://router.vuejs.org/zh-cn/advanced/navigation-guards.html
+    // 所以，利用路由元信息中的meta字段设置变量，方便在各个位置获取。这就是为什么在meta中定义isBack
+    // 参考 https://router.vuejs.org/zh-cn/advanced/meta.html
+
+    if (!this.$route.meta.isBack || this.isFirstEnter) {
+      // 如果isBack是false，表明需要获取新数据，否则就不再请求，直接使用缓存的数据
+      // 如果isFirstEnter是true，表明是第一次进入此页面或用户刷新了页面，需获取新数据
+      this.str = ''// 把数据清空，可以稍微避免让用户看到之前缓存的数据
+      this.fetchMore()
+    }
+    // 恢复成默认的false，避免isBack一直是true，导致下次无法获取数据
+    this.$route.meta.isBack = false
+    // 恢复成默认的false，避免isBack一直是true，导致每次都获取新数据
+    this.isFirstEnter = false
   },
   created () {
     this.num = this.pagenum

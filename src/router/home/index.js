@@ -1,5 +1,5 @@
 // 首页
-const home = () => import(/* webpackChunkName: "home" */ '../../components/Home.vue')
+const home = () => import(/* webpackChunkName: "home" */ '../../components/Home')
 
 const homeIndex = () => import(/* webpackChunkName: "homeIndex" */ '../../components/home/index')
 
@@ -22,7 +22,7 @@ export default [
         name: 'index',
         meta: {
           keepAlive: true, // 此组件需要被缓存
-          isBack: false, // 用于判断上一个页面是哪个
+          isBack: true, // 用于判断上一个页面是哪个
           requiresAuth: true,
           requiresWx: true,
           title: '淘拍堂'
@@ -35,7 +35,7 @@ export default [
         meta: {
           requiresAuth: true,
           title: '淘拍堂',
-          isBack: false, // 用于判断上一个页面是哪个
+          isBack: true, // 用于判断上一个页面是哪个
           keepAlive: true // 此组件需要被缓存
         } // 需要登陆
       },

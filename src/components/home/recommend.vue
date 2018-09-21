@@ -35,8 +35,7 @@
             </router-link>
           </waterfall-slot>
         </waterfall>
-        <!-- </div> -->
-        <!-- </van-pull-refresh> -->
+
         <!-- loading信息 -->
         <div class="loading-more" v-show="loadingMore">
           <i class="el-icon-loading"></i>
@@ -133,20 +132,20 @@ export default {
       isLoading: false,
       // demoList: demoList,
       changeRed: 0,
-      timeLists: [
-        {
-          text: '优选',
-          link: '/recommend'
-        },
-        {
-          text: '淘淘',
-          link: '/home'
-        },
-        {
-          text: '关注',
-          link: '/focus'
-        }
-      ],
+      // timeLists: [
+      //   {
+      //     text: '优选',
+      //     link: '/recommend'
+      //   },
+      //   {
+      //     text: '淘淘',
+      //     link: '/index'
+      //   },
+      //   {
+      //     text: '关注',
+      //     link: '/focus'
+      //   }
+      // ],
       align: 'center',
       isBusy: false,
       loadingMore: false,
@@ -176,6 +175,7 @@ export default {
       keyboard: false,
       keyboardTips: false,
       val: '',
+      // 非法的
       aIllegal: [
         '00',
         '01',
@@ -225,6 +225,12 @@ export default {
       page: this.page,
       scroll: this.scroll,
       isBusy: this.isBusy
+    }
+    if (from.name == 'auction') {
+      to.meta.isBack = true
+      alert(222)
+      // 判断是从哪个路由过来的，
+      // 如果是page2过来的，表明当前页面不需要刷新获取新数据，直接用之前缓存的数据即可
     }
     sessionStorage.setItem('recommend', JSON.stringify(recommend))
     next()
@@ -307,88 +313,87 @@ export default {
       }, this.page <= 1 ? 100 : 50)
       // 滚动加载数据
       if (this.shouldLoadMore() && (!this.loadingMore && !this.isBusy)) {
-        await this.fetchMore()
+        // await this.fetchMore()
       }
     },
     reflowed () {
       this.isBusy = false
     },
     // 瀑布流加载数据
-    async fetchMore () {
-      if (!this.loadingMore && !this.isBusy) {
-        if (!(this.num > 0)) {
-          this.loadingMore = false
-          this.elseloading = true
-          return
-        }
-        if (sessionStorage.getItem('recommend')) {
-          return
-        }
-        this.isBusy = true
-        this.loadingMore = true
-        this.page += 1
-        let params = {
-          page: this.page,
-          pagenum: this.pagenum
-        }
-        getRecommend(params)
-          .then(res => {
-            const pageItems = []
-            if (res.data.html) {
-              // 第一次 分享数据
-              this.goShares(res.data.html)
-            }
-
-            if (!res.data.items) {
-              // 断掉
-              this.isBusy = false
-              this.loadingMore = false
-            }
-            this.num = res.data.items.length || 0
-            const items = res.data.items || []
-            items.forEach((item, i) => {
-              let coverUrl
-              coverUrl = item.cover
-              const m = coverUrl.match(/-W(\d+?)H(\d+)/)
-              if (!m) {
-                let img = new Image()
-                img.onload = () => {
-                  item.width = img.width
-                  item.height = img.height
-                  item.loaded = false
-                  item.lazyCover = ''
-                  pageItems.push(item)
-                }
-                img.src = item.coverUrl
-              } else {
-                coverUrl = coverUrl.substring(0, coverUrl.length - 6)
-                if (m && m.length >= 3) {
-                  item.width = parseInt(m[1])
-                  item.height = parseInt(m[2])
-                  item.loaded = false
-                  item.lazyCover = ''
-                  pageItems.push(item)
-                }
-              }
-            })
-            this.items = this.items.concat(pageItems)
-            this.loadingMore = false
-            this.isBusy = false
-            this.firstTime = true
-            if (this.page === 1) {
-              this.$nextTick(() => {
-                this.scrollHandler()
-              })
-            }
-          })
-          .catch(err => {
-            this.loadingMore = false
-            this.elseloading = true
-            this.isBusy = true
-            // this.$store.commit("updateLoadingStatus", { isLoading: false });
-            this.page--
-          })
+    fetchMore () {
+      // if (!this.loadingMore && !this.isBusy) {
+      // if (!(this.num > 0)) {
+      //   this.loadingMore = false
+      //   this.elseloading = true
+      //   return
+      // }
+      // if (sessionStorage.getItem('recommend')) {
+      //   return
+      // }
+      // this.isBusy = true
+      // this.loadingMore = true
+      // this.page += 1
+      let params = {
+        page: this.page,
+        pagenum: this.pagenum
       }
+      getRecommend(params)
+        .then(res => {
+          const pageItems = []
+          // if (res.data.html) {
+          //   // 第一次 分享数据
+          //   this.goShares(res.data.html)
+          // }
+          // if (!res.data.items) {
+          //   // 断掉
+          //   this.isBusy = false
+          //   this.loadingMore = false
+          // }
+          this.num = res.data.items.length || 0
+          const items = res.data.items || []
+          items.forEach((item, i) => {
+            let coverUrl
+            coverUrl = item.cover
+            const m = coverUrl.match(/-W(\d+?)H(\d+)/)
+            if (!m) {
+              let img = new Image()
+              img.onload = () => {
+                item.width = img.width
+                item.height = img.height
+                item.loaded = false
+                item.lazyCover = ''
+                // pageItems.push(item)
+              }
+              // img.src = item.coverUrl
+            } else {
+              coverUrl = coverUrl.substring(0, coverUrl.length - 6)
+              if (m && m.length >= 3) {
+                item.width = parseInt(m[1])
+                item.height = parseInt(m[2])
+                item.loaded = false
+                item.lazyCover = ''
+                pageItems.push(item)
+              }
+            }
+          })
+          this.items = this.items.concat(pageItems)
+          this.loadingMore = false
+          // this.isBusy = false
+          this.firstTime = true
+          // if (this.page === 1) {
+          //   this.$nextTick(() => {
+          //     this.scrollHandler()
+          //   })
+          // }
+        })
+      // .catch(err => {
+      //   this.loadingMore = false
+      //   this.elseloading = true
+      //   this.isBusy = true
+      //   // this.$store.commit("updateLoadingStatus", { isLoading: false });
+      //   this.page--
+      // })
+      // }
     },
     // 瀑布流相关操作End
 
@@ -629,6 +634,7 @@ export default {
     this.isFirstEnter = false
   },
   created () {
+    this.isFirstEnter = true
     this.num = this.pagenum
     if (sessionStorage.getItem('activityTime')) {
       let time = JSON.parse(sessionStorage.getItem('activityTime'))
@@ -677,7 +683,7 @@ export default {
       // 清除数据
       sessionStorage.removeItem('recommend')
     } else {
-      this.fetchMore()
+      // this.fetchMore()
     }
   },
   deactivated () {

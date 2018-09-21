@@ -1,7 +1,7 @@
 // 首页
 const home = () => import(/* webpackChunkName: "home" */ '../../components/Home')
 
-const homeIndex = () => import(/* webpackChunkName: "homeIndex" */ '../../components/home/index')
+const index = () => import(/* webpackChunkName: "homeIndex" */ '../../components/home/index')
 
 // 优选
 const recommend = () => import(/* webpackChunkName: "home" */ '../../components/home/recommend')
@@ -18,7 +18,7 @@ export default [
     children: [
       {
         path: '/home',
-        component: homeIndex,
+        component: index,
         name: 'index',
         meta: {
           keepAlive: true, // 此组件需要被缓存

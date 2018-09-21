@@ -1,22 +1,9 @@
 <template>
   <div class="dredge" ref="ctn">
     <tabBar :changeRed="changeRed"></tabBar>
-    <!-- <keep-alive>
-    <router-view class="home-view"></router-view>
-    </keep-alive> -->
-
     <keep-alive>
-        <router-view class="home-view" v-if="$route.meta.keepAlive">
-            <!-- 这里是会被缓存的视图组件，比如 page1,page2 -->
-            <recommend></recommend>
-            <index></index>
-            <focus></focus>
-        </router-view>
+    <router-view class="home-view"></router-view>
     </keep-alive>
-
-    <router-view class="home-view" v-if="!$route.meta.keepAlive">
-        <!-- 这里是不被缓存的视图组件，比如 page3 -->
-    </router-view>
   </div>
 </template>
 

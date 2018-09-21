@@ -5,9 +5,7 @@ import api from '../api/index'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-
   modules: {
-
   },
   state: {
     // 加载loding

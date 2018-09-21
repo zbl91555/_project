@@ -10,8 +10,17 @@
           <loading v-model="isLoading" :text="text"></loading>
           <div v-if="isLoading" class="appMask"></div>
           <keep-alive>
-            <router-view ></router-view>
+              <router-view class="home-view" v-if="$route.meta.keepAlive">
+                  <!-- 这里是会被缓存的视图组件，比如 page1,page2 -->
+                  <recommend></recommend>
+                  <index></index>
+                  <focus></focus>
+              </router-view>
           </keep-alive>
+
+          <router-view class="home-view" v-if="!$route.meta.keepAlive">
+              <!-- 这里是不被缓存的视图组件，比如 page3 -->
+          </router-view>
         </div>
     </transition>
   </div>

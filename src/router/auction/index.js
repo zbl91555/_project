@@ -10,7 +10,8 @@ export default [
     component: articleDetails,
     name: 'auction',
     meta: {
-      title: '拍品详情'
+      title: '拍品详情',
+      isback: false
     }
   },
   {

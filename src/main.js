@@ -79,7 +79,7 @@ const routeParams = {
   routes,
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {
-      if (to.name == '首页') {
+      if (from.name == 'auction' && (to.name == 'index' || to.name == 'recommend' || to.name == 'focus')) {
         return new Promise((resolve, reject) => {
           setTimeout(() => {
             resolve(savedPosition)

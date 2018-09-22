@@ -131,6 +131,7 @@ export default {
   },
   data () {
     return {
+      isFirstEnter: false, // 是否第一次进入，默认false
       scroll: 0,
       isLoading: false,
       demoList: demoList,
@@ -228,6 +229,14 @@ export default {
       isBusy: this.isBusy
     }
     sessionStorage.setItem('home', JSON.stringify(home))
+    next()
+  },
+  beforeRouteEnter (to, from, next) {
+    if (from.name == 'auction') {
+      to.meta.isBack = true
+      // 判断是从哪个路由过来的，
+      // 如果是page2过来的，表明当前页面不需要刷新获取新数据，直接用之前缓存的数据即可
+    }
     next()
   },
   methods: {
@@ -610,6 +619,16 @@ export default {
     //   window.scrollTo(0, this.scroll);
     // }
     // }
+    if (!this.$route.meta.isBack || this.isFirstEnter) {
+      // 如果isBack是false，表明需要获取新数据，否则就不再请求，直接使用缓存的数据
+      // 如果isFirstEnter是true，表明是第一次进入此页面或用户刷新了页面，需获取新数据
+      this.str = ''// 把数据清空，可以稍微避免让用户看到之前缓存的数据
+      this.fetchMore()
+    }
+    // 恢复成默认的false，避免isBack一直是true，导致下次无法获取数据
+    this.$route.meta.isBack = false
+    // 恢复成默认的false，避免isBack一直是true，导致每次都获取新数据
+    this.isFirstEnter = false
   },
   created () {
     this.num = this.pagenum
@@ -637,6 +656,9 @@ export default {
       this.gap = 200
       this.maxGap = 220
     }
+    this.isFirstEnter = true
+    // 只有第一次进入或者刷新页面后才会执行此钩子函数
+    // 使用keep-alive后（2+次）进入不会再执行此钩子函数
   },
   mounted () {
     // if (this.isIos()) {

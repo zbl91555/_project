@@ -92,6 +92,7 @@ const routeParams = {
         }
       }
     }
+    if (from.name == 'auction' && (to.name === 'index' || to.name === 'recommend' || to.name === 'focus' || to.name === 'home')) {}
   }
 }
 // 页面无底部导航

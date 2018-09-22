@@ -15,6 +15,7 @@ export default [
   {
     path: '/',
     component: home,
+    name: home,
     children: [
       {
         path: '/home',

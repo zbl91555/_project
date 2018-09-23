@@ -1018,7 +1018,8 @@ export default {
     },
     refreshnow (id) {
       this.$router.push('/auction/' + id)
-      window.location.reload()
+      // window.location.reload()
+      this.$forceUpdate()
     },
     // 更新
     refreshLikeBox () {
@@ -1557,7 +1558,7 @@ export default {
     window.scrollTo(0, 0)
     window.addEventListener('popstate', _ => {
       if (this.isIos() && this.status) {
-        this.$router.go(0)
+        // this.$router.go(0)
       }
     })
     // 复制功能

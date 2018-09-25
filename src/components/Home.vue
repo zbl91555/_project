@@ -1,9 +1,9 @@
 <template>
   <div class="dredge" ref="ctn">
     <tabBar :changeRed="changeRed"></tabBar>
-    <keep-alive>
+    <!-- <keep-alive> -->
     <router-view class="home-view"></router-view>
-    </keep-alive>
+    <!-- </keep-alive> -->
   </div>
 </template>
 

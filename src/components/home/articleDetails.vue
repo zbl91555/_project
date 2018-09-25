@@ -1556,7 +1556,7 @@ export default {
     window.scrollTo(0, 0)
     window.addEventListener('popstate', _ => {
       if (this.isIos() && this.status) {
-        this.$router.go(0)
+        // this.$router.go(0)
       }
     })
     // 复制功能

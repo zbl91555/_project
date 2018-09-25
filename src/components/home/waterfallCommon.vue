@@ -1,14 +1,11 @@
 <template>
-  <div class="dredge" ref="ctn">
+  <div class="common" ref="ctn">
     <tabBar :changeRed="changeRed"></tabBar>
-    <div class = "main" ref="main">
-    <activityEntrance :img="activityImg" :activityEntranceShow="activityEntranceShow"></activityEntrance>
-    <!-- 轮播图 -->
-    <!-- <swiper :list="demoList" style="width:100%;margin:0 auto;" :aspect-ratio="300/800" height="180px" dots-class="custom-bottom" dots-position="center"></swiper> -->
+      <div class = "main" ref="main"
+      @touchstart="touchstart"
+      @touchend="touchend">
 
-    <!-- 图片瀑布流 -->
-  <!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh"> -->
-    <!-- <div class="mescroll" id="mescroll"> -->
+        <!-- 图片瀑布流 -->
     <waterfall
       ref="waterfall"
       :class="{ initshow: firstTime }"
@@ -18,7 +15,9 @@
     >
       <waterfall-slot v-for="(item, index) in items" :width="item.width" :height="item.height" :order="index" :key="item.uri">
         <router-link :to="{name: 'auction', params: {id: item.uri }}">
+
           <div class="item">
+
             <div class="item-image" :style="{ 'background-image': `url(${item.cover})`,'background-position' : 'center top' }"></div>
             <div class="item-cover" :class="{ 'item-loaded': item.loaded }"></div>
             <div class="info">
@@ -42,37 +41,37 @@
       <span class="loading-text">加载更多...</span>
     </div>
 
-    <!-- 绑定手机号 -->
-    <div class="loginValidation" v-show="bindphone">
-      <div class="maskout"></div>
-      <div class="login" v-show="show">
-        <i class="iconfont icon-guanbi" @click="close()"></i><p>登录</p>
-        <div class="phone" @touchstart.stop="focus('phones')">
-          <span class="phones">{{ phones }}</span>
-          <p class="placeholder" v-show="phones.length === 0">请输入手机号</p>
+        <!-- 绑定手机号 -->
+        <div class="loginValidation" v-show="bindphone">
+            <div class="maskout"></div>
+            <div class="login" v-show="show">
+              <i class="iconfont icon-guanbi" @click="close()"></i><p>登录</p>
+              <div class="phone" @touchstart.stop="focus('phones')">
+                <span class="phones">{{ phones }}</span>
+                <p class="placeholder" v-show="phones.length === 0">请输入手机号</p>
+              </div>
+              <i class="tipe" v-show="verificationCode"> {{tipe}} </i>
+              <div class="nextStep" @click="nextStep()" :class="{ selected: hasvalidation }">下一步</div>
+            </div>
+            <div class="validation" v-show="shows">
+              <i class="iconfont icon-guanbi" @click="closes()"></i>
+              <p>请输入验证码</p>
+              <div class="region">
+                {{phones}}
+                <i class="time">{{count}}s</i>
+              </div>
+              <div class="phone" @touchstart.stop="focus('Verification')">
+                <span class="Verification">{{ Verification }}</span>
+                <p class="placeholder" v-show="Verification.length === 0">请输入验证码</p>
+              </div>
+              <i class="tipe" v-show="verificationCodes"> {{tipes}} </i>
+              <div class="nextStep" @click="login()" :class="{ selected: hasvalidations }" >登录</div>
+            </div>
         </div>
-        <i class="tipe" v-show="verificationCode"> {{tipe}} </i>
-        <div class="nextStep" @click="nextStep()" :class="{ selected: hasvalidation }">下一步</div>
+        <!-- 自定义键盘 -->
+        <keyboard :show="keyboard" @typing="typing"/>
       </div>
-      <div class="validation" v-show="shows">
-        <i class="iconfont icon-guanbi" @click="closes()"></i>
-        <p>请输入验证码</p>
-        <div class="region">
-          {{phones}}
-          <i class="time">{{count}}s</i>
-        </div>
-        <div class="phone" @touchstart.stop="focus('Verification')">
-          <span class="Verification">{{ Verification }}</span>
-          <p class="placeholder" v-show="Verification.length === 0">请输入验证码</p>
-        </div>
-        <i class="tipe" v-show="verificationCodes"> {{tipes}} </i>
-        <div class="nextStep" @click="login()" :class="{ selected: hasvalidations }">登录</div>
-      </div>
-  </div>
-    <!-- 自定义键盘 -->
-    <keyboard :show="keyboard" @typing="typing"/>
-    </div>
-     <load-more v-if="elseloading" :show-loading="false" tip="暂无更多数据" background-color="#fbf9fe"></load-more>
+      <load-more v-if="elseloading" :show-loading="false" tip="暂无更多数据" background-color="#fbf9fe"></load-more>
   </div>
 </template>
 
@@ -92,27 +91,22 @@ import Waterfall from '../common/waterfall'
 import WaterfallSlot from '../common/waterfall-slot'
 import { setTimeout, clearTimeout } from 'timers'
 import keyboard from '../keyboards' // 数字键盘
-import tabBar from '../home/tabBar'
+import Cookies from 'js-cookie' // cookie
+import tabBar from './tabBar'
 import { mapState } from 'vuex'
 import activityEntrance from '../activityPage/activityEntrance.vue'
-import { getDiscoverList, openActivity } from '../../api/api'
-// import assign from '../assets/js/assign.js' // 混入式方法
 
-// 轮播图图片
-const imgList = [
-  'https://m.taopaitang.com/taopaitang/application/view/default/images/hhx1.png',
-  'https://m.taopaitang.com/taopaitang/application/view/default/images/hhx2.png',
-  'https://m.taopaitang.com/taopaitang/application/view/default/images/hhx3.png',
-  'https://m.taopaitang.com/taopaitang/application/view/default/images/hhx4.png'
-]
-
-const demoList = imgList.map((one, index) => ({
-  url: '#:',
-  img: one
-}))
+import {
+  getRecommend,
+  loginMobile,
+  getLoginMobileCode,
+  category,
+  openActivity
+} from '../../api/api'
+import assign from '../../assets/js/assign.js' // 混入式方法
 
 export default {
-  name: 'home',
+  name: 'recommend',
   components: {
     Tab,
     TabItem,
@@ -129,13 +123,13 @@ export default {
     LoadMore,
     activityEntrance
   },
+  mixins: [assign],
   data () {
     return {
-      isFirstEnter: false, // 是否第一次进入，默认false
       scroll: 0,
       isLoading: false,
-      demoList: demoList,
-      changeRed: 1,
+      // demoList: demoList,
+      changeRed: 0,
       timeLists: [
         {
           text: '优选',
@@ -143,7 +137,7 @@ export default {
         },
         {
           text: '淘淘',
-          link: '/home'
+          link: '/index'
         },
         {
           text: '关注',
@@ -160,6 +154,7 @@ export default {
       _displayTimer: null,
       show: true,
       shows: false,
+      count: '',
       hasvalidation: false,
       hasvalidations: false,
       verificationCode: false,
@@ -178,6 +173,7 @@ export default {
       keyboard: false,
       keyboardTips: false,
       val: '',
+      // 非法的
       aIllegal: [
         '00',
         '01',
@@ -198,11 +194,11 @@ export default {
       index: 0,
       num: 0,
       // mescroll : {},
-      count: 0,
       elseloading: false, // 暂无更多数据
-      gap: 200,
-      maxGap: 220,
-      activityEntranceShow: false, // 活动组件是否显示
+      row: '',
+      gap: 280,
+      maxGap: 300,
+      activityEntranceShow: false, // 活动页面是否展示
       activityImg: ''
     }
   },
@@ -222,13 +218,19 @@ export default {
   },
   // 页面离开时 保存数据
   beforeRouteLeave (to, from, next) {
-    let home = {
+    let recommend = {
       items: this.items,
       page: this.page,
       scroll: this.scroll,
       isBusy: this.isBusy
     }
-    sessionStorage.setItem('home', JSON.stringify(home))
+    if (from.name == 'auction') {
+      to.meta.isBack = true
+      alert(222)
+      // 判断是从哪个路由过来的，
+      // 如果是page2过来的，表明当前页面不需要刷新获取新数据，直接用之前缓存的数据即可
+    }
+    sessionStorage.setItem('recommend', JSON.stringify(recommend))
     next()
   },
   beforeRouteEnter (to, from, next) {
@@ -249,6 +251,21 @@ export default {
         this.activityEntranceShow = false
       }
       this.activityImg = img
+    },
+    // 移动端事件
+    touchstart (e) {
+      this.startY = e.touches[0].clientY
+    },
+    // touchmove(e) {
+    //   console.log('move',e);
+    // },
+    touchend (e) {
+      this.endY = e.changedTouches[0].clientY
+      if (this.endY > this.startY) {
+        this.$store.commit('revise', true)
+      } else {
+        this.$store.commit('revise', false)
+      }
     },
     // ios位置返回
     positionReturn (home, num) {
@@ -277,10 +294,6 @@ export default {
       const ch = this.$refs.ctn.clientHeight
       return st + window.innerHeight >= ch * 0.5
     },
-    // onRefresh() {
-    //     this.page = 0;
-    //     this.fetchMore('renovate');
-    //   },
     async scrollHandler () {
       // 加载和显示可视区域内的图片
       clearTimeout(this._displayTimer)
@@ -312,7 +325,18 @@ export default {
           this.elseloading = true
           return
         }
-        if (sessionStorage.getItem('home')) {
+        if (sessionStorage.getItem('recommend')) {
+          return
+        }
+        this.isBusy = true
+        this.loadingMore = true
+        this.page += 1 // if (!this.loadingMore && !this.isBusy) {
+        if (!(this.num > 0)) {
+          this.loadingMore = false
+          this.elseloading = true
+          return
+        }
+        if (sessionStorage.getItem('recommend')) {
           return
         }
         this.isBusy = true
@@ -322,24 +346,21 @@ export default {
           page: this.page,
           pagenum: this.pagenum
         }
-        getDiscoverList(params)
+        getRecommend(params)
           .then(res => {
-            // 修改loading状态
-            this.$store.commit('updateLoadingStatus', { isLoading: false })
             const pageItems = []
             if (res.data.html) {
-              // 第一次 分享数据
-              // console.log(res.data.html)
+            // 第一次 分享数据
               this.goShares(res.data.html)
             }
-
             if (!res.data.items) {
-              // 断掉
+            // 断掉
               this.isBusy = false
               this.loadingMore = false
             }
-            this.num = res.data.items.length || 0;
-            (res.data.items || []).forEach((item, i) => {
+            this.num = res.data.items.length || 0
+            const items = res.data.items || []
+            items.forEach((item, i) => {
               let coverUrl
               coverUrl = item.cover
               const m = coverUrl.match(/-W(\d+?)H(\d+)/)
@@ -364,23 +385,12 @@ export default {
                 }
               }
             })
-            // if (type == "renovate") {
-            //   this.items = pageItems;
-            // } else {
             this.items = this.items.concat(pageItems)
-            setTimeout(_ => {
-              this.scrollHandler()
-            })
-            // }
             this.loadingMore = false
-            this.isBusy = false
+            // this.isBusy = false
             this.firstTime = true
             if (this.page === 1) {
               this.$nextTick(() => {
-                // if (!this.count) {
-                //   this.loadMore();
-                //   this.count++;
-                // }
                 this.scrollHandler()
               })
             }
@@ -389,6 +399,7 @@ export default {
             this.loadingMore = false
             this.elseloading = true
             this.isBusy = true
+            // this.$store.commit("updateLoadingStatus", { isLoading: false });
             this.page--
           })
       }
@@ -619,6 +630,7 @@ export default {
     //   window.scrollTo(0, this.scroll);
     // }
     // }
+
     if (!this.$route.meta.isBack || this.isFirstEnter) {
       // 如果isBack是false，表明需要获取新数据，否则就不再请求，直接使用缓存的数据
       // 如果isFirstEnter是true，表明是第一次进入此页面或用户刷新了页面，需获取新数据
@@ -631,6 +643,7 @@ export default {
     this.isFirstEnter = false
   },
   created () {
+    this.isFirstEnter = true
     this.num = this.pagenum
     if (sessionStorage.getItem('activityTime')) {
       let time = JSON.parse(sessionStorage.getItem('activityTime'))
@@ -661,32 +674,26 @@ export default {
     // 使用keep-alive后（2+次）进入不会再执行此钩子函数
   },
   mounted () {
-    // if (this.isIos()) {
-    let data = sessionStorage.getItem('home')
-    // let state = sessionStorage.getItem("state");
+    let data = sessionStorage.getItem('recommend')
     if (data) {
-      let home = JSON.parse(data)
-      this.items = home.items
-      this.page = home.page
+      let recommend = JSON.parse(data)
+      this.items = recommend.items
+      this.page = recommend.page
       this.firstTime = true
-      this.isBusy = home.isBusy
+      this.isBusy = recommend.isBusy
       this.$nextTick(_ => {
         if (this.isIos()) {
-          this.scroll = home.scroll
+          this.scroll = recommend.scroll
           let num = setInterval(_ => {
-            this.positionReturn(home, num)
+            this.positionReturn(recommend, num)
           }, 100)
         }
       })
       // 清除数据
-      sessionStorage.removeItem('home')
-      // sessionStorage.removeItem("state");
+      sessionStorage.removeItem('recommend')
     } else {
       this.fetchMore()
     }
-    // }else {
-    //   this.fetchMore();
-    // }
   },
   deactivated () {
     window.removeEventListener('scroll', this.scrollHandler)
@@ -696,30 +703,26 @@ export default {
   }
 }
 </script>
-<style>
-.dredge .van-pull-refresh__head {
+
+<style scoped lang="less">
+.common .van-pull-refresh__head {
   font-size: 24px;
 }
-/* .dredge .weui-loadmore_line{
-  padding-top : 2.4rem;
-} */
-</style>
-<style scoped lang="less">
 /* 修改轮播默认样式 */
-.dredge .vux-slider > .vux-indicator > a > .vux-icon-dot.active,
+.common .vux-slider > .vux-indicator > a > .vux-icon-dot.active,
 .vux-slider .vux-indicator-right > a > .vux-icon-dot.active {
   background-color: #912020;
 }
-.dredge .vux-slider > .vux-indicator > a > .vux-icon-dot,
+.common .vux-slider > .vux-indicator > a > .vux-icon-dot,
 .vux-slider .vux-indicator-right > a > .vux-icon-dot {
   width: 0.15rem;
   height: 0.15rem;
 }
-.dredge .vux-slider > .vux-indicator > a > .vux-icon-dot,
+.common .vux-slider > .vux-indicator > a > .vux-icon-dot,
 .vux-slider .vux-indicator-right > a > .vux-icon-dot {
   border-radius: 50%;
 }
-.dredge .vux-slider > .vux-indicator > a,
+.common .vux-slider > .vux-indicator > a,
 .vux-slider .vux-indicator-right > a {
   margin-left: 0.14rem;
 }
@@ -731,11 +734,12 @@ export default {
 // }
 
 /*导航栏样式*/
-.dredge {
+.common {
   max-width: 750px;
   box-sizing: border-box;
   // overflow-y: scroll;
   padding-bottom: 1.333rem;
+  font-family: PingFang;
 }
 
 .main {
@@ -773,28 +777,37 @@ export default {
 }
 
 /*瀑布流样式*/
-.dredge .vue-waterfall {
-    width: 100%;
+.common .vue-waterfall {
   transition: opacity 1s ease-in;
   opacity: 0;
   padding-bottom : 1.333rem;
 }
-.dredge .loading-text {
-  margin-left: 20px;
-}
-.dredge .item .info {
+.common .item .info {
   position: relative;
   background: #fff;
-  bottom: 26px; /*no*/
+  bottom: 31px; /*no*/
 }
-.dredge .loading-more {
+/*瀑布流样式*/
+.common .loading-more {
   text-align: center;
   font-size: 28px;
   font-weight: bold;
   margin: 20px 0;
   color: #999;
 }
-.dredge .item .info .avatar {
+.common .loading-text {
+  margin-left: 20px;
+}
+.common .vue-waterfall {
+  width: 100%;
+  transition: opacity 1s ease-in;
+  opacity: 0;
+}
+.common .item .info {
+  position: relative;
+  background: #fff;
+}
+.common .item .info .avatar {
   position: absolute;
   top: -14px; /*no*/
   left: 20px;
@@ -809,7 +822,7 @@ export default {
   z-index: 2;
   box-sizing: border-box;
 }
-.dredge .item .info .price {
+.common .item .info .price {
   line-height: 31px; /*no*/
   text-align: right;
   padding: 0 30px;
@@ -818,13 +831,13 @@ export default {
   font-size: 15px; /*no*/
   font-family: PingFang;
 }
-.dredge .item .info .price .money span {
+.common .item .info .price .money span {
   font-size: 12px; /*no*/
 }
-.dredge .initshow {
+.common .initshow {
   opacity: 1;
 }
-.dredge .vux-icon-dot {
+.common .vux-icon-dot {
   display: inline-block;
   vertical-align: middle;
   width: 10px;
@@ -832,26 +845,26 @@ export default {
   border-radius: 50%;
   background-color: #999;
 }
-.dredge .vux-slider {
+.common .vux-slider {
   margin: 10px 0;
 }
-.dredge .item {
+.common .item {
   position: absolute;
   top: 2px;
   left: 0;
   right: 2px;
-  bottom: 5px;
+  bottom: 2px;
   font-size: 1.2em;
   color: rgb(0, 158, 107);
 }
-.dredge .item-image {
+.common .item-image {
   width: 100%;
-  // height: 100%;
-  height: calc(~"100% - 6px");
+  height: 100%;
+  // height: calc(~"100% - 60px");/*no*/
   background-size: contain;
   background-position : center top;
 }
-.dredge .item-cover {
+.common .item-cover {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -861,11 +874,10 @@ export default {
   background-color: #fff;
   width: 100%;
   // height: calc(~"100% - 31px");
-  height:20px;
   transition: opacity 0.5s ease-in;
   opacity: 1;
 }
-.dredge .item-loaded {
+.common .item-loaded {
   opacity: 0;
 }
 

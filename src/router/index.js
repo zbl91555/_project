@@ -1,6 +1,6 @@
 import home from './home' // 首页
 import category from './category' // 分类
-import find from './find'
+import find from './find' // 发现
 import auction from './auction' // 商品相关详情
 import order from './order'// 订单（买家/卖家）
 import redbag from './redbag'// 红包功能

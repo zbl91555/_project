@@ -1,6 +1,6 @@
 <template>
   <div class="navigation">
-      <div v-for="(list,index) in timeLists" v-bind:key="list.key" :class="{ selected:changeRed == index}" @click="Red(index)" class="navigationbar" v-bind:href="list.link">
+      <div v-for="(list,index) in timeLists" :key="list.key" :class="{ selected:changeRed == index}" @click="Red(index)" class="navigationbar" v-bind:href="list.link">
         <p>{{list.text}}</p>
       </div>
       <div class="navupload" @click="upload">

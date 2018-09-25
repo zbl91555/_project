@@ -11,37 +11,38 @@
         <!-- 图片瀑布流 -->
         <!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh"> -->
         <!-- <div class="mescroll" id="mescroll"> -->
-        <waterfall
-          ref="waterfall"
-          :class="{ initshow: firstTime }"
-          :align="align" :line-gap="gap" :min-line-gap="100" :max-line-gap="maxGap" :single-max-width="300"
-          :watch="items"
-          @reflowed="reflowed"
-        >
-          <waterfall-slot v-for="(item, index) in items" :width="item.width" :height="item.height" :order="index" :key="item.uri">
-            <router-link :to="{name: 'auction', params: {id: item.uri }}">
-              <div class="item">
-                <div class="item-image" :style="{ 'background-image': `url(${item.cover})`,'background-position' : 'center top' }"></div>
-                <div class="item-cover" :class="{ 'item-loaded': item.loaded }"></div>
-                <div class="info">
-                  <div v-if="item.sellerAvatar != null " class="avatar" :style="{backgroundImage:'url(' + item.sellerAvatar + ')'}"></div>
-                  <div v-else class="iconfont icon-wutouxiang"></div>
-                  <div class="price false">
-                    <span class="money" v-if="item.price > item.startPrice">￥{{item.price}}</span>
-                    <span class="money" v-else>￥{{item.startPrice}}<span> 起</span></span>
-                  </div>
-                </div>
+    <waterfall
+      ref="waterfall"
+      :class="{ initshow: firstTime }"
+      :align="align" :line-gap="gap" :min-line-gap="100" :max-line-gap="maxGap" :single-max-width="300"
+      :watch="items"
+      @reflowed="reflowed"
+    >
+      <waterfall-slot v-for="(item, index) in items" :width="item.width" :height="item.height" :order="index" :key="item.uri">
+        <router-link :to="{name: 'auction', params: {id: item.uri }}">
+          <div class="item">
+            <div class="item-image" :style="{ 'background-image': `url(${item.cover})`,'background-position' : 'center top' }"></div>
+            <div class="item-cover" :class="{ 'item-loaded': item.loaded }"></div>
+            <div class="info">
+              <div v-if="item.sellerAvatar != null " class="avatar" :style="{backgroundImage:'url(' + item.sellerAvatar + ')'}"></div>
+              <div v-else class="iconfont icon-wutouxiang"></div>
+              <div class="price false">
+                <span class="money" v-if="item.price > item.startPrice">￥{{item.price}}</span>
+                <span class="money" v-else>￥{{item.startPrice}}<span> 起</span> </span>
               </div>
-            </router-link>
-          </waterfall-slot>
-        </waterfall>
-        <!-- </div> -->
-        <!-- </van-pull-refresh> -->
-        <!-- loading信息 -->
-        <div class="loading-more" v-show="loadingMore">
-          <i class="el-icon-loading"></i>
-          <span class="loading-text">加载更多...</span>
-        </div>
+            </div>
+          </div>
+        </router-link>
+      </waterfall-slot>
+    </waterfall>
+    <!-- </div> -->
+  <!-- </van-pull-refresh> -->
+
+    <!-- loading信息 -->
+    <div class="loading-more" v-show="loadingMore">
+      <i class="el-icon-loading"></i>
+      <span class="loading-text">加载更多...</span>
+    </div>
 
         <!-- 绑定手机号 -->
         <div class="loginValidation" v-show="bindphone">
@@ -128,7 +129,6 @@ export default {
   mixins: [assign],
   data () {
     return {
-      isFirstEnter: false, // 是否第一次进入，默认false
       scroll: 0,
       isLoading: false,
       // demoList: demoList,
@@ -140,7 +140,7 @@ export default {
         },
         {
           text: '淘淘',
-          link: '/home'
+          link: '/index'
         },
         {
           text: '关注',
@@ -176,6 +176,7 @@ export default {
       keyboard: false,
       keyboardTips: false,
       val: '',
+      // 非法的
       aIllegal: [
         '00',
         '01',
@@ -225,6 +226,12 @@ export default {
       page: this.page,
       scroll: this.scroll,
       isBusy: this.isBusy
+    }
+    if (from.name == 'auction') {
+      to.meta.isBack = true
+      alert(222)
+      // 判断是从哪个路由过来的，
+      // 如果是page2过来的，表明当前页面不需要刷新获取新数据，直接用之前缓存的数据即可
     }
     sessionStorage.setItem('recommend', JSON.stringify(recommend))
     next()
@@ -326,6 +333,17 @@ export default {
         }
         this.isBusy = true
         this.loadingMore = true
+        this.page += 1 // if (!this.loadingMore && !this.isBusy) {
+        if (!(this.num > 0)) {
+          this.loadingMore = false
+          this.elseloading = true
+          return
+        }
+        if (sessionStorage.getItem('recommend')) {
+          return
+        }
+        this.isBusy = true
+        this.loadingMore = true
         this.page += 1
         let params = {
           page: this.page,
@@ -335,12 +353,11 @@ export default {
           .then(res => {
             const pageItems = []
             if (res.data.html) {
-              // 第一次 分享数据
+            // 第一次 分享数据
               this.goShares(res.data.html)
             }
-
             if (!res.data.items) {
-              // 断掉
+            // 断掉
               this.isBusy = false
               this.loadingMore = false
             }
@@ -373,7 +390,7 @@ export default {
             })
             this.items = this.items.concat(pageItems)
             this.loadingMore = false
-            this.isBusy = false
+            // this.isBusy = false
             this.firstTime = true
             if (this.page === 1) {
               this.$nextTick(() => {
@@ -629,6 +646,7 @@ export default {
     this.isFirstEnter = false
   },
   created () {
+    this.isFirstEnter = true
     this.num = this.pagenum
     if (sessionStorage.getItem('activityTime')) {
       let time = JSON.parse(sessionStorage.getItem('activityTime'))
@@ -688,15 +706,11 @@ export default {
   }
 }
 </script>
-<style>
+
+<style scoped lang="less">
 .recommend .van-pull-refresh__head {
   font-size: 24px;
 }
-/* .recommend .weui-loadmore_line{
-  padding-top : 2.4rem;
-} */
-</style>
-<style scoped lang="less">
 /* 修改轮播默认样式 */
 .recommend .vux-slider > .vux-indicator > a > .vux-icon-dot.active,
 .vux-slider .vux-indicator-right > a > .vux-icon-dot.active {
@@ -769,7 +783,7 @@ export default {
 .recommend .vue-waterfall {
   transition: opacity 1s ease-in;
   opacity: 0;
-  // padding-bottom : 1.333rem;
+  padding-bottom : 1.333rem;
 }
 .recommend .item .info {
   position: relative;

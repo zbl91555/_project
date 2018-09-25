@@ -3,36 +3,24 @@
     <!--主体内容视图-->
     <transition :name="transitionName" mode="out-in">
         <div  class="main-view">
-          <!-- <tabBar :changeRed="changeRed"></tabBar> -->
-          <!-- <waterfallCommon>if void show</waterfallCommon> -->
           <!-- 头部导航 -->
+          <navbar v-if="isNavBar" :showIndex='showIndex' :msgLists="msgLists"></navbar>
 
           <!-- loading -->
           <loading v-model="isLoading" :text="text"></loading>
           <div v-if="isLoading" class="appMask"></div>
+
           <keep-alive>
-              <router-view class="home-view" v-if="$route.meta.keepAlive">
-                  <!-- 这里是会被缓存的视图组件，比如 page1,page2 -->
-                  <recommend></recommend>
-                  <index></index>
-                  <focus></focus>
-              </router-view>
+              <router-view  v-if="$route.meta.keepAlive"> </router-view>
           </keep-alive>
 
-          <router-view class="home-view" v-if="!$route.meta.keepAlive">
-              <!-- 这里是不被缓存的视图组件，比如 page3 -->
-          </router-view>
-          <navbar v-if="isNavBar" :showIndex='showIndex' :msgLists="msgLists"></navbar>
-
+          <router-view  v-if="!$route.meta.keepAlive"></router-view>
         </div>
     </transition>
   </div>
 </template>
 
 <script>
-import tabBar from './components/home/tabBar'
-import waterfallCommon from './components/home/waterfallCommon'
-
 import Navbar from './components/common/Navbar.vue' // 用于navbar导航
 import { Loading } from 'vux' // loading
 import { mapActions, mapState } from 'vuex' // loading
@@ -49,8 +37,6 @@ export default {
     Navbar,
     Loading,
     keyboard
-    // waterfallCommon,
-    // tabBar
   },
   // mixins:[assign],
   data () {

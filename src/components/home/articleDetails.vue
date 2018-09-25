@@ -655,6 +655,7 @@ export default {
   },
   data () {
     return {
+      isFirstEnter: false, // 是否第一次进入，默认false
       filterTime: '60',
       msg: '获取验证码',
       flag: true, // 获取验证码开关

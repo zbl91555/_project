@@ -11,38 +11,36 @@
         <!-- 图片瀑布流 -->
         <!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh"> -->
         <!-- <div class="mescroll" id="mescroll"> -->
-    <waterfall
-      ref="waterfall"
-      :class="{ initshow: firstTime }"
-      :align="align" :line-gap="gap" :min-line-gap="100" :max-line-gap="maxGap" :single-max-width="300"
-      :watch="items"
-      @reflowed="reflowed"
-    >
-      <waterfall-slot v-for="(item, index) in items" :width="item.width" :height="item.height" :order="index" :key="item.uri">
-        <router-link :to="{name: 'auction', params: {id: item.uri }}">
-          <div class="item">
-            <div class="item-image" :style="{ 'background-image': `url(${item.cover})`,'background-position' : 'center top' }"></div>
-            <div class="item-cover" :class="{ 'item-loaded': item.loaded }"></div>
-            <div class="info">
-              <div v-if="item.sellerAvatar != null " class="avatar" :style="{backgroundImage:'url(' + item.sellerAvatar + ')'}"></div>
-              <div v-else class="iconfont icon-wutouxiang"></div>
-              <div class="price false">
-                <span class="money" v-if="item.price > item.startPrice">￥{{item.price}}</span>
-                <span class="money" v-else>￥{{item.startPrice}}<span> 起</span> </span>
+        <waterfall
+          ref="waterfall"
+          :class="{ initshow: firstTime }"
+          :align="align" :line-gap="gap" :min-line-gap="100" :max-line-gap="maxGap" :single-max-width="300"
+          :watch="items"
+          @reflowed="reflowed"
+        >
+          <waterfall-slot v-for="(item, index) in items" :width="item.width" :height="item.height" :order="index" :key="item.uri">
+            <router-link :to="{name: 'auction', params: {id: item.uri }}">
+              <div class="item">
+                <div class="item-image" :style="{ 'background-image': `url(${item.cover})`,'background-position' : 'center top' }"></div>
+                <div class="item-cover" :class="{ 'item-loaded': item.loaded }"></div>
+                <div class="info">
+                  <div v-if="item.sellerAvatar != null " class="avatar" :style="{backgroundImage:'url(' + item.sellerAvatar + ')'}"></div>
+                  <div v-else class="iconfont icon-wutouxiang"></div>
+                  <div class="price false">
+                    <span class="money" v-if="item.price > item.startPrice">￥{{item.price}}</span>
+                    <span class="money" v-else>￥{{item.startPrice}}<span> 起</span></span>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </router-link>
-      </waterfall-slot>
-    </waterfall>
-    <!-- </div> -->
-  <!-- </van-pull-refresh> -->
+            </router-link>
+          </waterfall-slot>
+        </waterfall>
 
-    <!-- loading信息 -->
-    <div class="loading-more" v-show="loadingMore">
-      <i class="el-icon-loading"></i>
-      <span class="loading-text">加载更多...</span>
-    </div>
+        <!-- loading信息 -->
+        <div class="loading-more" v-show="loadingMore">
+          <i class="el-icon-loading"></i>
+          <span class="loading-text">加载更多...</span>
+        </div>
 
         <!-- 绑定手机号 -->
         <div class="loginValidation" v-show="bindphone">
@@ -129,24 +127,25 @@ export default {
   mixins: [assign],
   data () {
     return {
+      isFirstEnter: false, // 是否第一次进入，默认false
       scroll: 0,
       isLoading: false,
       // demoList: demoList,
       changeRed: 0,
-      timeLists: [
-        {
-          text: '优选',
-          link: '/recommend'
-        },
-        {
-          text: '淘淘',
-          link: '/index'
-        },
-        {
-          text: '关注',
-          link: '/focus'
-        }
-      ],
+      // timeLists: [
+      //   {
+      //     text: '优选',
+      //     link: '/recommend'
+      //   },
+      //   {
+      //     text: '淘淘',
+      //     link: '/index'
+      //   },
+      //   {
+      //     text: '关注',
+      //     link: '/focus'
+      //   }
+      // ],
       align: 'center',
       isBusy: false,
       loadingMore: false,
@@ -314,98 +313,87 @@ export default {
       }, this.page <= 1 ? 100 : 50)
       // 滚动加载数据
       if (this.shouldLoadMore() && (!this.loadingMore && !this.isBusy)) {
-        await this.fetchMore()
+        // await this.fetchMore()
       }
     },
     reflowed () {
       this.isBusy = false
     },
     // 瀑布流加载数据
-    async fetchMore () {
-      if (!this.loadingMore && !this.isBusy) {
-        if (!(this.num > 0)) {
-          this.loadingMore = false
-          this.elseloading = true
-          return
-        }
-        if (sessionStorage.getItem('recommend')) {
-          return
-        }
-        this.isBusy = true
-        this.loadingMore = true
-        this.page += 1 // if (!this.loadingMore && !this.isBusy) {
-        if (!(this.num > 0)) {
-          this.loadingMore = false
-          this.elseloading = true
-          return
-        }
-        if (sessionStorage.getItem('recommend')) {
-          return
-        }
-        this.isBusy = true
-        this.loadingMore = true
-        this.page += 1
-        let params = {
-          page: this.page,
-          pagenum: this.pagenum
-        }
-        getRecommend(params)
-          .then(res => {
-            const pageItems = []
-            if (res.data.html) {
-            // 第一次 分享数据
-              this.goShares(res.data.html)
-            }
-            if (!res.data.items) {
-            // 断掉
-              this.isBusy = false
-              this.loadingMore = false
-            }
-            this.num = res.data.items.length || 0
-            const items = res.data.items || []
-            items.forEach((item, i) => {
-              let coverUrl
-              coverUrl = item.cover
-              const m = coverUrl.match(/-W(\d+?)H(\d+)/)
-              if (!m) {
-                let img = new Image()
-                img.onload = () => {
-                  item.width = img.width
-                  item.height = img.height
-                  item.loaded = false
-                  item.lazyCover = ''
-                  pageItems.push(item)
-                }
-                img.src = item.coverUrl
-              } else {
-                coverUrl = coverUrl.substring(0, coverUrl.length - 6)
-                if (m && m.length >= 3) {
-                  item.width = parseInt(m[1])
-                  item.height = parseInt(m[2])
-                  item.loaded = false
-                  item.lazyCover = ''
-                  pageItems.push(item)
-                }
-              }
-            })
-            this.items = this.items.concat(pageItems)
-            this.loadingMore = false
-            // this.isBusy = false
-            this.firstTime = true
-            if (this.page === 1) {
-              this.$nextTick(() => {
-                this.scrollHandler()
-              })
-            }
-          })
-          .catch(err => {
-            this.loadingMore = false
-            this.elseloading = true
-            this.isBusy = true
-            // this.$store.commit("updateLoadingStatus", { isLoading: false });
-            this.page--
-          })
+    fetchMore () {
+      // if (!this.loadingMore && !this.isBusy) {
+      // if (!(this.num > 0)) {
+      //   this.loadingMore = false
+      //   this.elseloading = true
+      //   return
+      // }
+      // if (sessionStorage.getItem('recommend')) {
+      //   return
+      // }
+      // this.isBusy = true
+      // this.loadingMore = true
+      // this.page += 1
+      let params = {
+        page: this.page,
+        pagenum: this.pagenum
       }
+      getRecommend(params)
+        .then(res => {
+          const pageItems = []
+          // if (res.data.html) {
+          //   // 第一次 分享数据
+          //   this.goShares(res.data.html)
+          // }
+          // if (!res.data.items) {
+          //   // 断掉
+          //   this.isBusy = false
+          //   this.loadingMore = false
+          // }
+          this.num = res.data.items.length || 0
+          const items = res.data.items || []
+          items.forEach((item, i) => {
+            let coverUrl
+            coverUrl = item.cover
+            const m = coverUrl.match(/-W(\d+?)H(\d+)/)
+            if (!m) {
+              let img = new Image()
+              img.onload = () => {
+                item.width = img.width
+                item.height = img.height
+                item.loaded = false
+                item.lazyCover = ''
+                // pageItems.push(item)
+              }
+              // img.src = item.coverUrl
+            } else {
+              coverUrl = coverUrl.substring(0, coverUrl.length - 6)
+              if (m && m.length >= 3) {
+                item.width = parseInt(m[1])
+                item.height = parseInt(m[2])
+                item.loaded = false
+                item.lazyCover = ''
+                pageItems.push(item)
+              }
+            }
+          })
+          this.items = this.items.concat(pageItems)
+          this.loadingMore = false
+          // this.isBusy = false
+          this.firstTime = true
+          // if (this.page === 1) {
+          //   this.$nextTick(() => {
+          //     this.scrollHandler()
+          //   })
+          // }
+        })
+      // .catch(err => {
+      //   this.loadingMore = false
+      //   this.elseloading = true
+      //   this.isBusy = true
+      //   // this.$store.commit("updateLoadingStatus", { isLoading: false });
+      //   this.page--
+      // })
+      // }
     },
     // 瀑布流相关操作End
 
@@ -695,7 +683,7 @@ export default {
       // 清除数据
       sessionStorage.removeItem('recommend')
     } else {
-      this.fetchMore()
+      // this.fetchMore()
     }
   },
   deactivated () {
@@ -706,11 +694,15 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="less">
+<style>
 .recommend .van-pull-refresh__head {
   font-size: 24px;
 }
+/* .recommend .weui-loadmore_line{
+  padding-top : 2.4rem;
+} */
+</style>
+<style scoped lang="less">
 /* 修改轮播默认样式 */
 .recommend .vux-slider > .vux-indicator > a > .vux-icon-dot.active,
 .vux-slider .vux-indicator-right > a > .vux-icon-dot.active {
@@ -783,7 +775,7 @@ export default {
 .recommend .vue-waterfall {
   transition: opacity 1s ease-in;
   opacity: 0;
-  padding-bottom : 1.333rem;
+  // padding-bottom : 1.333rem;
 }
 .recommend .item .info {
   position: relative;

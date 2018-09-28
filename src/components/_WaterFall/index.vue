@@ -4,7 +4,7 @@
       srcKey="cover"
       :imgsArr="imgList"
       :height="waterfallHeight"
-      @scrollReachBottom="getData"
+      @scrollReachBottom="loadMoreData"
     >
       <div class="content-container" slot-scope="data">
         <div class="avatar">
@@ -24,22 +24,22 @@ export default {
   data () {
     return {
       page: 1,
-      waterfallHeight: 0,
-      imgList: []
+      imgList: [],
+      waterfallHeight: 0
     }
   },
   props: {
-    getDataMethod: Function
+    fetchDataMethod: Function
   },
   components: {
     vueWaterfallEasy
   },
   methods: {
-    getData () {
-      this.fetchData()
+    loadMoreData () {
+      this.genImgList()
     },
-    async fetchData () {
-      const { data: { items } } = await this.props.getDataMethod({
+    async genImgList () {
+      const { data: { items } } = await this.props.fetchDataMethod({
         page: this.page,
         pagenum: PAGE_NUM
       })
@@ -49,7 +49,7 @@ export default {
     }
   },
   created () {
-    this.fetchData()
+    this.genImgList()
   },
   mounted () {
     this.waterfallHeight = document.body.clientHeight - 56

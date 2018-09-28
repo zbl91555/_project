@@ -1,8 +1,9 @@
 <template>
   <div class="waterfall-container">
     <vue-waterfall-easy
-      :height="waterfallHeight"
+      srcKey="cover"
       :imgsArr="imgList"
+      :height="waterfallHeight"
       @scrollReachBottom="getData"
     >
       <div class="content-container" slot-scope="data">
@@ -17,7 +18,6 @@
 
 <script>
 import vueWaterfallEasy from 'vue-waterfall-easy'
-import { getRecommend } from '../../api/api.js'
 
 const PAGE_NUM = 8
 export default {
@@ -28,6 +28,9 @@ export default {
       imgList: []
     }
   },
+  props: {
+    getDataMethod: Function
+  },
   components: {
     vueWaterfallEasy
   },
@@ -36,14 +39,13 @@ export default {
       this.fetchData()
     },
     async fetchData () {
-      const { data: { items } } = await getRecommend({
+      const { data: { items } } = await this.props.getDataMethod({
         page: this.page,
         pagenum: PAGE_NUM
       })
       this.page++
-      const newImgList = items.map(item => ({src: item.cover, ...item}))
+      const newImgList = items.map(item => ({href: `/path`, ...item}))
       this.imgList = this.imgList.concat(newImgList)
-      console.log(this.imgList)
     }
   },
   created () {

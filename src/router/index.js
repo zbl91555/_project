@@ -18,12 +18,19 @@ import common from './common'// 公共组件
 import balance from './balance'// 余额钱包
 import error from './error'// 错误组件
 import bail from './bail'// 消费保证金
+
+import WaterFall from '../components/_WaterFall'
 // 重定向,指向了登录组件
 let index = {
   path: '/',
   redirect: '/author'
 }
 export default [
+  {
+    path: '/waterfall',
+    component: WaterFall,
+    name: 'waterFall'
+  },
   index,
   ...home,
   ...category,

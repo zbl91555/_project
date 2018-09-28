@@ -1,9 +1,10 @@
 <template>
   <div class="waterfall-container">
     <vue-waterfall-easy
-      :height="waterfallHeight"
+      srcKey="cover"
       :imgsArr="imgList"
-      @scrollReachBottom="getData"
+      :height="waterfallHeight"
+      @scrollReachBottom="loadMoreData"
     >
       <div class="content-container" slot-scope="data">
         <div class="avatar">
@@ -17,37 +18,38 @@
 
 <script>
 import vueWaterfallEasy from 'vue-waterfall-easy'
-import { getRecommend } from '../../api/api.js'
 
 const PAGE_NUM = 8
 export default {
   data () {
     return {
       page: 1,
-      waterfallHeight: 0,
-      imgList: []
+      imgList: [],
+      waterfallHeight: 0
     }
+  },
+  props: {
+    fetchDataMethod: Function
   },
   components: {
     vueWaterfallEasy
   },
   methods: {
-    getData () {
-      this.fetchData()
+    loadMoreData () {
+      this.genImgList()
     },
-    async fetchData () {
-      const { data: { items } } = await getRecommend({
+    async genImgList () {
+      const { data: { items } } = await this.props.fetchDataMethod({
         page: this.page,
         pagenum: PAGE_NUM
       })
       this.page++
-      const newImgList = items.map(item => ({src: item.cover, ...item}))
+      const newImgList = items.map(item => ({href: `/path`, ...item}))
       this.imgList = this.imgList.concat(newImgList)
-      console.log(this.imgList)
     }
   },
   created () {
-    this.fetchData()
+    this.genImgList()
   },
   mounted () {
     this.waterfallHeight = document.body.clientHeight - 56

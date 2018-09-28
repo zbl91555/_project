@@ -374,7 +374,7 @@ export default {
 .focus .vue-waterfall {
   transition: opacity 1s ease-in;
   opacity: 0;
-  // padding-bottom : 1.333rem;
+  padding-bottom : 1.333rem;
 }
 .focus .item .info {
   position: relative;

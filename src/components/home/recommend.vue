@@ -1,9 +1,12 @@
 <template>
   <div class="recommend" ref="ctn">
     <tabBar :changeRed="changeRed"></tabBar>
+    <waterfallEasy :fetchDataMethod='fetchDataMethod' taMethod ></waterfallEasy>
+
       <div class = "main" ref="main"
       @touchstart="touchstart"
       @touchend="touchend">
+
         <activityEntrance :img="activityImg" :activityEntranceShow="activityEntranceShow"></activityEntrance>
         <!-- 轮播图 -->
         <!-- <swiper :list="demoList" style="width:100%;margin:0 auto;" :aspect-ratio="300/800" height="180px" dots-class="custom-bottom" dots-position="center"></swiper> -->
@@ -11,7 +14,7 @@
         <!-- 图片瀑布流 -->
         <!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh"> -->
         <!-- <div class="mescroll" id="mescroll"> -->
-        <waterfall
+        <!-- <waterfall
           ref="waterfall"
           :class="{ initshow: firstTime }"
           :align="align" :line-gap="gap" :min-line-gap="100" :max-line-gap="maxGap" :single-max-width="300"
@@ -34,13 +37,13 @@
               </div>
             </router-link>
           </waterfall-slot>
-        </waterfall>
+        </waterfall> -->
 
         <!-- loading信息 -->
-        <div class="loading-more" v-show="loadingMore">
+        <!-- <div class="loading-more" v-show="loadingMore">
           <i class="el-icon-loading"></i>
           <span class="loading-text">加载更多...</span>
-        </div>
+        </div> -->
 
         <!-- 绑定手机号 -->
         <div class="loginValidation" v-show="bindphone">
@@ -88,8 +91,10 @@ import {
   SwiperItem,
   LoadMore
 } from 'vux'
-import Waterfall from '../common/waterfall'
-import WaterfallSlot from '../common/waterfall-slot'
+// import Waterfall from '../common/waterfall'
+// import WaterfallSlot from '../common/waterfall-slot'
+import vuewaterfall from 'vue-waterfall-easy'
+import waterfallEasy from '../common/waterfallEasy'
 import { setTimeout, clearTimeout } from 'timers'
 import keyboard from '../keyboards' // 数字键盘
 import Cookies from 'js-cookie' // cookie
@@ -117,12 +122,13 @@ export default {
     Swiper,
     SwiperItem,
     GroupTitle,
-    Waterfall,
-    WaterfallSlot,
+    // Waterfall,
+    // WaterfallSlot,
     keyboard,
     tabBar,
     LoadMore,
-    activityEntrance
+    activityEntrance,
+    waterfallEasy
   },
   mixins: [assign],
   data () {
@@ -211,7 +217,9 @@ export default {
     },
     decimal: {
       default: 2
-    }
+    },
+    fetchDataMethod: getRecommend
+
   },
   computed: {
     ...mapState({

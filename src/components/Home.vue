@@ -4,7 +4,6 @@
     <keep-alive>
       <router-view class="home-view"></router-view>
     </keep-alive>
-    <!-- <waterfallCommon></waterfallCommon> -->
   </div>
 </template>
 

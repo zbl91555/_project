@@ -1,6 +1,8 @@
 <template>
   <div class="waterfall-container">
     <vue-waterfall-easy
+      :maxCols = 2
+      :fetchDataMethod='fetchDataMethod'
       srcKey="cover"
       :imgsArr="imgList"
       :height="waterfallHeight"
@@ -18,9 +20,9 @@
 
 <script>
 import vueWaterfallEasy from 'vue-waterfall-easy'
-import {getRecommend} from '../../api/api'
+// import {getRecommend} from '../../api/api'
 
-const PAGE_NUM = 8
+const PAGE_NUM = 1
 export default {
   data () {
     return {
@@ -30,7 +32,7 @@ export default {
     }
   },
   props: {
-    fetchDataMethod: getRecommend
+    fetchDataMethod: Function
   },
   components: {
     vueWaterfallEasy
@@ -40,7 +42,9 @@ export default {
       this.genImgList()
     },
     async genImgList () {
-      const { data: { items } } = await getRecommend({
+      console.log(11111111111111)
+      console.log(this.fetchDataMethod)
+      const { data: { items } } = await this.fetchDataMethod({
         page: this.page,
         pagenum: PAGE_NUM
       })
